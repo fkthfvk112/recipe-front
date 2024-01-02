@@ -4,20 +4,19 @@ import React, { useState, FormEvent, useEffect } from "react";
 import { setCookie, deleteCookie, getCookie } from "cookies-next";
 import axios from "axios";
 import { UserLoginDTO } from "@/app/(type)/user";
-import {
-  Validation,
-  validationIdSentence,
-  validationPwSentence,
-} from "../check";
 import Link from "next/link";
+import { siginInState } from "@/app/(recoil)/recoilAtom";
+import { useRecoilState } from "recoil";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
+  const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+
   const router = useRouter();
 
-  if (getCookie("userInfo") !== undefined) {
+  if (isSignIn) {
     router.push("/");
     return;
   }
@@ -30,12 +29,12 @@ export default function LoginForm() {
       grantType: "normal",
     };
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-in`, userData)
+      .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-in`, userData, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res.data);
-        deleteCookie("userInfo");
-        setCookie("userInfo", res.data);
-        router.push("/");
+        setIsSignIn(true);
       })
       .catch((err) => {
         alert("로그인 실패 " + err);

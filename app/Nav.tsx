@@ -1,9 +1,31 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { setCookie, deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
+import { useRecoilState } from "recoil";
+import { siginInState } from "./(recoil)/recoilAtom";
+import deleteAuthToken from "./(user)/signin/utils/deleteAuthToken";
 
 const Navbar = () => {
+  const [isSignInState, setIsSignInState] = useState<boolean>(false);
+  const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+
+  useEffect(() => {
+    setIsSignInState(isSignIn);
+  }, [isSignIn]);
+
+  console.log("겟쿠키", getCookie("Authorization"));
+
+  const logOutBtn = (
+    <button
+      onClick={() => {
+        deleteAuthToken(); //server sid job
+        setIsSignIn(false);
+      }}
+    >
+      로그아웃
+    </button>
+  );
   return (
     <>
       <div className="w-full h-20 bg-emerald-800 sticky top-0">
@@ -12,9 +34,11 @@ const Navbar = () => {
             <span>로고</span>
             <ul className="hidden md:flex gap-x-6 text-white">
               <li>
-                <Link href="/about">
-                  <p>About Us</p>
-                </Link>
+                {isSignInState && (
+                  <Link href="/hello">
+                    <p>Hello</p>
+                  </Link>
+                )}
               </li>
               <li>
                 <Link href="/services">
@@ -27,7 +51,7 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            <button>로그인/아웃</button>
+            {isSignInState ? logOutBtn : <Link href="/signin">로그인</Link>}
           </div>
         </div>
       </div>

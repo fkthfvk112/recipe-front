@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "https-dev": "node server.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -18,7 +19,9 @@
     "next-auth": "^4.24.5",
     "next-client-cookies": "^1.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",
