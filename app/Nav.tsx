@@ -41,8 +41,8 @@ const Navbar = () => {
                 )}
               </li>
               <li>
-                <Link href="/services">
-                  <p>Services</p>
+                <Link href="/create-recipe">
+                  <p>레시피 생성</p>
                 </Link>
               </li>
               <li>
