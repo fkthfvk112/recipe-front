@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { CookStepCard } from "./CookStepCard";
 import { CookStepProp } from "./CookStep";
 import { CookingSteps_create } from "../../types/recipeType";
+import { Tooltip } from "@mui/material";
 
 export interface Item {
   id: number;
@@ -19,7 +20,11 @@ export interface CookingSteps_create_withPhotoSring
   photoSring: string;
 }
 
-export const ContainerDnd = ({ recipe, setRecipe }: CookStepProp) => {
+export const ContainerDnd = ({
+  recipe,
+  setRecipe,
+  letsSetRecipe,
+}: CookStepProp) => {
   const [cards, setCards] = useState<CookingSteps_create_withPhotoSring[]>([
     {
       order: 0,
@@ -45,8 +50,32 @@ export const ContainerDnd = ({ recipe, setRecipe }: CookStepProp) => {
   ]);
 
   useEffect(() => {
-    console.log("카드", cards);
-  }, [cards]);
+    const addCard: CookingSteps_create[] = cards
+      .filter((card) => card.description.length >= 1)
+      .map((card, inx) => {
+        return {
+          ...card,
+          order: inx,
+        };
+      });
+
+    setRecipe({
+      ...recipe,
+      steps: addCard,
+    });
+  }, [letsSetRecipe]);
+
+  const addNewStep = () => {
+    const newCards = [...cards];
+    newCards.push({
+      order: newCards.length,
+      photo: null,
+      description: "",
+      time: 0,
+      photoSring: "",
+    });
+    setCards(newCards);
+  };
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number, order: number) => {
@@ -101,9 +130,15 @@ export const ContainerDnd = ({ recipe, setRecipe }: CookStepProp) => {
 
   return (
     <>
-      <div className="w-full">
-        <h3>요리 순서</h3>
+      <div className="w-full mt-6 mb-6 p-5">
+        <h3 className="text-lg">요리 순서</h3>
+        <Tooltip title="Delete">
+          <span></span>
+        </Tooltip>
         {cards.map((card, i) => renderCard(card, i))}
+        <div className="w-full flex justify-center">
+          <button onClick={addNewStep}>추가</button>
+        </div>
       </div>
     </>
   );

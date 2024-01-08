@@ -9,11 +9,20 @@ import { Dispatch, SetStateAction } from "react";
 export interface CookStepProp {
   recipe: Recipe;
   setRecipe: Dispatch<SetStateAction<Recipe>>;
+  letsSetRecipe: number;
 }
-export default function CookStep({ recipe, setRecipe }: CookStepProp) {
+export default function CookStep({
+  recipe,
+  setRecipe,
+  letsSetRecipe,
+}: CookStepProp) {
   return (
     <DndProvider backend={HTML5Backend}>
-      <ContainerDnd recipe={recipe} setRecipe={setRecipe} />
+      <ContainerDnd
+        recipe={recipe}
+        setRecipe={setRecipe}
+        letsSetRecipe={letsSetRecipe}
+      />
     </DndProvider>
   );
 }

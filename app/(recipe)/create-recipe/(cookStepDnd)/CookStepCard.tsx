@@ -8,13 +8,11 @@ import {
 } from "react";
 import type { Identifier, XYCoord } from "dnd-core";
 import { useDrag, useDrop } from "react-dnd";
-import { CookingSteps_create } from "../../types/recipeType";
-import AddIcon from "@mui/icons-material/Add";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
-import FilePreview from "./FilePreview";
 import { CookingSteps_create_withPhotoSring } from "./ContainerDnd";
-
+import ClearIcon from "@mui/icons-material/Clear";
 export interface CardProps {
   id: any;
   index: number;
@@ -183,28 +181,52 @@ export const CookStepCard: FC<CardProps> = ({
     reader.readAsDataURL(file);
   };
 
+  const deleteStep = () => {
+    const newCards = cards
+      .filter((card) => card.order !== index)
+      .map((card, inx) => {
+        return { ...card, order: inx };
+      });
+
+    console.log(newCards);
+    setCards(newCards as CookingSteps_create_withPhotoSring[]);
+  };
   return (
     <div
-      className={" m-2 w-full rounded-3xl grid grid-flow-col"}
+      className={
+        "mt-3 w-full flex flex-col relative bg-zinc-100 rounded-2xl p-2"
+      }
       ref={ref}
       style={{ opacity }}
       data-handler-id={handlerId}
     >
-      <div className="row-span-1 col-span-3  row-start-1 p-3 flex flex-row justify-center items-center">
-        <div className="bg-yellow-300 mt-2 rounded-full h-7 w-8 flex justify-center items-center">
-          {card.order}
+      <ClearIcon
+        className="w-4 h-4 hover:cursor-pointer absolute right-2 top-2"
+        onClick={deleteStep}
+      ></ClearIcon>
+      <div className="flex flex-row justify-between items-center row-span-1 col-span-1 row-start-1">
+        <div className="bg-yellow-300 rounded-full h-8 w-8 flex justify-center items-center">
+          {card.order + 1}
         </div>
-        <textarea
-          className="ml-2 flex-grow rounded-2xl w-auto h-24 p-2 border border-slate-200 border-solid resize-none"
-          onChange={handleTextChange}
-          value={card.description}
-        ></textarea>
-        <div className="bg-slate-50 border border-slate-400 m-2 w-20 h-20 ">
+        <div className="mr-7">
+          <AccessTimeIcon></AccessTimeIcon>
+          <input
+            onChange={handleTimeChange}
+            value={card.time}
+            className="w-20 m-1 border border-slate-500"
+            type="text"
+          />
+          분
+        </div>
+      </div>
+      <div className=" p-3 flex flex-row justify-center items-center w-full">
+        <div className="bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
           <label
-            className="w-full h-full flex justify-center items-center"
+            className="w-full h-full flex justify-center items-center hover:cursor-pointer"
             htmlFor={`fileInput${card.order.toString()}`}
           >
             <input
+              className="border border-slate-500"
               onChange={handleFileChange}
               id={`fileInput${card.order.toString()}`}
               type="file"
@@ -217,22 +239,19 @@ export const CookStepCard: FC<CardProps> = ({
                 src={card.photoSring}
               />
             ) : (
-              <AddIcon className="text-gray-500 w-10 h-10" />
+              <FileUploadIcon className="text-gray-500 w-10 h-10" />
             )}
           </label>
 
           {/* <FilePreview file={card?.photo}></FilePreview> */}
         </div>
-      </div>
-      <div className="flex flex-row justify-center items-center row-span-1 col-span-1 row-start-1">
-        <AccessTimeIcon></AccessTimeIcon>
-        <input
-          onChange={handleTimeChange}
-          value={card.time}
-          className="w-16 m-1"
-          type="text"
-        />
-        분<ImportExportIcon className="m-2"></ImportExportIcon>
+        <textarea
+          className="ml-2 flex-grow rounded-2xl w-auto h-24 p-2 border border-slate-500 border-solid resize-none"
+          onChange={handleTextChange}
+          value={card.description}
+        ></textarea>
+
+        <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
       </div>
     </div>
   );

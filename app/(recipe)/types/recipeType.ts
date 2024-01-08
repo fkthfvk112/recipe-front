@@ -30,11 +30,17 @@ export interface CookingSteps_show {
   time: number;
 }
 
+export interface Ingredient {
+  name: string;
+  qqt: string;
+  order: number;
+}
 export interface Recipe {
   recipeName: string;
   categories: RecipeSelection;
   servings: number;
   cookMethod: CookingMethod;
+  ingredients: Ingredient[];
   description: string;
   steps: CookingSteps_create[] | CookingSteps_show[];
 }

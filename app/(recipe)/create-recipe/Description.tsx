@@ -13,13 +13,13 @@ export default function Description({ recipe, setRecipe }: DescProp) {
     });
   };
   return (
-    <div className="flex flex-col justify-center items-center w-full m-3">
+    <div className="flex flex-col justify-center items-center w-full mt-6 mb-6 p-5">
       <div className="text-start w-full">
-        <h3>음식 설명</h3>
+        <h3 className="text-lg">음식 설명</h3>
       </div>
       <textarea
         onChange={handleDescText}
-        className="bg-slate-100 rounded-2xl w-full h-24 p-3 resize-none"
+        className="border border-slate-500 rounded-2xl w-full h-24 p-3 resize-none"
         name=""
         id=""
       ></textarea>
