@@ -1,10 +1,12 @@
 "use client";
 import { rejects } from "assert";
 import axios, { AxiosResponse } from "axios";
+axios.defaults.withCredentials = true;
 
+// axios.defaults.headers["Access-Control-Allow-Origin"] =
+//   "https://localhost:8080";
 export const axiosAuthInstacne = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
-  withCredentials: true,
 });
 
 axiosAuthInstacne.interceptors.response.use((res) => {
@@ -22,29 +24,16 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     console.log("method", originMethod);
     console.log("data", originData);
 
-    return resendOriginMethod(
-      originBaseUrl + originUrl,
-      originMethod,
-      originData
-    );
+    return axios({
+      method: originMethod,
+      baseURL: originBaseUrl,
+      url: originUrl,
+      data: originData,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
   return res;
 });
-
-const resendOriginMethod = (
-  originUrl: string,
-  originMethod: string,
-  originData: object
-): Promise<AxiosResponse<any, any>> =>
-  axios({
-    method: originMethod,
-    url: originUrl,
-    data: originData,
-    withCredentials: true,
-  })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      return Promise.reject(error);
-    });

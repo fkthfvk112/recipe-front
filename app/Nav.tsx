@@ -28,7 +28,7 @@ const Navbar = () => {
   );
   return (
     <>
-      <div className="w-full h-20 bg-emerald-800 sticky top-0">
+      <div className="w-full h-20 bg-emerald-800 sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <span>로고</span>
@@ -41,8 +41,8 @@ const Navbar = () => {
                 )}
               </li>
               <li>
-                <Link href="/services">
-                  <p>Services</p>
+                <Link href="/create-recipe">
+                  <p>레시피 생성</p>
                 </Link>
               </li>
               <li>

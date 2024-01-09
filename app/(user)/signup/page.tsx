@@ -129,6 +129,9 @@ export default function SignUp() {
           alert("회원가입에 성공하였습니다.");
           route.push("/signin");
         }
+      })
+      .catch((e) => {
+        alert(e);
       });
   };
 

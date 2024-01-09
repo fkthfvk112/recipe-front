@@ -7,3 +7,24 @@
     @apply w-full p-2 border rounded-md;
   }
 }
+@font-face {
+  font-family: "JalnanGothic";
+  src: url("font/JalnanGothicTTF.ttf") format("truetype");
+}
+
+body {
+  font-family: "JalnanGothic";
+}
+
+option,
+select,
+textarea,
+input {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  border: 1px solid black;
+  padding: 0.5em 1em 0.5em 1em;
+  width: 8rem;
+}
