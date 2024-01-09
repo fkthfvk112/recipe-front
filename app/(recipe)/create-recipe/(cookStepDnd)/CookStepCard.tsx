@@ -153,7 +153,7 @@ export const CookStepCard: FC<CardProps> = ({
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const newCards = cards.map((card) => {
-      if (card.order === index) {
+      if (card.order === index && !isNaN(Number(e.target.value))) {
         card.time = Number(e.target.value);
       }
       return card;
@@ -201,14 +201,14 @@ export const CookStepCard: FC<CardProps> = ({
       data-handler-id={handlerId}
     >
       <ClearIcon
-        className="w-4 h-4 hover:cursor-pointer absolute right-2 top-2"
+        className="w-6 h-6 hover:cursor-pointer absolute right-2 top-2"
         onClick={deleteStep}
       ></ClearIcon>
       <div className="flex flex-row justify-between items-center row-span-1 col-span-1 row-start-1">
         <div className="bg-yellow-300 rounded-full h-8 w-8 flex justify-center items-center">
           {card.order + 1}
         </div>
-        <div className="mr-7">
+        <div className="mr-10">
           <AccessTimeIcon></AccessTimeIcon>
           <input
             onChange={handleTimeChange}

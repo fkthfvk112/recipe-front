@@ -1,6 +1,6 @@
 import update from "immutability-helper";
 import { useCallback, useEffect, useState } from "react";
-
+import AddIcon from "@mui/icons-material/Add";
 import { CookStepCard } from "./CookStepCard";
 import { CookStepProp } from "./CookStep";
 import { CookingSteps_create } from "../../types/recipeType";
@@ -132,12 +132,15 @@ export const ContainerDnd = ({
     <>
       <div className="w-full mt-6 mb-6 p-5">
         <h3 className="text-lg">요리 순서</h3>
-        <Tooltip title="Delete">
-          <span></span>
-        </Tooltip>
+
         {cards.map((card, i) => renderCard(card, i))}
         <div className="w-full flex justify-center">
-          <button onClick={addNewStep}>추가</button>
+          <AddIcon
+            className="m-1 w-12 h-12 border border-slate-500 hover:cursor-pointer"
+            onClick={addNewStep}
+          >
+            추가
+          </AddIcon>
         </div>
       </div>
     </>

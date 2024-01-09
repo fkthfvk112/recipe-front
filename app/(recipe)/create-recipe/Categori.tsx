@@ -50,19 +50,19 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
     const clickedCategory: RecipeSelection =
       RecipeSelection[clickedCategoryString as keyof typeof RecipeSelection] ||
       RecipeSelection.한식;
-    setRecipe({ ...recipe, categories: clickedCategory });
+    setRecipe({ ...recipe, categorie: clickedCategory });
   };
 
   const categoriComp = recipeCategories.map((item) => (
     <div
       onMouseDown={clickCategoryItem}
       className={`bg-red-400 p-3 rounded-md m-2 w-28 relative ${
-        recipe.categories === item ? "outline outline-2 outline-slate-950" : ""
+        recipe.categorie === item ? "outline outline-2 outline-slate-950" : ""
       }}`}
       key={item}
       id={item}
     >
-      {recipe.categories === item ? (
+      {recipe.categorie === item ? (
         <CheckCircleIcon className="absolute right-0 top-0 w-8 h-8"></CheckCircleIcon>
       ) : (
         <></>

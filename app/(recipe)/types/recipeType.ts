@@ -37,7 +37,7 @@ export interface Ingredient {
 }
 export interface Recipe {
   recipeName: string;
-  categories: RecipeSelection;
+  categorie: RecipeSelection;
   servings: number;
   cookMethod: CookingMethod;
   ingredients: Ingredient[];

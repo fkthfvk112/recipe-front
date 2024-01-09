@@ -1,6 +1,7 @@
-import { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Ingredient, Recipe } from "../types/recipeType";
+import AddIcon from "@mui/icons-material/Add";
 
 // export interface Ingredient {
 //   name: string;
@@ -8,24 +9,19 @@ import { Ingredient, Recipe } from "../types/recipeType";
 //   order: number;
 // }
 
-interface CookMethodProp {
+interface IngredientProp {
   recipe: Recipe;
   setRecipe: React.Dispatch<SetStateAction<Recipe>>;
-  letsSetRecipe: number;
 }
 
-export default function Ingredient({
-  recipe,
-  setRecipe,
-  letsSetRecipe,
-}: CookMethodProp) {
+export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     { name: "", qqt: "", order: 0 },
     { name: "", qqt: "", order: 1 },
   ]);
 
   useEffect(() => {
-    const addIngre = ingredients
+    const ingres: Ingredient[] = ingredients
       .filter((ingre) => ingre.name.length >= 1 && ingre.qqt.length >= 1)
       .map((ingre, inx) => {
         return {
@@ -33,11 +29,14 @@ export default function Ingredient({
           order: inx,
         };
       });
+
+    console.log("애드잉글;", ingres);
+
     setRecipe({
       ...recipe,
-      ingredients: addIngre,
+      ingredients: ingres,
     });
-  }, [letsSetRecipe]);
+  }, [ingredients]);
 
   const ingreItems = ingredients.map((ingre, inx) => {
     return (
@@ -144,9 +143,12 @@ export default function Ingredient({
         {ingreItems}
       </div>
       <div className="text-center">
-        <button className="m-1" onClick={addIngre}>
+        <AddIcon
+          className="m-1 w-12 h-12 border border-slate-500 hover:cursor-pointer"
+          onClick={addIngre}
+        >
           추가
-        </button>
+        </AddIcon>
       </div>
     </div>
   );
