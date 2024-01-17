@@ -56,7 +56,7 @@ export default function CreateRecipePage() {
       .post("recipe/create", recipe)
       .then((res) => {
         if (res.status === 200) {
-          alert("발행되었씀!");
+          alert("발행되었씀!"); //수정
         }
       })
       .catch((err) => {
