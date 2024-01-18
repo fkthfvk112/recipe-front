@@ -1,3 +1,4 @@
+"use client";
 import { SetStateAction } from "react";
 import { Recipe } from "../types/recipeType";
 
@@ -21,11 +22,25 @@ export default function ErrorText({
       </>
     );
   }
+
+  if (recipe.repriPhotos.length <= 1) {
+    errCnt++;
+    errorText = (
+      <>
+        {errorText}
+        <div className="text-base">
+          요리 대표사진을 추가해주세요. (1개 이상)
+        </div>
+      </>
+    );
+  }
+
   if (recipe.description.length < 8) {
     errCnt++;
     errorText = (
       <>
-        <div className="text-base">요리 설명을 추가해주세요 (8글자 이상)</div>
+        {errorText}
+        <div className="text-base">요리 설명을 추가해주세요. (8글자 이상)</div>
       </>
     );
   }

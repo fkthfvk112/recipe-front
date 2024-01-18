@@ -18,10 +18,12 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import axios from "axios";
 import { log } from "console";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
+import RepriPric from "./RepriPic";
 
 export default function CreateRecipePage() {
   const [recipe, setRecipe] = useState<Recipe>({
     recipeName: "",
+    repriPhotos: [],
     categorie: RecipeSelection.한식,
     servings: 1,
     cookMethod: CookingMethod.굽기,
@@ -49,6 +51,7 @@ export default function CreateRecipePage() {
 
   const clickPostHandler = () => {
     setLetsSetRecipe(letsSetRecipe + 1);
+    console.log("레시피", recipe);
   };
 
   const saveRecipeToDb = () => {
@@ -62,22 +65,6 @@ export default function CreateRecipePage() {
       .catch((err) => {
         console.log("에러", err);
       });
-    // axios
-    //   .post(`${process.env.NEXT_PUBLIC_API_URL}recipe/create`, recipe, {
-    //     withCredentials: true,
-    //   })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   });
-    //sign - api / hello2;
-    // axiosAuthInstacne
-    //   .post("auth-test/hello2", {})
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   const style = {
@@ -92,14 +79,19 @@ export default function CreateRecipePage() {
     p: 4,
   };
 
+  useEffect(() => {
+    console.log("레시피", recipe);
+  }, [recipe]);
+
   return (
     <div className="p-5 max-w-xl w-dvw m-3 bg-white px-4 flex flex-col justify-center items-center">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>
       <Categori recipe={recipe} setRecipe={setRecipe}></Categori>
       <Serving recipe={recipe} setRecipe={setRecipe}></Serving>
       <CookMethod recipe={recipe} setRecipe={setRecipe}></CookMethod>
-      <Ingredient recipe={recipe} setRecipe={setRecipe}></Ingredient>
+      <RepriPric recipe={recipe} setRecipe={setRecipe}></RepriPric>
       <Description recipe={recipe} setRecipe={setRecipe}></Description>
+      <Ingredient recipe={recipe} setRecipe={setRecipe}></Ingredient>
       <CookStep
         recipe={recipe}
         setRecipe={setRecipe}

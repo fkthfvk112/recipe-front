@@ -13,6 +13,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { CookingSteps_create_withPhotoSring } from "./ContainerDnd";
 import ClearIcon from "@mui/icons-material/Clear";
+import Image from "next/image";
 export interface CardProps {
   id: any;
   index: number;
@@ -233,10 +234,13 @@ export const CookStepCard: FC<CardProps> = ({
               hidden
             />
             {card.photoSring ? (
-              <img
+              <Image
+                width={500}
+                height={500}
                 className="w-full h-full"
                 style={{ objectFit: "cover" }}
                 src={card.photoSring}
+                alt="no img"
               />
             ) : (
               <FileUploadIcon className="text-gray-500 w-10 h-10" />

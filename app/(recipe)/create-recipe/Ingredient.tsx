@@ -30,8 +30,6 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
         };
       });
 
-    console.log("애드잉글;", ingres);
-
     setRecipe({
       ...recipe,
       ingredients: ingres,
