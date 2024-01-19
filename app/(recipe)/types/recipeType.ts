@@ -36,6 +36,9 @@ export interface Ingredient {
   order: number;
 }
 export interface Recipe {
+  createdAt: string;
+  views: number;
+  recipeId: number | undefined | null;
   recipeName: string;
   repriPhotos: string[];
   categorie: RecipeSelection;

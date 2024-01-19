@@ -31,7 +31,7 @@ export default function RecipeInfo({
         imgUrls={recipeInfoProp.repriPhotos}
       ></EmblaCarousel>
       <div className="border-t-2 border-gray-400">
-        <h2 className="m-5">{recipeInfoProp.recipeName}</h2>
+        <h1 className="m-5 text-2xl">{recipeInfoProp.recipeName}</h1>
       </div>
       <div className="w-full flex justify-start flex-wrap">
         <div className="ml-3 mr-3">

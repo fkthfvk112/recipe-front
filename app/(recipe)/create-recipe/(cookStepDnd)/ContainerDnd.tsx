@@ -131,7 +131,7 @@ export const ContainerDnd = ({
   return (
     <>
       <div className="w-full mt-6 mb-6 p-5">
-        <h3 className="text-lg">요리 순서</h3>
+        <h2 className="text-xl">요리 순서</h2>
 
         {cards.map((card, i) => renderCard(card, i))}
         <div className="w-full flex justify-center">

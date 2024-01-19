@@ -27,10 +27,10 @@ export default async function RecipeDetail({
   params: { recipeId: string };
 }) {
   const fetchData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`,
-    {
-      cache: "no-cache",
-    }
+    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`
+    // {
+    //   cache: "no-cache",// 수정 - 시간 조절...views 세팅용
+    // }
   ).then((res) => {
     if (!res.ok) {
       console.log("RecipeDetail fetch error!!", res.status);
