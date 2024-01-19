@@ -28,21 +28,21 @@ export const ContainerDnd = ({
   const [cards, setCards] = useState<CookingSteps_create_withPhotoSring[]>([
     {
       order: 0,
-      photo: null,
+      photo: "",
       description: "",
       time: 0,
       photoSring: "",
     },
     {
       order: 1,
-      photo: null,
+      photo: "",
       description: "",
       time: 0,
       photoSring: "",
     },
     {
       order: 2,
-      photo: null,
+      photo: "",
       description: "",
       time: 0,
       photoSring: "",
@@ -103,7 +103,7 @@ export const ContainerDnd = ({
   const renderCard = useCallback(
     (
       card: {
-        photo: File | null;
+        photo: string | null;
         order: number;
         description: string;
         time: number;

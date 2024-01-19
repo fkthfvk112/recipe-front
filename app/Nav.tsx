@@ -46,7 +46,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/recipe-detail/10">
+                <Link href="/recipe-detail/17">
                   <p>레시피 보기</p>
                 </Link>
               </li>

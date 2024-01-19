@@ -1,12 +1,15 @@
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
+import Image from "next/image";
+import EmblaCarousel from "@/app/(commom)/EmbalCarousel/EmblaCarousel";
 
 export interface RecipeInfoProp {
   recipeName: string;
   categorie: string;
   servings: number;
   description: string;
+  repriPhotos: string[];
   timeSum: number;
 }
 
@@ -19,10 +22,15 @@ export default function RecipeInfo({
     recipeInfoProp.timeSum > 0
       ? recipeInfoProp.timeSum + "분"
       : "시간 정보 없음";
-
+  console.log("인포 정보", recipeInfoProp);
   return (
-    <div className="w-full flex flex-col">
-      <div>
+    <div className="w-full flex flex-col ">
+      <EmblaCarousel
+        slides={Array.from(Array(recipeInfoProp.repriPhotos.length).keys())}
+        options={{ loop: true }}
+        imgUrls={recipeInfoProp.repriPhotos}
+      ></EmblaCarousel>
+      <div className="border-t-2 border-gray-400">
         <h2 className="m-5">{recipeInfoProp.recipeName}</h2>
       </div>
       <div className="w-full flex justify-start flex-wrap">

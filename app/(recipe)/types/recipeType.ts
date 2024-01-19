@@ -18,14 +18,14 @@ export enum CookingMethod {
 
 export interface CookingSteps_create {
   order: number;
-  photo: File | null;
+  photo: string | null;
   description: string;
   time: number;
 }
 
 export interface CookingSteps_show {
   order: number;
-  photo: string;
+  photo: string | null;
   description: string;
   time: number;
 }
@@ -37,7 +37,7 @@ export interface Ingredient {
 }
 export interface Recipe {
   recipeName: string;
-  repriPhotos: File[];
+  repriPhotos: string[];
   categorie: RecipeSelection;
   servings: number;
   cookMethod: CookingMethod;

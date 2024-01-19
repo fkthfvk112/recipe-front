@@ -2,6 +2,7 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Recipe } from "../types/recipeType";
+import fileToBase64 from "@/app/(utils)/fileToBase64";
 
 interface RepriPhoto {
   urlString: string | null;
@@ -40,10 +41,18 @@ export default function RepriPric({ recipe, setRecipe }: RepriProp) {
         ...recipe,
         repriPhotos: photos,
       });
-      setRecipe({
-        ...recipe,
-        repriPhotos: photos,
-      });
+
+      const convetAndSet = async () => {
+        const base64Files = await Promise.all(
+          photos.map((file) => fileToBase64(file))
+        );
+        setRecipe({
+          ...recipe,
+          repriPhotos: base64Files,
+        });
+      };
+
+      convetAndSet();
     }
   }, [repriPhotos]);
 

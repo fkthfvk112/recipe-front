@@ -122,7 +122,9 @@ export default function CreateRecipePage() {
             {errorCnt === 0 && "레시피를 세상에 내놓겠습니까?"}
           </Typography>
           <div className="text-center">
-            <button onClick={() => setIsModalOpen(false)}>아니요</button>
+            <button onClick={() => setIsModalOpen(false)}>
+              아니요(아직...)
+            </button>
             <button
               onClick={() => {
                 saveRecipeToDb();

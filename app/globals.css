@@ -12,7 +12,13 @@
   src: url("font/JalnanGothicTTF.ttf") format("truetype");
 }
 
-body {
+/* body {
+  font-family: "JalnanGothic";
+} */
+
+h1,
+h2,
+h3 {
   font-family: "JalnanGothic";
 }
 

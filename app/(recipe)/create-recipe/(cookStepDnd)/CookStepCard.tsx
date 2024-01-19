@@ -14,6 +14,7 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { CookingSteps_create_withPhotoSring } from "./ContainerDnd";
 import ClearIcon from "@mui/icons-material/Clear";
 import Image from "next/image";
+import fileToBase64 from "@/app/(utils)/fileToBase64";
 export interface CardProps {
   id: any;
   index: number;
@@ -130,27 +131,54 @@ export const CookStepCard: FC<CardProps> = ({
     setCards(newCards);
   };
 
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
   ) => {
-    let file: File | null = null;
-    if (event.target.files !== null) file = event.target.files[0];
-    if (file) {
-      const newCards = cards.map((card) => {
-        if (card.order === index) {
-          card.photo = file;
-        }
-        return card;
-      });
-
+    if (event.target.files) {
+      const file = event.target.files[0];
       if (file) {
-        handleFilePreviewChange(file);
-        file;
-      } else {
-        setCards(newCards);
+        console.log("파일 있음");
+        try {
+          const base64String = await fileToBase64(file);
+          console.log("베이스64", base64String);
+          const newCards = cards.map((card) => {
+            if (card.order === index) {
+              return { ...card, photo: base64String, photoSring: base64String };
+            }
+            return card;
+          });
+
+          setCards(newCards);
+          // handleFilePreviewChange(file);
+        } catch (error) {
+          console.error("파일 변환 오류:", error);
+        }
       }
     }
   };
+
+  // const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (
+  //   event
+  // ) => {
+  //   let file: File | null = null;
+  //   if (event.target.files !== null) file = event.target.files[0];
+  //   if (file) {
+
+  //     const newCards = cards.map((card) => {
+  //       if (card.order === index) {
+  //         card.photo = file;
+  //       }
+  //       return card;
+  //     });
+
+  //     if (file) {
+  //       handleFilePreviewChange(file);
+  //       file;
+  //     } else {
+  //       setCards(newCards);
+  //     }
+  //   }
+  // };
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const newCards = cards.map((card) => {
@@ -163,24 +191,24 @@ export const CookStepCard: FC<CardProps> = ({
     setCards(newCards);
   };
 
-  const handleFilePreviewChange = (file: File) => {
-    const reader = new FileReader();
+  // const handleFilePreviewChange = (file: File) => {
+  //   const reader = new FileReader();
 
-    reader.onloadend = () => {
-      if (reader.result !== null && typeof reader.result === "string") {
-        const newCards = cards.map((card) => {
-          if (card.order === index && typeof reader.result === "string") {
-            card.photoSring = reader.result;
-          }
-          return card;
-        });
+  //   reader.onloadend = () => {
+  //     if (reader.result !== null && typeof reader.result === "string") {
+  //       const newCards = cards.map((card) => {
+  //         if (card.order === index && typeof reader.result === "string") {
+  //           card.photoSring = reader.result;
+  //         }
+  //         return card;
+  //       });
 
-        setCards(newCards);
-      }
-    };
+  //       setCards(newCards);
+  //     }
+  //   };
 
-    reader.readAsDataURL(file);
-  };
+  //   reader.readAsDataURL(file);
+  // };
 
   const deleteStep = () => {
     const newCards = cards

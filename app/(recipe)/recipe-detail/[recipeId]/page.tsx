@@ -8,6 +8,7 @@ import RecipeStepInfo from "./RecipeStepInfo";
 
 interface RecipeDetail {
   recipeName: string;
+  repriPhotos: string[];
   categorie: string;
   servings: number;
   cookMethod: string;
@@ -26,7 +27,10 @@ export default async function RecipeDetail({
   params: { recipeId: string };
 }) {
   const fetchData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`
+    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`,
+    {
+      cache: "no-cache",
+    }
   ).then((res) => {
     if (!res.ok) {
       console.log("RecipeDetail fetch error!!", res.status);
@@ -44,6 +48,7 @@ export default async function RecipeDetail({
   const recipeInfo: RecipeInfoProp = {
     recipeName: recipeDetail.recipeName,
     categorie: recipeDetail.categorie,
+    repriPhotos: recipeDetail.repriPhotos,
     servings: recipeDetail.servings,
     description: recipeDetail.description,
     timeSum: recipeDetail.steps.reduce((accumulator, step) => {

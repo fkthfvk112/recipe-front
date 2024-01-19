@@ -23,7 +23,7 @@ export default function ErrorText({
     );
   }
 
-  if (recipe.repriPhotos.length <= 1) {
+  if (recipe.repriPhotos.length < 1) {
     errCnt++;
     errorText = (
       <>

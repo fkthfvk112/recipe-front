@@ -9,8 +9,8 @@ export default function Ingredients({
 
   const ingreItems = ingredients.map((data, inx) => {
     return (
-      <div className="flex justify-between" key={inx}>
-        <div>{data.name}</div>
+      <div className="flex justify-between mt-3 mb-3" key={inx}>
+        <div className="font-bold">{data.name}</div>
         <div>{data.qqt}</div>
       </div>
     );
@@ -18,7 +18,7 @@ export default function Ingredients({
   return (
     <div className="w-full mt-3 mb-3">
       <div className="flex justify-start border-b-2  border-yellow-900 m-2 mt-6 mb-3">
-        <div>재료</div>
+        <h2>재료</h2>
       </div>
       {ingreItems}
     </div>

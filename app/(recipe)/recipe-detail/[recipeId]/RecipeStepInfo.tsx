@@ -10,13 +10,13 @@ export default function RecipeStepInfo({
 
   const stepItems = steps.map((step, inx) => {
     return (
-      <div key={inx}>
-        <div className=" border-b-2 border-gray-200 mb-3">
+      <div key={inx} className="mt-3 mb-3">
+        <div className="font-bold border-b-2 border-gray-200 mb-3">
           Step {step.order}
         </div>
         <div className="flex justify-between">
           {step.photo ? (
-            <Image src={step.photo} width={100} height={100} alt="noimg" />
+            <Image src={step.photo} width={200} height={200} alt="noimg" />
           ) : (
             skeltonImg
           )}
@@ -29,9 +29,7 @@ export default function RecipeStepInfo({
 
   return (
     <div className="w-full mt-6">
-      <div className="border-b-2  border-yellow-900 m-2 mt-6 mb-6">
-        요리 순서
-      </div>
+      <h2 className="border-b-2  border-yellow-900 m-2 mt-6 mb-6">요리 순서</h2>
       {stepItems}
     </div>
   );

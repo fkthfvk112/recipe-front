@@ -1,4 +1,5 @@
 //https dev server
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const http = require("http");
 const { parse } = require("url");
