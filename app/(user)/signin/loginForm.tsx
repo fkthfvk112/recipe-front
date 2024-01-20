@@ -12,7 +12,7 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
-  const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
 
   const router = useRouter();
 
@@ -35,6 +35,14 @@ export default function LoginForm() {
       .then((res) => {
         console.log(res.data);
         setIsSignIn(true);
+        const storage = globalThis?.sessionStorage;
+        let pathToGo = "/";
+        const prePath = storage.getItem("prePath");
+        if (storage && typeof prePath === "string") {
+          pathToGo = storage.getItem("prePath") as string;
+          storage.removeItem("prePath");
+        }
+        location.href = pathToGo;
       })
       .catch((err) => {
         alert("로그인 실패 " + err);

@@ -24,7 +24,7 @@ export default async function RecentRecipes() {
     </div>
   ));
 
-  console.log("데이터", fetchData);
+  //console.log("데이터", fetchData);
   return (
     <div className="m-9">
       <h2 className="text-xl">최근 레시피</h2>

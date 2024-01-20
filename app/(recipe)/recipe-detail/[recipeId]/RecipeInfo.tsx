@@ -22,7 +22,7 @@ export default function RecipeInfo({
     recipeInfoProp.timeSum > 0
       ? recipeInfoProp.timeSum + "분"
       : "시간 정보 없음";
-  console.log("인포 정보", recipeInfoProp);
+  //console.log("인포 정보", recipeInfoProp);
   return (
     <div className="w-full flex flex-col ">
       <EmblaCarousel

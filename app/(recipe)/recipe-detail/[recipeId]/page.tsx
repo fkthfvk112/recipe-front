@@ -5,6 +5,8 @@ import UserInfo from "./UserInfo";
 import Ingredients from "./Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "./RecipeInfo";
 import RecipeStepInfo from "./RecipeStepInfo";
+import { decodeUserJwt, decodedUserInfo } from "@/app/(utils)/decodeJwt";
+import ReviewContainer from "../(review)/ReviewContainer";
 
 interface RecipeDetail {
   recipeName: string;
@@ -26,6 +28,13 @@ export default async function RecipeDetail({
 }: {
   params: { recipeId: string };
 }) {
+  // let userInfo: decodedUserInfo | undefined = undefined;
+  // const userCookie: { name: string; value: string } | undefined =
+  //   cookies().get("Authorization");
+  // if (userCookie !== undefined) {
+  //   userInfo = decodeUserJwt(userCookie.value);
+  // }
+
   const fetchData = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`
     // {
@@ -57,11 +66,16 @@ export default async function RecipeDetail({
   };
 
   return (
-    <div className="p-5 max-w-xl w-dvw m-3 bg-white px-4 flex flex-col justify-center items-center">
-      <UserInfo recipeOwner={recipeOwner}></UserInfo>
-      <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
-      <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
-      <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+    <div className=" max-w-xl w-dvw m-3  flex flex-col justify-center items-center">
+      <div className="bg-white p-5 mb-3 w-full">
+        <UserInfo recipeOwner={recipeOwner}></UserInfo>
+        <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
+        <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
+        <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+      </div>
+      <div className="bg-white p-5 mb-3 w-full">
+        <ReviewContainer recipeId={Number(params.recipeId)}></ReviewContainer>
+      </div>
     </div>
   );
 }
