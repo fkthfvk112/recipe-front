@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import deleteAuthToken from "./(user)/signin/utils/deleteAuthToken";
 import { usePathname } from "next/navigation";
+import AccountMenu from "./AccountMenu";
 
 const Navbar = () => {
   const [isSignInState, setIsSignInState] = useState<boolean>(false);
@@ -46,7 +47,9 @@ const Navbar = () => {
       <div className="w-full h-20 bg-emerald-800 sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
-            <span>로고</span>
+            <Link href="/">
+              <p>홈</p>
+            </Link>
             <ul className="hidden md:flex gap-x-6 text-white">
               <li>
                 {isSignInState && (
@@ -72,7 +75,7 @@ const Navbar = () => {
               </li>
             </ul>
             {isSignInState ? (
-              logOutBtn
+              <AccountMenu />
             ) : (
               <button onClick={goToSiginInPage}>로그인</button>
             )}

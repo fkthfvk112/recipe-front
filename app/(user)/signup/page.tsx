@@ -5,22 +5,29 @@ import {
   Validation,
   validationEmailSentence,
   validationIdSentence,
+  validationNickNameSentence,
   validationPwSameSentence,
   validationPwSentence,
 } from "../check";
 import axios from "axios";
-import { UserLoginDTO, UserSiginUpDTO, UserSignUpDTO } from "@/app/(type)/user";
+import { UserSignUpDTO } from "@/app/(type)/user";
 
 export default function SignUp() {
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const [userVeriPw, setUserVeriPw] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
+  const [userNickName, setUserNickName] = useState<string>("");
 
   const [idValid, setIdValid] = useState<Validation>({
     isValid: false,
     message: "",
   });
+  const [nickNameValid, setNickNameValid] = useState<Validation>({
+    isValid: false,
+    message: "",
+  });
+
   const [pwValid, setPwValid] = useState<Validation>({
     isValid: false,
     message: "",
@@ -35,11 +42,13 @@ export default function SignUp() {
   });
 
   const idRef = useRef<HTMLInputElement>(null);
+  const nickNameRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const veriPwRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
   const route = useRouter();
+
   useEffect(() => {
     console.log(idValid);
     if (userId === "") {
@@ -86,6 +95,17 @@ export default function SignUp() {
     }
   }, [userEmail]);
 
+  useEffect(() => {
+    if (userNickName === "") {
+      setNickNameValid({
+        isValid: false,
+        message: "",
+      });
+    } else {
+      setNickNameValid(validationNickNameSentence(userNickName));
+    }
+  }, [userNickName]);
+
   const sendSignUpRequest = () => {
     if (!idValid.isValid) {
       idRef?.current?.focus();
@@ -115,10 +135,20 @@ export default function SignUp() {
       return;
     }
 
+    if (!nickNameValid.isValid) {
+      nickNameRef?.current?.focus();
+      nickNameRef?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      return;
+    }
+
     const userData: UserSignUpDTO = {
       userId: userId,
       userPassword: userPw,
       email: userEmail,
+      nickName: userNickName,
       grantType: "NORMAL",
     };
 
@@ -154,6 +184,25 @@ export default function SignUp() {
         />
         <p className={idValid.isValid ? "text-emerald-400" : "text-red-500"}>
           {idValid.message}
+        </p>
+      </div>
+      <div className="m-3">
+        닉네임
+        <input
+          ref={nickNameRef}
+          name="userNickName"
+          placeholder="2~10 글자 닉네임 입력"
+          value={userNickName}
+          onChange={(e: any) => {
+            setUserNickName(e.target.value);
+          }}
+        />
+        <p
+          className={
+            nickNameValid.isValid ? "text-emerald-400" : "text-red-500"
+          }
+        >
+          {nickNameValid.message}
         </p>
       </div>
       <div className="m-3">
@@ -207,6 +256,7 @@ export default function SignUp() {
         <input className="w-2/3" type="text" />
         <button className="w-1/3">인증하기</button>
       </div>
+
       <button onClick={sendSignUpRequest}>회원가입</button>
     </div>
   );

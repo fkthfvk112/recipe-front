@@ -42,6 +42,7 @@ export default function WriteReview({ recipeId }: { recipeId: number }) {
       <div className="flex justify-center flex-col items-center">
         <div className="text-start w-full">
           <Rating
+            size="large"
             onChange={(e, newValue) => {
               setReview({
                 ...review,
@@ -51,11 +52,11 @@ export default function WriteReview({ recipeId }: { recipeId: number }) {
             name="half-rating"
             value={review.score}
             defaultValue={2.5}
-            precision={0.5}
+            precision={1}
           />
         </div>
         <textarea
-          className="h-24 w-full border border-slate-400"
+          className="h-24 w-full border border-slate-400 p-3"
           value={review.message}
           onChange={(e) => {
             setReview({

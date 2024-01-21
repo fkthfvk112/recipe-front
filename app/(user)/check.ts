@@ -77,11 +77,29 @@ export function validationEmailSentence(email: string): Validation {
   if (validateEmail(email)) {
     return {
       isValid: true,
-      message: "유효한 이메일 형식입니다..",
+      message: "유효한 이메일 형식입니다.",
     };
   }
   return {
     isValid: false,
     message: "유효하지 않은 이메일 형식입니다.",
+  };
+}
+
+export function validateNickName(nickName: string) {
+  if (nickName.length >= 2 && nickName.length <= 10) return true;
+  else return false;
+}
+
+export function validationNickNameSentence(nickName: string): Validation {
+  if (validateNickName(nickName)) {
+    return {
+      isValid: true,
+      message: "유효한 닉네임입니다.",
+    };
+  }
+  return {
+    isValid: false,
+    message: "2글자에서 10글자 사이 닉네임 입력.",
   };
 }

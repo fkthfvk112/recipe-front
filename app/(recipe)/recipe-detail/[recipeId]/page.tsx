@@ -28,13 +28,6 @@ export default async function RecipeDetail({
 }: {
   params: { recipeId: string };
 }) {
-  // let userInfo: decodedUserInfo | undefined = undefined;
-  // const userCookie: { name: string; value: string } | undefined =
-  //   cookies().get("Authorization");
-  // if (userCookie !== undefined) {
-  //   userInfo = decodeUserJwt(userCookie.value);
-  // }
-
   const fetchData = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`
     // {

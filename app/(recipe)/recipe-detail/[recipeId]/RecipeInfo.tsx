@@ -26,7 +26,7 @@ export default function RecipeInfo({
   return (
     <div className="w-full flex flex-col ">
       <EmblaCarousel
-        slides={Array.from(Array(recipeInfoProp.repriPhotos.length).keys())}
+        slides={Array.from(Array(recipeInfoProp?.repriPhotos?.length).keys())}
         options={{ loop: true }}
         imgUrls={recipeInfoProp.repriPhotos}
       ></EmblaCarousel>

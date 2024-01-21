@@ -5,3 +5,14 @@ export interface Review {
   recipeId: number;
   createdAt?: string;
 }
+
+export interface ReviewWithUserInfo extends Review {
+  userInfo: userInfo;
+}
+
+export interface userInfo {
+  userId: number;
+  userNickName: string;
+  userUrl: string | null;
+  userPhoto: string | null;
+}

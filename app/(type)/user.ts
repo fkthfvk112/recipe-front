@@ -1,5 +1,6 @@
 export interface User {
   userId: string;
+  nickName: string;
   userPassword: string;
   grantType: string;
 }
