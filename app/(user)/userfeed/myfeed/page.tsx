@@ -12,15 +12,7 @@ export default function Userfeed() {
 
   return (
     <div className="bg-white max-w-xl w-dvw m-3  flex flex-col justify-start items-center">
-      <UserInfo
-        isOwner={true}
-        userInfo={{
-          userPhoto: "",
-          userNickName: "닉네임",
-          userRecipeCnt: 0,
-          userUrl: "fsdfsdfsd.com",
-        }}
-      ></UserInfo>
+      <UserInfo userId={"fkthfvk112"}></UserInfo>
       <Divider className="mt-5" orientation="horizontal" flexItem />
 
       <div className="flex">
