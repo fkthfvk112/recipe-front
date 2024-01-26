@@ -1,6 +1,6 @@
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import MyFeedPhoto from "./MyFeedPhoto";
 import EditIcon from "@mui/icons-material/Edit";
 import FeedEditModal from "./FeedEditModal";
@@ -38,14 +38,16 @@ export default function UserInfo({ userId }: { userId: string }) {
         <FeedEditModal
           isOpenModal={isOpenModal}
           setIsOpenModal={setIsOpenModal}
+          setUpdateData={setUpdateData}
+          updateData={updateData}
           userInfo={userData}
         ></FeedEditModal>
       )}
-      <div className="grid grid-cols-[1fr,3fr] gap-4 h-44">
-        <div className="bg-blue-500 flex justify-center items-center">
+      <div className="w-full flex justify-center flex-wrap">
+        <div className=" flex justify-center items-center">
           <MyFeedPhoto photoUrl={userData?.userPhoto}></MyFeedPhoto>
         </div>
-        <div className="bg-green-500 p-3 relative">
+        <div className="p-5 relative ms-5 mt-3">
           <button
             onClick={modalOpen}
             className="border-none w-5 h-3 flex justify-center items-center absolute right-2"
@@ -54,11 +56,8 @@ export default function UserInfo({ userId }: { userId: string }) {
           </button>
           <h3>{userData?.nickName}</h3>
           <div>{userData?.userUrl}</div>
-          <div>{userData?.email}</div>
-          <div className="text-sm">발행한 레시피gfd</div>
         </div>
       </div>
-      <div>etc</div>
     </div>
   );
 }

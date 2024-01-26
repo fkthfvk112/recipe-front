@@ -10,10 +10,9 @@ export default function MyFeedPhoto({
 }) {
   const image = photoUrl ? (
     <Image
-      style={{
-        objectFit: "cover",
-      }}
-      fill
+      className="rounded-full"
+      width={128}
+      height={128}
       src={photoUrl ? photoUrl : ""}
       alt="no img"
     ></Image>

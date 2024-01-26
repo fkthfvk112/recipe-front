@@ -3,6 +3,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { UserFeedInfo } from "./UserInfo";
 import Image from "next/image";
 import fileToBase64 from "@/app/(utils)/fileToBase64";
+import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 
 interface UpdatedUser {
   userPhoto: string;
@@ -26,10 +27,14 @@ export default function FeedEditModal({
   isOpenModal,
   setIsOpenModal,
   userInfo,
+  setUpdateData,
+  updateData,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: Dispatch<SetStateAction<boolean>>;
   userInfo: UserFeedInfo;
+  setUpdateData: Dispatch<SetStateAction<number>>;
+  updateData: number;
 }) {
   const [updatedUser, setUpdatedUser] = useState<UpdatedUser>({
     nickName: userInfo.nickName ? userInfo.nickName : "",
@@ -46,7 +51,30 @@ export default function FeedEditModal({
     });
   };
 
-  const updateDbData = () => {}; //수정... 구현하기!!
+  const updateDbData = () => {
+    const userData: UpdatedUser = { ...updatedUser };
+    if (updatedUser.userPhoto === userInfo.userPhoto) {
+      userData.userPhoto = "";
+    }
+
+    axiosAuthInstacne
+      .post("feed/update", userData)
+      .then((res) => {
+        setUpdateData(updateData + 1);
+        alert("수정되었습니다.");
+        setIsOpenModal(false);
+        console.log(res);
+      })
+      .catch((err) => {
+        const errRes = err.response;
+        if (errRes.data.error === "MethodArgumentNotValidException") {
+          alert("유효하지 않은 입력입니다. \n" + err.message);
+        } else {
+          alert("에러가 발생하였습니다. " + err.message);
+        }
+        console.log(err);
+      });
+  };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
