@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { RecipeOwnerInfo } from "./page";
+import { Avatar } from "@mui/material";
+import UserImg from "./UserImg";
+import Link from "next/link";
 
 export default function UserInfo({
   recipeOwner,
@@ -7,10 +10,23 @@ export default function UserInfo({
   recipeOwner: RecipeOwnerInfo;
 }) {
   return (
-    <div className="flex justify-center items-center">
-      <Image src="" width={100} height={100} alt="Picture of the author" />
-      {/* 수정: 사진 받을 수 있도록 */}
-      {recipeOwner.userId}
+    <div className="flex flex-col justify-center items-center">
+      <div className="flex">
+        <Image
+          className="rounded-full"
+          src={recipeOwner?.userPhoto ? recipeOwner?.userPhoto : "/cook.webp"}
+          width={50}
+          height={50}
+          alt="Picture of the author"
+          loading="lazy"
+        />
+        {/* 수정: 사진 받을 수 있도록 */}
+        <Link href={`/userfeed/${recipeOwner?.userNickName}`}>
+          <h3 className="m-3">{recipeOwner.userNickName}</h3>
+        </Link>
+      </div>
+
+      <div>{recipeOwner?.userUrl ? recipeOwner?.userUrl : ""}</div>
     </div>
   );
 }

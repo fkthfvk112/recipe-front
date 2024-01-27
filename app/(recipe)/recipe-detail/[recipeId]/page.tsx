@@ -20,7 +20,9 @@ interface RecipeDetail {
 }
 
 export interface RecipeOwnerInfo {
-  userId: string;
+  userNickName: string;
+  userPhoto: string;
+  userUrl: string;
 }
 
 export default async function RecipeDetail({
@@ -29,10 +31,10 @@ export default async function RecipeDetail({
   params: { recipeId: string };
 }) {
   const fetchData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`
-    // {
-    //   cache: "no-cache",// 수정 - 시간 조절...views 세팅용
-    // }
+    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`,
+    {
+      cache: "no-cache", // 수정 - 시간 조절...views 세팅용
+    }
   ).then((res) => {
     if (!res.ok) {
       console.log("RecipeDetail fetch error!!", res.status);
@@ -45,9 +47,11 @@ export default async function RecipeDetail({
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData.recipeOwnerInfo;
 
-  console.log(recipeDetail);
+  console.log("렛히피 디테일", recipeDetail);
+  console.log("레시피 오너 인포", recipeOwner);
 
   const recipeInfo: RecipeInfoProp = {
+    recipeId: Number(params.recipeId),
     recipeName: recipeDetail.recipeName,
     categorie: recipeDetail.categorie,
     repriPhotos: recipeDetail.repriPhotos,

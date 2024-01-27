@@ -2,6 +2,7 @@
 
 import { ReviewWithUserInfo } from "@/app/(type)/review";
 import { Avatar, Rating } from "@mui/material";
+import Link from "next/link";
 
 export default async function Reviews({ recipeId }: { recipeId: number }) {
   const fetchData: ReviewWithUserInfo[] = await fetch(
@@ -23,8 +24,10 @@ export default async function Reviews({ recipeId }: { recipeId: number }) {
   const review = fetchData.map((review, inx) => (
     <div key={inx} className="m-5 mb-10">
       <div className="flex justify-start items-center">
-        <Avatar src="/broken-image.jpg" />
-        <h3 className="ms-2 me-2">{review.userInfo.userNickName}</h3>
+        <Avatar />
+        <Link href={`/userfeed/${review.userInfo.userNickName}`}>
+          <h3 className="ms-2 me-2">{review.userInfo.userNickName}</h3>
+        </Link>
         <Rating
           size="small"
           name="half-rating-read"

@@ -1,10 +1,11 @@
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
-import Image from "next/image";
 import EmblaCarousel from "@/app/(commom)/EmbalCarousel/EmblaCarousel";
+import BookMark from "./BookMark";
 
 export interface RecipeInfoProp {
+  recipeId: number;
   recipeName: string;
   categorie: string;
   servings: number;
@@ -23,6 +24,7 @@ export default function RecipeInfo({
       ? recipeInfoProp.timeSum + "분"
       : "시간 정보 없음";
   //console.log("인포 정보", recipeInfoProp);
+
   return (
     <div className="w-full flex flex-col ">
       <EmblaCarousel
@@ -31,7 +33,10 @@ export default function RecipeInfo({
         imgUrls={recipeInfoProp.repriPhotos}
       ></EmblaCarousel>
       <div className="border-t-2 border-gray-400">
-        <h1 className="m-5 text-2xl">{recipeInfoProp.recipeName}</h1>
+        <div className="flex justify-center items-center">
+          <h1 className="m-5 text-2xl">{recipeInfoProp.recipeName}</h1>
+          <BookMark recipeId={recipeInfoProp.recipeId}></BookMark>
+        </div>
       </div>
       <div className="w-full flex justify-start flex-wrap">
         <div className="ml-3 mr-3">

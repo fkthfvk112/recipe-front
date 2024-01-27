@@ -2,12 +2,13 @@
 import { rejects } from "assert";
 import axios, { AxiosResponse } from "axios";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 // axios.defaults.headers["Access-Control-Allow-Origin"] =
 //   "https://localhost:8080";
 export const axiosAuthInstacne = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
+  withCredentials: true,
 });
 
 axiosAuthInstacne.interceptors.response.use((res) => {
