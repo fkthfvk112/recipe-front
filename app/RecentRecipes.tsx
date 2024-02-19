@@ -26,7 +26,7 @@ export default async function RecentRecipes() {
 
   //console.log("데이터", fetchData);
   return (
-    <div className="m-9">
+    <div className="m-9 max-w-5xl">
       <h2 className="text-xl">최근 레시피</h2>
       <p>최근에 공개된 레시피에요.</p>
       <div className="flex flex-wrap justify-center items-center">

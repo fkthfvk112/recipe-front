@@ -6,6 +6,7 @@ import BurstModeOutlinedIcon from "@mui/icons-material/BurstModeOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { Divider } from "@mui/material";
 import UserInfo from "./UserInfo";
+import MyLike from "./MyLike";
 
 export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useState<0 | 1>(0);
@@ -35,6 +36,7 @@ export default function Userfeed() {
         </button>
       </div>
       {menuSelect === 0 && <MyFeed></MyFeed>}
+      {menuSelect === 1 && <MyLike></MyLike>}
     </div>
   );
 }
