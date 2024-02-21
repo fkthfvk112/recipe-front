@@ -2,6 +2,7 @@ import {
   getRandomSeasonalFoodInSameCategory,
   seasonalIngredients,
 } from "@/public/seasonalFoods";
+import Link from "next/link";
 
 export default function SeasonalFood() {
   const currentDate = new Date();
@@ -11,15 +12,17 @@ export default function SeasonalFood() {
     currentMonth,
     6
   );
+
   console.log("결과", seasonname);
   const seasonIngres = seasonname.map((ele) => {
     return (
-      <button
+      <Link
+        href={`/recipes/ingre/${ele}`}
         className="w-24 h-16 border-2 rounded-md m-3 flex flex-row justify-center items-center border-slate-400"
         key={ele}
       >
         <h3>{ele}</h3>
-      </button>
+      </Link>
     );
   });
 

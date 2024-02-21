@@ -4,7 +4,7 @@ import { Recipe } from "./(recipe)/types/recipeType";
 
 export default async function RecentRecipes() {
   const fetchData: Recipe[] = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-new-recipe`,
+    `${process.env.NEXT_PUBLIC_API_URL}recipe/recent-recipe`,
     {
       cache: "no-cache", //수정
     }
@@ -16,7 +16,7 @@ export default async function RecentRecipes() {
     }
   });
 
-  const recentRecipes = fetchData.map((recipe, inx) => (
+  const recentRecipes = fetchData?.map((recipe, inx) => (
     <div key={inx} className="m-3">
       <Link href={`/recipe-detail/${recipe.recipeId}`}>
         <RecipeCard recipe={recipe}></RecipeCard>
@@ -26,7 +26,7 @@ export default async function RecentRecipes() {
 
   //console.log("데이터", fetchData);
   return (
-    <div className="m-9 max-w-5xl">
+    <div className="max-w-5xl">
       <h2 className="text-xl">최근 레시피</h2>
       <p>최근에 공개된 레시피에요.</p>
       <div className="flex flex-wrap justify-center items-center">
