@@ -1,5 +1,4 @@
 import { Recipe } from "@/app/(recipe)/types/recipeType";
-import RecipeLayout from "../../(common)/layout";
 
 export default async function RecipesByIngre({
   params,
@@ -22,9 +21,5 @@ export default async function RecipesByIngre({
     }
   });
 
-  return (
-    <div>
-      <RecipeLayout recipeDatas={fetchData}></RecipeLayout>
-    </div>
-  );
+  return <div>재료 페이지</div>;
 }

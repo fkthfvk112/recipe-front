@@ -10,3 +10,9 @@ export const siginInState = atom({
   default: false,
   effects_UNSTABLE: [persistAtom],
 });
+
+export const searchPage = atom<number>({
+  key: "searchPage",
+  default: 1,
+  effects_UNSTABLE: [persistAtom],
+});
