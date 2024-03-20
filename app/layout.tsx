@@ -19,7 +19,7 @@ export default function RootLayout({
       <body>
         <RecoilRoot>
           <Nav></Nav>
-          <main className="min-h-screen flex flex-col justify-start items-center bg-slate-100">
+          <main className="min-h-screen flex flex-col justify-start pt-12 items-center bg-slate-100 bg-white">
             {children}
           </main>
         </RecoilRoot>

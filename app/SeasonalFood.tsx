@@ -17,7 +17,7 @@ export default function SeasonalFood() {
   const seasonIngres = seasonname.map((ele) => {
     return (
       <Link
-        href={`/recipes/ingre/${ele}`}
+        href={`/recipes/1/ingre/${ele}`}
         className="w-24 h-16 border-2 rounded-md m-3 flex flex-row justify-center items-center border-slate-400"
         key={ele}
       >

@@ -149,7 +149,7 @@ export default function DetailSearchingModal({
   return isOpen ? (
     <div
       className={
-        "fixed w-full h-full top-0 left-0 flex justify-center items-center bg-black bg-opacity-50 z-10"
+        "fixed w-full h-full top-0 left-0 flex justify-center items-center bg-black bg-opacity-50 z-10 mt-6"
       }
       onClick={() => setIsOpen(false)}
     >

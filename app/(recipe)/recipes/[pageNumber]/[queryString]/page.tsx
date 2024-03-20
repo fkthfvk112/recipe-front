@@ -29,7 +29,7 @@ export default async function SearchingByCondition({
     }
   });
 
-  //페이지 개수 콜
+  //페이지 총 개수
   const pageMaxCnt: number = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions/cnt?${decodedUrl}`,
     {
