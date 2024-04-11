@@ -73,6 +73,11 @@ const Navbar = () => {
                   <p>핼로2</p>
                 </Link>
               </li>
+              <li>
+                <Link href="/diet/mydiet/create">
+                  <p>식단</p>
+                </Link>
+              </li>
             </ul>
             {isSignInState ? (
               <AccountMenu />

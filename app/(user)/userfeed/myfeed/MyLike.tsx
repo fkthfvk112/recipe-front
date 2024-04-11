@@ -1,5 +1,4 @@
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import { seasonalFoods } from "@/public/seasonalFoods";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
