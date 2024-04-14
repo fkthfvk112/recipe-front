@@ -34,3 +34,11 @@ button {
   padding: 0.5em 1em 0.5em 1em;
   width: 8rem;
 }
+
+textarea{
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 0.375rem;
+  height: 6.25rem;
+  resize: none;
+}

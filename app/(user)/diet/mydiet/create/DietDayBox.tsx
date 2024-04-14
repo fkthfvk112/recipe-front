@@ -122,13 +122,13 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
       const getImg = (inx:number)=>{
         const itemNow:DietItem = dietItemRow.dietItemList[inx];
         if(itemNow?.photo === undefined || itemNow.photo === ""){
-            return <Avatar className="w-32 h-32" />
+            return <Avatar className="w-16 h-16" />
         }
         return (
                 <Image
                 className="rounded-full"
-                width={128}
-                height={128}
+                width={64}
+                height={64}
                 src={itemNow.photo as string}
                 alt="no img">
                 </Image>
@@ -199,18 +199,12 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
     return (
         <div className="flex flex-col justify-start items-center bg-slate-200 w-52 h-52 p-3 m-3">
             <div className="flex justify-between w-full">
-                <Image
-                    src=""
-                    width={50}
-                    height={50}
-                    alt="Picture of the author"
-                    />
+                <div className="w-full mt-2 font-bold">
+                    {title}
+                </div>
                 <div onClick={()=>{setIsModalOpen(true)}}>
                     <AddIcon></AddIcon>
                 </div>
-            </div>
-            <div className="w-full mt-2 font-bold">
-                {title}
             </div>
             <div className="flex flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item)=>{

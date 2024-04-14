@@ -19,6 +19,7 @@ export default function RecipePagination({
     router.push(`/recipes/${value}/${queryStr}`);
   };
 
+
   return (
     <div>
       <Pagination
