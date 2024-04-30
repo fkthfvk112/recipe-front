@@ -3,9 +3,8 @@ import { useState } from "react";
 import { DietDay, DietItemRow } from "@/app/(type)/diet";
 import EditIcon from "@mui/icons-material/Edit";
 import DietDayBox from "./DietDayBox";
-import axios from "axios";
 import { Checkbox } from "@mui/material";
-import SaveModal from "./SaveModal";
+import SaveModal from "../../../../(commom)/SaveModal";
 
 export default function MyDiet(){
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
@@ -95,7 +94,7 @@ export default function MyDiet(){
             <button onClick={handleSubmit}>저장?</button>
             <SaveModal open={saveModalOpen} setOpen={setSaveModalOpen}
                  content="저장하시겠습니까?" data={saveData}
-                 postUrl="diet/day/my-day" returnUrl="/userfeed/myfeed" ></SaveModal>
+                 postUrl="diet/day/my-days/save" returnUrl="/userfeed/myfeed" ></SaveModal>
         </div>
     )
 }

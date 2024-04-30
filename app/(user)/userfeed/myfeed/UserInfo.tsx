@@ -12,9 +12,10 @@ export interface UserFeedInfo {
   grantType: string;
   userPhoto: string | null;
   userUrl: string | null;
+  userIntro: string | null;
 }
 
-export default function UserInfo({ userId }: { userId: string }) {
+export default function UserInfo() {
   const [userData, setUserData] = useState<UserFeedInfo>();
   const [updateData, setUpdateData] = useState<number>(0);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);

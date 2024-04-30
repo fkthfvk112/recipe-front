@@ -9,15 +9,10 @@ export default function Hello() {
     axiosAuthInstacne
       .post("auth-test/hello")
       .then((res) => {
-        console.log("성공고오", res);
         setHelloText(res?.data);
       })
       .catch((err) => {
-        console.log("에러러러ㅓ", err);
         if (err.response) {
-          // 서버에서 에러 응답을 반환한 경우
-          // console.log("Status:", err.response.status);
-          // console.log("Data:", err.response.data); // 에러 메시지 출력
         }
       });
   }, []);

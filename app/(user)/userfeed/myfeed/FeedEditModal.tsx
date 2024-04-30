@@ -9,6 +9,7 @@ interface UpdatedUser {
   userPhoto: string;
   nickName: string;
   userUrl: string;
+  userIntro:string;
 }
 
 const style = {
@@ -40,6 +41,7 @@ export default function FeedEditModal({
     nickName: userInfo.nickName ? userInfo.nickName : "",
     userUrl: userInfo.userUrl ? userInfo.userUrl : "",
     userPhoto: userInfo.userPhoto ? userInfo.userPhoto : "",
+    userIntro: userInfo.userIntro?userInfo.userIntro:"",
   });
 
   const handleClose = () => setIsOpenModal(false);
@@ -154,6 +156,16 @@ export default function FeedEditModal({
               }}
               value={updatedUser.userUrl}
               type="text"
+            />
+          </div>
+          <div className="mt-3 w-full text-gray-500">
+            자기소개
+            <textarea
+              name="userIntro"
+              onChange={(e) => {
+                changeHandler(e);
+              }}
+              value={updatedUser.userIntro}
             />
           </div>
         </div>

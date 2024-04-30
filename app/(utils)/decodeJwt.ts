@@ -11,7 +11,7 @@ export interface decodedUserInfo {
 }
 
 export async function decodeUserJwt(): Promise<decodedUserInfo | undefined> {
-  const jwt: RequestCookie | undefined = cookies().get("Authorization");
+  const jwt: RequestCookie | undefined = cookies().get("authorization");
   if (jwt === undefined) return undefined;
   const jwtString = jwt.value;
   if (!jwtString.startsWith("Bearer_")) return undefined;

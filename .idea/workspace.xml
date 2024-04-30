@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="09ae20eb-93d6-4511-b3f9-f019042f7a92" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/(recipe)/recipe-detail/(review)/Reviews.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(recipe)/recipe-detail/(review)/Reviews.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/RecipeStepInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/RecipeStepInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/UserInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/UserInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(recipe)/recipe-detail/[recipeId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(type)/diet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(type)/diet.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(type)/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(type)/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/diet/mydiet/create/DietDayBox.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/diet/mydiet/create/SaveModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/diet/mydiet/create/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/signin/loginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/signin/loginForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/FeedEditModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/FeedEditModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/UserInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/UserInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2fSItSTxMXsWPFOpn40pnQVOV2C" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="09ae20eb-93d6-4511-b3f9-f019042f7a92" name="Changes" comment="" />
+      <created>1713788267350</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713788267350</updated>
+    </task>
+    <servers />
+  </component>
+</project>

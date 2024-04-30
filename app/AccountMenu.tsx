@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Avatar,
   Box,
@@ -16,9 +18,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
-import deleteAuthToken from "./(user)/signin/utils/deleteAuthToken";
-import { decodeUserJwt, decodedUserInfo } from "./(utils)/decodeJwt";
-import Link from "next/link";
+import { deleteAuthToken } from "./(user)/signin/utils/authUtil";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

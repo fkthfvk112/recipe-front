@@ -24,7 +24,6 @@ export default async function RecentRecipes() {
     </div>
   ));
 
-  //console.log("데이터", fetchData);
   return (
     <div className="max-w-5xl">
       <h2 className="text-xl">최근 레시피</h2>

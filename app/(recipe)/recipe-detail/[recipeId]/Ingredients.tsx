@@ -5,7 +5,6 @@ export default function Ingredients({
 }: {
   ingredients: Ingredient[];
 }) {
-  console.log("재료", ingredients);
 
   const ingreItems = ingredients.map((data, inx) => {
     return (

@@ -1,6 +1,6 @@
 export interface User {
   userId: string;
-  nickName: string;
+  nickName?: string;
   userPassword: string;
   grantType: string;
 }
@@ -11,4 +11,9 @@ export interface UserLoginDTO extends User {
 
 export interface UserSignUpDTO extends User {
   email: string;
+}
+
+export interface Jwt{
+  name:string,
+  value:string
 }

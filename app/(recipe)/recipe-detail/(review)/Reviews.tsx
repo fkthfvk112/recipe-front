@@ -39,6 +39,9 @@ export default async function Reviews({ recipeId }: { recipeId: number }) {
     </div>
   ));
 
-  console.log("리뷰 데이터", fetchData);
-  return <div>{review}</div>;
+  return (
+    <div>
+      <div className="font-bold">댓글 <span className="text-orange-400">{fetchData.length}</span></div>
+      {review}
+    </div>);
 }

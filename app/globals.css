@@ -42,3 +42,7 @@ textarea{
   height: 6.25rem;
   resize: none;
 }
+
+.hover-pointer {
+  cursor: pointer;
+}

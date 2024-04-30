@@ -14,14 +14,14 @@ export default function RecipeStepInfo({
         <div className="font-bold border-b-2 border-gray-200 mb-3">
           Step {step.order}
         </div>
-        <div className="flex justify-between">
+        <div className="grid grid-cols-3 ">
           {step.photo ? (
-            <Image src={step.photo} width={200} height={200} alt="noimg" />
+            <Image className="col-span-1" src={step.photo} width={200} height={200} alt="noimg" />
           ) : (
             skeltonImg
           )}
 
-          <div className="w-36">{step.description}</div>
+          <div className="w-36 col-span-2 p-3">{step.description}</div>
         </div>
       </div>
     );

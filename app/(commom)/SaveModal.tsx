@@ -3,6 +3,7 @@ import { Box, Modal } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { axiosAuthInstacne } from "../(customAxios)/authAxios";
 
 const style = {
     position: "absolute" as "absolute",
@@ -30,15 +31,17 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
     const handleSave = ()=>{
         console.log("세이브 데이터", data);
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
-        axios.post(`${process.env.NEXT_PUBLIC_API_URL}${postUrl}`, data)
-            .then(()=>{
+
+        axiosAuthInstacne
+            .post(postUrl, data)
+            .then((res) => {
                 console.log("save !!!")
                 alert("저장되었습니다!");
-                //router.push(returnUrl);
+                router.push(returnUrl);
             })
-            .catch((err)=>{
-                alert(`에러가 발생하였습니다. ${err.data}`);
-            })
+            .catch((e) => {
+                alert(`에러가 발생하였습니다. ${e.data}`);
+            });
     }
 
     return(

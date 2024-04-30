@@ -29,7 +29,8 @@
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "^18",
     "recoil": "^0.7.7",
-    "recoil-persist": "^5.1.0"
+    "recoil-persist": "^5.1.0",
+    "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "@types/node": "^20",

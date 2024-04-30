@@ -6,32 +6,14 @@ import { useRouter } from "next/navigation";
 
 import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
-import deleteAuthToken from "./(user)/signin/utils/deleteAuthToken";
 import { usePathname } from "next/navigation";
 import AccountMenu from "./AccountMenu";
+import { deleteAuthToken, isLogin } from "./(user)/signin/utils/authUtil";
 
 const Navbar = () => {
-  const [isSignInState, setIsSignInState] = useState<boolean>(false);
+  const [localSignInState, setLocalSignInState] = useState<boolean>(false);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const router = useRouter();
-
-  useEffect(() => {
-    setIsSignInState(isSignIn);
-  }, [isSignIn]);
-
-  console.log("겟쿠키", getCookie("Authorization"));
-
-  const logOutBtn = (
-    <button
-      onClick={() => {
-        deleteAuthToken(); //server sid job
-        setIsSignIn(false);
-        router.refresh();
-      }}
-    >
-      로그아웃
-    </button>
-  );
 
   const pathname = usePathname();
   const goToSiginInPage = () => {
@@ -42,6 +24,22 @@ const Navbar = () => {
     router.push("/signin");
   };
 
+  useEffect(()=>{
+    if(isSignIn === false){
+      deleteAuthToken();
+    }
+
+    isLogin()
+      .then((res)=>{
+        if(res === false){
+          setIsSignIn(false);
+        }
+      })
+
+      setLocalSignInState(isSignIn);
+  }, [isSignIn])
+
+
   return (
     <>
       <div className="w-full h-20 bg-emerald-800 sticky top-0 z-50">
@@ -51,13 +49,6 @@ const Navbar = () => {
               <p>홈</p>
             </Link>
             <ul className="hidden md:flex gap-x-6 text-white">
-              <li>
-                {isSignInState && (
-                  <Link href="/hello">
-                    <p>Hello</p>
-                  </Link>
-                )}
-              </li>
               <li>
                 <Link href="/create-recipe">
                   <p>레시피 생성</p>
@@ -79,8 +70,8 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            {isSignInState ? (
-              <AccountMenu />
+            {localSignInState ? (
+               <AccountMenu />
             ) : (
               <button onClick={goToSiginInPage}>로그인</button>
             )}
@@ -91,4 +82,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

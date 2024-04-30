@@ -1,7 +1,5 @@
 "use client";
-import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
 import Nav from "./Nav";
 import { RecoilRoot } from "recoil";
 // export const metadata: Metadata = {

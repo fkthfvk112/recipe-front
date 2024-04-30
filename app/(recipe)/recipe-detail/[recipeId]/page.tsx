@@ -1,12 +1,12 @@
-import Image from "next/image";
 import { CookingSteps_show, Ingredient } from "../../types/recipeType";
 import { redirect } from "next/navigation";
 import UserInfo from "./UserInfo";
 import Ingredients from "./Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "./RecipeInfo";
 import RecipeStepInfo from "./RecipeStepInfo";
-import { decodeUserJwt, decodedUserInfo } from "@/app/(utils)/decodeJwt";
 import ReviewContainer from "../(review)/ReviewContainer";
+import EditDel from "@/app/(commom)/CRUD/EditDel";
+import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 
 interface RecipeDetail {
   recipeName: string;
@@ -20,9 +20,11 @@ interface RecipeDetail {
 }
 
 export interface RecipeOwnerInfo {
+  userId:string;
   userNickName: string;
   userPhoto: string;
   userUrl: string;
+  userIntro: string;
 }
 
 export default async function RecipeDetail({
@@ -47,8 +49,6 @@ export default async function RecipeDetail({
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData.recipeOwnerInfo;
 
-  console.log("렛히피 디테일", recipeDetail);
-  console.log("레시피 오너 인포", recipeOwner);
 
   const recipeInfo: RecipeInfoProp = {
     recipeId: Number(params.recipeId),
@@ -69,6 +69,10 @@ export default async function RecipeDetail({
         <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
         <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
         <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+      </div>
+      <div className="w-full p-3 text-left">
+          <CopyUrl></CopyUrl>
+          <EditDel ownerUserId={recipeOwner?.userId} editReturnURl="/" delPostUrl="/"/>
       </div>
       <div className="bg-white p-5 mb-3 w-full">
         <ReviewContainer recipeId={Number(params.recipeId)}></ReviewContainer>

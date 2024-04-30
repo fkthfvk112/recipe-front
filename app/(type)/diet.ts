@@ -12,6 +12,8 @@ export interface DietItemRow{
 }
 
 export interface DietDay{
+    userId?:string;
+    dietDayId?:string;
     title:string|undefined;
     memo:string|undefined;
     isPublic:boolean;
