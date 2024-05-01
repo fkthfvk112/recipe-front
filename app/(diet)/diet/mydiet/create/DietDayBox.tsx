@@ -121,16 +121,16 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
 
       const getImg = (inx:number)=>{
         const itemNow:DietItem = dietItemRow.dietItemList[inx];
-        if(itemNow?.photo === undefined || itemNow.photo === ""){
+        if(itemNow?.photo === undefined || itemNow?.photo === null || itemNow.photo === ""){
             return <Avatar className="w-16 h-16" />
         }
         return (
                 <Image
-                className="rounded-full"
-                width={64}
-                height={64}
-                src={itemNow.photo as string}
-                alt="no img">
+                    className="rounded-full"
+                    width={64}
+                    height={64}
+                    src={itemNow.photo as string}
+                    alt="no img">
                 </Image>
         )
       }
@@ -183,7 +183,6 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                             <input name={`calorie-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`calorie-${inx}`)} placeholder="칼로리" type="text" className="w-28"/>
                         </div>
                         <div className="grid grid-cols-3 mb-3">
-                            {/* have to edit :: 인터페이스에 qqt 추가 */}
                             <input name={`qqt-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`qqt-${inx}`)} placeholder="음식양" className="col-span-1" type="text" />
                             <input name={`memo-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`memo-${inx}`)} placeholder="설명" className="col-span-2" type="text" />
                         </div>

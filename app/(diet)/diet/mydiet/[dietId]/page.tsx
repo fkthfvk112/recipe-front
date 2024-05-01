@@ -30,7 +30,7 @@ export default async function DietDetail({
       <div className="bg-white max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
         <div className="w-80 flex justify-start items-center">
             <h1 className="text-2xl">{dietDay.title}</h1>
-            <EditDel ownerUserId={dietDay.userId as string} editReturnURl="/" delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
+            <EditDel ownerUserId={dietDay.userId as string} editReturnURl={`diet/mydiet/edit/${params.dietId}`} delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
         </div>
         <div className="w-80 mt-5">
             <div className="text-lg">{dietDay.memo}</div>

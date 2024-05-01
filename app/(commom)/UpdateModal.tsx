@@ -25,18 +25,19 @@ interface SaveModalProp<T>{
     returnUrl:string
 };
 
-function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveModalProp<T>) {
+function UpdateModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveModalProp<T>) {
     const router = useRouter();
     const handleSave = ()=>{
         console.log("세이브 데이터", data);
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
 
         axiosAuthInstacne
-            .post(postUrl, data)
+            .put(postUrl, data)
             .then((res) => {
                 console.log("save !!!")
-                alert("저장되었습니다!");
+                alert("수정되었습니다!");
                 router.push(returnUrl);
+                router.refresh();
             })
             .catch((e) => {
                 alert(`에러가 발생하였습니다. ${e.data}`);
@@ -73,4 +74,4 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
     )
 }
 
-export default  React.memo(SaveModal);
+export default  React.memo(UpdateModal);

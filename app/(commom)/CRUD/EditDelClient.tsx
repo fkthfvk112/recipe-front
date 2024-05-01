@@ -28,7 +28,7 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl}:
 
     const sendToEditPage = ()=>{
         if(editReturnURl === undefined) return;
-        router.push(editReturnURl);
+        router.push(`/${editReturnURl}`);
     }
 
     const deleteData = ()=>{
