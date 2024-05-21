@@ -24,19 +24,23 @@ export default async function DietDetail({
      const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) => 
        <DietDayShowBox key={inx} title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>);
 
-
     return (
       dietDay&&
-      <div className="bg-white max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
-        <div className="w-80 flex justify-start items-center">
-            <h1 className="text-2xl">{dietDay.title}</h1>
-            <EditDel ownerUserId={dietDay.userId as string} editReturnURl={`diet/mydiet/edit/${params.dietId}`} delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
-        </div>
-        <div className="w-80 mt-5">
-            <div className="text-lg">{dietDay.memo}</div>
-        </div>
-        <div className="flex flex-wrap justify-center items-center">
-          {dietItems}
+      <div className='w-full bg-[#1e5094]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>
+        <div className="bg-blue max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
+          <div className="w-80 flex justify-start items-center">
+              <h1 className="text-2xl text-white">{dietDay.title}</h1>
+              <EditDel ownerUserId={dietDay.userId as string} editReturnURl={`diet/mydiet/edit/${params.dietId}`} delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
+          </div>
+          {
+          dietDay.memo&&
+          <div className="w-80 mt-5 bg-[#94aece] rounded-lg p-3">
+              <div className="text-lg">{dietDay.memo}</div>
+          </div>
+          }
+          <div className="flex flex-wrap justify-center items-center mt-10">
+            {dietItems}
+          </div>
         </div>
       </div>
     )

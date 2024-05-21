@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Avatar, Box, Modal } from "@mui/material";
 import fileToBase64 from "@/app/(utils)/fileToBase64";
 import ClearIcon from '@mui/icons-material/Clear';
+import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
 
 const style = {
     position: "absolute" as "absolute",
@@ -109,7 +110,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
           const file = evt.target.files[0];
           if (file) {
             try {
-              const base64String = await fileToBase64(file);
+              const base64String = await resizeFileToBase64(file) as string;
               handlePhotoChange(evt, base64String);
 
             } catch (error) {
@@ -125,13 +126,14 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
             return <Avatar className="w-16 h-16" />
         }
         return (
-                <Image
-                    className="rounded-full"
-                    width={64}
-                    height={64}
-                    src={itemNow.photo as string}
-                    alt="no img">
-                </Image>
+                <div className="img-wrapper-round">
+                    <Image
+                        width={70}
+                        height={70}
+                        src={itemNow.photo as string}
+                        alt="no img">
+                    </Image>
+                </div>
         )
       }
 
@@ -196,19 +198,19 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
     console.log("아이템", dietItemRow);
 
     return (
-        <div className="flex flex-col justify-start items-center bg-slate-200 w-52 h-52 p-3 m-3">
+        <div className="flex flex-col justify-start items-center bg-[#003c80] w-52 h-52 p-3 m-3">
             <div className="flex justify-between w-full">
-                <div className="w-full mt-2 font-bold">
+                <div className="w-full mt-2 white-title">
                     {title}
                 </div>
                 <div onClick={()=>{setIsModalOpen(true)}}>
-                    <AddIcon></AddIcon>
+                    <AddIcon sx={{fill:'white', width:'2.5rem', height:'2.5rem'}}></AddIcon>
                 </div>
             </div>
-            <div className="flex flex-wrap text-sm">
+            <div className="flex w-full flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item)=>{
                     return (
-                        <span className="bg-white m-1 border border-1 rounded-md ps-2 pe-2 pt-0.5 pb-0.5">{item.title}</span>
+                        <span className="text-[#94aece] m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
                     )
                 })}
             </div>

@@ -5,7 +5,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import { DietItem, DietItemRow } from "@/app/(type)/diet";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Avatar, Box, Modal } from "@mui/material";
-
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 
 const style = {
     position: "absolute" as "absolute",
@@ -17,6 +17,8 @@ const style = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+    backgroundColor:'#003c80',
+    color:"white",
   };
 
 interface DietDayRowProp{
@@ -49,19 +51,27 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                 <div className="w-full flex justify-end">
                 </div>
                 <div className="grid grid-cols-4 mb-8 " key={inx}>
-                    <div className="col-span-1">
-                    <div className="p-1">
-                        <div>이미지</div>
+                    <div className="col-span-1 pt-1">
+                        {/* have to :: edit 1. 사진 없을 때 대체 사진, 2 사진 둥글게 만들기 */}
+                        <div className="img-wrapper-round">
+                        {dietItem?.photo?
+                            <Image width={70}
+                                    height={70}
+                                    src={dietItem?.photo}
+                                    alt="no img"/>
+                            :
+                            <RestaurantMenuIcon className="inner-img"/>
+                        }
+                        </div>
                     </div>
-                    </div>
-                    <div className="col-span-3">
+                    <div className="col-span-3 ps-2">
                         <div className="flex justify-between">
-                            <div>{dietItem.title}</div>
+                            <div className="white-title">{dietItem.title}</div>
                             <div>{dietItem.calorie}</div>
                         </div>
                         <div className="grid grid-cols-3 mb-3">
                             <div className="col-span-1">{dietItem.qqt}</div>
-                            <div className="col-span-2 bg-slate-200 p-2 rounded-lg">{dietItem.memo}</div>
+                            <div className="col-span-2 bg-[#94aece] p-2 rounded-lg text-black">{dietItem.memo}</div>
                         </div>
                         <hr />
                     </div>
@@ -70,22 +80,20 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
         )
     })
 
-    console.log("아이템", dietItemRow);
-
     return (
-        <div className="flex flex-col justify-start items-center bg-slate-200 w-52 h-52 p-3 m-3">
+        <div className="flex flex-col justify-start items-center bg-[#003c80] w-52 h-52 p-3 m-3 rounded-xl">
             <div className="flex justify-between w-full">
-                <div className="w-full mt-2 font-bold">
+                <div className="w-full mt-2 font-bold text-white">
                     {title}
                 </div>
                 <div onClick={()=>{setIsModalOpen(true)}}>
-                    <ZoomInIcon></ZoomInIcon>
+                    <ZoomInIcon sx={{fill:'white', width:'2.5rem', height:'2.5rem'}}></ZoomInIcon>
                 </div>
             </div>
-            <div className="w-full flex flex-wrap justify-start text-sm">
+            <div className="flex w-full flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item, inx)=>{
                     return (
-                        <span key={inx} className="flex justify-center items-center bg-white m-1 border border-1 rounded-md ps-2 pe-2 pt-0.5 pb-0.5">{item.title}</span>
+                        <span key={inx} className="text-[#94aece] m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
                     )
                 })}
             </div>
@@ -98,8 +106,8 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <h1>{title}</h1>
-                    <div className="text-center">
+                    <div className="w-full mb-3">
+                        <h1>{title}</h1>
                     </div>
                     {itemBageList}
                 </Box>

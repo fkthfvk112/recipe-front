@@ -18,4 +18,5 @@ export interface DietDay{
     memo:string|undefined;
     isPublic:boolean;
     dietItemRowList:DietItemRow[];
+    createdAt?:string|undefined;
 }

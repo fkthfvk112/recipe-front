@@ -16,6 +16,7 @@ export default async function RecentRecipes() {
     }
   });
 
+  console.log("레시피123123", fetchData);
   const recentRecipes = fetchData?.map((recipe, inx) => (
     <div key={inx} className="m-3">
       <Link href={`/recipe-detail/${recipe.recipeId}`}>

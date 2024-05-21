@@ -46,6 +46,8 @@ const Navbar = () => {
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Link href="/">
+              
+
               <p>홈</p>
             </Link>
             <ul className="hidden md:flex gap-x-6 text-white">
@@ -67,6 +69,11 @@ const Navbar = () => {
               <li>
                 <Link href="/diet/mydiet/create">
                   <p>식단</p>
+                </Link>
+              </li>
+              <li>
+                <Link href="/board/free">
+                  <p>보드</p>
                 </Link>
               </li>
             </ul>

@@ -17,34 +17,36 @@ export enum CookingMethod {
 }
 
 export interface CookingSteps_create {
-  order: number;
-  photo: string | null;
+  order:       number;
+  photo:       string | null;
   description: string;
-  time: number;
+  time:        number;
 }
 
 export interface CookingSteps_show {
-  order: number;
-  photo: string | null;
+  order:       number;
+  photo:       string | null;
   description: string;
-  time: number;
+  time:        number;
 }
 
 export interface Ingredient {
-  name: string;
-  qqt: string;
+  name:  string;
+  qqt:   string;
   order: number;
 }
 export interface Recipe {
-  createdAt: string;
-  views: number;
-  recipeId: number | undefined | null;
-  recipeName: string;
-  repriPhotos: string[];
-  categorie: RecipeSelection;
-  servings: number;
-  cookMethod: CookingMethod;
-  ingredients: Ingredient[];
-  description: string;
-  steps: CookingSteps_create[] | CookingSteps_show[];
+  createdAt:    string;
+  views:        number;
+  recipeId:     number | undefined | null;
+  recipeName:   string;
+  repriPhotos:  string[];
+  categorie:    RecipeSelection;
+  servings:     number;
+  cookMethod:   CookingMethod;
+  ingredients:  Ingredient[];
+  description:  string;
+  steps:        CookingSteps_create[] | CookingSteps_show[];
+  reviewCnt?:   number;
+  likeCnt?:     number;
 }

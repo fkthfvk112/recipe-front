@@ -20,7 +20,7 @@
     "embla-carousel-react": "^8.0.0-rc19",
     "immutability-helper": "^3.1.1",
     "jwt-decode": "^4.0.0",
-    "next": "14.0.4",
+    "next": "^14.2.3",
     "next-auth": "^4.24.5",
     "next-client-cookies": "^1.1.0",
     "react": "^18",
@@ -28,9 +28,11 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "^18",
+    "react-image-file-resizer": "^0.4.8",
+    "react-quill": "^2.0.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert2": "^11.11.0"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -63,19 +63,21 @@ export default async function RecipeDetail({
   };
 
   return (
-    <div className=" max-w-xl w-dvw m-3  flex flex-col justify-center items-center">
-      <div className="bg-white p-5 mb-3 w-full">
-        <UserInfo recipeOwner={recipeOwner}></UserInfo>
-        <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
-        <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
-        <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
-      </div>
-      <div className="w-full p-3 text-left">
-          <CopyUrl></CopyUrl>
-          <EditDel ownerUserId={recipeOwner?.userId} editReturnURl="/" delPostUrl="/"/>
-      </div>
-      <div className="bg-white p-5 mb-3 w-full">
-        <ReviewContainer recipeId={Number(params.recipeId)}></ReviewContainer>
+    <div className='w-full bg-[#1c7c54]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>    
+      <div className=" max-w-3xl w-dvw m-3 bg-white flex flex-col justify-center items-center rounded-lg">
+        <div className="p-5 mb-3 w-full">
+          <UserInfo recipeOwner={recipeOwner}></UserInfo>
+          <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
+          <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
+          <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+        </div>
+        <div className="w-full p-3 text-left">
+            <CopyUrl></CopyUrl>
+            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl="/" delPostUrl="/" delReturnUrl="/"/>
+        </div>
+        <div className="bg-white p-5 mb-3 w-full">
+          <ReviewContainer recipeId={Number(params.recipeId)}></ReviewContainer>
+        </div>
       </div>
     </div>
   );

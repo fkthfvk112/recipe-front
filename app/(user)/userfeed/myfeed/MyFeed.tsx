@@ -24,7 +24,7 @@ export default function MyFeed() {
       });
   }, []);
 
-  const feedPhotos = myRecipes.map((recipe, inx) => (
+  const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
       className="flex justify-center items-center relative w-1/3 aspect-square p-0.5"
       key={inx}
