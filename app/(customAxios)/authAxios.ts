@@ -1,6 +1,7 @@
 "use client";
 import { rejects } from "assert";
 import axios, { AxiosResponse } from "axios";
+import { error } from "console";
 
 // axios.defaults.withCredentials = true;
 
@@ -18,6 +19,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     const originUrl = res?.config?.url;
     const originMethod = res?.config?.method;
     const originData = res?.config?.data;
+
     if (originUrl === undefined || originMethod === undefined) {
       return Promise.reject("오리진 url 혹은 오리진 method가 undefined");
     }
@@ -33,9 +35,10 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       data: originData,
       withCredentials: true,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": res.headers["content-type"],
       },
     });
   }
   return res;
-});
+}
+);

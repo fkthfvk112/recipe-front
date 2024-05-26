@@ -172,3 +172,8 @@ textarea{
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+/* 크롬, 사파리, 오페라, 엣지 스크롤 제거 */
+.scroll::-webkit-scrollbar {
+  display: none;
+}
