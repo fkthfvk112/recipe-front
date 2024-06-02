@@ -4,9 +4,9 @@ import UserInfo from "./UserInfo";
 import Ingredients from "./Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "./RecipeInfo";
 import RecipeStepInfo from "./RecipeStepInfo";
-import ReviewContainer from "../(review)/ReviewContainer";
 import EditDel from "@/app/(commom)/CRUD/EditDel";
 import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
+import ReviewContainer from "../(review)/ReviewContainer";
 
 interface RecipeDetail {
   recipeName: string;
@@ -73,10 +73,11 @@ export default async function RecipeDetail({
         </div>
         <div className="w-full p-3 text-left">
             <CopyUrl></CopyUrl>
+            {/* have to : user ID -> user uuid */}
             <EditDel ownerUserId={recipeOwner?.userId} editReturnURl="/" delPostUrl="/" delReturnUrl="/"/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">
-          <ReviewContainer recipeId={Number(params.recipeId)}></ReviewContainer>
+          <ReviewContainer domainId={Number(params.recipeId)} domainName={"recipe"}></ReviewContainer>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ export default async function serverFetch({url, queryParams, option}:{url:string
       ).then((res) => {
         if (!res.ok) {
           console.log("RecipeDetail fetch error!!", res.status);
+          throw new Error();
         } else {
           return res.json();
         }

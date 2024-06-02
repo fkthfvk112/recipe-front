@@ -2,14 +2,17 @@ import React from "react";
 import { BoardPreview } from "../(type)/board";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
+import DOMPurify from "isomorphic-dompurify";
+import { truncateString } from "../(utils)/StringUtil";
+import Link from "next/link";
 
 function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
-
     return(
-        <div onClick={()=>{}} className="w-full flex flex-col mt-2 p-3 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
+        <Link href={`/board/detail/${boardPreview.boardId}`} className="w-full flex flex-col mt-2 p-3 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <div className="w-full">
                 <h1>{boardPreview.boardName}</h1>
-                <p dangerouslySetInnerHTML={{__html:boardPreview.content}}/>
+                <p className="whitespace-pre-wrap h-[50px] overflow-y-hidden">{truncateString(boardPreview.content, 30)}</p>
+                {/* <p dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(truncateString(boardPreview.content, 30))}}/> */}
             </div>
             <div className="flex items-center justify-start text-sm mt-6 ">
                 <div className='flex'>
@@ -30,7 +33,7 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
                     <span className='ms-1'>{boardPreview?.reviewCnt}</span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

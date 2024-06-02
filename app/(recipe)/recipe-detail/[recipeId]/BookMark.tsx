@@ -32,6 +32,7 @@ export default function BookMark({ recipeId }: { recipeId: number }) {
           setResetData(resetData + 1);
         });
     } else {
+      // have to 리다이렉트?
       alert("로그인을 해주세요.");
     }
   };

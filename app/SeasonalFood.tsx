@@ -27,8 +27,8 @@ export default function SeasonalFood() {
   });
 
   return (
-    <div className="w-full mt-10 max-w-5xl">
-      <h1 className="text-xl">이달의 식재료</h1>
+    <div className="w-full m-10 max-w-5xl">
+      <h1 className="text-xl ms-10">이달의 식재료</h1>
       <div className="flex flex-col justify-center items-center mt-6 w-full">
         <section className="flex flex-row">{seasonIngres}</section>
       </div>

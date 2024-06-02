@@ -67,8 +67,52 @@ textarea{
   background-color: #f77f00;
   border-radius: 15em;
   color:#003049;
+  font-weight: 1000;
+}
+
+.saveBtn-outline-green{
+  border:2px solid #8ac926;
+  border-radius: 15em;
+  color:#8ac926;
+  background-color: white;
   font-weight: 700;
 }
+
+.greenBtn{
+  border:none;
+  background-color: #38c54b;
+  border-radius: 15em;
+  color:white;
+  font-weight: 700;
+  transition: background-color 0.1s;
+}
+
+.greenBtn:hover{
+  background-color: #61df72;
+}
+
+.roundRreenBtn{
+  border:none;
+  background-color: #38c54b;
+  border-radius: 50%;
+  padding:0.5rem;
+  color:white;
+  font-weight: 700;
+  transition: background-color 0.1s;
+  cursor: pointer;
+}
+
+.roundRreenBtn:hover{
+  background-color: #61df72;
+}
+.grayBtn{
+  border:none;
+  background-color: #d1d1d1;
+  border-radius: 15em;
+  color:white;
+  font-weight: 700;
+}
+
 
 .defaultOuterContainer{
   max-width: 2048px;
@@ -171,6 +215,32 @@ textarea{
   border-color: #e1e1e1;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.top-line-noM{
+  border-top: 2px solid #e1e1e1;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-color: #e1e1e1;
+}
+
+.bottom-line{
+  border-bottom: 2px solid #e1e1e1;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-color: #e1e1e1;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.bottom-line-noM{
+  border-bottom: 2px solid #e1e1e1;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-color: #e1e1e1;
 }
 
 /* 크롬, 사파리, 오페라, 엣지 스크롤 제거 */

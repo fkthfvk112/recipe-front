@@ -42,15 +42,13 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full h-20 bg-emerald-800 sticky top-0 z-50">
+      <div className="w-full h-20 bg-white sticky top-0 z-50 bottom-line-noM">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Link href="/">
-              
-
               <p>홈</p>
             </Link>
-            <ul className="hidden md:flex gap-x-6 text-white">
+            <ul className="hidden md:flex gap-x-6">
               <li>
                 <Link href="/create-recipe">
                   <p>레시피 생성</p>
@@ -62,8 +60,8 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/hello-test">
-                  <p>핼로2</p>
+                <Link href="/board/cc32647e-6aa4-422f-84b7-1037430a679c">
+                  <p>게시판</p>
                 </Link>
               </li>
               <li>
@@ -72,9 +70,9 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/board/free">
+                {/* <Link href="/board/free">
                   <p>보드</p>
-                </Link>
+                </Link> */}
               </li>
             </ul>
             {localSignInState ? (

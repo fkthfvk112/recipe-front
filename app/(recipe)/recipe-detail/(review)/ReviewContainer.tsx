@@ -1,11 +1,15 @@
 import Reviews from "./Reviews";
 import WriteReview from "./WriteReview";
 
-export default function ReviewContainer({ recipeId }: { recipeId: number }) {
+type domainName = "recipe"|"board";
+type domainId = number|string;
+export default function ReviewContainer({ domainId, domainName }: { domainId: number, domainName:domainName }) {
+
+
   return (
     <>
-      <WriteReview recipeId={recipeId}></WriteReview>
-      <Reviews recipeId={recipeId}></Reviews>
+      <WriteReview domainId={domainId} domainName={domainName}></WriteReview>
+      <Reviews domainId={domainId} domainName={domainName}></Reviews>
     </>
   );
 }
