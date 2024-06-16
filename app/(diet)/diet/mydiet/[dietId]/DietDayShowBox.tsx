@@ -81,7 +81,7 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
     })
 
     return (
-        <div className="flex flex-col justify-start items-center bg-[#003c80] w-52 h-52 p-3 m-3 rounded-xl">
+        <div className="flex flex-col justify-start items-center bg-[#007f5f] w-52 h-52 p-3 m-3 rounded-xl">
             <div className="flex justify-between w-full">
                 <div className="w-full mt-2 font-bold text-white">
                     {title}
@@ -93,7 +93,7 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
             <div className="flex w-full flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item, inx)=>{
                     return (
-                        <span key={inx} className="text-[#94aece] m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
+                        <span key={inx} className="text-white m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
                     )
                 })}
             </div>

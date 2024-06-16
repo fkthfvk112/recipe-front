@@ -7,8 +7,8 @@ import axios from "axios";
 import RecipeHoriItem from "./RecipeHoriItem";
 import Tooltip from '@mui/material/Tooltip';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import RecipeCard from "@/app/(commom)/RecipeCard";
 import RecipeVerticalItem from "./RecipeVerticalItem";
+import ClearIcon from '@mui/icons-material/Clear';
 
 const style = {
     position: "absolute" as "absolute",
@@ -47,6 +47,11 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
         }
     }
 
+    const deleteRecipe = (inx:number)=>{
+        const deletedRecipe = recipes.filter((_, index) => index !== inx);
+        setRecipes(deletedRecipe);
+    };
+
     /**모달 내 선택 가능한 아이템(검색된 아이템) */
     const searchedRecipeComps = searchedRecipe?.filter((ele) => {
         return !recipes.some((selected) => selected.recipeId === ele.recipeId);
@@ -62,7 +67,15 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = recipes.map((ele, inx)=>
-        <div onClick={()=>setOpen(true)}>
+        <div className="relative" onClick={()=>setOpen(true)}>
+                <div className="w-full text-right">
+                    <button onClick={(evt)=>{
+                        deleteRecipe(inx);
+                        evt.stopPropagation();
+                        }} className="border-none w-5 h-5 mr-2 absolute -top-2 right-3 z-50">
+                        <ClearIcon/>
+                    </button>
+                </div> 
             <RecipeVerticalItem key={inx} recipe={ele}/>
         </div>)
 

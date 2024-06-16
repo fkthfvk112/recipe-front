@@ -46,7 +46,7 @@ export default function FeedEditModal({
 
   const handleClose = () => setIsOpenModal(false);
 
-  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     setUpdatedUser({
       ...updatedUser,
       [e.target.name]: e.target.value,
@@ -148,7 +148,7 @@ export default function FeedEditModal({
             />
           </div>
           <div className="mt-3 w-full text-gray-500">
-            내 주소(블로그, 인스타, 유튜브 등!)
+            내 주소(블로그, 인스타, 유튜브 등)
             <input
               name="userUrl"
               onChange={(e) => {
@@ -169,9 +169,9 @@ export default function FeedEditModal({
             />
           </div>
         </div>
-        <div className="flex justify-center p-3 m-3">
-          <button onClick={handleClose}>취소</button>
-          <button onClick={updateDbData}>수정</button>
+        <div className="flex justify-around p-3">
+          <button className="grayBtn" onClick={handleClose}>취소</button>
+          <button className="greenBtn" onClick={updateDbData}>수정</button>
         </div>
       </Box>
     </Modal>

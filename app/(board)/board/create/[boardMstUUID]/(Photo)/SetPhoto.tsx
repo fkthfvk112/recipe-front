@@ -6,7 +6,6 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import PhotoHolder from "./PhotoHolder";
 
 function SetDiet({photos, setPhotos}:{photos:File[], setPhotos:(files:File[])=>void}){
-
     return (
         <Accordion>
             <AccordionSummary
@@ -14,7 +13,7 @@ function SetDiet({photos, setPhotos}:{photos:File[], setPhotos:(files:File[])=>v
             aria-controls="panel1-content"
             id="panel1-header"
             >
-            <div>사진 등록(최대 3장)</div>
+            <h3>사진 등록(최대 3장)</h3>
             </AccordionSummary>
             <AccordionDetails>
                 <PhotoHolder photos={photos} setPhotos={setPhotos}/>

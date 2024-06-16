@@ -8,7 +8,7 @@ export default function UserInfo({
   recipeOwner: RecipeOwnerInfo;
 }) {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-start mb-5 mt-5 ps-6">
       <div className="flex">
         <Image
           className="rounded-full"
@@ -45,7 +45,7 @@ export default function UserInfo({
           />
         </div>
       </div> */}
-      
+      <div className="bottom-line w-full"/>
     </div>
   );
 }

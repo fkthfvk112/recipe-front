@@ -18,7 +18,7 @@ export default function SeasonalFood() {
     return (
       <Link
         href={`/recipes/1/ingre/${ele}`}
-        className="w-24 h-16 border-2 rounded-md m-3 flex flex-row justify-center items-center border-slate-400"
+        className="w-24 min-w-24 h-16 ms-3 border-2 rounded-md m-3 flex flex-row justify-center items-center border-slate-400"
         key={ele}
       >
         <h3>{ele}</h3>
@@ -27,10 +27,10 @@ export default function SeasonalFood() {
   });
 
   return (
-    <div className="w-full m-10 max-w-5xl">
-      <h1 className="text-xl ms-10">이달의 식재료</h1>
-      <div className="flex flex-col justify-center items-center mt-6 w-full">
-        <section className="flex flex-row">{seasonIngres}</section>
+    <div className="w-full m-10 max-w-5xl p-5">
+      <h1 className="text-xl">이달의 식재료</h1>
+      <div className="flex justify-center items-center mt-6 w-full ">
+        <section className="flex flex-row overflow-x-scroll">{seasonIngres}</section>
       </div>
     </div>
   );

@@ -2,15 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="09ae20eb-93d6-4511-b3f9-f019042f7a92" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/(board)/BoardPreviewHoriItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/BoardPreviewHoriItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/BoardHolder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/BoardHolder.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/[boardMstUUID]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(board)/board/create/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/create/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(commom)/serverFetch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(commom)/serverFetch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/Nav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(board)/board/create/[boardMstUUID]/(Diet)/DietVerticalItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/create/[boardMstUUID]/(Diet)/DietVerticalItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(board)/board/create/[boardMstUUID]/(Photo)/PhotoHolder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/create/[boardMstUUID]/(Photo)/PhotoHolder.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(board)/board/detail/[boardId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(board)/board/detail/[boardId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(customAxios)/authFetch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(customAxios)/authFetch.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/DietDayShowBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/DietDayShowBox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(type)/board.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(type)/board.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyDiet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyDiet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyFeed.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyLike.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/userfeed/myfeed/MyLike.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

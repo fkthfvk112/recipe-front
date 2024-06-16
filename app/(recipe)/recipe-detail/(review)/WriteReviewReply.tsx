@@ -13,11 +13,12 @@ const modalstyle = {
     position: "absolute" as "absolute",
     bottom: "5%",
     left: "50%",
-    height:"250px",
+    height:"200px",
     transform: "translate(-50%, -50%)",
     width: "80%",
     backgroundColor: "white",
     padding:"1em",
+    maxWidth:"700px"
   };
 
   interface commonReviewReply{

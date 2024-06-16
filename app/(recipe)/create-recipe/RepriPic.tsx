@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Recipe } from "../types/recipeType";
 import fileToBase64 from "@/app/(utils)/fileToBase64";
+import { RecipeCreate } from "./page";
 
 interface RepriPhoto {
   urlString: string | null;
@@ -10,8 +11,8 @@ interface RepriPhoto {
 }
 
 interface RepriProp {
-  recipe: Recipe;
-  setRecipe: React.Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: React.Dispatch<SetStateAction<RecipeCreate>>;
 }
 
 export default function RepriPric({ recipe, setRecipe }: RepriProp) {

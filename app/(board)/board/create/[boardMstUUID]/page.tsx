@@ -7,10 +7,15 @@ import { ChangeEvent, useRef, useState } from 'react';
 
 import { Recipe } from '@/app/(recipe)/types/recipeType';
 import { DietDay } from '@/app/(type)/diet';
-import { Checkbox } from '@mui/material';
+import { Checkbox, CircularProgress } from '@mui/material';
 import SetRecipe from './(Recipe)/SetRecipe';
 import SetDiet from './(Diet)/SetDiet';
 import SetPhoto from './(Photo)/SetPhoto';
+import withReactContent from 'sweetalert2-react-content'
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
+import { Validation } from '@/app/(user)/check';
+import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 
 export default function CreateNewBoardPost({
     params
@@ -24,11 +29,28 @@ export default function CreateNewBoardPost({
     const [photos, setPhotos]                 = useState<File[]>([]);
     const [dietDay, setDietDay]               = useState<DietDay[]>([]);
     
-
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+    const router = useRouter();
 
     /**게시물 post 제출 */
     const postbtn = ()=>{
+        if(!chkBoardValid().isValid){
+            Swal.fire({
+                title: "에러가 발생하였습니다.",
+                icon: "error",
+                text:chkBoardValid().message
+              });
+            return;
+        }
+        
+        withReactContent(Swal).fire({
+            title:"게시글 작성 중...",
+            showConfirmButton:false,
+            allowOutsideClick:false,
+            html:<div className="overflow-y-hidden"><CircularProgress /></div>
+        })
+
         const boardContent = {
             title:title,
             content:content,
@@ -45,8 +67,6 @@ export default function CreateNewBoardPost({
         formData.append('boardContent', JSON.stringify(boardContent));
         formData.append('boardMstUUID', params.boardMstUUID);
 
-        console.log(formData);
-
         axiosAuthInstacne
         .post(`${process.env.NEXT_PUBLIC_API_URL}board/create`, formData, {
                 headers:{
@@ -54,8 +74,59 @@ export default function CreateNewBoardPost({
                 }
             })
         .then((res) => {
-            console.log(res);
+            revalidateByTagName(`boardmst-${params.boardMstUUID}`);
+            
+            Swal.fire({
+                title: "게시가 완료되었습니다!",
+                icon: "success",
+              }).then(() => {
+                router.push(`/board/${params.boardMstUUID}`);
+              });
         })
+        .catch((err)=>{
+            Swal.fire({
+                title: "에러가 발생하였습니다.",
+                icon: "error",
+                text:err.response.data.message
+              });
+        })
+    }
+
+    const chkBoardValid = ():Validation=>{
+        if(title.length < 1 || title.length > 30){
+            return{
+                isValid:false,
+                message:"제목의 길이는 1이상 30이하여야해요."
+            }
+        }
+        if(content.length < 5 || content.length > 1024){
+            return{
+                isValid:false,
+                message:"내용의 길이는 5이상 1024이하여야해요."
+            }
+        }
+        if(recipes.length > 3){
+            return{
+                isValid:false,
+                message:"사진 개수는 3개까지 올릴 수 있어요."
+            }
+        }
+        if(photos.length > 3){
+            return{
+                isValid:false,
+                message:"식단은 3개까지 올릴 수 있어요."
+            }
+        }
+        if(dietDay.length > 3){
+            return{
+                isValid:false,
+                message:"레시피는 3개까지 올릴 수 있어요."
+            }
+        }
+        return{
+            isValid:true,
+            message:"valid"
+        };
     }
 
     const handleChangeContent = (e:ChangeEvent<HTMLTextAreaElement>)=>{
@@ -66,8 +137,6 @@ export default function CreateNewBoardPost({
             canWriteCon&&setContent(e.target.value)            
         }
     }
-
-    console.log(checkAnonymous);
 
     return (
         <div className="bg-[#FB8500] defaultOuterContainer pt-6 pb-[100px]">
@@ -91,7 +160,7 @@ export default function CreateNewBoardPost({
                 <div className='flex justify-center items-center mr-10'>
                     <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
                 </div>
-                <button className='greenBtn' onClick={postbtn}>버튼 누름</button>
+                <button className='greenBtn' onClick={postbtn}>게시글 작성</button>
             </div>
          </div>
     )

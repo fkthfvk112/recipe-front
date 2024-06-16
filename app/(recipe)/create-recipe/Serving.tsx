@@ -2,10 +2,11 @@
 
 import { ChangeEventHandler, SetStateAction, useRef } from "react";
 import { Recipe } from "../types/recipeType";
+import { RecipeCreate } from "./page";
 
 interface ServingProp {
-  recipe: Recipe;
-  setRecipe: React.Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: React.Dispatch<SetStateAction<RecipeCreate>>;
 }
 
 export default function Serving({ recipe, setRecipe }: ServingProp) {

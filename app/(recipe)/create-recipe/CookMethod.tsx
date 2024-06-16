@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { CookingMethod, Recipe } from "../types/recipeType";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { RecipeCreate } from "./page";
 
 interface CookMethodProp {
-  recipe: Recipe;
-  setRecipe: Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
   const methodClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
@@ -26,7 +27,7 @@ export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
 
     return (
       <div
-        className={`bg-red-400 p-3 rounded-md m-2 w-20 relative ${
+        className={`p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative ${
           recipe.cookMethod === cookMethod
             ? "outline outline-2 outline-slate-950"
             : ""

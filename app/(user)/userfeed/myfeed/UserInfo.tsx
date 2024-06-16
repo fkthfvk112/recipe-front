@@ -1,8 +1,6 @@
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MyFeedPhoto from "./MyFeedPhoto";
-import EditIcon from "@mui/icons-material/Edit";
 import FeedEditModal from "./FeedEditModal";
 
 export interface UserFeedInfo {
@@ -44,20 +42,21 @@ export default function UserInfo() {
           userInfo={userData}
         ></FeedEditModal>
       )}
-      <div className="w-full flex justify-center flex-wrap">
+      <div className="w-full flex justify-center flex-wrap ">
         <div className=" flex justify-center items-center">
           <MyFeedPhoto photoUrl={userData?.userPhoto}></MyFeedPhoto>
         </div>
         <div className="p-5 relative ms-5 mt-3">
-          <button
-            onClick={modalOpen}
-            className="border-none w-5 h-3 flex justify-center items-center absolute right-2"
-          >
-            <EditIcon></EditIcon>
-          </button>
           <h3>{userData?.nickName}</h3>
           <div>{userData?.userUrl}</div>
         </div>
+      </div>
+      <div className="w-full text-center mt-8">
+        <button
+            onClick={modalOpen}
+            className="btn-outline-gray">
+            프로필 편집
+          </button>
       </div>
     </div>
   );

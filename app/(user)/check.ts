@@ -21,7 +21,7 @@ export function validationIdSentence(id: string): Validation {
   }
   return {
     isValid: true,
-    message: "유효한 아이디입니다.",
+    message: "유효한 아이디 형식입니다.",
   };
 }
 
@@ -95,7 +95,7 @@ export function validationNickNameSentence(nickName: string): Validation {
   if (validateNickName(nickName)) {
     return {
       isValid: true,
-      message: "유효한 닉네임입니다.",
+      message: "유효한 닉네임 형식입니다.",
     };
   }
   return {

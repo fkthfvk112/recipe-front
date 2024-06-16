@@ -1,12 +1,12 @@
 "use client";
 import { SetStateAction } from "react";
-import { Recipe } from "../types/recipeType";
+import { RecipeCreate } from "./page";
 
 export default function ErrorText({
   recipe,
   setErrorCnt,
 }: {
-  recipe: Recipe;
+  recipe: RecipeCreate;
   setErrorCnt: React.Dispatch<SetStateAction<number>>;
 }) {
   let errorText: React.ReactNode = <> </>;

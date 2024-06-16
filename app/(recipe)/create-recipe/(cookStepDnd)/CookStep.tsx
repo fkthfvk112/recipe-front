@@ -5,10 +5,11 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import { ContainerDnd } from "./ContainerDnd";
 import { Recipe } from "../../types/recipeType";
 import { Dispatch, SetStateAction } from "react";
+import { RecipeCreate } from "../page";
 
 export interface CookStepProp {
-  recipe: Recipe;
-  setRecipe: Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
   letsSetRecipe: number;
 }
 export default function CookStep({

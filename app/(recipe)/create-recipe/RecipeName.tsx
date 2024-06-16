@@ -2,10 +2,11 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { Recipe } from "../types/recipeType";
+import { RecipeCreate } from "./page";
 
 interface RecipeNameProp {
-  recipe: Recipe;
-  setRecipe: Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 export default function RecipeName({ recipe, setRecipe }: RecipeNameProp) {
   const recipeNameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

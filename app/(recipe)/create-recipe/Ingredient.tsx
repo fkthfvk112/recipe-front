@@ -1,7 +1,8 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Ingredient, Recipe } from "../types/recipeType";
 import AddIcon from "@mui/icons-material/Add";
+import { RecipeCreate } from "./page";
+import { Ingredient as ingred } from "../types/recipeType";
 
 // export interface Ingredient {
 //   name: string;
@@ -10,18 +11,18 @@ import AddIcon from "@mui/icons-material/Add";
 // }
 
 interface IngredientProp {
-  recipe: Recipe;
-  setRecipe: React.Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: React.Dispatch<SetStateAction<RecipeCreate>>;
 }
 
 export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
+  const [ingredients, setIngredients] = useState<ingred[]>([
     { name: "", qqt: "", order: 0 },
     { name: "", qqt: "", order: 1 },
   ]);
 
   useEffect(() => {
-    const ingres: Ingredient[] = ingredients
+    const ingres: ingred[] = ingredients
       .filter((ingre) => ingre.name.length >= 1 && ingre.qqt.length >= 1)
       .map((ingre, inx) => {
         return {

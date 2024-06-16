@@ -52,7 +52,7 @@ export default async function RecipesByIngre({
 
    return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full">
-      <div className="flex flex-wrap justify-center items-center w-full mb-16">
+      <div className="flex flex-wrap justify-center items-center w-full min-h-[300px] mb-16">
         {recentRecipes}
       </div>
       <RecipePagination

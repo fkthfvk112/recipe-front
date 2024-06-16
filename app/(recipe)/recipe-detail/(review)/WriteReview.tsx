@@ -31,6 +31,9 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
   const [isSignIn] = useRecoilState(siginInState);
   const [isClient, setIsClient] = useState(false);
 
+
+  console.log("리뷰", review);
+
   useEffect(() => {
     setIsClient(true);
   }, [isSignIn]);
@@ -84,8 +87,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
               });
             }}
             name="half-rating"
-            value={review?.score}
-            defaultValue={2.5}
+            value={review.score || 1}
             precision={1}
           />
           }

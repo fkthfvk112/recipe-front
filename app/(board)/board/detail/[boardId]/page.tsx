@@ -10,6 +10,11 @@ import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 import EditDel from "@/app/(commom)/CRUD/EditDel";
 import HeartLike from "@/app/(commom)/CRUD/HeartLike";
 import ReviewContainer from "@/app/(recipe)/recipe-detail/(review)/ReviewContainer";
+import BoardPhotoHolder from "./(Photo)/BoardPhotoHolder";
+import BoardRecipeHolder from "./(recipe)/BoardRecipeHolder";
+import { Recipe } from "@/app/(recipe)/types/recipeType";
+import BoardDietHolder from "./(Diet)/BoardDietHolder";
+import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 
 export default async function BoardDetail({
     params
@@ -62,11 +67,24 @@ export default async function BoardDetail({
             <p className="mb-12 mt-5">
                 {boardData.content}
             </p>
+            {
+                boardData?.recipes && Array.isArray(boardData?.photos) && boardData?.recipes.length > 0 &&
+                <BoardRecipeHolder recipes={boardData.recipes}/>
+            }
+                        {
+                boardData?.dietDays && Array.isArray(boardData?.dietDays) && boardData?.dietDays.length > 0 &&
+                <BoardDietHolder dietDays={boardData.dietDays}/>
+            }
+            {
+                boardData?.photos && Array.isArray(boardData?.photos) && boardData?.photos.length > 0 &&
+                <BoardPhotoHolder imgUrls={boardData.photos}/>
+            }
             <div className="flex w-full pt-1 pb-1 text-left">
                 <HeartLike getUrl={`like/board/like-state?boardId=${params.boardId}`} putUrl="like/board/toggle" reqdata={{boardId:params.boardId}}/>
                 <CopyUrl></CopyUrl>
                 {/* have to : user ID -> user uuid */}
-                <EditDel ownerUserId={boardData.userId} editReturnURl="/" delPostUrl="/" delReturnUrl="/"/>
+                <EditDel ownerUserId={boardData.userId} editReturnURl={`board/edit/${boardData.boardMstUUID}/${params.boardId}`} delPostUrl={`board/del?boardId=${params.boardId}`}
+                 delReturnUrl={`/board/${boardData.boardMstUUID}`} revalidateTagName={`boardmst-${boardData.boardMstUUID}`}/>
             </div>
             <ReviewContainer domainId={params.boardId} domainName="board"/>
         </section>

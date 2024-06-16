@@ -6,6 +6,7 @@ import { Avatar, Rating } from "@mui/material";
 import Link from "next/link";
 import WriteReviewReply from "./WriteReviewReply";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import ReviewEtcBtn from "./ReviewEtcBtn";
 
 const domainReviewUrl = {
   recipe:"review/get",
@@ -66,6 +67,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
           readOnly
         />
         }
+        <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId}/>
       </div>
       <div className="ms-12">{review.message}</div>
     </div>

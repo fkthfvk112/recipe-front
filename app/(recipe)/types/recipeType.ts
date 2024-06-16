@@ -35,6 +35,7 @@ export interface Ingredient {
   qqt:   string;
   order: number;
 }
+
 export interface Recipe {
   createdAt:    string;
   views:        number;

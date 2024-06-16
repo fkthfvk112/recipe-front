@@ -1,9 +1,10 @@
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { Recipe } from "../types/recipeType";
 import { Dispatch, SetStateAction } from "react";
+import { RecipeCreate } from "./page";
 interface DescProp {
-  recipe: Recipe;
-  setRecipe: Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 export default function Description({ recipe, setRecipe }: DescProp) {
   const handleDescText: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {

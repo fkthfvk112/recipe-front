@@ -1,4 +1,6 @@
+import RecipeVerticalItem from "@/app/(board)/board/create/[boardMstUUID]/(Recipe)/RecipeVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
+import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,7 +11,7 @@ interface myRecipe {
   repriPhotos: string[];
 }
 export default function MyLike() {
-  const [myRecipes, setMyRecipes] = useState<myRecipe[]>([]);
+  const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
     axiosAuthInstacne
@@ -29,14 +31,7 @@ export default function MyLike() {
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}
     >
-      <Image
-        style={{
-          objectFit: "cover",
-        }}
-        fill
-        src={recipe.repriPhotos[0]}
-        alt="no img"
-      ></Image>
+      <RecipeVerticalItem key={inx} recipe={recipe}/>
     </Link>
   ));
 

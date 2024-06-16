@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import Image from "next/image";
@@ -11,9 +11,7 @@ function PhotoHolder({photos, setPhotos}:{photos:File[], setPhotos:(files:File[]
         const file: File | null | undefined = evt.target.files?.[0];
         
         if(file){
-            console.log("전", file);
             const resizedFile = await resizeFile(file) as File;
-            console.log("후", resizedFile);
 
             setPhotos([...photos, resizedFile]);
         } 
@@ -30,13 +28,13 @@ function PhotoHolder({photos, setPhotos}:{photos:File[], setPhotos:(files:File[]
 
         return (
             //보더 등 설정, x하면 삭제되게 설정
-            <div key={inx} className="m-1 relative rounded-xl overflow-hidden w-[160px] h-[120px]">
+            <div key={inx} className="m-1 relative border rounded-xl min-w-[120px] min-h-[120px] w-[120px] h-[120px]">
                 <div className="w-full text-right">
                     <button onClick={()=>deletePhoto(inx)} className="border-none w-5 h-5 mr-2 absolute -top-3 right-1 z-50">
                         <ClearIcon/>
                     </button>
                 </div> 
-                <Image className="inner-img" width={170} height={170} src={fileUrl} alt="no img"/>
+                <Image className="inner-img" width={120} height={120} src={fileUrl} alt="no imgage"/>
             </div>
             )
     })

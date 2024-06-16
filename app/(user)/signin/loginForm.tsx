@@ -21,6 +21,7 @@ export default function LoginForm() {
   }
 
   const signInBtnClick = () => {
+    setIsLoading(true);
     const userData: UserLoginDTO = {//have to::edit
       userId: userId,
       userPassword: userPw,
@@ -32,6 +33,7 @@ export default function LoginForm() {
         withCredentials: true,
       })
       .then((res) => {
+        setIsLoading(false);
         console.log(res.data);
         setIsSignIn(true);
         const storage = globalThis?.sessionStorage;
@@ -44,17 +46,17 @@ export default function LoginForm() {
         location.href = pathToGo;
       })
       .catch((err) => {
+        setIsLoading(false);
         alert("로그인 실패 " + err);
       });
   };
 
   return (
-    <div className="p-5 max-w-sm w-96 bg-white px-4 flex flex-col justify-center items-center">
-      <div className="text-center p-3">
+    <div className="p-5 max-w-sm w-96 border border-gray-[#a1a1a1]  px-4 flex flex-col justify-center items-center m-10 shadow-md">
+      <div className="w-full text-center bottom-line p-2 m-2">
         <h1 className="text-2xl">로그인</h1>
       </div>
-      <hr />
-      <div className="m-1 w-full">
+      <div className="m-1 w-full mt-8 m">
         <input
           name="userId"
           placeholder="아이디"
@@ -63,9 +65,14 @@ export default function LoginForm() {
           onChange={(e: any) => {
             setUserId(e.target.value);
           }}
+          onKeyDown={(evt)=>{
+            if(evt.key === 'Enter'){
+              signInBtnClick();
+            }
+          }}
         />
       </div>
-      <div className="m-2 w-full">
+      <div className="m-2 w-full mb-3">
         <input
           name="userPw"
           placeholder="비밀번호"
@@ -74,19 +81,24 @@ export default function LoginForm() {
           onChange={(e: any) => {
             setUserPw(e.target.value);
           }}
+          onKeyDown={(evt)=>{
+            if(evt.key === 'Enter'){
+              signInBtnClick();
+            }
+          }}
         />
       </div>
 
       <button
-        className="bg-amber-400 h-8 rounded-md w-1/2"
+        className="bg-amber-400 h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
         type="submit"
         disabled={isLoading}
         onClick={signInBtnClick}
       >
         {isLoading ? "Loading..." : "로그인"}
       </button>
-      <div>
-        회원이 아니신가요? <Link href="/signup">회원가입</Link>
+      <div className="w-full p-3 text-center">
+        회원이 아니신가요? <Link className="text-blue-500" href="/signup">회원가입</Link>
       </div>
     </div>
   );

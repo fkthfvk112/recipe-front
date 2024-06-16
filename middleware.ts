@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
   console.log(refreshCookie);
 
   if(authCookie === undefined || refreshCookie === undefined || !authCookie.value.startsWith("Bearer_")){
+
     return NextResponse.redirect(new URL('/signin', request.url))
   }
 
@@ -20,5 +21,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe'],
+  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe', '/board/create/:path*'],
 }

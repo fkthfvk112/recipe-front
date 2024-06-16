@@ -27,6 +27,9 @@ function BoardHolder({initialData, mstUUID}:{initialData:IndexPagenation<BoardPr
             },
             option:{
                 cache:"no-cache",
+                next:{
+                    tags: [`boardmst-${mstUUID}`],
+                }
             }
         })
 

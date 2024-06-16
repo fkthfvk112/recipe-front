@@ -9,19 +9,21 @@ import CookMethod from "./CookMethod";
 import Description from "./Description";
 import CookStep from "./(cookStepDnd)/CookStep";
 import Ingredient from "./Ingredient";
-import { Button, Modal, Typography, Box } from "@mui/material";
+import { Button, Modal, Typography, Box, CircularProgress } from "@mui/material";
 import ErrorText from "./ErrorText";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
-import axios from "axios";
-import { log } from "console";
+import withReactContent from 'sweetalert2-react-content'
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import RepriPric from "./RepriPic";
+import Swal from "sweetalert2";
+
+export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
 export default function CreateRecipePage() {
-  const [recipe, setRecipe] = useState<Recipe>({
+  const [recipe, setRecipe] = useState<RecipeCreate>({
     recipeName: "",
     repriPhotos: [],
     categorie: RecipeSelection.한식,
@@ -54,16 +56,34 @@ export default function CreateRecipePage() {
     console.log("레시피", recipe);
   };
 
+
+
   const saveRecipeToDb = () => {
+    withReactContent(Swal).fire({
+      title:"레시피를 공개하는 중...",
+      showConfirmButton:false,
+      allowOutsideClick:false,
+      html:<div className="overflow-y-hidden"><CircularProgress /></div>
+    })
+
     axiosAuthInstacne
       .post("recipe/create", recipe)
       .then((res) => {
         if (res.status === 200) {
-          alert("발행되었씀!"); //수정
+          Swal.fire({
+            title: "게시가 완료되었습니다!",
+            icon: "success",
+          }).then(() => {
+            router.push(`/`);
+          });
+          //have to 리발리데이트 
         }
       })
       .catch((err) => {
-        console.log("에러", err);
+        Swal.fire({
+          title: "에러가 발생하였습니다.",
+          icon: "error",
+        });
       });
   };
 
@@ -121,15 +141,15 @@ export default function CreateRecipePage() {
             <ErrorText recipe={recipe} setErrorCnt={setErrorCnt}></ErrorText>
             {errorCnt === 0 && "레시피를 세상에 내놓겠습니까?"}
           </Typography>
-          <div className="text-center">
-            <button onClick={() => setIsModalOpen(false)}>
-              아니요(아직...)
+          <div className="w-full text-center mt-6">
+            <button className="cancelBtn me-2" onClick={() => setIsModalOpen(false)}>
+              닫기
             </button>
             <button
               onClick={() => {
                 saveRecipeToDb();
               }}
-              className={errorCnt !== 0 ? "bg-gray-200" : ""}
+              className={`ms-2 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
               disabled={errorCnt === 0 ? false : true}
             >
               네

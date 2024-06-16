@@ -1,27 +1,32 @@
 import Image from "next/image";
 import { CookingSteps_show } from "../../types/recipeType";
+import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 
 export default function RecipeStepInfo({
   steps,
 }: {
   steps: CookingSteps_show[];
 }) {
-  const skeltonImg = <div style={{ width: "100px", height: "100px" }}></div>;
+  const skeltonImg = <div style={{ width: "100px", height: "100px" }}></div>;//have to 스켈레톤이미지 넣기
 
   const stepItems = steps.map((step, inx) => {
     return (
-      <div key={inx} className="mt-3 mb-3">
-        <div className="font-bold border-b-2 border-gray-200 mb-3">
-          Step {step.order}
+      <div key={inx} className="mt-6 mb-3">
+        <div className="flex justify-between font-bold border-gray-200 mb-1">
+          <span>Step {step.order}</span>
+          <span><AccessAlarmsIcon/> {step.time}분</span>
         </div>
+        <div className="bottom-line-noM mb-3 w-full"/>
+
         <div className="grid grid-cols-3 ">
+          <div className="col-span-2 p-3">{step.description}</div>
           {step.photo ? (
-            <Image className="col-span-1" src={step.photo} width={200} height={200} alt="noimg" />
+            <div className="img-wrapper-square w-full pb-[100%]">
+              <Image className="inner-img" src={step.photo} fill alt="noimg" />
+            </div>
           ) : (
             skeltonImg
           )}
-
-          <div className="w-36 col-span-2 p-3">{step.description}</div>
         </div>
       </div>
     );

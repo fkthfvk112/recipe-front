@@ -28,7 +28,7 @@ export interface BoardReviewWithUserInfo extends BoardReview {
 
 
 export interface userInfo {
-  userId: number;
+  userId: string;
   userNickName: string;
   userUrl: string | null;
   userPhoto: string | null;

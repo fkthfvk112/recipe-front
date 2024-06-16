@@ -14,21 +14,22 @@ import { truncateString } from "@/app/(utils)/StringUtil";
 
 function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
   return (
-    <Card variant="outlined" sx={{ width: 170,  margin:"5px" }}>
+    <Card className="hover:bg-[#e1e1e1] cursor-pointer" variant="outlined" sx={{ width: 170, height:250, minWidth:170, margin:"5px", paddingTop:"32px",}}>
       <CardOverflow>
-        <AspectRatio ratio="2">
+        <div className="w-full h-20 m-2">
           <Image
-            src={recipe.repriPhotos[0]}
-            width={300}
-            height={300}
-            loading="lazy"
-            alt=""
-          />
-        </AspectRatio>
+            className="inner-img"
+              src={recipe.repriPhotos[0]}
+              width={300}
+              height={300}
+              loading="lazy"
+              alt=""
+            />
+        </div>
       </CardOverflow>
       <CardContent>
         <h2 className="text-[14px]">{truncateString(recipe.recipeName, 10)}</h2>
-        <div className="text-[12px]">{truncateString(recipe.description, 25)}</div>
+        <div className="text-[12px] h-7">{truncateString(recipe.description, 18)}</div>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
         <Divider inset="context" />

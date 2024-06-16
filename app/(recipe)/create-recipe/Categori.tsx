@@ -2,9 +2,10 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { Recipe, RecipeSelection } from "../types/recipeType";
 import Image from "next/image";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { RecipeCreate } from "./page";
 interface CategoriProp {
-  recipe: Recipe;
-  setRecipe: Dispatch<SetStateAction<Recipe>>;
+  recipe: RecipeCreate;
+  setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 
 export default function Categori({ recipe, setRecipe }: CategoriProp) {
@@ -56,7 +57,7 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
   const categoriComp = recipeCategories.map((item) => (
     <div
       onMouseDown={clickCategoryItem}
-      className={`bg-red-400 p-3 rounded-md m-2 w-28 relative ${
+      className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white p-3 rounded-md m-2 min-w-[100px] h-[120px] relative ${
         recipe.categorie === item ? "outline outline-2 outline-slate-950" : ""
       }}`}
       key={item}
@@ -67,9 +68,12 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
       ) : (
         <></>
       )}
-
-      <Image src="" width={500} height={500} alt="ex" />
-      <div className="text-xs">{item}</div>
+      <div className="w-[60px] h-[60px] bg-slate-600">
+        <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" />
+      </div>
+      <div className="bottom-line w-full"/>
+      {/* <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" /> */}
+      <div className="text-sm mt-1 font-bold">{item}</div>
     </div>
   ));
   return (
@@ -79,7 +83,7 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
       </div>
       <div
         ref={categoriSliderRef}
-        className="flex flex-row justify-between items-center w-full m-3 overflow-auto"
+        className="flex flex-row justify-between items-center w-full h-[200px] m-3 overflow-x-scroll"
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}

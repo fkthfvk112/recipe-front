@@ -26,7 +26,7 @@ export default async function DietDetail({
 
     return (
       dietDay&&
-      <div className='w-full bg-[#1e5094]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>
+      <div className='w-full bg-[#55a630]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>
         <div className="bg-blue max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
           <div className="w-80 flex justify-start items-center">
               <h1 className="text-2xl text-white">{dietDay.title}</h1>
@@ -34,7 +34,7 @@ export default async function DietDetail({
           </div>
           {
           dietDay.memo&&
-          <div className="w-80 mt-5 bg-[#94aece] rounded-lg p-3">
+          <div className="w-80 mt-5 bg-white rounded-lg p-3">
               <div className="text-lg">{dietDay.memo}</div>
           </div>
           }

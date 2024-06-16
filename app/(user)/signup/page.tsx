@@ -11,6 +11,9 @@ import {
 } from "../check";
 import axios from "axios";
 import { UserSignUpDTO } from "@/app/(type)/user";
+import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import { CircularProgress } from "@mui/material";
 
 export default function SignUp() {
   const [userId, setUserId] = useState<string>("");
@@ -48,6 +51,15 @@ export default function SignUp() {
   const emailRef = useRef<HTMLInputElement>(null);
 
   const route = useRouter();
+
+  const allValid = ():boolean=>{
+    if (!idValid.isValid) return false;
+    if (!pwValid.isValid) return false;
+    if (!veriPwValid.isValid) return false;
+    if (!emailValid.isValid) return false;
+    if (!nickNameValid.isValid) return false;
+    return true;
+  }
 
   useEffect(() => {
     console.log(idValid);
@@ -144,6 +156,7 @@ export default function SignUp() {
       return;
     }
 
+
     const userData: UserSignUpDTO = {
       userId: userId,
       userPassword: userPw,
@@ -151,27 +164,47 @@ export default function SignUp() {
       nickName: userNickName,
       grantType: "NORMAL",
     };
+    
+    withReactContent(Swal).fire({
+      title:"회원가입중...",
+      showConfirmButton:false,
+      allowOutsideClick:false,
+      html:<div className="overflow-y-hidden"><CircularProgress /></div>
+  })
 
     axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-up`, userData)
+      .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-up-request`, userData)
       .then((res) => {
-        if (res.data.msg === "signUp successed") {
-          alert("회원가입에 성공하였습니다.");
-          route.push("/signin");
-        }
+        console.log("레스레스", res);
+          Swal.fire({
+            title: "발송된 메일을 확인해주세요!",
+            icon: "success",
+          }).then(() => {
+            route.push("/signin");
+          });
+        
       })
-      .catch((e) => {
-        alert(e);
+      .catch((err) => {
+        Swal.fire({
+          title: "회원가입 실패",
+          text: err.response.data.message,
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: '#d33',
+          allowEnterKey:false
+        });
       });
   };
 
   return (
-    <div className="max-w-sm w-96 p-2 bg-white px-4 flex flex-col justify-center flex-items-center m-5">
-      <div className="text-center p-3">
+    <div className="max-w-md w-96 p-2 bg-white px-4 flex flex-col justify-center flex-items-center mt-16 shadow-md border border-gray-[#a1a1a1]">
+      <div className="text-center p-3 bottom-line">
         <h1 className="text-2xl">회원가입</h1>
       </div>
       <div className="m-3">
-        아이디
+        <span className="font-bold text-[#3f3f3f]">
+          아이디
+        </span>
         <input
           ref={idRef}
           name="userId"
@@ -182,12 +215,14 @@ export default function SignUp() {
             setUserId(e.target.value);
           }}
         />
-        <p className={idValid.isValid ? "text-emerald-400" : "text-red-500"}>
+        <p className={idValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
           {idValid.message}
         </p>
       </div>
       <div className="m-3">
-        닉네임
+        <span className="font-bold text-[#3f3f3f]">
+          닉네임
+        </span>
         <input
           ref={nickNameRef}
           name="userNickName"
@@ -199,14 +234,16 @@ export default function SignUp() {
         />
         <p
           className={
-            nickNameValid.isValid ? "text-emerald-400" : "text-red-500"
+            nickNameValid.isValid ? "text-[#38c54b]" : "text-red-500"
           }
         >
           {nickNameValid.message}
         </p>
       </div>
       <div className="m-3">
-        비밀번호
+        <span className="font-bold text-[#3f3f3f]">
+          비밀번호
+        </span>
         <input
           ref={pwRef}
           name="userPw"
@@ -217,12 +254,14 @@ export default function SignUp() {
             setUserPw(e.target.value);
           }}
         />
-        <p className={pwValid.isValid ? "text-green-400" : "text-red-500"}>
+        <p className={pwValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
           {pwValid.message}
         </p>
       </div>
       <div className="m-3">
-        비밀번호 확인
+        <span className="font-bold text-[#3f3f3f]">
+          비밀번호 확인
+        </span>
         <input
           ref={veriPwRef}
           placeholder="동일한 비밀번호 입력"
@@ -232,32 +271,32 @@ export default function SignUp() {
             setUserVeriPw(e.target.value);
           }}
         />
-        <p className={veriPwValid.isValid ? "text-green-400" : "text-red-500"}>
+        <p className={veriPwValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
           {veriPwValid.message}
         </p>
       </div>
       <div className="m-3">
-        이메일
-        <input
-          ref={emailRef}
-          type="text"
-          placeholder="예 - abc123@mymail.com"
-          value={userEmail}
-          onChange={(e: any) => {
-            setUserEmail(e.target.value);
-          }}
-        />
+        <span className="font-bold text-[#3f3f3f]">
+          이메일
+        </span>
+        <div className="flex">
+          <input
+            ref={emailRef}
+            type="text"
+            placeholder="예 - abc123@mymail.com"
+            value={userEmail}
+            onChange={(e: any) => {
+              setUserEmail(e.target.value);
+            }}
+          />
+        </div>
         <p className={emailValid.isValid ? "text-green-400" : "text-red-500"}>
           {emailValid.message}
         </p>
-        <button>이메일 번호 받기</button>
       </div>
-      <div className="flex justify-center m-3">
-        <input className="w-2/3" type="text" />
-        <button className="w-1/3">인증하기</button>
+      <div className="flex justify-center items-center w-full">
+        <button className={`${allValid()?"greenBtn":"grayBtn"} w-full h-12 mt-8`} onClick={sendSignUpRequest}>회원가입</button>
       </div>
-
-      <button onClick={sendSignUpRequest}>회원가입</button>
     </div>
   );
 }

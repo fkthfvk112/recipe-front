@@ -9,10 +9,11 @@ import Image from "next/image";
 import { timeDifferenceString } from "../(utils)/timeUtils";
 import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { truncateString } from "../(utils)/StringUtil";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
-    <Card variant="outlined" sx={{ width: 320, margin:"5px" }}>
+    <Card variant="outlined" sx={{ width: 260, height: 260,margin:"5px" }}>
       <CardOverflow>
         <AspectRatio ratio="2">
           <Image
@@ -25,8 +26,8 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </AspectRatio>
       </CardOverflow>
       <CardContent>
-        <Typography level="title-md">{recipe.recipeName}</Typography>
-        <Typography level="body-sm">{recipe.description}</Typography>
+        <Typography className="font-bold" level="title-md">{truncateString(recipe.recipeName, 15)}</Typography>
+        <Typography level="body-sm">{truncateString(recipe.description, 18)}</Typography>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
         <Divider inset="context" />

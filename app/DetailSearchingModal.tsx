@@ -1,5 +1,6 @@
 "use client";
 import {
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -10,6 +11,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { RecipeSearchingCondition, sortingCondition } from "./(type)/search";
 import { searchingConToQueryString } from "./(commom)/DetailSearch";
 import { useRouter } from "next/navigation";
+import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
 
 interface DetailProp {
   isOpen: boolean;
@@ -138,7 +141,6 @@ export default function DetailSearchingModal({
         .map((ingre) => ingre.trim());
     }
     let queryStr: string = searchingConToQueryString(searchData, sortingCon);
-    alert(queryStr);
     //have to edit 구현 완료
     //and or 조건 추가
 
@@ -154,11 +156,10 @@ export default function DetailSearchingModal({
       onClick={() => setIsOpen(false)}
     >
       <section
-        style={{ maxWidth: "60rem" }}
-        className="w-1/2 min-w-80 bg-white z-20 p-6"
+        className="min-w-[280px] max-w-[420px] w-full bg-white z-20 p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1>레시피 상세 검색</h1>
+        <h1 className="m-2 mb-5 text-xl">레시피 상세 검색</h1>
         <div>
           <div className="flex items-center justify-center w-full">
             <div>레시피 이름</div>

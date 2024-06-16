@@ -72,7 +72,7 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
                         <ClearIcon/>
                     </button>
                 </div> 
-            <DietVerticalItem key={inx} dietDay={ele} selectedDietDay={dietDay} setSelectedDietDay={setDietDay}/>
+            <DietVerticalItem key={inx} dietDay={ele}/>
         </div>)
 
     return(

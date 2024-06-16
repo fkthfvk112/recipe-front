@@ -1,3 +1,4 @@
+import { Recipe } from "../(recipe)/types/recipeType";
 import { DietDay } from "./diet";
 
 export interface BoardPreview{
@@ -12,7 +13,7 @@ export interface BoardPreview{
 }
 
 export interface Board{
-    BoardId:      number;
+    boardId:      number;
     userId:       string; //have to :: encrypt
     userNickName: string;
     boardUUID:    string;
@@ -20,7 +21,7 @@ export interface Board{
     title:        string;
     content:      string;
     photos?:      string[];
-    recipes?:     string;
+    recipes?:     Recipe[];
     dietDays?:    DietDay[];
     viewCnt:      number;
     createdAt?:    string;

@@ -42,25 +42,26 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full h-20 bg-white sticky top-0 z-50 bottom-line-noM">
+      <div className="w-full h-20 bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Link href="/">
               <p>홈</p>
             </Link>
-            <ul className="hidden md:flex gap-x-6">
+            {/* <ul className="hidden md:flex gap-x-6"> */}
+            <ul className="flex gap-x-6">
               <li>
                 <Link href="/create-recipe">
                   <p>레시피 생성</p>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/recipe-detail/17">
                   <p>레시피 보기</p>
                 </Link>
-              </li>
+              </li> */}
               <li>
-                <Link href="/board/cc32647e-6aa4-422f-84b7-1037430a679c">
+                <Link href={`/board/${process.env.NEXT_PUBLIC_FREE_BOARD_UUID}`}>
                   <p>게시판</p>
                 </Link>
               </li>
@@ -78,7 +79,7 @@ const Navbar = () => {
             {localSignInState ? (
                <AccountMenu />
             ) : (
-              <button onClick={goToSiginInPage}>로그인</button>
+              <button className="border-none" onClick={goToSiginInPage}>로그인</button>
             )}
           </div>
         </div>

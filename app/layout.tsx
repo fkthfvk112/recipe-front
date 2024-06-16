@@ -1,4 +1,5 @@
 "use client";
+import IntervalConfig from "./(interval)/intervalConfig";
 import "./globals.css";
 import Nav from "./Nav";
 import { RecoilRoot } from "recoil";
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <RecoilRoot>
           <Nav></Nav>
+          <IntervalConfig/>
           <main className="min-h-screen flex flex-col justify-start items-center">
             {children}
           </main>

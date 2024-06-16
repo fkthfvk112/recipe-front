@@ -5,6 +5,8 @@ import { Box, Modal } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { axiosAuthInstacne } from '@/app/(customAxios)/authAxios';
+import { EditDel } from './EditDel';
+import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 
 const style = {
     border:'none',
@@ -20,9 +22,14 @@ const style = {
     backgroundColor: 'transparente',
 };
 
-  
+export interface EditDelClient{
+  editReturnURl:string,
+  delPostUrl:string,
+  delReturnUrl:string,
+  revalidateTagName?:string,
+}
 
-export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl}:{ editReturnURl:string, delPostUrl:string, delReturnUrl:string}){
+export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, revalidateTagName}:EditDelClient){
     const router = useRouter();
     const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -49,6 +56,10 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl}:
                     title: "삭제가 완료되었습니다!",
                     icon: "success",
                   }).then(() => {
+                    if(revalidateTagName){
+                      console.log("리발리!!")
+                      revalidateByTagName(revalidateTagName);
+                    }
                     router.push(delReturnUrl);
                   });
                 })
@@ -61,7 +72,8 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl}:
           });          
     }
 
-    return <>
+    return (
+      <>
         <EditNoteIcon className='hover-pointer m-2' onClick={()=>setOpenModal(!openModal)}/>
         <Modal
         open={openModal}
@@ -80,6 +92,6 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl}:
                 </div>
             </Box>
         </Modal>
-
-        </>
+      </>
+    )
 }
