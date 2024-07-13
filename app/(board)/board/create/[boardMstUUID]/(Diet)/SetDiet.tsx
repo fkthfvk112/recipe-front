@@ -15,7 +15,7 @@ function SetDiet({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(diet:Diet
             aria-controls="panel1-content"
             id="panel1-header"
             >
-            <h3>식단(최대 6)</h3>
+            <h3>식단 가져오기 (최대 6)</h3>
             </AccordionSummary>
             <AccordionDetails>
                 <DietFinderModal dietDay={dietDay} setDietDay={setDietDay}/>

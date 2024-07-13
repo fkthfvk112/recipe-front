@@ -1,13 +1,13 @@
 export interface DietItem{
     title:string|undefined;
-    calorie:string|undefined;
+    calorie:number|undefined;
     qqt:string|undefined;
     memo:string|undefined;
-    photo:string|undefined;
 }
 
 export interface DietItemRow{
     title:string|undefined;
+    photo:string;
     dietItemList:DietItem[];
 }
 

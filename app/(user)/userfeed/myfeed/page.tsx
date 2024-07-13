@@ -13,7 +13,7 @@ export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useState<0 | 1 | 2>(0);
 
   return (
-    <div className="bg-white max-w-xl w-dvw m-3  flex flex-col justify-start items-center">
+    <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
       <UserInfo></UserInfo>
       <Divider className="mt-5" orientation="horizontal" flexItem />
 

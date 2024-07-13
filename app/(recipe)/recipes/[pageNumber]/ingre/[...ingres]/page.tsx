@@ -2,6 +2,7 @@ import RecipeCard from "@/app/(commom)/RecipeCard";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../../RecipePagination";
+import CreateIcon from '@mui/icons-material/Create';
 
 export default async function RecipesByIngre({
   params,
@@ -51,7 +52,7 @@ export default async function RecipesByIngre({
   ));
 
    return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full">
+    <div className="flex flex-col flex-wrap justify-center items-center w-full mb-10">
       <div className="flex flex-wrap justify-center items-center w-full min-h-[300px] mb-16">
         {recentRecipes}
       </div>
@@ -60,5 +61,9 @@ export default async function RecipesByIngre({
         pageNow={Number(params.pageNumber)}
         pageMax={pnMaxCnt}
       ></RecipePagination>
+      <Link href={`/create-recipe`} className="fixed bottom-6 right-12 roundRreenBtn">
+          <CreateIcon sx={{width:"25px", height:"25px"}}/>
+          <span className="ms-2">글쓰기</span>
+      </Link>
     </div>);
 }

@@ -18,21 +18,20 @@ export default async function RecentRecipes() {
     }
   });
 
-  console.log("레시피123123", fetchData);
   const recentRecipes = fetchData?.map((recipe, inx) => (
-      <Link key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+      <Link className="inline-block" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
         <RecipeVerticalItem recipe={recipe}></RecipeVerticalItem>
       </Link>
   ));
 
   return (
-    <div className="w-full max-w-5xl p-5 mt-10 mb-10">
+    <div className="w-full max-w-5xl p-5 mt-10 mb-5">
       <h2 className="text-xl">최근 레시피</h2>
       <p className="mb-10">최근에 공개된 레시피에요.</p>
-      <EmblaCarousel_comp slides={recentRecipes}/>
-      {/* <div className="flex flex-wrap justify-center items-center">
+      {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
+      <div className="flex overflow-x-scroll">
         {recentRecipes}
-      </div> */}
+      </div>
     </div>
   );
 }

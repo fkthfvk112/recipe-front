@@ -13,7 +13,7 @@ interface Token{
     roles:string[];
 }
 
-function intervalConfig(){
+function IntervalConfig(){
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
     
     useEffect(()=>{
@@ -49,4 +49,4 @@ function intervalConfig(){
     return <></>
 }
 
-export default React.memo(intervalConfig);
+export default React.memo(IntervalConfig);

@@ -41,7 +41,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
                   <circle cx="26" cy="11" r="8" fill="transparent" stroke="black" stroke-width="3"/>
                   <circle cx="23" cy="11" r="3" fill="black"/>
                 </svg>
-                <span>{recipe.views}</span>
+                <span>{recipe.viewCnt}</span>
               </div>
             </div>
             <div className="ms-2">

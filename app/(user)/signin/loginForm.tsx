@@ -6,6 +6,7 @@ import { UserLoginDTO } from "@/app/(type)/user";
 import Link from "next/link";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilState } from "recoil";
+import Swal from "sweetalert2";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,6 +29,7 @@ export default function LoginForm() {
       role: "USER",
       grantType: "normal",
     };
+    
     axios
       .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-in`, userData, {
         withCredentials: true,
@@ -47,12 +49,19 @@ export default function LoginForm() {
       })
       .catch((err) => {
         setIsLoading(false);
-        alert("로그인 실패 " + err);
+        Swal.fire({
+          title: "로그인 실패",
+          text: err.response.data.message,
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: '#d33',
+          allowEnterKey:false
+        });
       });
   };
 
   return (
-    <div className="p-5 max-w-sm w-96 border border-gray-[#a1a1a1]  px-4 flex flex-col justify-center items-center m-10 shadow-md">
+    <div className="p-5 max-w-sm w-96 border border-gray-[#a1a1a1] px-4 flex flex-col justify-center items-center m-10 mt-28 shadow-md">
       <div className="w-full text-center bottom-line p-2 m-2">
         <h1 className="text-2xl">로그인</h1>
       </div>

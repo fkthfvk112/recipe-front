@@ -1,7 +1,5 @@
 import { Avatar } from "@mui/material";
 import Image from "next/image";
-import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
 
 export default function MyFeedPhoto({
   photoUrl,
@@ -11,14 +9,13 @@ export default function MyFeedPhoto({
   const image = photoUrl ? (
     <Image
       className="rounded-full"
-      width={128}
-      height={128}
       src={photoUrl ? photoUrl : ""}
       alt="no img"
+      fill
     ></Image>
   ) : (
     <Avatar className="w-full h-full" src="/broken-image.jpg" />
   );
 
-  return <div className="rounded-full w-28 h-28">{image}</div>;
+  return <div className="img-wrapper-round w-[120px] h-[120px]">{image}</div>;
 }

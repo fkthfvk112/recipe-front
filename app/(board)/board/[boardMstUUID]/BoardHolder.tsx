@@ -13,8 +13,8 @@ function BoardHolder({initialData, mstUUID}:{initialData:IndexPagenation<BoardPr
     const [pageInx, setPageInx] = useState<number>(initialData.index);
     const [viewRef, inview] = useInView();
 
-    const initialDatas = data?.map((ele)=>{
-        return <BoardPreviewHoriItem boardPreview={ele}/>
+    const initialDatas = data?.map((ele, inx)=>{
+        return <BoardPreviewHoriItem key={inx} boardPreview={ele}/>
     })
 
     const fetchData = async()=>{

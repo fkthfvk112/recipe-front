@@ -36,7 +36,7 @@ export default function SearchBar() {
       return;
     }
     else{
-      router.push(`recipes/simple/1/searchingTerm=${searchingData}`);
+      router.push(`/recipes/simple/1/searchingTerm=${searchingData}`);
     }
   }
 
@@ -48,6 +48,7 @@ export default function SearchBar() {
       </div>
       <div className="relative w-full max-w-[800px]">
         <input
+          placeholder="요리명, 설명, 재료"
           className="h-12 rounded-full ps-5 pe-12"
           onChange={(evt) => {
             setSearchingData(evt.target.value);

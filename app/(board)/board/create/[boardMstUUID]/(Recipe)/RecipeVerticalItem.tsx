@@ -13,10 +13,12 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import { truncateString } from "@/app/(utils)/StringUtil";
 
 function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
+
+  console.log("레시피", recipe);
   return (
-    <Card className="hover:bg-[#e1e1e1] cursor-pointer" variant="outlined" sx={{ width: 170, height:250, minWidth:170, margin:"5px", paddingTop:"32px",}}>
-      <CardOverflow>
-        <div className="w-full h-20 m-2">
+    <div className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] h-[200px] m-1 shadow-md border border-[#e1e1e1]">
+      <div>
+        <div className="w-full h-20 img-wrapper-square">
           <Image
             className="inner-img"
               src={recipe.repriPhotos[0]}
@@ -26,29 +28,31 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
               alt=""
             />
         </div>
-      </CardOverflow>
-      <CardContent>
-        <h2 className="text-[14px]">{truncateString(recipe.recipeName, 10)}</h2>
-        <div className="text-[12px] h-7">{truncateString(recipe.description, 18)}</div>
-      </CardContent>
-      <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
+        <section className="W-full p-2">
+          <div className="w-full h-[35px]">
+            <h2 className="text-[14px]">{truncateString(recipe.recipeName, 20)}</h2>
+          </div>
+          <div className="text-[12px] h-7">{truncateString(recipe.description, 25)}</div>
+        </section>
+      </div>
+      <div className="w-full ps-2 pe-2">
         <Divider inset="context" />
         <div className="flex justify-between text-sm pt-2 pb-2">
             <div className="flex justify-center items-center">
               <div className="flex justify-center items-center">
-                <svg width="20" height="11" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="6" cy="5" r="4" fill="transparent" stroke="black" stroke-width="3"/>
-                  <circle cx="5" cy="5" r="1.5" fill="black"/>
-                  <circle cx="13" cy="5" r="4" fill="transparent" stroke="black" stroke-width="3"/>
-                  <circle cx="11" cy="5" r="1.5" fill="black"/>
+                <svg width="28" height="15" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="7" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
+                  <circle cx="5" cy="7" r="2" fill="black" />
+                  <circle cx="19" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
+                  <circle cx="16.5" cy="7" r="2" fill="black"/>
                 </svg>
-                <span className="text-[10px]">{recipe.views}</span>
+                <span className="text-[10px]">{recipe.viewCnt}</span>
               </div>
                 <div className="ms-2 flex justify-center items-center">
-                    <FavoriteIcon className="w-[13px] h-[13px]"/><span className="ms-1 text-[10px]">{recipe?.likeCnt}</span>
+                    <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[10px]">{recipe?.likeCnt}</span>
                 </div>
                 <div className="ms-2 flex justify-center items-center">
-                <CommentIcon className="w-[13px] h-[13px]"/><span className="ms-1 text-[10px]">{recipe?.reviewCnt}</span>
+                <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[10px]">{recipe?.reviewCnt}</span>
                 </div>
             </div>
             <div className="text-[10px] flex justify-center items-center">
@@ -56,8 +60,8 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
                 timeDifferenceString(new Date(recipe.createdAt))}
             </div>
         </div>
-      </CardOverflow>
-    </Card>
+      </div>
+    </div>
   );
 }
 

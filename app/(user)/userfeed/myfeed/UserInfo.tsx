@@ -32,7 +32,7 @@ export default function UserInfo() {
   }, [updateData]);
 
   return (
-    <div className="w-full p-3">
+    <div className="w-full max-w-[500px] p-3">
       {userData && (
         <FeedEditModal
           isOpenModal={isOpenModal}
@@ -51,10 +51,13 @@ export default function UserInfo() {
           <div>{userData?.userUrl}</div>
         </div>
       </div>
-      <div className="w-full text-center mt-8">
+      <div className="w-full text-center mt-5">
+          <div className="w-full p-3 m-3 text-start bg-[#f1f1f1] rounded-xl">
+            {userData?.userIntro}
+          </div>
         <button
             onClick={modalOpen}
-            className="btn-outline-gray">
+            className="btn-outline-gray mt-5">
             프로필 편집
           </button>
       </div>

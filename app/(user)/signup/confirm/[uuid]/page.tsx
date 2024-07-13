@@ -11,6 +11,7 @@ export default async function SignUpConfirm({
   }: {
     params: { uuid: string };
   }){
+    console.log("!!!!!!!!!!!!!!!!!!");
     const fetchData:FetchData = await serverFetch({
         url:`sign-api/confirm/${params.uuid}`,
         option:{
@@ -22,7 +23,7 @@ export default async function SignUpConfirm({
 
     
     return (
-        <div className="max-w-2xl h-[600px] w-full mt-12 p-5 m-3 shadow-md border border-gray-[#a1a1a1]">
+        <div className="max-w-2xl h-[600px] w-full mt-28 p-5 m-3 shadow-md border border-gray-[#a1a1a1]">
             <div className="w-full">
                 <h1 className="mt-10 mb-14 text-3xl text-center">🎉회원가입 완료!</h1>
                 <h1 className="text-2xl">안녕하세요!</h1>

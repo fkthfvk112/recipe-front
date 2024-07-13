@@ -25,36 +25,25 @@ export default function MyDietEdit({
         fetchedData.dietItemRowList.map((item)=>{
             if(item.title === '아침' && item.dietItemList.length > 0){
                 setDietItemRowOne(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
-                 })
-            }
-            else if(item.title === '브런치' && item.dietItemList.length > 0){
-                setDietItemRowTwo(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
+                    return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
             else if(item.title === '점심' && item.dietItemList.length > 0){
-                setDietItemRowThree(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
+                setDietItemRowTwo(prev=>{
+                    return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
             else if(item.title === '저녁' && item.dietItemList.length > 0){
-                setDietItemRowFour(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
+                setDietItemRowThree(prev=>{
+                    return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
             else if(item.title === '간식' && item.dietItemList.length > 0){
-                setDietItemRowFive(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
-                 })
-            }
-            else if(item.title === '야식' && item.dietItemList.length > 0){
-                setDietItemRowSix(prev=>{
-                    return {...prev, dietItemList:item.dietItemList}
+                setDietItemRowFour(prev=>{
+                    return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
         })
-
     }
 
     useEffect(()=>{
@@ -71,6 +60,7 @@ export default function MyDietEdit({
             });
     }, [])
 
+
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
 
     const [title, setTitle]                     = useState<string>("");
@@ -80,90 +70,94 @@ export default function MyDietEdit({
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",
+        photo:"",
         dietItemList:[]
     });
 
     const [dietItemRowTwo, setDietItemRowTwo] = useState<DietItemRow>({
-        title:"브런치",
+        title:"점심",
+        photo:"",
         dietItemList:[]
     });
 
     const [dietItemRowThree, setDietItemRowThree] = useState<DietItemRow>({
-        title:"점심",
+        title:"저녁",
+        photo:"",
         dietItemList:[]
     });
 
     const [dietItemRowFour, setDietItemRowFour] = useState<DietItemRow>({
-        title:"저녁",
-        dietItemList:[]
-    });
-
-    const [dietItemRowFive, setDietItemRowFive] = useState<DietItemRow>({
         title:"간식",
-        dietItemList:[]
-    });
-
-    const [dietItemRowSix, setDietItemRowSix] = useState<DietItemRow>({
-        title:"야식",
+        photo:"",
         dietItemList:[]
     });
 
     const handleSubmit = ()=>{
         setSaveModalOpen(true);
 
-        const existRowList = [
-            dietItemRowOne,
-            dietItemRowTwo,
-            dietItemRowThree,
-            dietItemRowFour,
-            dietItemRowFive,
-            dietItemRowSix
-        ].filter(row => row.dietItemList.length >= 1);
+        const existInnerItemOne = dietItemRowOne.dietItemList.filter(item=>item.title!= undefined && item.title.length >= 1);
+        const existDietRowOne:DietItemRow = {...dietItemRowOne, dietItemList:existInnerItemOne};
 
-        if(params.dietId === undefined || params.dietId === null) return;
+        const existInnerItemTwo = dietItemRowTwo.dietItemList.filter(item=>item.title!= undefined && item.title.length >= 1);
+        const existDietRowTwo:DietItemRow = {...dietItemRowTwo, dietItemList:existInnerItemTwo};
 
-        console.log("저장 전", isPublic);
+        const existInnerItemThree = dietItemRowThree.dietItemList.filter(item=>item.title!= undefined && item.title.length >= 1);
+        const existDietRowThree:DietItemRow = {...dietItemRowThree, dietItemList:existInnerItemThree};
+
+        const existInnerItemFour = dietItemRowFour.dietItemList.filter(item=>item.title!= undefined && item.title.length >= 1);
+        const existDietRowFour:DietItemRow = {...dietItemRowFour, dietItemList:existInnerItemFour};
 
         const dietDay:DietDay = {
             dietDayId:params.dietId,
             title:title,
             memo:memo,
             isPublic:isPublic,
-            dietItemRowList:existRowList
-        }
+            dietItemRowList:[existDietRowOne, existDietRowTwo, existDietRowThree, existDietRowFour]
+        };
+        if(params.dietId === undefined || params.dietId === null) return;
 
         setSaveData(dietDay);
     }
 
     console.log(isPublic)
     return (
+        <div className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
+            <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+                <div className="w-80">
+                    <h1 className="text-2xl mt-6"><EditIcon className="me-2"></EditIcon>제목</h1>
+                    <input maxLength={20} className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={title} onChange={(evt)=>setTitle(evt.target.value)} 
+                    type="text" placeholder="3자 이상 20자 이하"/>
+                </div>
+                <div className="w-80 mt-5">
+                    <h1 className="text-2xl mt-6"><EditIcon className="me-2"></EditIcon>설명</h1>
+                    <textarea maxLength={60} className="bg-[#f5f5f5] p-2 border placeholder-gray-600" value={memo} onChange={(evt)=>setMemo(evt.target.value)}
+                    placeholder="60자 이하"/>
+                </div>
 
-        <div className="bg-white max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
-            <div className="w-80">
-                <h1><EditIcon className="me-2"></EditIcon>제목</h1>
-                <input value={title} onChange={(evt)=>setTitle(evt.target.value)} type="text" />
-            </div>
-            <div className="w-80 mt-5">
-                <h1><EditIcon className="me-2 "></EditIcon>설명</h1>
-                <textarea value={memo} onChange={(evt)=>setMemo(evt.target.value)}/>
-            </div>
+                <div className="flex flex-wrap justify-center items-start mt-10">
+                    <DietDayBox title="아침" dietItemRow={dietItemRowOne} setDietItemRow={setDietItemRowOne}></DietDayBox>
+                    <DietDayBox title="점심" dietItemRow={dietItemRowTwo} setDietItemRow={setDietItemRowTwo}></DietDayBox>
+                    <DietDayBox title="저녁" dietItemRow={dietItemRowThree} setDietItemRow={setDietItemRowThree}></DietDayBox>
+                    <DietDayBox title="간식" dietItemRow={dietItemRowFour} setDietItemRow={setDietItemRowFour}></DietDayBox>
+                </div>
 
-            <div className="flex flex-wrap justify-center items-center">
-                <DietDayBox title="아침" dietItemRow={dietItemRowOne} setDietItemRow={setDietItemRowOne}></DietDayBox>
-                <DietDayBox title="브런치" dietItemRow={dietItemRowTwo} setDietItemRow={setDietItemRowTwo}></DietDayBox>
-                <DietDayBox title="점심" dietItemRow={dietItemRowThree} setDietItemRow={setDietItemRowThree}></DietDayBox>
-                <DietDayBox title="저녁" dietItemRow={dietItemRowFour} setDietItemRow={setDietItemRowFour}></DietDayBox>
-                <DietDayBox title="간식" dietItemRow={dietItemRowFive} setDietItemRow={setDietItemRowFive}></DietDayBox>
-                <DietDayBox title="야식" dietItemRow={dietItemRowSix} setDietItemRow={setDietItemRowSix}></DietDayBox>
-            </div>
-            <div className="w-80 mt-5 mb-5 flex justify-center items-center">
-                <h1 className="mt-1">공개</h1>
-                <Checkbox value={isPublic} onChange={(evt)=>setIsPublic(!isPublic)} defaultChecked />
-            </div>
-            <button onClick={handleSubmit}>수정하기</button>
-            <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
+                <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
                  content="수정하시겠습니까?" data={saveData}
                  postUrl="diet/day/my-day/update" returnUrl={`/diet/mydiet/${params.dietId}`} ></UpdateModal>
+            </div>
+            <div className='flex justify-end fixed bottom-0 bg-white w-full p-3 pr-12 top-line-noM'>
+                <div className='flex justify-center items-center mr-10'>
+                    <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
+                </div>
+                <button className='greenBtn' onClick={handleSubmit}>식단 수정</button>
+            </div>
         </div>
     )
 }
+
+/*
+         <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
+                 content="수정하시겠습니까?" data={saveData}
+                 postUrl="diet/day/my-day/update" returnUrl={`/diet/mydiet/${params.dietId}`} ></UpdateModal>
+
+*/

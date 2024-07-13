@@ -11,9 +11,15 @@ export interface UserLoginDTO extends User {
 
 export interface UserSignUpDTO extends User {
   email: string;
+  encodedEmail:string;
 }
 
 export interface Jwt{
   name:string,
   value:string
+}
+
+export enum SexEnum{
+  MALE   = "m",
+  FEMAIL = "f"
 }

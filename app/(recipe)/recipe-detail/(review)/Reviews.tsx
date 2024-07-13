@@ -7,6 +7,7 @@ import Link from "next/link";
 import WriteReviewReply from "./WriteReviewReply";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import ReviewEtcBtn from "./ReviewEtcBtn";
+import Image from "next/image";
 
 const domainReviewUrl = {
   recipe:"review/get",
@@ -29,6 +30,8 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
     }
   })
 
+  console.log("리뷰 패치", fetchData);
+  
   const isBoardReview = (review: ReviewWithUserInfo | BoardReviewWithUserInfo): review is BoardReviewWithUserInfo => {
     return (review as BoardReviewWithUserInfo) !== undefined;
   }
@@ -37,21 +40,25 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
     return (review as ReviewWithUserInfo) !== undefined;
   }
 
-  console.log("패치이", fetchData);
   const review = fetchData.map((review, inx) => (
     // have to 앞에 화살표 넣기
     <div key={inx} className={`m-5 mb-10 ${review.parentReviewId != null&&"ms-16"}`}>
       <div className="flex justify-start items-center">
         {review.parentReviewId && <SubdirectoryArrowRightIcon/>}
-        <Avatar />
+        {
+          review?.userInfo?.userPhoto ? 
+          <div className="img-wrapper-round w-10 h-10"><Image className="rounded-full" src={review.userInfo.userPhoto} alt ="no img" fill/></div>
+          :
+          <Avatar />
+        }
         <div className="flex justify-between w-full">
           {
           isBoardReview(review)&&review?.checkAnonymous === true ?
           <div>
             <h3 className="ms-2 me-2">익명</h3>
           </div>:
-          <Link href={`/userfeed/${review.userInfo.userNickName}`}>
-            <h3 className="ms-2 me-2">{review.userInfo.userNickName}</h3>
+          <Link href={`/userfeed/${review.userInfo?.userNickName}`}>
+            <h3 className="ms-2 me-2">{review.userInfo?.userNickName}</h3>
           </Link>
           }
           {domainName === "board" && isBoardReview(review) && review.parentReviewId===null&& (
@@ -69,7 +76,9 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
         }
         <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId}/>
       </div>
-      <div className="ms-12">{review.message}</div>
+      <div className="ms-12 break-words break-keep">
+        {review.message}
+      </div>
     </div>
   ));
 

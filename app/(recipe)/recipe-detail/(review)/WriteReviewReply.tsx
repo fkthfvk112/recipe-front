@@ -5,7 +5,7 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 import { Checkbox, Modal } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 
 
@@ -45,15 +45,16 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
     const handleSaveReply = ()=>{
         const domainUrl = domainReviewUrl[domainName as keyof typeof domainReviewUrl];
 
-        const dto = {
-            ...reply,
-            [reviewKey]:domainId
+        let postData = {
+          [reviewKey]:domainId,
+          ...reply,
+          checkAnonymous:checkAnonymous
         }
 
         switch(domainName){
             case "board":
               axiosAuthInstacne
-              .post(domainUrl, dto)
+              .post(domainUrl, postData)
               .then((res) => {
                 console.log(res.data);
                 revalidateByTagName(`reviews-${domainId}`);
@@ -63,6 +64,15 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
               });
             break;
           }
+    }
+
+    const handleChangeData = (evt:ChangeEvent<HTMLTextAreaElement>)=>{
+      const messageNow = evt.target.value;
+      if(messageNow.length > 200) return;
+      setReply({
+        ...reply,
+        message: messageNow,
+      });
     }
 
     return(
@@ -85,12 +95,7 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                         className="w-full h-30 p-3 border-none bottom-line-noM"
                         placeholder="대댓글을 작성해주세요."
                         value={reply.message}
-                        onChange={(e)=>{
-                          setReply({
-                              ...reply,
-                              message:e.target.value
-                          })
-                      }}
+                        onChange={(e)=>handleChangeData(e)}
                       />
                       <div className="flex justify-between items-center p-2">
                         <div className="felx justify-center items-center">
@@ -101,9 +106,15 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                         </div>
                         <div className="flex justify-center items-center">
                           <div className="me-5">{reply.message.length}/200</div>
-                          <button className="greenBtn" onClick={() => handleSaveReply()}>
-                          댓글 쓰기
-                          </button>
+                          {
+                            reply.message.length >= 1 && reply.message.length <= 200?
+                            <button className="greenBtn" onClick={() => handleSaveReply()}>
+                              댓글 쓰기
+                            </button>:
+                            <button className="grayBtn cursor-default">
+                              댓글 쓰기
+                            </button>
+                          }
                         </div>
                     </div>
                     </div>

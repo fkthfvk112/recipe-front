@@ -21,7 +21,7 @@ export default function MyFeed() {
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
-      className="flex justify-center items-center relative w-1/3 aspect-square p-0.5"
+      className="flex justify-center items-center"
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}
     >
@@ -29,5 +29,11 @@ export default function MyFeed() {
     </Link>
   ));
 
-  return <div className="flex justify-start items-center flex-wrap w-full">{feedPhotos}</div>;
+  return (
+    <div className="flex justify-center items-start h-screen">
+      <div className="flex justify-center items-center flex-wrap w-full p-2">
+        {feedPhotos}
+       </div>
+    </div>
+  );
 }

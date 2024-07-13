@@ -27,13 +27,18 @@ export default function MyLike() {
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
-      className="flex justify-center items-center relative w-1/3 aspect-square p-0.5"
+      className="flex justify-center items-center"
       key={inx}
-      href={`/recipe-detail/${recipe.recipeId}`}
-    >
+      href={`/recipe-detail/${recipe.recipeId}`}>
       <RecipeVerticalItem key={inx} recipe={recipe}/>
     </Link>
   ));
 
-  return <div className="flex flex-wrap w-full">{feedPhotos}</div>;
+  return(
+    <div className="flex justify-center items-start h-screen">
+      <div className="flex justify-center items-center flex-wrap w-full p-2">
+        {feedPhotos}
+      </div>
+    </div>
+  )
 }

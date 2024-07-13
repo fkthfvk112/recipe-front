@@ -67,7 +67,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = recipes.map((ele, inx)=>
-        <div className="relative" onClick={()=>setOpen(true)}>
+        <div key={inx} className="relative" onClick={()=>setOpen(true)}>
                 <div className="w-full text-right">
                     <button onClick={(evt)=>{
                         deleteRecipe(inx);

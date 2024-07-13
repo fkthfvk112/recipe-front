@@ -4,6 +4,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { flushSync } from "react-dom";
 import "./embla.css";
+import Image from "next/image";
 
 const TWEEN_FACTOR = 3;
 
@@ -20,6 +21,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [tweenValues, setTweenValues] = useState<number[]>([]);
+
   const imageByIndex = (index: number): string =>
     props.imgUrls[index % props.imgUrls.length];
 
@@ -63,24 +65,13 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((index) => (
-            <div className="embla__slide" key={index}>
-              <div
-                className="embla__scale"
-                style={{
-                  ...(tweenValues.length && {
-                    transform: `scale(${tweenValues[index]})`,
-                  }),
-                }}
-              >
-                <div className="embla__slide__number">
-                  <span>{index + 1}</span>
-                </div>
-                <img
-                  className="embla__slide__img"
-                  src={imageByIndex(index)}
-                  alt="A cool cat."
-                />
-              </div>
+            <div className="embla_img_slide" key={index}>
+              <Image
+                className="inner-img"
+                src={imageByIndex(index)}
+                alt="no img"
+                fill
+              />
             </div>
           ))}
         </div>

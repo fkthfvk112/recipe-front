@@ -1,4 +1,4 @@
-import {
+import React, {
   Dispatch,
   FC,
   SetStateAction,
@@ -15,6 +15,7 @@ import { CookingSteps_create_withPhotoSring } from "./ContainerDnd";
 import ClearIcon from "@mui/icons-material/Clear";
 import Image from "next/image";
 import fileToBase64 from "@/app/(utils)/fileToBase64";
+import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
 export interface CardProps {
   id: any;
   index: number;
@@ -34,7 +35,7 @@ export const ItemTypes = {
   CARD: "card",
 };
 
-export const CookStepCard: FC<CardProps> = ({
+const CookStepCard: FC<CardProps> = ({
   id,
   index,
   moveCard,
@@ -120,7 +121,6 @@ export const CookStepCard: FC<CardProps> = ({
   const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
-    // const newCards = [...cards];
     const newCards = cards.map((card) => {
       if (card.order === index) {
         card.description = e.target.value;
@@ -137,10 +137,8 @@ export const CookStepCard: FC<CardProps> = ({
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
-        console.log("파일 있음");
         try {
-          const base64String = await fileToBase64(file);
-          console.log("베이스64", base64String);
+          const base64String = await resizeFileToBase64(file) as string;
           const newCards = cards.map((card) => {
             if (card.order === index) {
               return { ...card, photo: base64String, photoSring: base64String };
@@ -149,7 +147,6 @@ export const CookStepCard: FC<CardProps> = ({
           });
 
           setCards(newCards);
-          // handleFilePreviewChange(file);
         } catch (error) {
           console.error("파일 변환 오류:", error);
         }
@@ -157,28 +154,7 @@ export const CookStepCard: FC<CardProps> = ({
     }
   };
 
-  // const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (
-  //   event
-  // ) => {
-  //   let file: File | null = null;
-  //   if (event.target.files !== null) file = event.target.files[0];
-  //   if (file) {
-
-  //     const newCards = cards.map((card) => {
-  //       if (card.order === index) {
-  //         card.photo = file;
-  //       }
-  //       return card;
-  //     });
-
-  //     if (file) {
-  //       handleFilePreviewChange(file);
-  //       file;
-  //     } else {
-  //       setCards(newCards);
-  //     }
-  //   }
-  // };
+  console.log("리랜더링");
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const newCards = cards.map((card) => {
@@ -191,25 +167,6 @@ export const CookStepCard: FC<CardProps> = ({
     setCards(newCards);
   };
 
-  // const handleFilePreviewChange = (file: File) => {
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     if (reader.result !== null && typeof reader.result === "string") {
-  //       const newCards = cards.map((card) => {
-  //         if (card.order === index && typeof reader.result === "string") {
-  //           card.photoSring = reader.result;
-  //         }
-  //         return card;
-  //       });
-
-  //       setCards(newCards);
-  //     }
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
-
   const deleteStep = () => {
     const newCards = cards
       .filter((card) => card.order !== index)
@@ -220,6 +177,21 @@ export const CookStepCard: FC<CardProps> = ({
     console.log(newCards);
     setCards(newCards as CookingSteps_create_withPhotoSring[]);
   };
+
+
+  const deletePhoto = ()=>{
+    const newCards = cards.map((card) => {
+      if (card.order === index) {
+        card.photoSring = "";
+      }
+      return card;
+    });
+
+    setCards(newCards);
+  }
+
+
+
   return (
     <div
       className={
@@ -234,7 +206,7 @@ export const CookStepCard: FC<CardProps> = ({
         onClick={deleteStep}
       ></ClearIcon>
       <div className="flex flex-row justify-between items-center row-span-1 col-span-1 row-start-1">
-        <div className="bg-yellow-300 rounded-full h-8 w-8 flex justify-center items-center">
+        <div className="bg-[#52cf63] text-white font-bold rounded-xl h-8 w-8 flex justify-center items-center ms-2">
           {card.order + 1}
         </div>
         <div className="mr-10">
@@ -250,10 +222,6 @@ export const CookStepCard: FC<CardProps> = ({
       </div>
       <div className=" p-3 flex flex-row justify-center items-center w-full">
         <div className="bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
-          <label
-            className="w-full h-full flex justify-center items-center hover:cursor-pointer"
-            htmlFor={`fileInput${card.order.toString()}`}
-          >
             <input
               className="border border-slate-500"
               onChange={handleFileChange}
@@ -262,25 +230,32 @@ export const CookStepCard: FC<CardProps> = ({
               hidden
             />
             {card.photoSring ? (
-              <Image
-                width={500}
-                height={500}
-                className="w-full h-full"
-                style={{ objectFit: "cover" }}
-                src={card.photoSring}
-                alt="no img"
-              />
+              <div className="w-[100px] h-[100px] img-wrapper-square">
+                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                  <ClearIcon className="bg-white"/>
+                </button>
+                <Image
+                  className="w-full h-full"
+                  style={{ objectFit: "cover" }}
+                  src={card.photoSring}
+                  alt="no img"
+                  fill
+                />
+              </div>
             ) : (
-              <FileUploadIcon className="text-gray-500 w-10 h-10" />
+              <label className="w-full h-full flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
+                <FileUploadIcon className="text-gray-500 w-10 h-10" />
+              </label>
             )}
-          </label>
 
           {/* <FilePreview file={card?.photo}></FilePreview> */}
         </div>
         <textarea
+          placeholder="3자 이상 200자 이하"
           className="ml-2 flex-grow rounded-2xl w-auto h-24 p-2 border border-slate-500 border-solid resize-none"
           onChange={handleTextChange}
           value={card.description}
+          maxLength={200}
         ></textarea>
 
         <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
@@ -288,3 +263,5 @@ export const CookStepCard: FC<CardProps> = ({
     </div>
   );
 };
+
+export default React.memo(CookStepCard)

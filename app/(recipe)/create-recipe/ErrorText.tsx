@@ -17,7 +17,7 @@ export default function ErrorText({
     errorText = (
       <>
         <div className="text-base">
-          요리 이름을 추가해주세요 (3글자 이상, 20글자 이하)
+          레시피 이름을 추가해주세요 (3글자 이상, 20글자 이하)
         </div>
       </>
     );
@@ -29,18 +29,18 @@ export default function ErrorText({
       <>
         {errorText}
         <div className="text-base">
-          요리 대표사진을 추가해주세요. (1개 이상)
+          레시피 대표사진을 추가해주세요. (1개 이상)
         </div>
       </>
     );
   }
 
-  if (recipe.description.length < 8) {
+  if (recipe.description.length < 3) {
     errCnt++;
     errorText = (
       <>
         {errorText}
-        <div className="text-base">요리 설명을 추가해주세요. (8글자 이상)</div>
+        <div className="text-base">레시피 설명을 추가해주세요. (3글자 이상)</div>
       </>
     );
   }
@@ -51,7 +51,7 @@ export default function ErrorText({
       <>
         {errorText}
         <div className="text-base">
-          요리 재료를 입력해주세요. (재료명, 수량)
+          레시피 재료를 입력해주세요. (재료명, 수량)
         </div>
       </>
     );
@@ -66,7 +66,7 @@ export default function ErrorText({
       <>
         {errorText}
         <div className="text-base">
-          요리 단계를 추가해주세요(3단계 이상, 각 5글자 이상)
+          레시피 단계를 추가해주세요(3단계 이상, 각 5글자 이상)
         </div>
       </>
     );

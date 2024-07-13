@@ -16,11 +16,13 @@ export default function Description({ recipe, setRecipe }: DescProp) {
   return (
     <div className="flex flex-col justify-center items-center w-full mt-6 mb-6 p-5">
       <div className="text-start w-full">
-        <h3 className="text-lg">음식 설명</h3>
+        <h3 className="text-lg">레시피 설명</h3>
       </div>
       <textarea
+        placeholder="3자 이상 200자 이하"
         onChange={handleDescText}
         className="border border-slate-500 rounded-2xl w-full h-24 p-3 resize-none"
+        maxLength={200}
         name=""
         id=""
       ></textarea>

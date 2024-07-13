@@ -1,24 +1,24 @@
 "use client"
 
 import Image from "next/image";
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import { DietItem, DietItemRow } from "@/app/(type)/diet";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { Avatar, Box, Modal } from "@mui/material";
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import { DietItemRow } from "@/app/(type)/diet";
+import React, { useState } from "react";
+import { Box, Modal } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
+    height:600,
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: "100%",
+    maxWidth: 400,
+    minWidth:280,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
-    backgroundColor:'#003c80',
-    color:"white",
+    p: 1,
   };
 
 interface DietDayRowProp{
@@ -29,51 +29,47 @@ interface DietDayRowProp{
 function DietDayBox({title, dietItemRow}:DietDayRowProp){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const getImg = (inx:number)=>{
-        const itemNow:DietItem = dietItemRow.dietItemList[inx];
-        if(itemNow?.photo === undefined || itemNow.photo === ""){
-            return <Avatar className="w-16 h-16" />
-        }
-        return (
-                <Image
-                className="rounded-full"
-                width={64}
-                height={64}
-                src={itemNow.photo as string}
-                alt="no img">
-                </Image>
-        )
-      }
+    // const getImg = (inx:number)=>{
+    //     const itemNow:DietItem = dietItemRow.dietItemList[inx];
+    //     if(itemNow?.photo === undefined || itemNow.photo === ""){
+    //         return <Avatar className="w-16 h-16" />
+    //     }
+    //     return (
+    //             <Image
+    //             className="rounded-full"
+    //             width={64}
+    //             height={64}
+    //             src={itemNow.photo as string}
+    //             alt="no img">
+    //             </Image>
+    //     )
+    //   }
     
+    console.log("이이", dietItemRow);
     const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
-            <div>
-                <div className="w-full flex justify-end">
+            <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">
+                <div className="w-full flex flex-col">
+                    <h2>{dietItem.title}</h2>
                 </div>
-                <div className="grid grid-cols-4 mb-8 " key={inx}>
-                    <div className="col-span-1 pt-1">
-                        {/* have to :: edit 1. 사진 없을 때 대체 사진, 2 사진 둥글게 만들기 */}
-                        <div className="img-wrapper-round">
-                        {dietItem?.photo?
-                            <Image width={70}
-                                    height={70}
-                                    src={dietItem?.photo}
-                                    alt="no img"/>
-                            :
-                            <RestaurantMenuIcon className="inner-img"/>
-                        }
-                        </div>
+                <div className="w-full flex flex-col">
+                    {
+                    dietItem?.memo&&
+                    <div className="bg-[#e1e1e1] mt-3 img-wrapper-square p-2 rounded-lg">
+                        {dietItem.memo}
                     </div>
-                    <div className="col-span-3 ps-2">
-                        <div className="flex justify-between">
-                            <div className="white-title">{dietItem.title}</div>
-                            <div>{dietItem.calorie}</div>
-                        </div>
-                        <div className="grid grid-cols-3 mb-3">
-                            <div className="col-span-1">{dietItem.qqt}</div>
-                            <div className="col-span-2 bg-[#94aece] p-2 rounded-lg text-black">{dietItem.memo}</div>
-                        </div>
-                        <hr />
+                    }
+                </div>
+                <div className="w-full mt-3 grid grid-cols-2">
+                    <div className="col-span-1">
+                        <div>{dietItem?.qqt}</div>
+                    </div>
+                    <div className="col-span-1 relative">
+                    {
+                        dietItem?.calorie && dietItem?.calorie > 0 ? (
+                            <div>{dietItem.calorie}<span className="font-bold text-[#5a5a5a]"> kcal</span></div>
+                        ) : null
+                    }
                     </div>
                 </div>
             </div>
@@ -81,38 +77,56 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
     })
 
     return (
-        <div className="flex flex-col justify-start items-center bg-[#007f5f] w-52 h-52 p-3 m-3 rounded-xl">
-            <div className="flex justify-between w-full">
-                <div className="w-full mt-2 font-bold text-white">
-                    {title}
-                </div>
+        <div className="flex flex-col justify-start items-center border-2 rounded-xl w-52 min-h-[208px] p-3 m-3">
+        <div className="flex-center-col w-full bottom-line">
+            <div className="w-full mb-2 font-bold text-xl flex justify-between">
+                {title}
                 <div onClick={()=>{setIsModalOpen(true)}}>
-                    <ZoomInIcon sx={{fill:'white', width:'2.5rem', height:'2.5rem'}}></ZoomInIcon>
+                    <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 상세</button>
+                    {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
                 </div>
             </div>
-            <div className="flex w-full flex-wrap text-sm">
-                {dietItemRow.dietItemList?.map((item, inx)=>{
-                    return (
-                        <span key={inx} className="text-white m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
-                    )
-                })}
-            </div>
-
-            <Modal
-                open={isModalOpen}
-                onClose={() => {
-                setIsModalOpen(false);
-                }}
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <div className="w-full mb-3">
-                        <h1>{title}</h1>
-                    </div>
-                    {itemBageList}
-                </Box>
-            </Modal>
         </div>
+        {
+            dietItemRow?.photo&&
+            <div className="w-full flex-center">
+                <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
+                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
+                        <Image src={dietItemRow.photo} alt="no img" fill/>
+                        {dietItemRow?.photo}
+                    </div>
+                </div>
+            </div>
+        }
+        <div className="flex w-full flex-wrap text-sm">
+            {dietItemRow.dietItemList?.map((item, inx)=>{
+                return (
+                    <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
+                )
+            })}
+        </div>
+        
+        <Modal
+            open={isModalOpen}
+            onClose={() => {
+            setIsModalOpen(false);
+            }}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <Box sx={style}>
+                <div className="w-full relative">
+                    <h1 className="m-2 mb-2 text-2xl">{title}</h1>
+                    <button onClick={()=>setIsModalOpen(false)} className="closeBtnParent">
+                        <CloseIcon/>
+                    </button>
+                </div>
+                <div className="bottom-line"/>
+                <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
+                        {itemBageList}
+                </div>
+            </Box>
+        </Modal>
+    </div>
     )
 }
 

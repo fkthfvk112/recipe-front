@@ -63,7 +63,7 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = dietDay.map((ele, inx)=>
-        <div className="relative" onClick={()=>setOpen(true)}>
+        <div key={inx} className="relative" onClick={()=>setOpen(true)}>
                 <div className="w-full text-right">
                     <button onClick={(evt)=>{
                         deleteDiet(inx);

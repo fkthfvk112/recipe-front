@@ -5,8 +5,7 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import { searchPage } from "@/app/(recoil)/recoilAtom";
 import { Pagination } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useRecoilState } from "recoil";
+import CreateIcon from '@mui/icons-material/Create';
 import RecipePagination from "../../RecipePagination";
 
 export default async function SearchingByCondition({
@@ -28,7 +27,7 @@ export default async function SearchingByCondition({
       return res.json();
     }
   });
-
+    
   //페이지 총 개수
   const pageMaxCnt: number = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions/cnt?${decodedUrl}`,
@@ -58,7 +57,7 @@ export default async function SearchingByCondition({
   ));
 
   return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px]">
+    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
       <div className="flex flex-wrap justify-center items-center w-full mb-16">
         {recentRecipes}
       </div>

@@ -96,13 +96,13 @@ export default function CreateNewBoardPost({
         if(title.length < 1 || title.length > 30){
             return{
                 isValid:false,
-                message:"제목의 길이는 1이상 30이하여야해요."
+                message:"제목의 길이는 1자 이상 30자 이하여야해요."
             }
         }
         if(content.length < 5 || content.length > 1024){
             return{
                 isValid:false,
-                message:"내용의 길이는 5이상 1024이하여야해요."
+                message:"내용의 길이는 5자 이상 1024자 이하여야해요."
             }
         }
         if(recipes.length > 3){
@@ -149,7 +149,8 @@ export default function CreateNewBoardPost({
             </div>
             <div className='h-[668px]'>
                 <div className='h-[620px] bg-white'>
-                <textarea ref={textAreaRef} className='border-none outline-none h-[620px] overflow-hidden p-3' value={content} onChange={(e)=>handleChangeContent(e)}></textarea>
+                <textarea ref={textAreaRef} className='border-none outline-none h-[620px] overflow-hidden p-3' 
+                          value={content} onChange={(e)=>handleChangeContent(e)} placeholder='내용을 입력해주세요.' maxLength={1024}></textarea>
                 </div>
             </div>
             <SetRecipe recipes={recipes} setRecipes={setRecipes}/>

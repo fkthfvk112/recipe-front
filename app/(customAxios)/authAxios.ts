@@ -14,32 +14,7 @@ export const axiosAuthInstacne = axios.create({
 
 axiosAuthInstacne.interceptors.response.use((res) => {
   console.log("잉?");
-  if (res.data === "Issue new token success") {
-    // console.log("Access cookie expired set new cookie success");
-    // const originBaseUrl = res?.config?.baseURL;
-    // const originUrl = res?.config?.url;
-    // const originMethod = res?.config?.method;
-    // const originData = res?.config?.data;
-
-    // if (originUrl === undefined || originMethod === undefined) {
-    //   return Promise.reject("오리진 url 혹은 오리진 method가 undefined");
-    // }
-    // console.log("url", originBaseUrl);
-    // console.log("url", originUrl);
-    // console.log("method", originMethod);
-    // console.log("data", originData);
-
-    // return axios({
-    //   method: originMethod,
-    //   baseURL: originBaseUrl,
-    //   url: originUrl,
-    //   data: originData,
-    //   withCredentials: true,
-    //   headers: {
-    //     "Content-Type": res.headers["content-type"],
-    //   },
-    // });
-  }
+  
   return res;
 },
 (err)=>{

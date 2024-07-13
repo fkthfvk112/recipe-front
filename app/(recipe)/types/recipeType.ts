@@ -38,7 +38,7 @@ export interface Ingredient {
 
 export interface Recipe {
   createdAt:    string;
-  views:        number;
+  viewCnt:        number;
   recipeId:     number | undefined | null;
   recipeName:   string;
   repriPhotos:  string[];

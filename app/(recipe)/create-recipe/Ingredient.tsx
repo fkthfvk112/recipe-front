@@ -41,13 +41,13 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
     return (
       <div
         key={inx}
-        className="grid grid-flow-col grid-cols-5 w-56 border border-slate-500 m-0.5"
+        className="relative grid grid-flow-col grid-cols-5 w-full mt-5 pe-4 gap-1"
       >
         {inx === 0 ? (
           <>
             <input
-              className="col-span-3 border-none rounded-none"
-              placeholder="예)삼겹살"
+              className="col-span-3 rounded-none"
+              placeholder="예) 삼겹살"
               name="name"
               type="text"
               value={ingre.name}
@@ -56,7 +56,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
               }}
             />
             <input
-              className="col-span-2 border-none rounded-none"
+              className="col-span-2 rounded-none"
               placeholder="예) 200g"
               name="qqt"
               type="text"
@@ -69,7 +69,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
         ) : (
           <>
             <input
-              className="col-span-3 border-none rounded-none"
+              className="col-span-3 rounded-none"
               name="name"
               type="text"
               placeholder="재료"
@@ -79,7 +79,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
               }}
             />
             <input
-              className="col-span-2 border-none rounded-none"
+              className="col-span-2 rounded-none"
               name="qqt"
               type="text"
               placeholder="양"
@@ -95,7 +95,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
           onClick={() => {
             deleteThisIngre(ingre.order);
           }}
-          className="col-span-1 w-4 h-4"
+          className="absolute -right-1 -top-3 col-span-1 w-4 h-4"
         ></ClearIcon>
       </div>
     );
@@ -138,15 +138,14 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
   return (
     <div className="w-full flex flex-col mt-6 mb-6 p-5">
       <h3 className="text-lg">재료</h3>
-      <div className="flex flex-row flex-wrap justify-center items-center">
+      <div className="flex flex-col justify-center items-center mt-2">
         {ingreItems}
       </div>
-      <div className="text-center">
+      <div className="text-center mt-4">
         <AddIcon
-          className="m-1 w-12 h-12 border border-slate-500 hover:cursor-pointer"
+          className="m-1 w-[45px] h-[45px] border border-slate-500 hover:cursor-pointer"
           onClick={addIngre}
         >
-          추가
         </AddIcon>
       </div>
     </div>

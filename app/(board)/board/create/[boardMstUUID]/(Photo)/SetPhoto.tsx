@@ -13,7 +13,7 @@ function SetDiet({photos, setPhotos}:{photos:File[], setPhotos:(files:File[])=>v
             aria-controls="panel1-content"
             id="panel1-header"
             >
-            <h3>사진 등록(최대 3장)</h3>
+            <h3>사진 등록 (최대 3장)</h3>
             </AccordionSummary>
             <AccordionDetails>
                 <PhotoHolder photos={photos} setPhotos={setPhotos}/>

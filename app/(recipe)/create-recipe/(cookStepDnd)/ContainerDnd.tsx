@@ -1,7 +1,7 @@
 import update from "immutability-helper";
 import { useCallback, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { CookStepCard } from "./CookStepCard";
+import  CookStepCard from "./CookStepCard";
 import { CookStepProp } from "./CookStep";
 import { CookingSteps_create } from "../../types/recipeType";
 import { Tooltip } from "@mui/material";

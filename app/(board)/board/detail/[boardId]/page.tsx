@@ -12,9 +12,7 @@ import HeartLike from "@/app/(commom)/CRUD/HeartLike";
 import ReviewContainer from "@/app/(recipe)/recipe-detail/(review)/ReviewContainer";
 import BoardPhotoHolder from "./(Photo)/BoardPhotoHolder";
 import BoardRecipeHolder from "./(recipe)/BoardRecipeHolder";
-import { Recipe } from "@/app/(recipe)/types/recipeType";
 import BoardDietHolder from "./(Diet)/BoardDietHolder";
-import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 
 export default async function BoardDetail({
     params

@@ -84,7 +84,6 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
              <Box sx={style}>
                 <div className='flex flex-col w-full justify-center bg-white rounded-3xl'>
                     <button onClick={deleteData} className='w-full border-none text-red-600'>삭제하기</button>
-                    <hr />
                     <button onClick={sendToEditPage} className='w-full border-none'>수정하기</button>
                 </div>
                 <div className='flex w-full justify-center mt-2 bg-white rounded-3xl'>

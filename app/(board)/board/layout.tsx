@@ -8,7 +8,7 @@ export default function BoardLayout({
 
     return (
         <div className="bg-[#FB8500] defaultOuterContainer">
-                {children}
+            {children}
          </div>
     )
 }

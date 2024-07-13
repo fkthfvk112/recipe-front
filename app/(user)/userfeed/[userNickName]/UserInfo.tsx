@@ -5,12 +5,13 @@ import MyFeedPhoto from "./MyFeedPhoto";
 import EditIcon from "@mui/icons-material/Edit";
 
 export interface UserFeedInfo {
-  userId: string;
-  nickName: string | null;
-  email: string;
+  userId:    string;
+  nickName:  string | null;
+  email:     string;
   grantType: string;
   userPhoto: string | null;
-  userUrl: string | null;
+  userUrl:   string | null;
+  userIntro: string | null; 
 }
 
 export default function UserInfo({ userNickName }: { userNickName: string }) {
@@ -30,7 +31,7 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
   }, [updateData]);
 
   return (
-    <div className="w-full p-3">
+    <div className="w-full max-w-[500px] p-3">
       <div className="w-full flex justify-center flex-wrap">
         <div className=" flex justify-center items-center">
           <MyFeedPhoto photoUrl={userData?.userPhoto}></MyFeedPhoto>
@@ -39,6 +40,11 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
           <h3>{userData?.nickName}</h3>
           <div>{userData?.userUrl}</div>
         </div>
+      </div>
+      <div className="w-full text-center mt-5">
+          <div className="w-full p-3 m-3 text-start bg-[#f1f1f1] rounded-xl">
+            {userData?.userIntro}
+          </div>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import CookMethod from "./CookMethod";
 import Description from "./Description";
 import CookStep from "./(cookStepDnd)/CookStep";
 import Ingredient from "./Ingredient";
-import { Button, Modal, Typography, Box, CircularProgress } from "@mui/material";
+import { Modal, Typography, Box, CircularProgress } from "@mui/material";
 import ErrorText from "./ErrorText";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useRecoilState } from "recoil";
@@ -25,7 +25,7 @@ export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 export default function CreateRecipePage() {
   const [recipe, setRecipe] = useState<RecipeCreate>({
     recipeName: "",
-    repriPhotos: [],
+    repriPhotos: ["", "", ""],
     categorie: RecipeSelection.한식,
     servings: 1,
     cookMethod: CookingMethod.굽기,
@@ -104,13 +104,13 @@ export default function CreateRecipePage() {
   }, [recipe]);
 
   return (
-    <div className="p-5 max-w-xl w-dvw m-3 bg-white px-4 flex flex-col justify-center items-center">
+    <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>
+      <Description recipe={recipe} setRecipe={setRecipe}></Description>
       <Categori recipe={recipe} setRecipe={setRecipe}></Categori>
       <Serving recipe={recipe} setRecipe={setRecipe}></Serving>
       <CookMethod recipe={recipe} setRecipe={setRecipe}></CookMethod>
       <RepriPric recipe={recipe} setRecipe={setRecipe}></RepriPric>
-      <Description recipe={recipe} setRecipe={setRecipe}></Description>
       <Ingredient recipe={recipe} setRecipe={setRecipe}></Ingredient>
       <CookStep
         recipe={recipe}
@@ -118,12 +118,13 @@ export default function CreateRecipePage() {
         letsSetRecipe={letsSetRecipe}
       ></CookStep>
       <button
+        className="saveBtn"
         onClick={() => {
           setIsModalOpen(true);
           clickPostHandler();
         }}
       >
-        공개하기
+        레시피 발행
       </button>
       <Modal
         open={isModalOpen}
@@ -145,6 +146,8 @@ export default function CreateRecipePage() {
             <button className="cancelBtn me-2" onClick={() => setIsModalOpen(false)}>
               닫기
             </button>
+            {
+              errorCnt===0 &&
             <button
               onClick={() => {
                 saveRecipeToDb();
@@ -154,6 +157,7 @@ export default function CreateRecipePage() {
             >
               네
             </button>
+            }
           </div>
         </Box>
       </Modal>

@@ -26,22 +26,23 @@ export default async function DietDetail({
 
     return (
       dietDay&&
-      <div className='w-full bg-[#55a630]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>
-        <div className="bg-blue max-w-xl m-3 flex flex-col flex-wrap w-full justify-center items-center">
-          <div className="w-80 flex justify-start items-center">
-              <h1 className="text-2xl text-white">{dietDay.title}</h1>
+      <div className='w-full bg-[#1d3124]  flex flex-col justify-center items-center pt-14'>
+        <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+            <div className="w-[93%] flex justify-start items-center">
+              <h1 className="text-2xl">{dietDay.title}</h1>
               <EditDel ownerUserId={dietDay.userId as string} editReturnURl={`diet/mydiet/edit/${params.dietId}`} delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
-          </div>
-          {
-          dietDay.memo&&
-          <div className="w-80 mt-5 bg-white rounded-lg p-3">
-              <div className="text-lg">{dietDay.memo}</div>
-          </div>
-          }
-          <div className="flex flex-wrap justify-center items-center mt-10">
-            {dietItems}
-          </div>
+            </div>
+            {
+            dietDay.memo&&
+            <div className="w-[93%] bg-stone-100 rounded-lg p-3">
+                <div className="text-lg">{dietDay.memo}</div>
+            </div>
+            }
+
+            <div className="flex flex-wrap justify-center items-start mt-10">
+              {dietItems}
+            </div>
         </div>
-      </div>
+    </div>
     )
   }

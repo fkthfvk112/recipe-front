@@ -3,20 +3,25 @@ import AddIcon from '@mui/icons-material/Add';
 import { DietItem, DietItemRow } from "@/app/(type)/diet";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Avatar, Box, Modal } from "@mui/material";
-import fileToBase64 from "@/app/(utils)/fileToBase64";
+import CloseIcon from '@mui/icons-material/Close';
 import ClearIcon from '@mui/icons-material/Clear';
 import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
+import Swal from "sweetalert2";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 const style = {
     position: "absolute" as "absolute",
     top: "50%",
     left: "50%",
+    height:700,
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: "100%",
+    maxWidth: 400,
+    minWidth:280,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
+    p: 1,
   };
 
 interface DietDayRowProp{
@@ -29,18 +34,19 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const handleAddItem = ()=>{
+        if(dietItemRow.dietItemList.length >= 15){
+            Swal.fire({
+                icon: "warning",
+                text: "한 끼에 최대 15개의 음식만 추가 가능해요.",
+              })
+            return;
+        }
         const newDietRow = {...dietItemRow};
-        newDietRow.dietItemList.push({
-            title:undefined,
-            calorie:undefined,
-            photo:undefined,
-            memo:undefined,
-            qqt:undefined,
-        });
+        newDietRow.dietItemList.push({calorie: 0, memo: "", qqt: "", title: ""});
         setDietItemRow(newDietRow);
     }
 
-    const handleValChg = (evt)=>{
+    const handleValChg = (evt:any)=>{
         const {value, name} = evt.target;
         if(value === undefined || name === undefined) return;
 
@@ -60,7 +66,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
         })
     }
 
-    const handleSetVal = (name:string):string|undefined=>{
+    const handleGetVal = (name:string):string|number|undefined=>{
         const nowIndex = Number(name.split('-')[1]);
         const strName = name.split('-')[0];
 
@@ -76,68 +82,10 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                 return itemNow.qqt;
             case "memo":
                 return itemNow.memo;
-            case "photo":
-                return itemNow.photo;
         }
     }
 
-    const handlePhotoChange = (evt, base64str:string)=>{
-        const {value, name} = evt.target;
-        const nowIndex = Number(name.split('-')[1]);
-        const strName = name.split('-')[0];
-
-        if(value === undefined || name === undefined || strName !== 'photo') return;
-
-        const newDietItemRowArray = [...dietItemRow.dietItemList];
-        newDietItemRowArray[nowIndex] = {
-            ...newDietItemRowArray[nowIndex],
-            photo:base64str
-        }
-
-        setDietItemRow({
-            ...dietItemRow,
-             dietItemList:newDietItemRowArray
-        })
-    }
-
-    const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
-        evt
-      ) => {
-        const {value, name} = evt.target;
-        if(value === undefined || name === undefined) return;
-
-        if (evt.target.files) {
-          const file = evt.target.files[0];
-          if (file) {
-            try {
-              const base64String = await resizeFileToBase64(file) as string;
-              handlePhotoChange(evt, base64String);
-
-            } catch (error) {
-              alert("파일 변환 오류 발생 " + error);
-            }
-          }
-        }
-      };
-
-      const getImg = (inx:number)=>{
-        const itemNow:DietItem = dietItemRow.dietItemList[inx];
-        if(itemNow?.photo === undefined || itemNow?.photo === null || itemNow.photo === ""){
-            return <Avatar className="w-16 h-16" />
-        }
-        return (
-                <div className="img-wrapper-round">
-                    <Image
-                        width={70}
-                        height={70}
-                        src={itemNow.photo as string}
-                        alt="no img">
-                    </Image>
-                </div>
-        )
-      }
-
-    const handleDelete = (evt)=>{
+    const handleDelete = (evt:any)=>{
         const {value, name} = evt.currentTarget;
         if(value === undefined || name === undefined) return;
         const nowIndex = Number(name.split('-')[1]);
@@ -147,90 +95,147 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
             if(inx !== nowIndex) return item;
         }).filter(ele=>ele) as DietItem[];
 
-        console.log('das ', newDietItemRowArray);
-
         setDietItemRow({
             ...dietItemRow,
              dietItemList:newDietItemRowArray
         })
     }
     
+
+    const resetDiet = ()=>{
+        Swal.fire({
+            title: "입력 초기화",
+            text: "정말로 입력을 초기화하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "초기화",
+            cancelButtonText: "아니요",
+            confirmButtonColor: '#f22707',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setDietItemRow({
+                    ...dietItemRow,
+                    dietItemList:[{calorie: 0, memo: "", qqt: "", title: ""}]
+                });
+            }
+        });
+    }
+
+    console.log("리스트", dietItemRow);
+
     const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
-            <div>
-                <div className="w-full flex justify-end">
-                    <button name={`delete-${inx}`} onClick={(evt)=>handleDelete(evt)} className="flex justify-center items-center border-none h-8 w-8">
-                        <ClearIcon/>
-                    </button>
+            <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">
+                <button name={`delete-${inx}`} onClick={(evt)=>handleDelete(evt)} className="absolute right-0 top-0 flex justify-center items-center border-none h-8 w-8">
+                        <ClearIcon className="bg-white"/>
+                </button>
+                <div className="w-full flex flex-col">
+                    <span className="font-bold">음식 이름 <span className="text-green-700">(필수)</span></span>
+                    <input onChange={(evt)=>handleValChg(evt)} value={dietItem?.title} name={`title-${inx}`} placeholder="음식 이름(최대 12자)" type="text" maxLength={12}/>
                 </div>
-                <div className="grid grid-cols-4 mb-8 " key={inx}>
+                <div className="w-full flex flex-col mt-3">
+                    <span className="font-bold">음식 설명</span>
+                    <textarea className="p-2" name={`memo-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.memo} placeholder="음식 설명(최대 60자)" />
+                </div>
+                <div className="w-full mt-3 grid grid-cols-2">
                     <div className="col-span-1">
-                    <div className="p-1">
-                        <label htmlFor={`edit-${inx}`} className="cursor-pointer">
-                        <input
-                            id={`edit-${inx}`} 
-                            name={`photo-${inx}`}
-                            className="border border-slate-500"
-                            onChange={(evt)=>handleFileChange(evt)}
-                            type="file"
-                            hidden
-                        />
-                        {getImg(inx)}
-                        </label>
+                        <input name={`qqt-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.qqt} placeholder="음식양" className="col-span-1" type="text" />
                     </div>
-                    </div>
-                    <div className="col-span-3">
-                        <div className="flex justify-between">
-                            <input onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`title-${inx}`)} name={`title-${inx}`} placeholder="음식명" type="text" className="w-28"/>
-                            <input name={`calorie-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`calorie-${inx}`)} placeholder="칼로리" type="text" className="w-28"/>
-                        </div>
-                        <div className="grid grid-cols-3 mb-3">
-                            <input name={`qqt-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`qqt-${inx}`)} placeholder="음식양" className="col-span-1" type="text" />
-                            <input name={`memo-${inx}`} onChange={(evt)=>handleValChg(evt)} value={handleSetVal(`memo-${inx}`)} placeholder="설명" className="col-span-2" type="text" />
-                        </div>
-                        <hr />
+                    <div className="col-span-1 relative">
+                        <div className="absolute font-bold text-[#a1a1a1]" style={{top:"7px", right:"17px"}}>kcal</div>
+                        <input name={`calorie-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.calorie} placeholder="칼로리" type="number" />
                     </div>
                 </div>
             </div>
         )
     })
 
-    console.log("아이템", dietItemRow);
+    const handlePhotoUpload = async(evt:React.ChangeEvent<HTMLInputElement>)=>{
+        const file: File | null | undefined = evt.target.files?.[0];
+        
+        if(file){
+            const resizedFile = await resizeFileToBase64(file) as string;
+            setDietItemRow({...dietItemRow, photo:resizedFile});
+        } 
+    };
+
+    const deletePhoto = ()=>{
+        setDietItemRow({...dietItemRow, photo:""});
+    }
+
 
     return (
-        <div className="flex flex-col justify-start items-center bg-[#003c80] w-52 h-52 p-3 m-3">
-            <div className="flex justify-between w-full">
-                <div className="w-full mt-2 white-title">
+        <div className="flex flex-col justify-start items-center border-2 rounded-xl w-52 min-h-[208px] p-3 m-3">
+            <div className="flex-center-col w-full bottom-line">
+                <div className="w-full mb-2 font-bold text-xl flex justify-between">
                     {title}
-                </div>
-                <div onClick={()=>{setIsModalOpen(true)}}>
-                    <AddIcon sx={{fill:'white', width:'2.5rem', height:'2.5rem'}}></AddIcon>
+                    <div onClick={()=>{setIsModalOpen(true)}}>
+                        <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 추가</button>
+                        {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
+                    </div>
                 </div>
             </div>
+            <div className="w-full flex-center">
+                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
+                        <div className="w-full">
+                            {
+                                dietItemRow.photo.length > 0 &&
+                                <button onClick={()=>deletePhoto()} className="right-top-xboxBtn">
+                                    <ClearIcon className="bg-white"/>
+                                </button>
+                            }
+                        </div> 
+                            {
+                                dietItemRow.photo.length > 0 &&
+                                <Image src={dietItemRow.photo} alt="no img" fill/>
+                            }
+
+                        <input id={`diet-file-input-${title}`} onChange={handlePhotoUpload} type="file" accept=".jpg, .jpeg, .png, .gif, .webp" hidden />
+                        <label className="flex justify-center items-center border border-[#d1d1d1] w-[10rem] h-[10rem] m-3 cursor-pointer" htmlFor={`diet-file-input-${title}`}>
+                            {
+                                dietItemRow.photo.length <= 0 &&
+                                <AddAPhotoIcon sx={{fill:'black', width:'5rem', height:'5rem', margin:'5rem'}}/>
+                            }
+                        </label>
+                    </div>
+                </div>
             <div className="flex w-full flex-wrap text-sm">
-                {dietItemRow.dietItemList?.map((item)=>{
+                {dietItemRow.dietItemList?.map((item, inx)=>{
                     return (
-                        <span className="text-[#94aece] m-1 mt-2 text-[1.5em] font-bold">{item.title}</span>
+                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
                     )
                 })}
             </div>
-            
             <Modal
                 open={isModalOpen}
                 onClose={() => {
                 setIsModalOpen(false);
                 }}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <h1>{title}</h1>
-                    <div className="text-center">
+                    <div className="w-full relative">
+                        <h1 className="m-2 mb-2 text-2xl">{title}</h1>
+                        <button onClick={()=>setIsModalOpen(false)} className="closeBtnParent">
+                            <CloseIcon/>
+                        </button>
                     </div>
-                    {itemBageList}
-                    <div className="flex flex-col text-center">
-                        <button onClick={handleAddItem}>더하기</button>
-                        <button onClick={()=>{setIsModalOpen(false)}}>확인</button>
+                    <div className="bottom-line"/>
+                        <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
+                            {itemBageList}
+                            <div className="text-center mt-4">
+                                <AddIcon
+                                className="m-1 w-[60px] h-[60px] border border-slate-500 hover:cursor-pointer"
+                                onClick={handleAddItem}
+                                >
+                                </AddIcon>
+                            </div>
+                    </div>
+                    <div className="flex flex-col text-center top-line pt-3">
+                        <div>
+                            <button className="grayBtn mb-2" onClick={()=>{resetDiet()}}>초기화</button>
+                            <button className="greenBtn ms-2" onClick={()=>{setIsModalOpen(false)}}>확인</button>
+                        </div>
                     </div>
                 </Box>
             </Modal>

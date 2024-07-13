@@ -52,7 +52,7 @@ export default function RecipeInfo({
           {timeText}
         </div>
       </div>
-      <div className="p-2 mt-3 mb-3 bg-stone-100 rounded-xl">
+      <div className="p-2 mt-3 mb-3 bg-stone-100 rounded-xl break-words break-keep">
         <p>{recipeInfoProp.description}</p>
       </div>
     </div>

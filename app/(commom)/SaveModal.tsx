@@ -1,8 +1,10 @@
 "use client"
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { axiosAuthInstacne } from "../(customAxios)/authAxios";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 const style = {
     position: "absolute" as "absolute",
@@ -30,16 +32,32 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
     const handleSave = ()=>{
         console.log("세이브 데이터", data);
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
+        withReactContent(Swal).fire({
+            title:"저장하는 중...",
+            showConfirmButton:false,
+            allowOutsideClick:false,
+            html:<div className="overflow-y-hidden"><CircularProgress /></div>
+          })
 
         axiosAuthInstacne
             .post(postUrl, data)
             .then((res) => {
-                console.log("save !!!")
-                alert("저장되었습니다!");
-                router.push(returnUrl);
+                Swal.fire({
+                    title: "저장되었습니다!",
+                    icon: "success",
+                }).then(() => {
+                    //   if(revalidateTagName){
+                    //     console.log("리발리!!")
+                    //     revalidateByTagName(revalidateTagName);
+                    //   }
+                    router.push(returnUrl)
+                });
             })
             .catch((e) => {
-                alert(`에러가 발생하였습니다. ${e.data}`);
+                Swal.fire({
+                    title: "에러가 발생하였습니다.",
+                    icon: "error",
+                  });
             });
     }
 
@@ -57,11 +75,11 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
             <div className="w-full p-3">
                 {content}
             </div>
-            <div>
-                <button onClick={handleSave}>
+            <div className="mt-5">
+                <button className="saveBtn me-1" onClick={handleSave}>
                     저장
                 </button>
-                <button onClick={()=>{
+                <button className="grayBtn ms-1" onClick={()=>{
                     setOpen(false);
                 }}>
                     취소

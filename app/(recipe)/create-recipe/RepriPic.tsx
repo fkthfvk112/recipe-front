@@ -1,9 +1,9 @@
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Recipe } from "../types/recipeType";
-import fileToBase64 from "@/app/(utils)/fileToBase64";
+import React, { SetStateAction, useState } from "react";
 import { RecipeCreate } from "./page";
+import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface RepriPhoto {
   urlString: string | null;
@@ -15,7 +15,7 @@ interface RepriProp {
   setRecipe: React.Dispatch<SetStateAction<RecipeCreate>>;
 }
 
-export default function RepriPric({ recipe, setRecipe }: RepriProp) {
+function RepriPric({ recipe, setRecipe }: RepriProp) {
   const [repriPhotos, setRepriPhotos] = useState<RepriPhoto[]>([
     {
       urlString: null,
@@ -31,46 +31,27 @@ export default function RepriPric({ recipe, setRecipe }: RepriProp) {
     },
   ]);
 
-  useEffect(() => {
-    const photos = repriPhotos
-      .filter((photo) => photo.urlFile instanceof File)
-      .map((photo) => photo.urlFile)
-      .filter((photo) => photo !== null) as File[];
-
-    if (photos.length >= 1) {
-      console.log("새 값", {
-        ...recipe,
-        repriPhotos: photos,
-      });
-
-      const convetAndSet = async () => {
-        const base64Files = await Promise.all(
-          photos.map((file) => fileToBase64(file))
-        );
-        setRecipe({
-          ...recipe,
-          repriPhotos: base64Files,
-        });
-      };
-
-      convetAndSet();
-    }
-  }, [repriPhotos]);
-
-  const handleFileChange = (event: any, inx: number) => {
+  const handleFileChange = async(event: any, inx: number) => {
     const file = event.target.files[0];
-
     if (file) {
-      const imageURL = URL.createObjectURL(file);
-      const newRepriPhotos = [...repriPhotos];
-      newRepriPhotos[inx] = {
-        urlString: imageURL,
-        urlFile: file,
-      };
-
-      setRepriPhotos(newRepriPhotos);
+      try {
+        const base64StrImg = await resizeFileToBase64(file) as string;
+        const existRecipe = {...recipe};
+        existRecipe.repriPhotos[inx] = base64StrImg;
+        setRecipe(existRecipe);
+      } catch (error) {
+        alert("파일 변환 오류 발생 " + error);
+      }
     }
   };
+
+  console.log("레시피", recipe);
+
+  const deleteRepriPhoto = (inx:number)=>{
+    const existRecipe = {...recipe};
+    existRecipe.repriPhotos[inx] = "";
+    setRecipe(existRecipe);
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-full mt-6 mb-6 p-5">
@@ -80,57 +61,62 @@ export default function RepriPric({ recipe, setRecipe }: RepriProp) {
       </div>
       <div className="flex justify-around w-full mt-3">
         <div className="flex justify-center items-center bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
-          <label htmlFor="repriPhotoOne">
-            <input
-              onChange={(evt) => {
-                handleFileChange(evt, 0);
-              }}
-              id="repriPhotoOne"
-              className="border border-slate-500"
-              type="file"
-              hidden
-            />
-            {repriPhotos[0].urlString === null ? (
+          <input
+            onChange={(evt) => {
+              handleFileChange(evt, 0);
+            }}
+            id="repriPhotoOne"
+            className="border border-slate-500"
+            type="file"
+            hidden
+          />
+          {recipe?.repriPhotos[0] === null || recipe?.repriPhotos[0] === undefined || recipe?.repriPhotos[0] === ""? (
+            <label htmlFor="repriPhotoOne">
               <FileUploadIcon className="text-gray-500 w-16 h-16" />
-            ) : (
+            </label>
+          ) : (
+            <div className="relative w-[100px] h-[100px] img-wrapper-square">
+                <button onClick={()=>deleteRepriPhoto(0)} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                      <ClearIcon className="bg-white"/>
+                </button>
               <Image
-                width={300}
-                height={300}
-                className="w-full h-full"
-                style={{ objectFit: "cover" }}
-                src={repriPhotos[0].urlString}
+                className="inner-img"
+                src={recipe.repriPhotos[0]}
                 alt="no img"
+                fill
               />
-            )}
-          </label>
+            </div>
+          )}
         </div>
         <div className="flex justify-center items-center bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
-          <label htmlFor="repriPhotoTwo">
-            <input
-              onChange={(evt) => {
-                handleFileChange(evt, 1);
-              }}
-              id="repriPhotoTwo"
-              className="border border-slate-500"
-              type="file"
-              hidden
-            />
-            {repriPhotos[1].urlString === null ? (
+          <input
+            onChange={(evt) => {
+              handleFileChange(evt, 1);
+            }}
+            id="repriPhotoTwo"
+            className="border border-slate-500"
+            type="file"
+            hidden
+          />
+          {recipe?.repriPhotos[1] === null || recipe?.repriPhotos[1] === undefined || recipe?.repriPhotos[1] === ""? (
+            <label htmlFor="repriPhotoTwo">
               <FileUploadIcon className="text-gray-500 w-16 h-16" />
-            ) : (
+            </label>
+          ) : (
+            <div className="w-[100px] h-[100px] img-wrapper-square">
+                <button onClick={()=>deleteRepriPhoto(1)} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                      <ClearIcon className="bg-white"/>
+                </button>
               <Image
-                width={300}
-                height={300}
-                className="w-full h-full"
-                style={{ objectFit: "cover" }}
-                src={repriPhotos[1].urlString}
+                className="inner-img"
+                src={recipe.repriPhotos[1]}
                 alt="no img"
+                fill
               />
-            )}
-          </label>
+            </div>
+          )}
         </div>
         <div className="flex justify-center items-center bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
-          <label htmlFor="repriPhotoThree">
             <input
               onChange={(evt) => {
                 handleFileChange(evt, 2);
@@ -140,21 +126,27 @@ export default function RepriPric({ recipe, setRecipe }: RepriProp) {
               type="file"
               hidden
             />
-            {repriPhotos[2].urlString === null ? (
-              <FileUploadIcon className="text-gray-500 w-16 h-16" />
+            {recipe?.repriPhotos[2] === null || recipe?.repriPhotos[2] === undefined || recipe?.repriPhotos[2] === "" ? (
+              <label htmlFor="repriPhotoThree">
+                <FileUploadIcon className="text-gray-500 w-16 h-16" />
+              </label>
             ) : (
-              <Image
-                width={300}
-                height={300}
-                className="w-full h-full"
-                style={{ objectFit: "cover" }}
-                src={repriPhotos[2].urlString}
-                alt="no img"
-              />
+              <div className="w-[100px] h-[100px] img-wrapper-square">
+                  <button onClick={()=>deleteRepriPhoto(2)} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                        <ClearIcon className="bg-white"/>
+                  </button>
+                <Image
+                  className="inner-img"
+                  src={recipe.repriPhotos[2]}
+                  alt="no img"
+                  fill
+                />
+              </div>
             )}
-          </label>
         </div>
       </div>
     </div>
   );
 }
+
+export default React.memo(RepriPric)

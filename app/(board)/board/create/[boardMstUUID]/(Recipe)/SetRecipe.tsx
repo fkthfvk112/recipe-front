@@ -19,7 +19,7 @@ function SetRecipe({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(recipes:
             aria-controls="panel1-content"
             id="panel1-header"
             >
-            <h3>레시피</h3>
+            <h3>레시피 가져오기 (최대 3)</h3>
             </AccordionSummary>
             <AccordionDetails>
                 <RecipeFinderModal recipes={recipes} setRecipes={setRecipes}/>

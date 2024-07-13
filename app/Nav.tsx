@@ -1,14 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-
 import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { usePathname } from "next/navigation";
 import AccountMenu from "./AccountMenu";
 import { deleteAuthToken, isLogin } from "./(user)/signin/utils/authUtil";
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import HomeIcon from '@mui/icons-material/Home';
 
 const Navbar = () => {
   const [localSignInState, setLocalSignInState] = useState<boolean>(false);
@@ -39,20 +40,25 @@ const Navbar = () => {
       setLocalSignInState(isSignIn);
   }, [isSignIn])
 
-
   return (
     <>
       <div className="w-full h-20 bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             <Link href="/">
-              <p>홈</p>
+              <div className="flex flex-col justify-center items-center">
+                <HomeIcon sx={{width:'43px', height:'43px'}}/>
+                <p>홈</p>
+              </div>
             </Link>
             {/* <ul className="hidden md:flex gap-x-6"> */}
             <ul className="flex gap-x-6">
               <li>
-                <Link href="/create-recipe">
-                  <p>레시피 생성</p>
+                <Link href="/recipes/1/servingsMin=1&servingsMax=20&sortingCondition=POPULARITY">
+                  <div className="flex flex-col justify-center items-center">
+                    <RestaurantMenuIcon sx={{width:'43px', height:'43px'}}/>
+                    <p>레시피</p>
+                  </div>
                 </Link>
               </li>
               {/* <li>
@@ -62,7 +68,10 @@ const Navbar = () => {
               </li> */}
               <li>
                 <Link href={`/board/${process.env.NEXT_PUBLIC_FREE_BOARD_UUID}`}>
-                  <p>게시판</p>
+                  <div className="flex flex-col justify-center items-center">
+                    <LibraryBooksIcon sx={{width:'43px', height:'43px'}}/>
+                    <p>게시판</p>
+                  </div>
                 </Link>
               </li>
               <li>

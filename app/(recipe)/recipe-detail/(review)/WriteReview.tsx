@@ -24,6 +24,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
   
   //domain name이 유효하지 않으면 에러를 뱉자
   const [review, setReview] = useState<commonReview>({ //handler로 도메인에 따라서 세팅을 변경하자!!!
+    score:5,
     message: "",
   });
 
@@ -31,8 +32,6 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
   const [isSignIn] = useRecoilState(siginInState);
   const [isClient, setIsClient] = useState(false);
 
-
-  console.log("리뷰", review);
 
   useEffect(() => {
     setIsClient(true);
@@ -57,6 +56,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
       .then((res) => {
         console.log(res.data);
         revalidateByTagName(`reviews-${domainId}`);
+        setReview({...review, message:""});
       })
       .catch((e) => {
         console.log(e);
@@ -83,11 +83,11 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
             onChange={(e, newValue) => {
               setReview({
                 ...review,
-                score: newValue !== null ? newValue : 1,
+                score: newValue !== null ? newValue : 5,
               });
             }}
             name="half-rating"
-            value={review.score || 1}
+            value={review.score}
             precision={1}
           />
           }
@@ -120,7 +120,6 @@ export default function WriteReview({ domainId, domainName }: { domainId: number
                   댓글 쓰기
                 </button>
               }
-              
             </div>
           </div>
         </div>

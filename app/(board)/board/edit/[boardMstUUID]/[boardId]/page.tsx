@@ -8,8 +8,6 @@ import { Checkbox } from '@mui/material';
 import { Board } from '@/app/(type)/board';
 import SetRecipe from '../../../create/[boardMstUUID]/(Recipe)/SetRecipe';
 import SetDiet from '../../../create/[boardMstUUID]/(Diet)/SetDiet';
-import SetPhoto from '../../../create/[boardMstUUID]/(Photo)/SetPhoto';
-import { useSetRecoilState } from 'recoil';
 import SetPhotoChk from './(Photo)/SetPhotoChk';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation'
@@ -181,7 +179,8 @@ export default function EditBoardPost({
             </div>
             <div className='h-[668px]'>
                 <div className='h-[620px] bg-white'>
-                <textarea ref={textAreaRef} className='border-none outline-none h-[620px] overflow-hidden p-3' value={content} onChange={(e)=>handleChangeContent(e)}></textarea>
+                <textarea ref={textAreaRef} className='border-none outline-none h-[620px] overflow-hidden p-3'
+                          value={content} onChange={(e)=>handleChangeContent(e)} placeholder='내용을 입력해주세요.' maxLength={1024}></textarea>
                 </div>
             </div>
             <SetRecipe recipes={recipes} setRecipes={setRecipes}/>

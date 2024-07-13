@@ -21,13 +21,19 @@ export default function MyDiet() {
 
   const feedInfos = myDiets.map((diet, inx) => (
     <Link
-      className="flex justify-center items-center relative w-1/3 aspect-square p-0.5"
+      className="flex justify-center items-center"
       key={inx}
       href={`/diet/mydiet/${diet.dietDayId}`}
     >
-    <DietVerticalItem dietDay={diet}/>
+      <DietVerticalItem dietDay={diet}/>
     </Link>
   ));
 
-  return <div className="flex flex-wrap w-full">{feedInfos}</div>;
+  return (
+    <div className="flex justify-center items-start h-screen">
+      <div className="flex justify-center items-center flex-wrap w-full p-2">
+        {feedInfos}
+      </div>
+    </div>
+  )
 }

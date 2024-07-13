@@ -83,7 +83,7 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
       </div>
       <div
         ref={categoriSliderRef}
-        className="flex flex-row justify-between items-center w-full h-[200px] m-3 overflow-x-scroll"
+        className="flex flex-row justify-between items-center w-full h-[150px] m-3 overflow-x-scroll"
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
         onMouseUp={onDragEnd}

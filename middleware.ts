@@ -21,5 +21,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe', '/board/create/:path*'],
+  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe', '/board/create/:path*', '/userfeed/myfeed'],
 }
