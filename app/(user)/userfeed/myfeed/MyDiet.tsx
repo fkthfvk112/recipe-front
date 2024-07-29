@@ -1,4 +1,4 @@
-import DietVerticalItem from "@/app/(board)/board/create/[boardMstUUID]/(Diet)/DietVerticalItem";
+import DietVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { DietDay } from "@/app/(type)/diet";
 import Link from "next/link";

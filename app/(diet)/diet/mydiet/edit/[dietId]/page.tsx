@@ -50,9 +50,7 @@ export default function MyDietEdit({
         axiosAuthInstacne
             .get(`diet/day/my-day?dietId=${params.dietId}`)
             .then((res) => {
-                console.log("검증", res.data);
                 setInitialRecipeData(res.data);
-
             })
             .catch((err) => {
             if (err.response) {
@@ -119,7 +117,6 @@ export default function MyDietEdit({
         setSaveData(dietDay);
     }
 
-    console.log(isPublic)
     return (
         <div className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
             <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">

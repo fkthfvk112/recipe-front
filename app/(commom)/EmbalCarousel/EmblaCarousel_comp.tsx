@@ -14,7 +14,6 @@ const EmblaCarousel_comp: React.FC<PropType> = (props) => {
   const { slides, options } = props
   const [emblaRef, emblaApi] = useEmblaCarousel(options)
 
-  console.log("슬라이드", slides);
   return (
     <section className="embla">
       <div className="embla__viewport" ref={emblaRef} >

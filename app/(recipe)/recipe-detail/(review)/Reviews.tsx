@@ -8,16 +8,17 @@ import WriteReviewReply from "./WriteReviewReply";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import ReviewEtcBtn from "./ReviewEtcBtn";
 import Image from "next/image";
+import { domainId, domainName } from "./ReviewContainer";
 
 const domainReviewUrl = {
   recipe:"review/get",
   board: "review/board"
 } as const;
 
-export default async function Reviews({ domainId, domainName }: { domainId: number|string, domainName:string  }) {
+export default async function Reviews({ domainId, domainName }: { domainId: domainId, domainName:domainName  }) {
   const reviewKey = `${domainName}Id`;
 
-  const fetchData: ReviewWithUserInfo[]|BoardReviewWithUserInfo[] =await serverFetch({
+  const fetchData: ReviewWithUserInfo[]|BoardReviewWithUserInfo[] = await serverFetch({
     url:domainReviewUrl[domainName as keyof typeof domainReviewUrl],
     queryParams:{
       [reviewKey]:domainId
@@ -29,9 +30,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
         },
     }
   })
-
-  console.log("리뷰 패치", fetchData);
-  
+   
   const isBoardReview = (review: ReviewWithUserInfo | BoardReviewWithUserInfo): review is BoardReviewWithUserInfo => {
     return (review as BoardReviewWithUserInfo) !== undefined;
   }
@@ -41,26 +40,33 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
   }
 
   const review = fetchData.map((review, inx) => (
-    // have to 앞에 화살표 넣기
     <div key={inx} className={`m-5 mb-10 ${review.parentReviewId != null&&"ms-16"}`}>
       <div className="flex justify-start items-center">
         {review.parentReviewId && <SubdirectoryArrowRightIcon/>}
         {
-          review?.userInfo?.userPhoto ? 
-          <div className="img-wrapper-round w-10 h-10"><Image className="rounded-full" src={review.userInfo.userPhoto} alt ="no img" fill/></div>
-          :
+          !(review?.userInfo?.userPhoto) || review.isDel ? 
           <Avatar />
+          :
+          <div className="img-wrapper-round w-10 h-10 min-w-10 min-h-10"><Image className="rounded-full" src={review.userInfo.userPhoto} alt ="no img" fill/></div>
         }
         <div className="flex justify-between w-full">
-          {
-          isBoardReview(review)&&review?.checkAnonymous === true ?
-          <div>
-            <h3 className="ms-2 me-2">익명</h3>
-          </div>:
-          <Link href={`/userfeed/${review.userInfo?.userNickName}`}>
-            <h3 className="ms-2 me-2">{review.userInfo?.userNickName}</h3>
-          </Link>
-          }
+        {
+          review.isDel ? (
+            <div>
+              <h3 className="ms-2 me-2">삭제</h3>
+            </div>
+          ) : (
+            isBoardReview(review) && review?.checkAnonymous === true ? (
+              <div>
+                <h3 className="ms-2 me-2">익명</h3>
+              </div>
+            ) : (
+              <Link href={`/userfeed/${review.userInfo?.userNickName}`}>
+                <h3 className="ms-2 me-2">{review.userInfo?.userNickName}</h3>
+              </Link>
+            )
+          )
+        }
           {domainName === "board" && isBoardReview(review) && review.parentReviewId===null&& (
             <WriteReviewReply domainName="board" domainId={domainId} parentReviewId={review.reviewId}/>
           )}
@@ -74,10 +80,14 @@ export default async function Reviews({ domainId, domainName }: { domainId: numb
           readOnly
         />
         }
-        <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId}/>
+        <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId} domainId={domainId} domainName={domainName} isDel={review.isDel}/>
       </div>
       <div className="ms-12 break-words break-keep">
-        {review.message}
+        {
+          review.isDel?"삭제된 댓글입니다."
+          :
+          review.message
+        }
       </div>
     </div>
   ));

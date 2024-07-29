@@ -13,7 +13,6 @@ export default function SeasonalFood() {
     6
   );
 
-  console.log("결과", seasonname);
   const seasonIngres = seasonname.map((ele) => {
     return (
       <Link

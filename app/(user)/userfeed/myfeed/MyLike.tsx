@@ -1,4 +1,4 @@
-import RecipeVerticalItem from "@/app/(board)/board/create/[boardMstUUID]/(Recipe)/RecipeVerticalItem";
+import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Image from "next/image";
@@ -17,7 +17,6 @@ export default function MyLike() {
     axiosAuthInstacne
       .get(`like/recipe/like-list`)
       .then((res) => {
-        console.log("라이크", res.data);
         setMyRecipes(res.data);
       })
       .catch((err) => {

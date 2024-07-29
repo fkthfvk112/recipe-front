@@ -30,7 +30,7 @@ export interface RecipeOwnerInfo {
 export default async function RecipeDetail({
   params,
 }: {
-  params: { recipeId: string };
+  params: { recipeId: number };
 }) {
   const fetchData = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`,
@@ -74,10 +74,10 @@ export default async function RecipeDetail({
         <div className="w-full p-3 text-left">
             <CopyUrl></CopyUrl>
             {/* have to : user ID -> user uuid */}
-            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl="/" delPostUrl="/" delReturnUrl="/"/>
+            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} delPostUrl="/" delReturnUrl="/"/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">
-          <ReviewContainer domainId={Number(params.recipeId)} domainName={"recipe"}></ReviewContainer>
+          <ReviewContainer domainId={params.recipeId} domainName={"recipe"}></ReviewContainer>
         </div>
       </div>
     </div>

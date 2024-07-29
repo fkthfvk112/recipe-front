@@ -15,11 +15,14 @@ import withReactContent from 'sweetalert2-react-content'
 import Swal from "sweetalert2";
 import { CircularProgress } from "@mui/material";
 import DateSelector from "./BirthdateSelection";
-
+import useDecreaseTimer from "@/app/(commom)/Hook/useDecreaseTimer";
+import { formatTime_mmss } from "@/app/(utils)/timeUtils";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export default function SignUp() {
+  const [timerStarted, setTimerStarted] = useState<boolean>(false);
+  const [time, setTimer, startTimer] = useDecreaseTimer({initialTime:0});
   const [emailCertigLoading, setEmailCertifLoading] = useState<boolean>(false);
-
   const [userId, setUserId]                         = useState<string>("");
   const [userPw, setUserPw]                         = useState<string>("");
   const [userVeriPw, setUserVeriPw]                 = useState<string>("");
@@ -83,14 +86,12 @@ export default function SignUp() {
   }
 
   useEffect(() => {
-    console.log(idValid);
     if (userId === "") {
       setIdValid({
         isValid: false,
         message: "",
       });
     } else {
-      console.log("히어");
       setIdValid(validationIdSentence(userId));
     }
   }, [userId]);
@@ -218,7 +219,8 @@ export default function SignUp() {
       .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-up`, userData)
       .then((res) => {
           Swal.fire({
-            title: "회원가입에 성공했습니다.",
+            title:"환영합니다!!",
+            text:"회원가입에 성공했습니다.",
             icon: "success",
           }).then(() => {
             route.push("/signin");
@@ -246,19 +248,26 @@ export default function SignUp() {
       });
       return;
     }
-
     setEmailCertifLoading(true);
- 
-    axios.post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/send-certif-number`, {email:userEmail}, {
-      withCredentials: true,
-    })
-    .then((res)=>{
+
+    setTimeout(()=>{
       setEmailCertifLoading(false);
       Swal.fire({
         title: "인증 번호 발송",
         text:"인증 번호를 발송하였습니다. 이메일을 확인해주세요.",
         icon: "success",
       })
+      setTimer(60*3);
+      startTimer();
+      setTimerStarted(true);
+      
+    },2000)
+ 
+    axios.post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/send-certif-number`, {email:userEmail}, {
+      withCredentials: true,
+    })
+    .then((res)=>{
+
       })
     .catch((err)=>{
       setEmailCertifLoading(false);
@@ -271,6 +280,8 @@ export default function SignUp() {
   }
 
   const chkEmailCertifIsMatch = ()=>{
+
+
     axios.post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/certifnum-chk`, {email:userEmail, certifNum:emailCertifNum}, {
       withCredentials: true,
     })
@@ -284,7 +295,6 @@ export default function SignUp() {
       setEmailCertifValid({isValid:true, message:`인증되었습니다. [${userEmail}]`});
     })
     .catch((err)=>{
-      console.log("에러 err", err);
       Swal.fire({
         title: "인증 실패",
         text:"유효하지 않은 인증번호입니다.",
@@ -294,7 +304,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="max-w-2xl min-w-80 w-full p-2 bg-white px-4 flex flex-col justify-center flex-items-center mt-14 shadow-md border border-gray-[#a1a1a1]">
+    <div className="max-w-2xl min-w-80 w-full p-2 pt-6 pb-6 bg-white px-4 flex flex-col justify-center flex-items-center mt-14 mb-14 shadow-md border border-gray-[#a1a1a1]">
       <div className="text-center p-3 bottom-line">
         <h1 className="text-2xl">회원가입</h1>
       </div>
@@ -329,11 +339,7 @@ export default function SignUp() {
             setUserNickName(e.target.value);
           }}
         />
-        <p
-          className={
-            nickNameValid.isValid ? "text-[#38c54b]" : "text-red-500"
-          }
-        >
+        <p className={nickNameValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
           {nickNameValid.message}
         </p>
       </div>
@@ -421,12 +427,18 @@ export default function SignUp() {
                     value={emailCertifNum} className="media-col-3-to-4" type="number" maxLength={4} />
           <button onClick={()=>chkEmailCertifIsMatch()} className="col-span-1 w-[100px] p-3 ps-3 pe-3 border-2 border-[#a1a1a1]">인증</button>
         </div>
+        {
+          timerStarted && !emailCertifValid.isValid &&
+          <div className="mt-2 flex justify-start items-center">
+            <AccessTimeIcon></AccessTimeIcon><span className="ms-1">{formatTime_mmss(time)}</span>
+          </div>
+        }
         <p className={emailCertifValid.isValid ? "text-green-400" : "text-red-500"}>
           {emailCertifValid.message}
         </p>
       </div>
       <div className="flex justify-center items-center w-full">
-        <button className={`${allValid()?"greenBtn":"grayBtn"} w-full h-12 mt-8`} onClick={sendSignUpRequest}>회원가입</button>
+        <button className={`${allValid()?"greenBtn":"grayBtn-noHover"} w-full h-12 mt-8`} onClick={sendSignUpRequest}>회원가입</button>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 export interface RecipeSearchingCondition {
   recipeName: string | null;
   createdDate: Date | null;
-  cookMethod: "굽기" | "볶기" | "삶기" | "찌기" | "튀기기" | null;
+  cookMethod: "굽기" | "볶기" | "삶기" | "찌기" | "튀기기" | "default"|null;
   ingredientNames: string[] | null;
   ingredientAndCon: boolean | null;
   servingCon: {
@@ -16,6 +16,7 @@ export interface RecipeSearchingCondition {
     | "분식"
     | "후식"
     | "건강식"
+    |"default"
     | null;
 }
 

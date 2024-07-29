@@ -1,11 +1,12 @@
 export interface Review {
-  reviewId: number;
-  userId: number; //have to :: string으로 바꾸고 암호화
-  score?: number;
-  message: string;
-  recipeId: number|string;
-  parentReviewId:number|string;
-  createdAt?: string;
+  reviewId:       number;
+  userId:         number; //have to :: string으로 바꾸고 암호화
+  score?:         number;
+  message:        string;
+  recipeId:       number|string;
+  parentReviewId: number|string;
+  isDel:          boolean;
+  createdAt?:     string;
 }
 
 export interface ReviewWithUserInfo extends Review {
@@ -13,13 +14,14 @@ export interface ReviewWithUserInfo extends Review {
 }
 
 export interface BoardReview{
-  reviewId: number;
-  userId: number; //have to :: string으로 바꾸고 암호화
-  message: string;
-  boardId: number|string;
-  checkAnonymous:boolean;
-  parentReviewId:number|string;
-  createdAt?: string;
+  reviewId:       number;
+  userId:         number; //have to :: string으로 바꾸고 암호화
+  message:        string;
+  boardId:        number|string;
+  checkAnonymous: boolean;
+  parentReviewId: number|string;
+  isDel:          boolean;
+  createdAt?:     string;
 }
 
 export interface BoardReviewWithUserInfo extends BoardReview {
@@ -28,8 +30,8 @@ export interface BoardReviewWithUserInfo extends BoardReview {
 
 
 export interface userInfo {
-  userId: string;
+  userId:       string;
   userNickName: string;
-  userUrl: string | null;
-  userPhoto: string | null;
+  userUrl:      string | null;
+  userPhoto:    string | null;
 }

@@ -61,7 +61,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="p-5 max-w-sm w-96 border border-gray-[#a1a1a1] px-4 flex flex-col justify-center items-center m-10 mt-28 shadow-md">
+    <div className="p-5 max-w-sm w-96 border border-gray-[#a1a1a1] px-4 flex flex-col justify-center items-center m-10 mt-28 shadow-md bg-white">
       <div className="w-full text-center bottom-line p-2 m-2">
         <h1 className="text-2xl">로그인</h1>
       </div>

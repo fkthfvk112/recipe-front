@@ -4,6 +4,7 @@ import RecipeCard from "@/app/(commom)/RecipeCard";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../../RecipePagination";
+import NoContent_Recipe from "../../../(common)/NoContent_Recipe";
 
 export default async function SearchingByCondition({
   params,
@@ -45,24 +46,31 @@ export default async function SearchingByCondition({
     pageMaxCnt % 10 === 0 ? pageMaxCnt / 10 : pageMaxCnt / 10 + 1
   );
 
-  const recentRecipes = fetchData?.map((recipe, inx) => (
-    <div key={inx} className="m-3">
-      <Link href={`/recipe-detail/${recipe.recipeId}`}>
-        <RecipeCard recipe={recipe}></RecipeCard>
-      </Link>
-    </div>
-  ));
+  const recentRecipes = fetchData && fetchData.length ? (
+    fetchData.map((recipe, inx) => (
+      <div key={inx} className="m-3">
+        <Link href={`/recipe-detail/${recipe.recipeId}`}>
+          <RecipeCard recipe={recipe} />
+        </Link>
+      </div>
+    ))
+  ) : (
+    <NoContent_Recipe />
+  );
 
   return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full mb-10">
       <div className="flex flex-wrap justify-center items-center w-full min-h-[300px] mb-16">
         {recentRecipes}
       </div>
+      {
+      pnMaxCnt >= 2 &&
       <RecipePagination
         queryStr={decodedUrl}
         pageNow={Number(params.pageNumber)}
         pageMax={pnMaxCnt}
       ></RecipePagination>
+      }
     </div>
   );
 }

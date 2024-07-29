@@ -132,7 +132,6 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
       .map((ingre, inx) => {
         return { ...ingre, order: inx };
       });
-    console.log(newIngre);
     setIngredients(newIngre);
   };
   return (

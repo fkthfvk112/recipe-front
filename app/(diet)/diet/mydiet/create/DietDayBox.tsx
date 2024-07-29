@@ -121,8 +121,6 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
         });
     }
 
-    console.log("리스트", dietItemRow);
-
     const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
             <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">

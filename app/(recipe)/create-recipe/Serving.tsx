@@ -28,6 +28,7 @@ export default function Serving({ recipe, setRecipe }: ServingProp) {
         <select
           onChange={handleServingChange}
           className="border border-slate-300 rounded-2xl mr-2 text-center w-32 h-10 bg-zinc-100"
+          value={recipe.servings}
           name=""
           id=""
         >

@@ -16,7 +16,6 @@ export default function Userfeed() {
     <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
       <UserInfo></UserInfo>
       <Divider className="mt-5" orientation="horizontal" flexItem />
-
       <div className="flex">
         <button
           className={`max-w-60 min-w-32 text-xs flex justify-center items-center border-none 

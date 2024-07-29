@@ -10,7 +10,6 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
@@ -19,6 +18,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { deleteAuthToken } from "./(user)/signin/utils/authUtil";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -27,8 +27,14 @@ export default function AccountMenu() {
   const router = useRouter();
 
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile){
+      router.push("/accountMenuList");
+    }else{
+      setAnchorEl(event.currentTarget);
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -37,22 +43,27 @@ export default function AccountMenu() {
   const goToMyFeed = async () => {
     router.push(`/userfeed/myfeed`);
   };
+
+  const goToCreatMyDiet = ()=>{
+    router.push(`/diet/mydiet/create`);
+  }
+  
+
+
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="내 피드">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Avatar sx={{ width: 50, height: 50 }}>Me</Avatar>
-          </IconButton>
-        </Tooltip>
-      </Box>
+      <div>
+        <IconButton
+          onClick={handleClick}
+          size="small"
+          aria-controls={open ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          sx={{ width: 50, height: 50 }}
+        >
+          <Avatar sx={{ width: 50, height: 50 }}>Me</Avatar>
+        </IconButton>
+      </div>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -94,23 +105,23 @@ export default function AccountMenu() {
             goToMyFeed();
           }}
         >
-          <Avatar /> 내 정보
+          <Avatar /> 내 피드
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+        <MenuItem onClick={()=>{
+          handleClose();
+          goToCreatMyDiet();
+        }}>
+          <RestaurantIcon className="me-3"/> 식단 작성
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={()=>{
+          handleClose();
+          router.push("/accountSetting");
+        }}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          Settings
+          계정설정
         </MenuItem>
         <MenuItem
           onClick={() => {

@@ -4,7 +4,7 @@ import { DietDay } from "./diet";
 export interface BoardPreview{
     boardId: number
     boardName: string;
-    BoardMstName: string;
+    boardMenuId: number;
     content:string;
     viewCnt: number;
     heartCnt: number;
@@ -17,7 +17,7 @@ export interface Board{
     userId:       string; //have to :: encrypt
     userNickName: string;
     boardUUID:    string;
-    boardMstUUID: string;
+    boardMenuId:  number;
     title:        string;
     content:      string;
     photos?:      string[];

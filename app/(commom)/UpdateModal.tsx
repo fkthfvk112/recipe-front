@@ -28,13 +28,11 @@ interface SaveModalProp<T>{
 function UpdateModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveModalProp<T>) {
     const router = useRouter();
     const handleSave = ()=>{
-        console.log("세이브 데이터", data);
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
 
         axiosAuthInstacne
             .put(postUrl, data)
             .then((res) => {
-                console.log("save !!!")
                 alert("수정되었습니다!");
                 router.push(returnUrl);
                 router.refresh();

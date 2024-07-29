@@ -57,7 +57,6 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
                     icon: "success",
                   }).then(() => {
                     if(revalidateTagName){
-                      console.log("리발리!!")
                       revalidateByTagName(revalidateTagName);
                     }
                     router.push(delReturnUrl);

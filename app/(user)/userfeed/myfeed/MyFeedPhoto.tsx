@@ -1,7 +1,5 @@
 import { Avatar } from "@mui/material";
 import Image from "next/image";
-import EditIcon from "@mui/icons-material/Edit";
-import { useState } from "react";
 
 export default function MyFeedPhoto({
   photoUrl,

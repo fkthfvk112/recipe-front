@@ -131,13 +131,6 @@ export const seasonalIngredients: seasonalIngre = {
   },
 };
 
-/*
-    for (const [key, values] of Object.entries(seasonalFoods.spring.fish)) {
-      console.log(key);
-      console.log(values);
-    }
-*/
-
 export function getRandomSeasonalFoodInSameCategory(
   month: number,
   ingreNum: number

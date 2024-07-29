@@ -7,6 +7,7 @@ import { Checkbox, Rating } from "@mui/material";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { domainId, domainName } from "./ReviewContainer";
 
 const domainReviewUrl = {
   recipe: "review/create",
@@ -19,7 +20,7 @@ interface commonReview{
   checkAnonymous?:boolean
 }
 
-export default function WriteReview({ domainId, domainName }: { domainId: number|string, domainName:string }) {
+export default function WriteReview({ domainId, domainName }: { domainId: domainId, domainName:domainName }) {
   const reviewKey = `${domainName}Id`;
   
   //domain name이 유효하지 않으면 에러를 뱉자

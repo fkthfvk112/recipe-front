@@ -9,6 +9,7 @@ export interface UserFeedInfo {
   nickName:  string | null;
   email:     string;
   grantType: string;
+  birthDate: string;
   userPhoto: string | null;
   userUrl:   string | null;
   userIntro: string | null; 
@@ -22,7 +23,6 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}feed/user/${userNickName}`)
       .then((res) => {
-        console.log("내 데이터", res.data);
         setUserData(res.data);
       })
       .catch((e) => {

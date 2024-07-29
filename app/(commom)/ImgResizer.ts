@@ -4,8 +4,8 @@ export const resizeFile = (file:File) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      300,
-      300,
+      512,
+      512,
       "WEBP",
       100,
       0,
@@ -21,8 +21,8 @@ export const resizeFileToBase64 = (file:File) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      300,
-      300,
+      512,
+      512,
       "WEBP",
       100,
       0,

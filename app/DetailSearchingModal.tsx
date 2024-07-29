@@ -18,28 +18,13 @@ interface DetailProp {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-interface DisableCheckInputs {
-  recipeName: boolean;
-  createdDate: boolean;
-  cookMethod: boolean;
-  ingredient: boolean;
-  serving: boolean;
-  cookCategory: boolean;
-}
 
 export default function DetailSearchingModal({
   isOpen,
   setIsOpen,
 }: DetailProp) {
   const router = useRouter();
-  const [disableInput, setDisableInput] = useState<DisableCheckInputs>({
-    recipeName: false,
-    createdDate: false,
-    cookMethod: false,
-    ingredient: false,
-    serving: false,
-    cookCategory: false,
-  });
+
   const [ingreCsv, setIngreCsv] = useState<string>("");
   const [sortingCon, setSortingCon] = useState<sortingCondition>("POPULARITY");
 
@@ -47,21 +32,18 @@ export default function DetailSearchingModal({
     useState<RecipeSearchingCondition>({
       recipeName: null,
       createdDate: null,
-      cookMethod: null,
+      cookMethod: "default",
       ingredientNames: null,
       ingredientAndCon: null,
       servingCon: {
         min: 1,
         max: 20,
       },
-      cookCategory: null,
+      cookCategory: "default",
     });
 
-  console.log(recipeSearchingData);
   const handleChangeSearchInput = (evt: any) => {
     const { name, value } = evt.target;
-    console.log(name);
-    console.log(value);
 
     setRecipeSearchingData({
       ...recipeSearchingData,
@@ -69,17 +51,6 @@ export default function DetailSearchingModal({
     });
   };
 
-  const handleCheckChange = (evt: any) => {
-    const { checked, name } = evt.target;
-    if (!checked) {
-      clearSearchingDate(name);
-    }
-
-    setDisableInput({
-      ...disableInput,
-      [name]: checked,
-    });
-  };
 
   const handleSlideChange = (
     event: Event,
@@ -128,12 +99,22 @@ export default function DetailSearchingModal({
     let searchData: RecipeSearchingCondition = { ...recipeSearchingData };
     let ingres: string = ingreCsv;
 
-    if (searchData.recipeName === "" || disableInput.recipeName === false)
-      searchData.cookCategory = null;
-    if (ingres === "" || disableInput.ingredient === false)
-      searchData.ingredientNames = null;
+    if (searchData.recipeName === ""){
+      searchData.recipeName = null;
+    }
 
-    let ingreList: string[] = [];
+    if(searchData.cookCategory === "default"){
+      searchData.cookCategory = null;
+    }
+      
+    if(searchData.cookMethod === "default"){
+      searchData.cookMethod = null;
+    }
+
+    if (ingres === ""){
+      searchData.ingredientNames = null;
+    }
+      
     if (ingres !== "") {
       searchData.ingredientNames = ingres
         .split(",")
@@ -144,7 +125,6 @@ export default function DetailSearchingModal({
     //and or 조건 추가
 
     router.push(`/recipes/1/${queryStr}`);
-    console.log(ingreList);
   };
 
   return isOpen ? (
@@ -166,62 +146,35 @@ export default function DetailSearchingModal({
           <div className="bottom-line"/>
           <div className="ps-4 pe-4">
           <div>
-            <div className="flex items-center justify-center w-full mt-6">
-              <div>레시피 이름</div>
-              <input
-                name="recipeName"
-                checked={disableInput.recipeName}
-                onChange={handleCheckChange}
-                type="checkbox"
-                className="w-10"
-              />
-            </div>
+            <h3 className="w-full mt-6 text-start">
+            레시피 이름
+            </h3>
             <input
               name="recipeName"
               type="text"
               value={recipeSearchingData.recipeName || ""}
               onChange={(evt) => handleChangeSearchInput(evt)}
-              disabled={!disableInput.recipeName}
             />
           </div>
           <div>
-            <div className="flex items-center justify-center w-full">
-              <div>재료</div>
-              <input
-                name="ingredient"
-                checked={disableInput.ingredient}
-                onChange={(evt) => {
-                  handleCheckChange(evt);
-                  setIngreCsv("");
-                }}
-                type="checkbox"
-                className="w-10"
-              />
-            </div>
+            <h3 className="w-full mt-6 text-start">
+            재료
+            </h3>
             <input
               name="ingredient"
               type="text"
               onChange={(evt) => setIngreCsv(evt.target.value)}
               value={ingreCsv}
-              disabled={!disableInput.ingredient}
             />
           </div>
 
           <div>
-            <div className="flex items-center justify-center w-full">
-              <div>생성일</div>
-              <input
-                name="createdDate"
-                checked={disableInput.createdDate}
-                onChange={handleCheckChange}
-                type="checkbox"
-                className="w-10"
-              />
-            </div>
+            <h3 className="w-full mt-6 text-start">
+            생성일
+            </h3>
             <input
               name="createdDate"
               type="date"
-              disabled={!disableInput.createdDate}
               value={
                 recipeSearchingData.createdDate === null
                   ? ""
@@ -230,27 +183,18 @@ export default function DetailSearchingModal({
               onChange={handleChangeSearchInput}
             />
           </div>
-          <div className="flex justify-center items-center m-8">
+          <div className="flex justify-around items-center m-8">
             <div>
-              <div className="flex items-center justify-center w-full">
-                <div>요리 방법</div>
-
-                <input
-                  name="cookMethod"
-                  checked={disableInput.cookMethod}
-                  onChange={handleCheckChange}
-                  type="checkbox"
-                  className="w-10"
-                />
+              <div className="w-full mt-6 text-start">
+                <h3>요리 방법</h3>
               </div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{ minWidth: 120 }}>
                 <Select
                   name="cookMethod"
-                  value={recipeSearchingData.cookMethod || ""}
-                  disabled={!disableInput.cookMethod}
+                  value={recipeSearchingData.cookMethod}
                   onChange={handleChangeSearchInput}
                 >
-                  <MenuItem value="">선택없음</MenuItem>
+                  <MenuItem value="default">선택없음</MenuItem>
                   <MenuItem value="굽기">굽기</MenuItem>
                   <MenuItem value="볶기">볶기</MenuItem>
                   <MenuItem value="삶기">삶기</MenuItem>
@@ -260,25 +204,17 @@ export default function DetailSearchingModal({
               </FormControl>
             </div>
             <div>
-              <div className="flex items-center justify-center w-full">
-                <div>카테고리</div>
-                <input
-                  name="cookCategory"
-                  checked={disableInput.cookCategory}
-                  onChange={handleCheckChange}
-                  type="checkbox"
-                  className="w-10"
-                />
+              <div className="w-full mt-6 text-start">
+                <h3>카테고리</h3>
               </div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <FormControl sx={{minWidth: 120 }}>
                 <Select
                   labelId="categoryLabel"
                   name="cookCategory"
-                  value={recipeSearchingData.cookCategory || ""}
-                  disabled={!disableInput.cookCategory}
+                  value={recipeSearchingData.cookCategory}
                   onChange={handleChangeSearchInput}
                 >
-                  <MenuItem value="">선택없음</MenuItem>
+                  <MenuItem value="default">선택없음</MenuItem>
                   <MenuItem value="한식">한식</MenuItem>
                   <MenuItem value="중식">중식</MenuItem>
                   <MenuItem value="양식">양식</MenuItem>
@@ -293,13 +229,6 @@ export default function DetailSearchingModal({
           <div>
             <div className="flex items-center justify-center w-full">
               <div>인분(serving)</div>
-              <input
-                name="serving"
-                checked={disableInput.serving}
-                onChange={handleCheckChange}
-                type="checkbox"
-                className="w-10"
-              />
             </div>
             <Slider
               name="serving"
@@ -317,7 +246,6 @@ export default function DetailSearchingModal({
               ]}
               valueLabelDisplay="auto"
               disableSwap
-              disabled={!disableInput.serving}
             />
           </div>
           <div>
@@ -331,6 +259,7 @@ export default function DetailSearchingModal({
                 }}
               >
                 <MenuItem value="POPULARITY">인기순</MenuItem>
+                <MenuItem value="LATEST">최신순</MenuItem>
                 <MenuItem value="LIKE_MANY">좋아요 많은순</MenuItem>
                 <MenuItem value="LIKE_FEW">좋아요 적은 순</MenuItem>
                 <MenuItem value="VIEW_MANY">조회수 많은 순</MenuItem>
@@ -338,8 +267,10 @@ export default function DetailSearchingModal({
               </Select>
             </FormControl>
           </div>
-          <button onClick={submitCondition}>검색</button>
-          <button>조건 초기화</button>
+          <div className="m-3">
+            <button className="saveBtn me-2" onClick={submitCondition}>검색</button>
+            <button className="darkgrayBtn ms-2">조건 초기화</button>
+          </div>
         </div>
       </section>
     </div>

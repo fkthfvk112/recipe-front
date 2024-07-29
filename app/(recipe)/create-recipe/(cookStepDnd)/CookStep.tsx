@@ -10,19 +10,16 @@ import { RecipeCreate } from "../page";
 export interface CookStepProp {
   recipe: RecipeCreate;
   setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
-  letsSetRecipe: number;
 }
 export default function CookStep({
   recipe,
   setRecipe,
-  letsSetRecipe,
 }: CookStepProp) {
   return (
     <DndProvider backend={HTML5Backend}>
       <ContainerDnd
         recipe={recipe}
         setRecipe={setRecipe}
-        letsSetRecipe={letsSetRecipe}
       />
     </DndProvider>
   );

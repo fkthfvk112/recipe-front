@@ -6,8 +6,6 @@ export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get('authorization');
   const refreshCookie = request.cookies.get('refresh-token');
   
-  console.log(refreshCookie);
-
   if(authCookie === undefined || refreshCookie === undefined || !authCookie.value.startsWith("Bearer_")){
 
     return NextResponse.redirect(new URL('/signin', request.url))
@@ -21,5 +19,6 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe', '/board/create/:path*', '/userfeed/myfeed'],
+  matcher: ['/diet/mydiet/create', '/diet/mydiet/edit/:path*', '/create-recipe', '/board/create/:path*',
+            '/userfeed/myfeed', '/accountSetting', '/accountMenuList', '/board/:id*/create'],
 }

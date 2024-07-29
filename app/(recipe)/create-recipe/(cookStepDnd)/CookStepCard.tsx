@@ -11,18 +11,17 @@ import { useDrag, useDrop } from "react-dnd";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
-import { CookingSteps_create_withPhotoSring } from "./ContainerDnd";
 import ClearIcon from "@mui/icons-material/Clear";
 import Image from "next/image";
-import fileToBase64 from "@/app/(utils)/fileToBase64";
 import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
+import { CookingSteps_create } from "../../types/recipeType";
 export interface CardProps {
   id: any;
   index: number;
-  card: CookingSteps_create_withPhotoSring;
+  card: CookingSteps_create;
   moveCard: (dragIndex: number, hoverIndex: number, order: number) => void;
-  setCards: Dispatch<SetStateAction<CookingSteps_create_withPhotoSring[]>>;
-  cards: CookingSteps_create_withPhotoSring[];
+  setCards: Dispatch<SetStateAction<CookingSteps_create[]>>;
+  cards: CookingSteps_create[];
 }
 
 interface DragItem {
@@ -154,8 +153,6 @@ const CookStepCard: FC<CardProps> = ({
     }
   };
 
-  console.log("리랜더링");
-
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const newCards = cards.map((card) => {
       if (card.order === index && !isNaN(Number(e.target.value))) {
@@ -174,15 +171,14 @@ const CookStepCard: FC<CardProps> = ({
         return { ...card, order: inx };
       });
 
-    console.log(newCards);
-    setCards(newCards as CookingSteps_create_withPhotoSring[]);
+    setCards(newCards as CookingSteps_create[]);
   };
 
 
   const deletePhoto = ()=>{
     const newCards = cards.map((card) => {
       if (card.order === index) {
-        card.photoSring = "";
+        card.photo = "";
       }
       return card;
     });
@@ -229,7 +225,7 @@ const CookStepCard: FC<CardProps> = ({
               type="file"
               hidden
             />
-            {card.photoSring ? (
+            {card.photo ? (
               <div className="w-[100px] h-[100px] img-wrapper-square">
                 <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
                   <ClearIcon className="bg-white"/>
@@ -237,13 +233,13 @@ const CookStepCard: FC<CardProps> = ({
                 <Image
                   className="w-full h-full"
                   style={{ objectFit: "cover" }}
-                  src={card.photoSring}
+                  src={card.photo}
                   alt="no img"
                   fill
                 />
               </div>
             ) : (
-              <label className="w-full h-full flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
+              <label className="w-[100px] h-[100px] flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
                 <FileUploadIcon className="text-gray-500 w-10 h-10" />
               </label>
             )}
@@ -257,7 +253,6 @@ const CookStepCard: FC<CardProps> = ({
           value={card.description}
           maxLength={200}
         ></textarea>
-
         <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
       </div>
     </div>

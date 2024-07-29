@@ -32,6 +32,7 @@ export default function CreateRecipePage() {
     ingredients: [],
     description: "",
     steps: [],
+    viewCnt:0,
   });
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const router = useRouter();
@@ -42,22 +43,11 @@ export default function CreateRecipePage() {
     }
   }, [isSignIn, router]);
 
-  const [letsSetRecipe, setLetsSetRecipe] = useState<number>(0); //값 세팅을 위한 트리거
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
 
-  // useEffect(() => {
-  //   console.log("이이잉", recipe);
-  // }, [recipe]);
-
-  const clickPostHandler = () => {
-    setLetsSetRecipe(letsSetRecipe + 1);
-    console.log("레시피", recipe);
-  };
-
-
-
+  console.log("레시피", recipe);
+  
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({
       title:"레시피를 공개하는 중...",
@@ -99,10 +89,6 @@ export default function CreateRecipePage() {
     p: 4,
   };
 
-  useEffect(() => {
-    console.log("레시피", recipe);
-  }, [recipe]);
-
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>
@@ -115,13 +101,11 @@ export default function CreateRecipePage() {
       <CookStep
         recipe={recipe}
         setRecipe={setRecipe}
-        letsSetRecipe={letsSetRecipe}
       ></CookStep>
       <button
         className="saveBtn"
         onClick={() => {
           setIsModalOpen(true);
-          clickPostHandler();
         }}
       >
         레시피 발행

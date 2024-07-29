@@ -12,6 +12,8 @@ export interface UserLoginDTO extends User {
 export interface UserSignUpDTO extends User {
   email: string;
   encodedEmail:string;
+  sex:SexEnum;
+  birthDate:string;
 }
 
 export interface Jwt{

@@ -10,13 +10,17 @@ import { deleteAuthToken, isLogin } from "./(user)/signin/utils/authUtil";
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import HomeIcon from '@mui/icons-material/Home';
+import { Avatar } from "@mui/material";
+import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 
 const Navbar = () => {
   const [localSignInState, setLocalSignInState] = useState<boolean>(false);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const {navCss} = useResponsiveDesignCss();
   const router = useRouter();
 
   const pathname = usePathname();
+
   const goToSiginInPage = () => {
     const storage = globalThis?.sessionStorage;
     if (storage) {
@@ -42,17 +46,17 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full h-20 bg-white sticky top-0 z-50">
+      <div className={navCss}>
         <div className="container mx-auto px-4 h-full">
-          <div className="flex justify-between items-center h-full">
+          <ul className="flex justify-around items-center h-full">
+            <li>
             <Link href="/">
               <div className="flex flex-col justify-center items-center">
                 <HomeIcon sx={{width:'43px', height:'43px'}}/>
                 <p>홈</p>
               </div>
             </Link>
-            {/* <ul className="hidden md:flex gap-x-6"> */}
-            <ul className="flex gap-x-6">
+            </li>
               <li>
                 <Link href="/recipes/1/servingsMin=1&servingsMax=20&sortingCondition=POPULARITY">
                   <div className="flex flex-col justify-center items-center">
@@ -61,13 +65,8 @@ const Navbar = () => {
                   </div>
                 </Link>
               </li>
-              {/* <li>
-                <Link href="/recipe-detail/17">
-                  <p>레시피 보기</p>
-                </Link>
-              </li> */}
               <li>
-                <Link href={`/board/${process.env.NEXT_PUBLIC_FREE_BOARD_UUID}`}>
+                <Link href={`/board/1`}>
                   <div className="flex flex-col justify-center items-center">
                     <LibraryBooksIcon sx={{width:'43px', height:'43px'}}/>
                     <p>게시판</p>
@@ -75,22 +74,15 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/diet/mydiet/create">
-                  <p>식단</p>
-                </Link>
+                {localSignInState ? (
+                  <AccountMenu />
+                ) : (
+                  <div className="cursor-pointer" onClick={goToSiginInPage}>
+                    <Avatar sx={{ width: 50, height: 50 }}><span className="text-sm font-extrabold">로그인</span></Avatar>
+                  </div>
+                )}
               </li>
-              <li>
-                {/* <Link href="/board/free">
-                  <p>보드</p>
-                </Link> */}
-              </li>
-            </ul>
-            {localSignInState ? (
-               <AccountMenu />
-            ) : (
-              <button className="border-none" onClick={goToSiginInPage}>로그인</button>
-            )}
-          </div>
+          </ul>
         </div>
       </div>
     </>

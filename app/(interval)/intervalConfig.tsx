@@ -19,7 +19,6 @@ function IntervalConfig(){
     useEffect(()=>{
         const idArr:ReturnType<typeof setInterval>[] = [];
         const idZero = minuteInterval(1, ()=>{//1분에 한 번씩 실행
-            console.log("실행")
             const refreshTokenStr= getCookie("refresh-token");
             if(refreshTokenStr){
                 const refreshToken:Token = jwtDecode(refreshTokenStr);

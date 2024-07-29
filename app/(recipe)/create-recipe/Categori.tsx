@@ -28,7 +28,6 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
     e.preventDefault();
     if (categoriSliderRef?.current !== null) {
       const scrollLeftValue = categoriSliderRef.current.scrollLeft;
-      console.log("scrollLeft:", scrollLeftValue);
     }
     setIsDragging(true);
     setStartX(e.clientX);

@@ -17,11 +17,9 @@ export default async function DietDetail({
     //하지만 유저는 다 볼 수 있어야한다.
     //다이어트 폼을 공통으로 사용하자.
 
-      const dietDay:DietDay|undefined = await authFetch(`diet/day/my-day?dietId=${params.dietId}`);
-      console.log(dietDay);
-
+    const dietDay:DietDay|undefined = await authFetch(`diet/day/my-day?dietId=${params.dietId}`);
   
-     const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) => 
+    const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) => 
        <DietDayShowBox key={inx} title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>);
 
     return (

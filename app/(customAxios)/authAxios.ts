@@ -13,8 +13,7 @@ export const axiosAuthInstacne = axios.create({
 });
 
 axiosAuthInstacne.interceptors.response.use((res) => {
-  console.log("잉?");
-  
+ 
   return res;
 },
 (err)=>{
@@ -28,12 +27,6 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     if (originUrl === undefined || originMethod === undefined) {
       return Promise.reject("오리진 url 혹은 오리진 method가 undefined");
     }
-    console.log("url", originBaseUrl);
-    console.log("url", originUrl);
-    console.log("method", originMethod);
-    console.log("data", originData);
-
-    console.log("콘텐츠 타입", err.response.headers["content-type"])
 
     return axios({
       method: originMethod,

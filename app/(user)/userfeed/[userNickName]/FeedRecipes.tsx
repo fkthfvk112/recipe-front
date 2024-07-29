@@ -22,7 +22,6 @@ export default function FeedRecipes({
         `${process.env.NEXT_PUBLIC_API_URL}recipe/get-user-recipe?userNickName=${userNickName}`
       )
       .then((res) => {
-        console.log("레시피 데이터", res.data);
         setMyRecipes(res.data);
       })
       .catch((err) => {

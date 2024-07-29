@@ -1,4 +1,4 @@
-import RecipeVerticalItem from "@/app/(board)/board/create/[boardMstUUID]/(Recipe)/RecipeVerticalItem";
+import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";

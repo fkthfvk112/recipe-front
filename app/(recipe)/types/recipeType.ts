@@ -31,14 +31,14 @@ export interface CookingSteps_show {
 }
 
 export interface Ingredient {
-  name:  string;
-  qqt:   string;
-  order: number;
+  name:        string;
+  qqt:         string;
+  order:       number;
 }
 
 export interface Recipe {
   createdAt:    string;
-  viewCnt:        number;
+  viewCnt:      number;
   recipeId:     number | undefined | null;
   recipeName:   string;
   repriPhotos:  string[];

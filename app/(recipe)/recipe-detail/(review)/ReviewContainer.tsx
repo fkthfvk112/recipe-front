@@ -1,10 +1,9 @@
 import Reviews from "./Reviews";
 import WriteReview from "./WriteReview";
 
-type domainName = "recipe"|"board";
-type domainId = number|string;
+export type domainName = "recipe"|"board";
+export type domainId = number;
 export default function ReviewContainer({ domainId, domainName }: { domainId: number, domainName:domainName }) {
-
 
   return (
     <>
