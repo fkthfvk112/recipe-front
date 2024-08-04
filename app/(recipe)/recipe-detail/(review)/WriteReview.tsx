@@ -55,7 +55,6 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
     axiosAuthInstacne
       .post(domainUrl, postData)
       .then((res) => {
-        console.log(res.data);
         revalidateByTagName(`reviews-${domainId}`);
         setReview({...review, message:""});
       })

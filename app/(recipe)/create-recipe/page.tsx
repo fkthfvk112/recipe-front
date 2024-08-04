@@ -46,8 +46,7 @@ export default function CreateRecipePage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
 
-  console.log("레시피", recipe);
-  
+
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({
       title:"레시피를 공개하는 중...",

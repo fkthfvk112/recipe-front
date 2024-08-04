@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Recipe } from "../types/recipeType";
 import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
@@ -6,7 +7,7 @@ export default async function PopularRecipes() {
   const fetchData: Recipe[] = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?servingsMin=1&servingsMax=20&sortingCondition=POPULARITY&page=1&size=10`,
     {
-      cache: "no-cache", //수정
+      next: { revalidate: 300 },
     }
   ).then((res) => {
     if (!res.ok) {
@@ -14,9 +15,12 @@ export default async function PopularRecipes() {
     } else {
       return res.json();
     }
-  });
+  })
+  .catch(err=>{
+    console.log(err);
+    return [];
+  })
 
-  console.log("팽;체체체", fetchData);
   const recentRecipes = fetchData?.map((recipe, inx) => (
       <Link className="inline-block" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
         <RecipeVerticalItem recipe={recipe}></RecipeVerticalItem>

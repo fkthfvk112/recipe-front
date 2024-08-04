@@ -80,7 +80,6 @@ export default function CreateRecipePage({
     }
     axiosAuthInstacne.get(`recipe/get-recipe?recipeId=${params.recipeId}`)
     .then((res)=>{
-      console.log("데이터어", res.data.recipeDTO);
       setInitialRecipeData(res.data.recipeDTO);
       setLoading(false);
     })
@@ -138,9 +137,6 @@ export default function CreateRecipePage({
       </div>
     )
   }
-
-
-  console.log("데이터", recipe);
   
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">

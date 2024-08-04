@@ -15,7 +15,6 @@ const useDecreaseTimer = ({ initialTime, callback }: UseTimerProp): [number, Dis
     }
 
     useEffect(()=>{
-        console.log("!!")
         const intervalId = setInterval(()=>{
             setTime(prevCount => {
                 if (prevCount <= 1) {

@@ -12,6 +12,8 @@ export default async function RealTimeLikeBoard(){
         option:{
             cache:"no-cache",
         }
+    }).catch((e)=>{
+        console.log(e);
     })
 
     const borardDatasProp = boardData?.map((ele, inx)=>{

@@ -11,7 +11,6 @@ export default function MyFeed() {
     axiosAuthInstacne
       .get(`recipe/get-my-recipe`)
       .then((res) => {
-        console.log(res.data);
         setMyRecipes(res.data);
       })
       .catch((err) => {

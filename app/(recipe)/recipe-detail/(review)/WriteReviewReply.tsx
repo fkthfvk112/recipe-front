@@ -56,7 +56,6 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
               axiosAuthInstacne
               .post(domainUrl, postData)
               .then((res) => {
-                console.log(res.data);
                 revalidateByTagName(`reviews-${domainId}`);
               })
               .catch((e) => {

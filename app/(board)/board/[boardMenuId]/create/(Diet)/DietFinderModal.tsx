@@ -33,7 +33,7 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
             setSearchedDietDay(res.data);
         })
         .catch((err) => {
-            console.log("아시오스 에러", err);
+            console.log(err);
         });
     }, [])
 

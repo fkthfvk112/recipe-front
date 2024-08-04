@@ -153,10 +153,7 @@ export default function EditBoardPost({
                             title: "수정이 완료되었습니다!",
                             icon: "success",
                         }).then(() => {
-                            //   if(revalidateTagName){
-                            //     console.log("리발리!!")
-                            //     revalidateByTagName(revalidateTagName);
-                            //   }
+
                             router.push(`/board/detail/${params.boardId}`)
                         });
                     });

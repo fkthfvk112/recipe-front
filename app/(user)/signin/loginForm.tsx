@@ -36,7 +36,6 @@ export default function LoginForm() {
       })
       .then((res) => {
         setIsLoading(false);
-        console.log(res.data);
         setIsSignIn(true);
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
