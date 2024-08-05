@@ -40,8 +40,6 @@ export default async function SearchingByCondition({
     }
   });
 
-  console.log("넘버", pageMaxCnt);
-
   const pnMaxCnt = Math.floor(
     pageMaxCnt % 10 === 0 ? pageMaxCnt / 10 : pageMaxCnt / 10 + 1
   );

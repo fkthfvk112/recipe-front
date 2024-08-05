@@ -3,6 +3,7 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../../RecipePagination";
 import CreateIcon from '@mui/icons-material/Create';
+import NoContent_Recipe from "../../../(common)/NoContent_Recipe";
 
 export default async function RecipesByIngre({
   params,
@@ -43,13 +44,18 @@ export default async function RecipesByIngre({
       pageMaxCnt % 10 === 0 ? pageMaxCnt / 10 : pageMaxCnt / 10 + 1
     );
 
-  const recentRecipes = fetchData?.map((recipe, inx) => (
-    <div key={inx} className="m-3">
-      <Link href={`/recipe-detail/${recipe.recipeId}`}>
-        <RecipeCard recipe={recipe}></RecipeCard>
-      </Link>
-    </div>
-  ));
+  const recentRecipes = fetchData && fetchData.length ? (
+    fetchData.map((recipe, inx) => (
+      <div key={inx} className="m-3">
+        <Link href={`/recipe-detail/${recipe.recipeId}`}>
+          <RecipeCard recipe={recipe} />
+        </Link>
+      </div>
+    ))
+  ) : (
+    <NoContent_Recipe />
+  );
+  
 
    return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full mb-10">
@@ -61,9 +67,5 @@ export default async function RecipesByIngre({
         pageNow={Number(params.pageNumber)}
         pageMax={pnMaxCnt}
       ></RecipePagination>
-      <Link href={`/create-recipe`} className="fixed bottom-6 right-12 roundRreenBtn">
-          <CreateIcon sx={{width:"25px", height:"25px"}}/>
-          <span className="ms-2">글쓰기</span>
-      </Link>
     </div>);
 }

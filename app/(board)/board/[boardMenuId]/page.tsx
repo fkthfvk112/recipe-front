@@ -4,11 +4,10 @@ import serverFetch from "@/app/(commom)/serverFetch";
 import { BoardPreview } from "@/app/(type)/board";
 import BoardHolder from "./BoardHolder";
 import { IndexPagenation } from "@/app/(type)/Pagenation";
-import Link from "next/link";
-import CreateIcon from '@mui/icons-material/Create';
 import TitleDescription from "@/app/(commom)/Component/TitleDescription";
 import { BoardMenu } from "@/app/(type)/menu";
 import BoardNav from "./BoardNav";
+import WriteBtn from "./WriteBtn";
 
 export default async function Board({
     params
@@ -38,10 +37,7 @@ export default async function Board({
             <TitleDescription title={`${selectedMenu?.menuName}`} desc={`${selectedMenu?.description}`}/>
             <div className="defaultInnerContainer  flex flex-col justify-center items-center w-full min-h-lvh">
                 <BoardHolder initialData={boardData} boardMenuId={params.boardMenuId}/>
-                <Link href={`/board/${params.boardMenuId}/create`} className="fixed bottom-6 roundRreenBtn">
-                    <CreateIcon sx={{width:"25px", height:"25px"}}/>
-                    <span className="ms-2">글쓰기</span>
-                </Link>
+                <WriteBtn boardMenuId={params.boardMenuId.toString()} />
             </div>
          </div>
     )
