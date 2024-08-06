@@ -1,3 +1,5 @@
+"use client"
+
 import { DndProvider } from "react-dnd";
 import { ContainerDnd } from "./ContainerDnd";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -11,22 +13,22 @@ function CookStep({
   recipe,
   setRecipe,
 }: CookStepProp) {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const [Backend, setBackend] = useState<any>(null);
 
   useEffect(() => {
     const loadBackend = async () => {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
-        const { TouchBackend } = await import('react-dnd-touch-backend');
+        const { TouchBackend } = await import("react-dnd-touch-backend");
         setBackend(() => TouchBackend);
       } else {
-        const { HTML5Backend } = await import('react-dnd-html5-backend');
+        const { HTML5Backend } = await import("react-dnd-html5-backend");
         setBackend(() => HTML5Backend);
       }
     };
 
     loadBackend();
-  }, [isMobile]);
+  }, []);
 
   if (!Backend) {
     return <div>Loading...</div>;
