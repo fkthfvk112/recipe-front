@@ -1,22 +1,39 @@
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { TouchBackend } from "react-dnd-touch-backend";
-
 import { ContainerDnd } from "./ContainerDnd";
-import { Recipe } from "../../types/recipeType";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { RecipeCreate } from "../page";
 
 export interface CookStepProp {
   recipe: RecipeCreate;
   setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
-export default function CookStep({
+function CookStep({
   recipe,
   setRecipe,
 }: CookStepProp) {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const [Backend, setBackend] = useState<any>(null);
+
+  useEffect(() => {
+    const loadBackend = async () => {
+      if (isMobile) {
+        const { TouchBackend } = await import('react-dnd-touch-backend');
+        setBackend(() => TouchBackend);
+      } else {
+        const { HTML5Backend } = await import('react-dnd-html5-backend');
+        setBackend(() => HTML5Backend);
+      }
+    };
+
+    loadBackend();
+  }, [isMobile]);
+
+  if (!Backend) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={Backend}>
       <ContainerDnd
         recipe={recipe}
         setRecipe={setRecipe}
@@ -24,3 +41,5 @@ export default function CookStep({
     </DndProvider>
   );
 }
+
+export default React.memo(CookStep);

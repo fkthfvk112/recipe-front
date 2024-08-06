@@ -1,7 +1,6 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Modal, Typography } from "@mui/material";
 import { useState } from "react";
 import DetailSearchingModal from "./DetailSearchingModal";
 import Swal from "sweetalert2";
@@ -65,12 +64,11 @@ export default function SearchBar() {
           <SearchIcon sx={{fill:"a1a1a1"}} />
         </button>
       </div>
-      <button className="rounded-3xl border-none mt-5 bg-[#FB8500] font-bold" onClick={() => setIsOpen(true)}>상세 검색</button>
+      <button className="rounded-3xl border-none mt-5 bg-[#FB8500] font-bold" onClick={() => router.push("/search/recipe-detail")}>상세 검색</button>
       <DetailSearchingModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       ></DetailSearchingModal>
-      {/* <button onClick={handleOpen}>상세 보기</button> */}
     </div>
   );
 }

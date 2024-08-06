@@ -58,7 +58,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
           ) : (
             isBoardReview(review) && review?.checkAnonymous === true ? (
               <div>
-                <h3 className="ms-2 me-2">익명</h3>
+                <h3 className="ms-2 me-2 whitespace-nowrap">익명</h3>
               </div>
             ) : (
               <Link href={`/userfeed/${review.userInfo?.userNickName}`}>

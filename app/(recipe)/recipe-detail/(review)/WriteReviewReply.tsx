@@ -13,12 +13,13 @@ const modalstyle = {
     position: "absolute" as "absolute",
     bottom: "5%",
     left: "50%",
-    height:"200px",
+    maxHeight:"300px",
     transform: "translate(-50%, -50%)",
     width: "80%",
     backgroundColor: "white",
     padding:"1em",
-    maxWidth:"700px"
+    maxWidth:"700px",
+    minWidth:"275px"
   };
 
   interface commonReviewReply{
@@ -96,10 +97,10 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                         value={reply.message}
                         onChange={(e)=>handleChangeData(e)}
                       />
-                      <div className="flex justify-between items-center p-2">
+                      <div className="flex justify-between flex-wrap items-center p-2">
                         <div className="felx justify-center items-center">
                           <Checkbox checked={checkAnonymous} value={checkAnonymous} onClick={()=>{setCheckAnonymous(!checkAnonymous)}} className="p-0 mb-1" defaultChecked color="success" />
-                          <span className="font-bold text-[#31853c] ms-1">
+                          <span className="font-bold text-[#31853c] ms-1 me-1 whitespace-nowrap">
                             익명
                           </span>
                         </div>

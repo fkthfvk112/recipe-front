@@ -15,7 +15,7 @@ export default function MyAccountMenuList(){
     const handelLogOut = ()=>{
         deleteAuthToken(); //server sid job
         setIsSignIn(false);
-        router.push('/');
+        router.refresh();
     }
 
     

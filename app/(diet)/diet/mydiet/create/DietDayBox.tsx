@@ -121,7 +121,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
         });
     }
 
-    const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
+    const itemInputSections = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
             <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">
                 <button name={`delete-${inx}`} onClick={(evt)=>handleDelete(evt)} className="absolute right-0 top-0 flex justify-center items-center border-none h-8 w-8">
@@ -220,7 +220,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                     </div>
                     <div className="bottom-line"/>
                         <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
-                            {itemBageList}
+                            {itemInputSections}
                             <div className="text-center mt-4">
                                 <AddIcon
                                 className="m-1 w-[60px] h-[60px] border border-slate-500 hover:cursor-pointer"
