@@ -12,7 +12,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import HomeIcon from '@mui/icons-material/Home';
 import { Avatar } from "@mui/material";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
-
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 const Navbar = () => {
   const [localSignInState, setLocalSignInState] = useState<boolean>(false);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
@@ -52,7 +52,7 @@ const Navbar = () => {
             <li>
             <Link href="/">
               <div className="flex flex-col justify-center items-center">
-                <HomeIcon sx={{width:'43px', height:'43px'}}/>
+                <HomeIcon sx={{width:'30px', height:'30px'}}/>
                 <p>홈</p>
               </div>
             </Link>
@@ -60,27 +60,37 @@ const Navbar = () => {
               <li>
                 <Link href="/recipes/1/servingsMin=1&servingsMax=20&sortingCondition=POPULARITY">
                   <div className="flex flex-col justify-center items-center">
-                    <RestaurantMenuIcon sx={{width:'43px', height:'43px'}}/>
+                    <RestaurantMenuIcon sx={{width:'30px', height:'30px'}}/>
                     <p>레시피</p>
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link href="/randomMenu">
+                  <div className="flex flex-col justify-center items-center">
+                    <QuestionMarkIcon sx={{width:'30px', height:'30px'}}/>
+                    <p>뭐먹?</p>
                   </div>
                 </Link>
               </li>
               <li>
                 <Link href={`/board/1`}>
                   <div className="flex flex-col justify-center items-center">
-                    <LibraryBooksIcon sx={{width:'43px', height:'43px'}}/>
+                    <LibraryBooksIcon sx={{width:'30px', height:'30px'}}/>
                     <p>게시판</p>
                   </div>
                 </Link>
               </li>
               <li>
+                <div className="flex flex-col justify-center items-center pb-3">
                 {localSignInState ? (
                   <AccountMenu />
                 ) : (
                   <div className="cursor-pointer" onClick={goToSiginInPage}>
-                    <Avatar sx={{ width: 50, height: 50 }}><span className="text-sm font-extrabold">로그인</span></Avatar>
+                    <Avatar sx={{ width: 43, height: 43 }}><span className="text-sm font-extrabold">로그인</span></Avatar>
                   </div>
                 )}
+                </div>
               </li>
           </ul>
         </div>

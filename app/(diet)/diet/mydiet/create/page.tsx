@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DietDay, DietItemRow } from "@/app/(type)/diet";
 import EditIcon from "@mui/icons-material/Edit";
 import DietDayBox from "./DietDayBox";
@@ -11,13 +11,16 @@ import Image from "next/image";
 import ClearIcon from '@mui/icons-material/Clear';
 import { Validation } from "@/app/(user)/check";
 import Swal from "sweetalert2";
+import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 
 export default function MyDiet(){
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
+    const [dietDate, setDietDate]               = useState<string>("");
     const [title, setTitle]                     = useState<string>("");
     const [memo, setMemo]                       = useState<string>("");
     const [isPublic, setIsPublic]               = useState<boolean>(true);
     const [saveData, setSaveData]               = useState<DietDay>();
+    const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",
@@ -42,6 +45,11 @@ export default function MyDiet(){
         photo:"",
         dietItemList:[{calorie: 0, memo: "", qqt: "", title: ""}]
     });
+
+
+    useEffect(()=>{
+        setTodayDateKST();
+    }, [])
 
     const handleSubmit = ()=>{
         if(!chkDietValid().isValid){
@@ -68,6 +76,7 @@ export default function MyDiet(){
         const existDietRowFour:DietItemRow = {...dietItemRowFour, dietItemList:existInnerItemFour};
 
         const dietDay:DietDay = {
+            dietDate:dietDate,
             title:title,
             memo:memo,
             isPublic:isPublic,
@@ -90,15 +99,58 @@ export default function MyDiet(){
                 message:"설명의 길이는 60자 이하여야해요."
             }
         }
+        if(dietDate.length === 0){
+            return{
+                isValid:false,
+                message:"날짜를 선택해주세요."
+            }
+        }
         return{
             isValid:true,
             message:"valid"
         };
     }
 
+    const setTodayDateKST = () => {
+        const today = new Date();
+        const utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+        const KST_TIME_DIFF = 9 * 60 * 60000;
+        const kst = new Date(utc + KST_TIME_DIFF);
+
+        kst.setDate(kst.getDate());
+
+        const year = kst.getFullYear();
+        const month = String(kst.getMonth() + 1).padStart(2, '0');
+        const day = String(kst.getDate()).padStart(2, '0');
+
+        setDietDate(`${year}-${month}-${day}`);
+    };
+    
+    const setYesterdayDateKST = () => {
+        const today = new Date();
+        const utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+        const KST_TIME_DIFF = 9 * 60 * 60000;
+        const kst = new Date(utc + KST_TIME_DIFF);
+
+        kst.setDate(kst.getDate() - 1);
+
+        const year = kst.getFullYear();
+        const month = String(kst.getMonth() + 1).padStart(2, '0');
+        const day = String(kst.getDate()).padStart(2, '0');
+
+        setDietDate(`${year}-${month}-${day}`);
+    };
+    
+    
     return (
-        <div className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
-            <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+        <main className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
+            <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+                <div className="w-80">
+                    <h3 className="mt-6">날짜</h3>
+                    <input className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={dietDate} type="date" onChange={(evt)=>setDietDate(evt.target.value)}/>
+                    <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={setTodayDateKST}>오늘</button>
+                    <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={setYesterdayDateKST}>어제</button>
+                </div>
                 <div className="w-80">
                     <h1 className="text-2xl mt-6"><EditIcon className="me-2"></EditIcon>제목</h1>
                     <input maxLength={20} className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={title} onChange={(evt)=>setTitle(evt.target.value)} 
@@ -120,13 +172,15 @@ export default function MyDiet(){
                 <SaveModal open={saveModalOpen} setOpen={setSaveModalOpen}
                     content="식단을 저장하시겠습니까?" data={saveData}
                     postUrl="diet/day/my-days/save" returnUrl="/userfeed/myfeed" />
-            </div>
-            <div className='flex justify-end fixed bottom-0 bg-white w-full p-3 pr-12 top-line-noM'>
-                <div className='flex justify-center items-center mr-10'>
-                    <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
+            </section>
+            <section className={`flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+                <div className='w-full flex justify-between max-w-[300px]'>
+                    <div className='flex justify-center items-center mr-10'>
+                        <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
+                    </div>
+                    <button className='greenBtn' onClick={handleSubmit}>식단 작성</button>
                 </div>
-                <button className='greenBtn' onClick={handleSubmit}>식단 작성</button>
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }

@@ -6,6 +6,7 @@ import { Checkbox } from "@mui/material";
 import DietDayBox from "../../create/DietDayBox";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import UpdateModal from "@/app/(commom)/UpdateModal";
+import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 
 export default function MyDietEdit({
     params,
@@ -21,7 +22,10 @@ export default function MyDietEdit({
         if(fetchedData.title !== undefined && fetchedData.title.length > 0){
             setTitle(fetchedData.title);
         }
-
+        if(fetchedData.dietDate !== undefined && fetchedData.dietDate.length > 0){
+            setDietDate(fetchedData.dietDate);
+        }
+        
         fetchedData.dietItemRowList.map((item)=>{
             if(item.title === '아침' && item.dietItemList.length > 0){
                 setDietItemRowOne(prev=>{
@@ -62,9 +66,11 @@ export default function MyDietEdit({
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
 
     const [title, setTitle]                     = useState<string>("");
+    const [dietDate, setDietDate]               = useState<string>("");
     const [memo, setMemo]                       = useState<string>("");
     const [isPublic, setIsPublic]               = useState<boolean>(true);
     const [saveData, setSaveData]               = useState<DietDay>();
+    const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",
@@ -106,6 +112,7 @@ export default function MyDietEdit({
         const existDietRowFour:DietItemRow = {...dietItemRowFour, dietItemList:existInnerItemFour};
 
         const dietDay:DietDay = {
+            dietDate:dietDate,
             dietDayId:params.dietId,
             title:title,
             memo:memo,
@@ -117,9 +124,46 @@ export default function MyDietEdit({
         setSaveData(dietDay);
     }
 
+    const setTodayDateKST = () => {
+        const today = new Date();
+        const utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+        const KST_TIME_DIFF = 9 * 60 * 60000;
+        const kst = new Date(utc + KST_TIME_DIFF);
+
+        kst.setDate(kst.getDate());
+
+        const year = kst.getFullYear();
+        const month = String(kst.getMonth() + 1).padStart(2, '0');
+        const day = String(kst.getDate()).padStart(2, '0');
+
+        setDietDate(`${year}-${month}-${day}`);
+    };
+    
+    const setYesterdayDateKST = () => {
+        const today = new Date();
+        const utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+        const KST_TIME_DIFF = 9 * 60 * 60000;
+        const kst = new Date(utc + KST_TIME_DIFF);
+
+        kst.setDate(kst.getDate() - 1);
+
+        const year = kst.getFullYear();
+        const month = String(kst.getMonth() + 1).padStart(2, '0');
+        const day = String(kst.getDate()).padStart(2, '0');
+
+        setDietDate(`${year}-${month}-${day}`);
+    };
+    
+
     return (
-        <div className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
-            <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+        <main className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
+            <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+                <div className="w-80">
+                    <h3 className="mt-6">날짜</h3>
+                    <input className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={dietDate} type="date" onChange={(evt)=>setDietDate(evt.target.value)}/>
+                    <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={setTodayDateKST}>오늘</button>
+                    <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={setYesterdayDateKST}>어제</button>
+                </div>
                 <div className="w-80">
                     <h1 className="text-2xl mt-6"><EditIcon className="me-2"></EditIcon>제목</h1>
                     <input maxLength={20} className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={title} onChange={(evt)=>setTitle(evt.target.value)} 
@@ -141,14 +185,16 @@ export default function MyDietEdit({
                 <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
                  content="수정하시겠습니까?" data={saveData}
                  postUrl="diet/day/my-day/update" returnUrl={`/diet/mydiet/${params.dietId}`} ></UpdateModal>
-            </div>
-            <div className='flex justify-end fixed bottom-0 bg-white w-full p-3 pr-12 top-line-noM'>
-                <div className='flex justify-center items-center mr-10'>
-                    <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
+            </section>
+            <section className={`flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+                <div className='w-full flex justify-between max-w-[300px]'>
+                    <div className='flex justify-center items-center mr-10'>
+                        <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
+                    </div>
+                    <button className='greenBtn' onClick={handleSubmit}>식단 수정</button>
                 </div>
-                <button className='greenBtn' onClick={handleSubmit}>식단 수정</button>
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }
 

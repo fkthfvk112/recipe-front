@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import { Validation } from '@/app/(user)/check';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
+import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
 
 export default function CreateNewBoardPost({
     params
@@ -25,7 +26,8 @@ export default function CreateNewBoardPost({
     const [recipes, setRecipes]               = useState<Recipe[]>([]);
     const [photos, setPhotos]                 = useState<File[]>([]);
     const [dietDay, setDietDay]               = useState<DietDay[]>([]);
-    
+    const {layoutBottomMargin}                = useResponsiveDesignCss(); 
+
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const router = useRouter();
@@ -154,11 +156,13 @@ export default function CreateNewBoardPost({
             <SetDiet dietDay={dietDay} setDietDay={setDietDay}/>
             <SetPhoto photos={photos} setPhotos={setPhotos}/>
             </section>
-            <div className='flex justify-end fixed bottom-0 bg-white w-full p-3 pr-12 top-line-noM'>
-                <div className='flex justify-center items-center mr-10'>
-                    <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
+            <div className={`flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+                <div className='w-full flex justify-between max-w-[300px]'>
+                    <div className='flex justify-center items-center'>
+                        <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
+                    </div>
+                    <button className='greenBtn' onClick={postbtn}>게시글 작성</button>
                 </div>
-                <button className='greenBtn' onClick={postbtn}>게시글 작성</button>
             </div>
          </div>
     )

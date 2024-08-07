@@ -109,6 +109,19 @@ textarea{
   font-weight: 700;
 }
 
+.saveBtn-outline-orange{
+  border:2px solid #f77f00;
+  border-radius: 15em;
+  color:#f77f00;
+  background-color: white;
+  font-weight: 700;
+}
+
+.saveBtn-outline-orange:hover{
+  border:2px solid #f3a30f;
+  color: #f3a30f;
+}
+
 .greenBtn{
   border:none;
   background-color: #38c54b;
@@ -210,6 +223,18 @@ textarea{
   min-width: 320px;
   border-radius: 2rem;
   padding: 2rem 0rem 2rem 0rem; 
+  margin: 0.5rem;
+  background-color: white;
+}
+
+
+.defaultInnerContainer-noPTop{
+  max-width: 1024px;
+  min-height: 500px;
+  width: 95%;
+  min-width: 320px;
+  border-radius: 2rem;
+  padding: 0rem 0rem 2rem 0rem; 
   margin: 0.5rem;
   background-color: white;
 }

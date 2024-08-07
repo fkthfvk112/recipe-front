@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 import { siginInState } from '@/app/(recoil)/recoilAtom';
 import SetRecipe from '../../create/(Recipe)/SetRecipe';
 import SetDiet from '../../create/(Diet)/SetDiet';
+import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
 
 interface BoardChangeChk{
     titleChk:    boolean,
@@ -35,6 +36,7 @@ export default function EditBoardPost({
 
     const [initialData, setInitialData]       = useState<Board>();
     const [photoChangeChk, setPhotoChangeChk] = useState<boolean>();//사진 변화 상태 추적 
+    const {layoutBottomMargin}                = useResponsiveDesignCss(); 
 
     const router = useRouter();
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
@@ -190,11 +192,13 @@ export default function EditBoardPost({
             <SetDiet dietDay={dietDay} setDietDay={setDietDay}/>
             <SetPhotoChk photos={photos} setPhotos={setPhotos} setPhotoChangeChk={setPhotoChangeChk}/>
             </section>
-            <div className='flex justify-end fixed bottom-0 bg-white w-full p-3 pr-12 top-line-noM'>
-                <div className='flex justify-center items-center mr-10'>
-                    <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
+            <div className={`flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+                <div className='w-full flex justify-between max-w-[300px]'>
+                    <div className='flex justify-center items-center'>
+                        <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
+                    </div>
+                    <button className='greenBtn' onClick={postbtn}>버튼 누름</button>
                 </div>
-                <button className='greenBtn' onClick={postbtn}>버튼 누름</button>
             </div>
          </div>
     )

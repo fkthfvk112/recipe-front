@@ -241,7 +241,7 @@ export default function RecipeDetailSearch() {
                 </div>
             </section>
         </div>
-        <div className="m-3 w-full flex justify-center mt-[100px] mb-[50px]">
+        <div className="w-full flex justify-center mt-[100px] mb-[50px]">
           <button className="saveBtn me-2" onClick={submitCondition}>검색</button>
           <button className="darkgrayBtn ms-2" onClick={clearSearchingDate}>조건 초기화</button>
         </div>

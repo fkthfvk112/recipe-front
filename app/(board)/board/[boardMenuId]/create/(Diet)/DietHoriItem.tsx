@@ -50,7 +50,7 @@ function DietHoriItem({dietDay, selectedDietDay, setSelectedDietDay}:{dietDay:Di
                 </div>
                 <div>
                     <CalendarMonthIcon sx={{ width: 15, height: 15 }} className='me-1'/>
-                    <span className='text-[12px]'>{extractDate(dietDay.createdAt as string)}</span>
+                    <span className='text-[12px]'>{dietDay.dietDate}</span>
                 </div>
             </div>
             <div className="col-span-4 flex flex-col">

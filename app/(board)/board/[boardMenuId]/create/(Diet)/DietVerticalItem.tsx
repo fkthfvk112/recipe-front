@@ -18,7 +18,7 @@ function DietVerticalItem({dietDay}:{dietDay:DietDay}){
             </div>
             <div>
                 <CalendarMonthIcon sx={{ width: 15, height: 15 }} className='me-1'/>
-                <span className='text-[12px]'>{extractDate(dietDay.createdAt as string)}</span>
+                <span className='text-[12px]'>{dietDay.dietDate}</span>
             </div>
             <div className="h-full text-start mt-1 top-line">
                 {dietDay?.memo && truncateString(dietDay?.memo, 25)}

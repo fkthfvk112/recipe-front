@@ -8,6 +8,7 @@ interface CookMethodProp {
   setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
+  
   const methodClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
     setRecipe({
       ...recipe,

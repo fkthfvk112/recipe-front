@@ -12,6 +12,7 @@ export interface DietItemRow{
 }
 
 export interface DietDay{
+    dietDate:string;
     userId?:string;
     dietDayId?:string;
     title:string|undefined;

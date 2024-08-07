@@ -47,8 +47,6 @@ export default function AccountMenu() {
   const goToCreatMyDiet = ()=>{
     router.push(`/diet/mydiet/create`);
   }
-  
-
 
   return (
     <>
@@ -59,9 +57,9 @@ export default function AccountMenu() {
           aria-controls={open ? "account-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
-          sx={{ width: 50, height: 50 }}
+          sx={{ width: 43, height: 43 }}
         >
-          <Avatar sx={{ width: 50, height: 50 }}>Me</Avatar>
+          <Avatar sx={{ width: 43, height: 43 }}>Me</Avatar>
         </IconButton>
       </div>
       <Menu
