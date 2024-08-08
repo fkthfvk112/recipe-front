@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { randomMenuData } from "./menuData";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RandomMenuRoulette from "./RandomMenuRoulette";
 
 export default function RandomMenu(){
     const [secondMenuSelcet, setSecondSelect] = useState<string[]>([]); //중식, 일식, 양식
@@ -11,7 +12,9 @@ export default function RandomMenu(){
     const [secondSelected, setSecondSelected] = useState<string>("전체");
 
     const [menuName, setMenuName]             = useState<string>("?");
-    
+
+    const [startRotate, setStartRotate]       = useState<number>(0);
+    const [nowRotating, setNowRotating]       = useState<boolean>(false);
 
     const firstClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
         setFirstSelected((e.currentTarget as HTMLDivElement).id);
@@ -24,7 +27,7 @@ export default function RandomMenu(){
 
     const firstSelection = ["전체", "식사", "간식"].map((menu, inx)=>{
         return (
-            <div className={`p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative cursor-pointer ${
+            <div className={`flex-center p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative cursor-pointer ${
                 menu === firstSelected
                   ? "outline outline-2 outline-slate-950"
                   : ""
@@ -45,7 +48,7 @@ export default function RandomMenu(){
 
     const secondSelection = secondMenuSelcet.map((menu, inx)=>{
         return (
-            <div className={`p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative cursor-pointer ${
+            <div className={`flex-center p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative cursor-pointer ${
                 menu === secondSelected
                   ? "outline outline-2 outline-slate-950"
                   : ""
@@ -108,6 +111,12 @@ export default function RandomMenu(){
 
             setMenuName(allMenuList[randomInx]);
         }
+
+        setNowRotating(true);
+        setStartRotate(prv=>prv+1)
+        setTimeout(()=>{
+            setNowRotating(false);
+        }, 2200)
     }
 
     return (
@@ -120,8 +129,13 @@ export default function RandomMenu(){
                 </div>
             </div>
             <section className="w-full flex-center-col">
-                <div className="flex justify-center items-center w-[300px] h-[200px] text-center border-2 mb-5">
-                    <h1 className="text-xl">{menuName}</h1>
+                <div className="flex flex-col justify-center items-center w-[300px] h-[250px] text-center border-2 mb-5">
+                    {
+                        !nowRotating?<h1 className="text-xl">{menuName}</h1>:<RandomMenuRoulette startRotate={startRotate} rotationTime={2}/>
+                    }
+                    {
+                        nowRotating&&<p>메뉴 찾는 중...</p>
+                    }
                 </div>
                 <div className="w-full flex flex-col justify-start items-center min-h-[200px]">
                     <div className="flex justify-center flex-wrap bottom-line w-full min-h-18">
@@ -132,7 +146,7 @@ export default function RandomMenu(){
                     </div>
                 </div>
                 <div>
-                    <button className="w-[230px] h-[60px]" onClick={getRandomMenu}>무엇을 먹을까?</button>
+                    <button className={`w-[230px] h-[60px] ${nowRotating?'bg-[#e1e1e1] border-none':'border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
                 </div>
             </section>
         </main>

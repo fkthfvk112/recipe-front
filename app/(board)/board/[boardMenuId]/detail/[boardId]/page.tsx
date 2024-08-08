@@ -27,6 +27,9 @@ export default async function BoardDetail({
         },
         option:{
             cache:"no-cache",
+            next: {
+                tags: [`boardId-${params.boardId}`],
+            }
         }
     })
 

@@ -98,7 +98,7 @@ export default function LoginForm() {
       </div>
 
       <button
-        className="bg-amber-400 h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
+        className="bg-yellow-300 h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
         type="submit"
         disabled={isLoading}
         onClick={signInBtnClick}

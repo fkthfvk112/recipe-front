@@ -14,6 +14,7 @@ import { siginInState } from '@/app/(recoil)/recoilAtom';
 import SetRecipe from '../../create/(Recipe)/SetRecipe';
 import SetDiet from '../../create/(Diet)/SetDiet';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
+import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 
 interface BoardChangeChk{
     titleChk:    boolean,
@@ -155,8 +156,8 @@ export default function EditBoardPost({
                             title: "수정이 완료되었습니다!",
                             icon: "success",
                         }).then(() => {
-
-                            router.push(`/board/detail/${params.boardId}`)
+                            revalidateByTagName(`boardId-${params.boardId}`);
+                            router.push(`/board/${params.boardMenuId}/detail/${params.boardId}`)
                         });
                     });
             }
@@ -197,7 +198,7 @@ export default function EditBoardPost({
                     <div className='flex justify-center items-center'>
                         <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
                     </div>
-                    <button className='greenBtn' onClick={postbtn}>버튼 누름</button>
+                    <button className='greenBtn' onClick={postbtn}>수정 완료</button>
                 </div>
             </div>
          </div>

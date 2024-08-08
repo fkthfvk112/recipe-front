@@ -105,9 +105,7 @@ export default function SignUp() {
     } else {
       setPwValid(validationPwSentence(userPw));
     }
-  }, [userPw]);
 
-  useEffect(() => {
     if (userVeriPw === "") {
       setVeriPwValid({
         isValid: false,
@@ -116,7 +114,7 @@ export default function SignUp() {
     } else {
       setVeriPwValid(validationPwSameSentence(userPw, userVeriPw));
     }
-  }, [userVeriPw]);
+  }, [userPw, userVeriPw]);
 
   useEffect(() => {
     if (userEmail === "") {
@@ -328,23 +326,6 @@ export default function SignUp() {
       </div>
       <div className="m-3">
         <span className="font-bold text-[#3f3f3f]">
-          닉네임
-        </span>
-        <input
-          ref={nickNameRef}
-          name="userNickName"
-          placeholder="2~10 글자 닉네임 입력"
-          value={userNickName}
-          onChange={(e: any) => {
-            setUserNickName(e.target.value);
-          }}
-        />
-        <p className={nickNameValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
-          {nickNameValid.message}
-        </p>
-      </div>
-      <div className="m-3">
-        <span className="font-bold text-[#3f3f3f]">
           비밀번호
         </span>
         <input
@@ -378,6 +359,23 @@ export default function SignUp() {
           {veriPwValid.message}
         </p>
       </div>
+      <div className="m-3">
+        <span className="font-bold text-[#3f3f3f]">
+          닉네임
+        </span>
+        <input
+          ref={nickNameRef}
+          name="userNickName"
+          placeholder="2~10 글자 닉네임 입력"
+          value={userNickName}
+          onChange={(e: any) => {
+            setUserNickName(e.target.value);
+          }}
+        />
+        <p className={nickNameValid.isValid ? "text-[#38c54b]" : "text-red-500"}>
+          {nickNameValid.message}
+        </p>
+      </div>
       <div className="m-3 mt-5">
         <div className="flex justify-between items-center">
           <span className="font-bold text-[#3f3f3f]">
@@ -408,7 +406,7 @@ export default function SignUp() {
           <input
             className="media-col-3-to-4"
             ref={emailRef}
-            type="text"
+            type="email"
             placeholder="예 - abc123@mymail.com"
             value={userEmail}
             onChange={(e: any) => {

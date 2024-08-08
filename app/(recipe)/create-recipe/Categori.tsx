@@ -67,7 +67,7 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
       ) : (
         <></>
       )}
-      <div className="w-[60px] h-[60px] bg-slate-600">
+      <div className="w-[60px] h-[60px]">
         <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" />
       </div>
       <div className="bottom-line w-full"/>

@@ -69,7 +69,7 @@ const Navbar = () => {
                 <Link href="/randomMenu">
                   <div className="flex flex-col justify-center items-center">
                     <QuestionMarkIcon sx={{width:'30px', height:'30px'}}/>
-                    <p>뭐먹?</p>
+                    <p>뭐먹지?</p>
                   </div>
                 </Link>
               </li>

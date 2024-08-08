@@ -72,19 +72,16 @@ function UserInfoSetting_cantChg(){
         } else {
             setNewPwValid(validationPwSentence(newPw));
         }
-    }, [newPw])
 
-
-    useEffect(() => {
         if (newPwChk === "") {
-          setVeriPwValid({
-            isValid: false,
-            message: "",
-          });
-        } else {
-          setVeriPwValid(validationPwSameSentence(newPw, newPwChk));
-        }
-      }, [newPwChk]);
+            setVeriPwValid({
+              isValid: false,
+              message: "",
+            });
+          } else {
+            setVeriPwValid(validationPwSameSentence(newPw, newPwChk));
+          }
+    }, [newPw, newPwChk])
 
     const handleOpen = ()=>{
         setIsOpenModal(true);

@@ -126,7 +126,7 @@ export default function AccountMenu() {
             handleClose();
             deleteAuthToken(); //server sid job
             setIsSignIn(false);
-            router.refresh();
+            router.push("/");
           }}
         >
           <ListItemIcon>

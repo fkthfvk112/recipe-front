@@ -19,6 +19,7 @@ import withReactContent from 'sweetalert2-react-content'
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import RepriPric from "./RepriPic";
 import Swal from "sweetalert2";
+import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -160,6 +161,8 @@ export default function CreateRecipePage({
       >
         레시피 발행
       </button>
+
+      <ScrollToTopButton/>
       <Modal
         open={isModalOpen}
         onClose={() => {
