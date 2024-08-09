@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import type { Identifier, XYCoord } from "dnd-core";
-import { useDrag, useDrop } from "react-dnd";
+import { useDrag, useDragLayer, useDrop } from "react-dnd";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
@@ -42,7 +42,10 @@ const CookStepCard: FC<CardProps> = ({
   card,
   cards,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLDivElement>(null);
+
+
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
@@ -55,7 +58,7 @@ const CookStepCard: FC<CardProps> = ({
       };
     },
     hover(item: DragItem, monitor) {
-      if (!ref.current) {
+      if (!dragRef.current || !dropRef.current) {
         return;
       }
       const dragIndex = item.index;
@@ -67,7 +70,7 @@ const CookStepCard: FC<CardProps> = ({
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
 
       // Get vertical middle
       const hoverMiddleY =
@@ -114,8 +117,10 @@ const CookStepCard: FC<CardProps> = ({
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-  drag(drop(ref));
+  const opacity = isDragging ? 0.5 : 1;
+  //drag(drop(ref));
+  drag(dragRef);
+  drop(dropRef);
 
   const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
@@ -186,14 +191,10 @@ const CookStepCard: FC<CardProps> = ({
     setCards(newCards);
   }
 
-
-
   return (
     <div
-      className={
-        "mt-3 w-full flex flex-col relative bg-zinc-100 rounded-2xl p-2"
-      }
-      ref={ref}
+      className={"mt-3 w-full flex flex-col relative bg-zinc-100 rounded-2xl p-2"}
+      ref={dropRef}
       style={{ opacity }}
       data-handler-id={handlerId}
     >
@@ -253,10 +254,12 @@ const CookStepCard: FC<CardProps> = ({
           value={card.description}
           maxLength={200}
         ></textarea>
-        <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
+        <div ref={dragRef}>
+          <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
+        </div>
       </div>
     </div>
   );
 };
 
-export default React.memo(CookStepCard)
+export default React.memo(CookStepCard);
