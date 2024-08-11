@@ -1,19 +1,31 @@
 "use client";
-import { rejects } from "assert";
-import axios, { AxiosResponse } from "axios";
-import { error } from "console";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-// axios.defaults.withCredentials = true;
 
-// axios.defaults.headers["Access-Control-Allow-Origin"] =
-//   "https://localhost:8080";
+/** 기본 서버로 요청하는 axios */
+export const defaultAxios = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
+  withCredentials: true,
+});
+
+
+defaultAxios.interceptors.response.use((res)=>{
+  return res;
+}, (err)=>{
+  return Promise.reject(err);
+})
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+/** 로그인시 요청하는 axios*/
 export const axiosAuthInstacne = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   withCredentials: true,
 });
 
+
 axiosAuthInstacne.interceptors.response.use((res) => {
- 
   return res;
 },
 (err)=>{
@@ -42,3 +54,28 @@ axiosAuthInstacne.interceptors.response.use((res) => {
   return Promise.reject(err);
 }
 );
+
+
+
+//----------------------------------- 공통 에러 적용 ----------------------------
+[defaultAxios, axiosAuthInstacne].map((instance)=>{
+  instance.interceptors.response.use((res)=>{
+    return res;
+  },
+  (err)=>{
+    if (err.message === "Network Error" || err.code === 'ERR_INTERNET_DISCONNECTED') {
+      Swal.fire({
+      title: "인터넷 연결 실패",
+      text: "인터넷을 다시 확인해주세요.",
+      icon: "warning",
+      confirmButtonText: "확인",
+      confirmButtonColor: '#d33',
+      allowEnterKey:false
+      });
+      
+      return Promise.reject(err);
+    }
+
+    return Promise.reject(err);
+  })
+})

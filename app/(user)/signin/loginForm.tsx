@@ -7,6 +7,7 @@ import Link from "next/link";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
+import { defaultAxios } from "@/app/(customAxios)/authAxios";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,12 +31,9 @@ export default function LoginForm() {
       grantType: "normal",
     };
     
-    axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/sign-in`, userData, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setIsLoading(false);
+    defaultAxios
+      .post('sign-api/sign-in', userData)
+      .then((res)=>{
         setIsSignIn(true);
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
@@ -46,8 +44,7 @@ export default function LoginForm() {
         }
         location.href = pathToGo;
       })
-      .catch((err) => {
-        setIsLoading(false);
+      .catch((err)=>{
         Swal.fire({
           title: "로그인 실패",
           text: err.response.data.message,
@@ -56,7 +53,10 @@ export default function LoginForm() {
           confirmButtonColor: '#d33',
           allowEnterKey:false
         });
-      });
+      })
+      .finally(()=>{
+        setIsLoading(false);
+      })
   };
 
   return (
@@ -98,7 +98,7 @@ export default function LoginForm() {
       </div>
 
       <button
-        className="bg-yellow-300 h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
+        className="bg-[#fb8500] text-white h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
         type="submit"
         disabled={isLoading}
         onClick={signInBtnClick}
