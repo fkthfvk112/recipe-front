@@ -193,7 +193,7 @@ export default function EditBoardPost({
             <SetDiet dietDay={dietDay} setDietDay={setDietDay}/>
             <SetPhotoChk photos={photos} setPhotos={setPhotos} setPhotoChangeChk={setPhotoChangeChk}/>
             </section>
-            <div className={`z-[10000] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+            <div className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
                 <div className='w-full flex justify-between max-w-[300px]'>
                     <div className='flex justify-center items-center'>
                         <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
