@@ -2,13 +2,12 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import React from "react";
 import Swal from 'sweetalert2';
 import { DietDay } from '@/app/(type)/diet';
-import { extractDate } from '@/app/(utils)/DateUtil';
 import { truncateString } from '@/app/(utils)/StringUtil';
 
 function DietHoriItem({dietDay, selectedDietDay, setSelectedDietDay}:{dietDay:DietDay, selectedDietDay:DietDay[], setSelectedDietDay:(dietDay:DietDay[])=>void}){
 
     /**선택된 요소에 현재 요소가 있다면 삭제 후 true 리턴, 이외는 false */
-    const delFromSelectedRecipe = ()=>{
+    const delFromSelectedDiet = ()=>{
         if(selectedDietDay.some((ele)=>ele.dietDayId === dietDay.dietDayId)){
 
             setSelectedDietDay(selectedDietDay.filter((ele)=>ele.dietDayId !== dietDay.dietDayId));
@@ -21,13 +20,13 @@ function DietHoriItem({dietDay, selectedDietDay, setSelectedDietDay}:{dietDay:Di
 
     /**현재 아이템을 선택된 아이템으로 변환, 선택된 아이템의 최대 수는 5*/
     const hadleSelectDiet = ()=>{
-        if(delFromSelectedRecipe()){
+        if(delFromSelectedDiet()){
             return;
         }
 
         if(selectedDietDay.length >= 3){
             Swal.fire({
-                title:"추가가 안 돼요",
+                title:"더 이상 추가할 수 없습니다.",
                 text:"식단은 최대 3개까지 선택 가능해요."
             }).then((result)=>{
                 if(result.isConfirmed){

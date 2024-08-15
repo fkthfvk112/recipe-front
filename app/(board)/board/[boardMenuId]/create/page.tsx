@@ -156,7 +156,7 @@ export default function CreateNewBoardPost({
             <SetDiet dietDay={dietDay} setDietDay={setDietDay}/>
             <SetPhoto photos={photos} setPhotos={setPhotos}/>
             </section>
-            <div className={`flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+            <div className={`z-[10000] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
                 <div className='w-full flex justify-between max-w-[300px]'>
                     <div className='flex justify-center items-center'>
                         <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명

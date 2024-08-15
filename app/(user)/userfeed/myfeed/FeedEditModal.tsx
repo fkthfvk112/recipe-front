@@ -175,6 +175,7 @@ export default function FeedEditModal({
                 onChange={handleFileChange}
                 id="editingFeedPhoto"
                 type="file"
+                accept=".jpg, .jpeg, .png, .gif, .webp"
                 hidden
               />
               <div className="relative w-[130px] h-[130px]">

@@ -12,18 +12,18 @@ export default function ErrorText({
   let errorText: React.ReactNode = <> </>;
 
   let errCnt = 0;
-  if (recipe.recipeName.length < 3 || recipe.recipeName.length > 20) {
+  if (recipe.recipeName.length < 1 || recipe.recipeName.length > 20) {
     errCnt++;
     errorText = (
       <>
         <div className="text-base">
-          레시피 이름을 추가해주세요 (3글자 이상, 20글자 이하)
+          레시피 이름을 추가해주세요 (1글자 이상, 20글자 이하)
         </div>
       </>
     );
   }
 
-  if (recipe.repriPhotos.length < 1) {
+  if (recipe.repriPhotos.filter((photo)=>photo!==""&&photo.length>10).length < 1) {
     errCnt++;
     errorText = (
       <>

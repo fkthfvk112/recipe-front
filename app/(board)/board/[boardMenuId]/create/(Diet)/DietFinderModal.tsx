@@ -51,9 +51,22 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
       );
       
       /**모달 내 선택된 아이템 */
-    const selectedRecipeComps = dietDay.map((ele, inx)=>
-        <DietHoriItem key={inx} dietDay={ele} selectedDietDay={dietDay} setSelectedDietDay={setDietDay}/>
-)
+    const selectedDietComps = dietDay.map((ele, inx)=>
+            <span key={inx} className="flex justify-center items-center w-fit pe-8 bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 rounded-md font-bold whitespace-nowrap relative">
+        <div onClick={()=>delFromSelectedDiet(ele)} className="cursor-pointer absolute right-0">
+            <ClearIcon/>
+        </div>
+        {ele.title}
+    </span>
+    )
+
+    const delFromSelectedDiet = (clickedDiet:DietDay)=>{
+        if(dietDay.some((ele)=>ele.dietDayId === clickedDiet.dietDayId)){
+            setDietDay(dietDay.filter((ele)=>ele.dietDayId !== clickedDiet.dietDayId));
+            return true;
+        }
+        return false;
+    }
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = dietDay.map((ele, inx)=>
@@ -87,31 +100,28 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                <div className="text-center">
-                    <div className="flex justify-center items-center">
-                        <h2>선택된 식단</h2>
-                        <Tooltip className="ml-2" title="레시피를 클릭하여 제거" arrow>
-                            <HelpOutlineIcon/>
-                        </Tooltip>
+                    <div className="absolute right-3 top-2 cursor-pointer" onClick={()=>setOpen(false)}>
+                        <ClearIcon/>
                     </div>
-                    <div className="w-full min-h-16 max-h-72 overflow-y-scroll">
-                        {selectedRecipeComps}
-                    </div>
-                    <div className="w-full max-h-72 flex flex-col justify-start items-center">
-                        <div className="flex mt-2 mb-2 w-full relative">
-                            가르기
-                        </div>
-                        <div className="flex justify-center items-center">
-                            <h2>검색된 식단</h2>
-                            <Tooltip className="ml-2" title="레시피를 클릭하여 추가" arrow>
+                    <div className="text-center">
+                        <section className="flex-col mt-2 mb-8 w-full relative">
+                            <div className="w-full text-start">
+                                <h2>식단</h2>
+                            </div>
+                            <div className="flex flex-wrap">
+                                {selectedDietComps}
+                            </div>
+                        </section>
+                        <div className="w-full flex justify-start items-center">
+                            <h2>내 식단</h2>
+                            <Tooltip className="ml-2 mb-1" title="식단을 클릭하여 추가" arrow>
                                 <HelpOutlineIcon/>
                             </Tooltip>
                         </div>
-                        <div className="w-full h-72 overflow-y-scroll">
+                        <section className="w-full h-80 overflow-y-scroll">
                             {searchedRecipeComps}
-                        </div>
+                        </section>
                     </div>
-                </div>
                 </Box>
             </Modal>
         </div>

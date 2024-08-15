@@ -177,24 +177,25 @@ export default function CreateRecipePage({
               {errorCnt !== 0 && <WarningIcon color="error"></WarningIcon>}
             </div>
             <ErrorText recipe={recipe} setErrorCnt={setErrorCnt}></ErrorText>
-            {errorCnt === 0 && "레시피를 세상에 내놓겠습니까?"}
+            {errorCnt === 0 && "레시피를 수정하시겠습니까?"}
           </Typography>
           <div className="w-full text-center mt-6">
-            <button className="cancelBtn me-2" onClick={() => setIsModalOpen(false)}>
-              닫기
-            </button>
+
             {
               errorCnt===0 &&
             <button
               onClick={() => {
                 saveRecipeToDb();
               }}
-              className={`ms-2 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
+              className={`me-2 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
               disabled={errorCnt === 0 ? false : true}
             >
-              네
+              수정하기
             </button>
             }
+            <button className="cancelBtn ms-2" onClick={() => setIsModalOpen(false)}>
+              아니요
+            </button>
           </div>
         </Box>
       </Modal>

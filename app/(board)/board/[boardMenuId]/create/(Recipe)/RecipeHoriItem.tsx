@@ -27,7 +27,7 @@ function RecipeHoriItem({recipe, selectedRecipe, setSelectedRecipe}:{recipe:Reci
 
         if(selectedRecipe.length >= 3){
             Swal.fire({
-                title:"추가가 안 돼요",
+                title:"더 이상 추가할 수 없습니다.",
                 text:"레시피는 최대 3개까지 선택 가능해요."
             }).then((result)=>{
                 if(result.isConfirmed){
@@ -40,13 +40,14 @@ function RecipeHoriItem({recipe, selectedRecipe, setSelectedRecipe}:{recipe:Reci
         }
     };
 
+    console.log("사진", recipe.repriPhotos[0])
     return (
         <div onClick={()=>{hadleSelectRecipe()}} className=" w-full grid grid-cols-6 mt-2 p-3 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <div className="col-span-2 flex justify-center items-center">
-                <div className='img-wrapper-round'>
+                <div className='img-wrapper-square w-full h-full'>
                     {
                         recipe.repriPhotos[0]?
-                        <Image src={recipe.repriPhotos[0]} width={70} height={70} alt="ex" />
+                        <Image className='inner-img' src={recipe.repriPhotos[0]} width={70} height={70} alt="ex" />
                         :
                         <MenuBookIcon className="inner-img"/>
                     }

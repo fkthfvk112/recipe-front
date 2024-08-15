@@ -43,7 +43,7 @@ function PhotoHolder({photos, setPhotos}:{photos:File[], setPhotos:(files:File[]
         <div className="flex justify-start items-center w-full overflow-x-scroll">
             <input onChange={(evt)=>{
                 handlePhotoUpload(evt);
-            }} id="board-file-input" type="file" hidden={true}/>
+            }} id="board-file-input" type="file" accept=".jpg, .jpeg, .png, .gif, .webp" hidden={true}/>
             {photoPreviewComps}
             {
             photos.length < 3 &&

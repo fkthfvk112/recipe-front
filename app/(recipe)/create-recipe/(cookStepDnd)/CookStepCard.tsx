@@ -223,7 +223,7 @@ const CookStepCard: FC<CardProps> = ({
               className="border border-slate-500"
               onChange={handleFileChange}
               id={`fileInput${card.order.toString()}`}
-              type="file"
+              accept=".jpg, .jpeg, .png, .gif, .webp"
               hidden
             />
             {card.photo ? (

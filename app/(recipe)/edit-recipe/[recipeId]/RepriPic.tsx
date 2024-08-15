@@ -66,6 +66,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
             id="repriPhotoOne"
             className="border border-slate-500"
             type="file"
+            accept=".jpg, .jpeg, .png, .gif, .webp"
             hidden
           />
           {recipe?.repriPhotos[0] === null || recipe?.repriPhotos[0] === undefined || recipe?.repriPhotos[0] === ""? (
@@ -94,6 +95,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
             id="repriPhotoTwo"
             className="border border-slate-500"
             type="file"
+            accept=".jpg, .jpeg, .png, .gif, .webp"
             hidden
           />
           {recipe?.repriPhotos[1] === null || recipe?.repriPhotos[1] === undefined || recipe?.repriPhotos[1] === ""? (
@@ -122,6 +124,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
               id="repriPhotoThree"
               className="border border-slate-500"
               type="file"
+              accept=".jpg, .jpeg, .png, .gif, .webp"
               hidden
             />
             {recipe?.repriPhotos[2] === null || recipe?.repriPhotos[2] === undefined || recipe?.repriPhotos[2] === "" ? (

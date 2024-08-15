@@ -1,14 +1,16 @@
 import { Box, Modal } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { Recipe } from "@/app/(recipe)/types/recipeType";
-import axios from "axios";
 import RecipeHoriItem from "./RecipeHoriItem";
 import Tooltip from '@mui/material/Tooltip';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import RecipeVerticalItem from "./RecipeVerticalItem";
 import ClearIcon from '@mui/icons-material/Clear';
+import { useInView } from 'react-intersection-observer';
+import { defaultAxios } from "@/app/(customAxios)/authAxios";
+import { IndexPagenation } from "@/app/(type)/Pagenation";
 
 const style = {
     position: "absolute" as "absolute",
@@ -20,31 +22,58 @@ const style = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+    dispay:'relative'
   };
 
 function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(recipes:Recipe[])=>void}){
     const [open, setOpen] = useState<boolean>(false);
     const [searchingTerm, setSearchingTerm] = useState<string>("");
 
-    // const [selectedRecipe, setSelectedRecipe] = useState<Recipe[]>([]);
-    const [searchedRecipe, setSearchedRecipe] = useState<Recipe[]>([]);
-    
+    const [myRecipe, setMyRecipe] = useState<IndexPagenation<Recipe[], string>>({
+        isEnd:false,
+        index:"",
+        data:[]
+    });
+
+    const [searchedRecipe, setSearchedRecipe] = useState<IndexPagenation<Recipe[], number>>({
+        isEnd:false,
+        index:Number.MAX_SAFE_INTEGER,
+        data:[]
+    });
+
+    const [isSearchMode, setSearchMode] = useState<boolean>(false);
+    const [reSearchToggle, setResearchToggle] = useState<boolean>(false);
+
+    const [viewRef, inview] = useInView();
+
     /** 레시피 검색 */
     const handleSearchRecipe = ()=>{
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?recipeName=${searchingTerm}&sortingCondition=POPULARITY`)
-            .then((res)=>{
-                setSearchedRecipe(res.data);
-            })
+        setSearchMode(true);
+        setResearchToggle((prev)=>!prev)
     }
 
     /** 엔터시 레시피 검색*/
     const handleEnterInput = (e:React.KeyboardEvent<HTMLInputElement>)=>{
         if (e.key === "Enter") {
-            axios.get(`${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?recipeName=${searchingTerm}&sortingCondition=POPULARITY`)
-            .then((res)=>{
-                setSearchedRecipe(res.data);
-            })
+            setSearchMode(true);
+            setResearchToggle((prev)=>!prev)
         }
+    }
+
+    /** 내 레시피 보기 */
+    const showMyRecipe = ()=>{
+        setSearchingTerm("");
+        defaultAxios.get("recipe/my-recipe/inx-pagination", { 
+            params:{
+                dateInx:"",
+                size:10
+            }
+        }).then((res)=>{
+            console.log("데이터", res.data);
+
+            setMyRecipe(res.data);
+            setSearchMode(false);
+        })
     }
 
     const deleteRecipe = (inx:number)=>{
@@ -52,18 +81,99 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
         setRecipes(deletedRecipe);
     };
 
-    /**모달 내 선택 가능한 아이템(검색된 아이템) */
-    const searchedRecipeComps = searchedRecipe?.filter((ele) => {
+    //for pagination
+    useEffect(()=>{
+        if(!isSearchMode && inview && !myRecipe.isEnd){
+            defaultAxios.get("recipe/my-recipe/inx-pagination", { 
+                params:{
+                    dateInx:myRecipe?.index,
+                    size:10
+                }
+            }).then((res)=>{
+                setMyRecipe(prev=>({
+                    isEnd:res.data.isEnd,
+                    index:res.data.index,
+                    data:[...prev.data, ...res.data.data]
+                }));
+                console.log("요청", res.data);
+            })
+        }
+
+        //isEnd는 검색시 새로 받아온 데이터로 다시 세팅됨
+        if(isSearchMode && inview && !searchedRecipe.isEnd){
+            defaultAxios.get("recipe/searchingTerm/inx-pagination", { 
+                params:{
+                    searchingTerm:searchingTerm,
+                    inx:searchedRecipe?.index,
+                    size:10
+                }
+            }).then((res)=>{
+                setSearchedRecipe(prev=>({
+                    isEnd:res.data.isEnd,
+                    index:res.data.index,
+                    data:[...prev.data, ...res.data.data]
+                }));
+                console.log("데이터", res.data);
+            })       
+        }
+
+    }, [inview])
+
+
+    //for search
+    useEffect(()=>{
+        if(isSearchMode){
+            defaultAxios.get("recipe/searchingTerm/inx-pagination", { 
+                params:{
+                    searchingTerm:searchingTerm,
+                    inx:Number.MAX_SAFE_INTEGER,
+                    size:10
+                }
+            }).then((res)=>{
+                setSearchMode(true);
+                setSearchedRecipe(res.data);
+                setSearchingTerm("");
+            }) 
+        }
+    }, [reSearchToggle])
+
+
+    /**모달 내 선택 가능한 아이템(나의 레시피) */
+    const searchedMyRecipeComps = myRecipe?.data.filter((ele) => {
         return !recipes.some((selected) => selected.recipeId === ele.recipeId);
-      }).map((ele, inx) =>
-        <RecipeHoriItem key={inx} recipe={ele} selectedRecipe={recipes} setSelectedRecipe={setRecipes} />
-      );
+    }).map((ele, inx) =>
+    <RecipeHoriItem key={inx} recipe={ele} selectedRecipe={recipes} setSelectedRecipe={setRecipes} />
+    );
+    
+
+    /**모달 내 선택 가능한 아이템(검색된 레시피) */
+    const searchedRecipeComps = searchedRecipe?.data.filter((ele) => {
+        return !recipes.some((selected) => selected.recipeId === ele.recipeId);
+    }).map((ele, inx) =>
+    <RecipeHoriItem key={inx} recipe={ele} selectedRecipe={recipes} setSelectedRecipe={setRecipes} />
+    );
       
 
-      /**모달 내 선택된 아이템 */
+    /**모달 내 선택한 레시피 */
     const selectedRecipeComps = recipes.map((ele, inx)=>
-        <RecipeHoriItem key={inx} recipe={ele} selectedRecipe={recipes} setSelectedRecipe={setRecipes} />)
+        <span key={inx} className="flex justify-center items-center w-fit pe-8 bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 rounded-md font-bold whitespace-nowrap relative">
+            <div onClick={()=>delFromSelectedRecipe(ele)} className="cursor-pointer absolute right-0">
+                <ClearIcon/>
+            </div>
+            {ele.recipeName}
+        </span>
+    )
 
+    /**선택된 요소에 현재 요소가 있다면 삭제 후 true 리턴, 이외는 false */
+    const delFromSelectedRecipe = (clickedRecipe:Recipe)=>{
+        if(recipes.some((ele)=>ele.recipeId === clickedRecipe.recipeId)){
+            setRecipes(recipes.filter((ele)=>ele.recipeId !== clickedRecipe.recipeId));
+
+            return true;
+        }
+        return false;
+    }
+    
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = recipes.map((ele, inx)=>
@@ -72,8 +182,8 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                     <button onClick={(evt)=>{
                         deleteRecipe(inx);
                         evt.stopPropagation();
-                        }} className="border-none w-5 h-5 mr-2 absolute -top-2 right-3 z-50">
-                        <ClearIcon/>
+                        }} className="border-none w-5 h-5 absolute -top-2 right-3 z-50">
+                        <ClearIcon className="bg-white"/>
                     </button>
                 </div> 
             <RecipeVerticalItem key={inx} recipe={ele}/>
@@ -97,38 +207,43 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                <div className="text-center">
-                    <div className="flex justify-center items-center">
-                        <h2>선택된 레시피</h2>
-                        <Tooltip className="ml-2" title="레시피를 클릭하여 제거" arrow>
-                            <HelpOutlineIcon/>
-                        </Tooltip>
+                    <div className="absolute right-3 top-2 cursor-pointer" onClick={()=>setOpen(false)}>
+                        <ClearIcon/>
                     </div>
-                    <div className="w-full min-h-16 max-h-72 overflow-y-scroll">
-                        {selectedRecipeComps}
+                    <div className="text-center">
+                        <div className="w-full flex flex-col justify-start items-center">
+                            <section className="flex-col mt-2 mb-8 w-full relative">
+                                <div className="w-full text-start">
+                                    <h2>레시피 검색</h2>
+                                </div>
+                                <input onChange={(evt)=>setSearchingTerm(evt.target.value)}
+                                    type="text" value={searchingTerm}
+                                    onKeyDown={(evt)=>handleEnterInput(evt)}/>
+                                <Tooltip className="absolute right-1" title="검색" arrow>
+                                    <button className="w-12 border-none" onClick={handleSearchRecipe}>
+                                        <SearchIcon/>
+                                    </button>
+                                </Tooltip>
+                                <div className="text-center">
+                                    <button className="saveBtn-outline-green mt-2 p-1" onClick={showMyRecipe}>내 레시피 보기</button>
+                                </div>
+                                <div className="flex flex-wrap">
+                                    {selectedRecipeComps}
+                                </div>
+                            </section>
+                            <div className="w-full flex justify-start items-center">
+                                <h2>{isSearchMode?'검색된 레시피':'내 레시피'}</h2>
+                                <Tooltip className="ml-2 mb-1" title="레시피를 클릭하여 추가" arrow>
+                                    <HelpOutlineIcon/>
+                                </Tooltip>
+                            </div>
+                            <section className="w-full h-80 overflow-y-scroll">
+                                {!isSearchMode && searchedMyRecipeComps}
+                                {isSearchMode && searchedRecipeComps}
+                                <div ref={viewRef}></div>
+                            </section>
+                        </div>
                     </div>
-                    <div className="w-full max-h-72 flex flex-col justify-start items-center">
-                        <div className="flex mt-2 mb-2 w-full relative">
-                            <input onChange={(evt)=>setSearchingTerm(evt.target.value)}
-                                type="text" value={searchingTerm}
-                                onKeyDown={(evt)=>handleEnterInput(evt)}/>
-                            <Tooltip className="absolute right-1" title="검색" arrow>
-                                <button className="w-12 border-none" onClick={handleSearchRecipe}>
-                                    <SearchIcon/>
-                                </button>
-                            </Tooltip>
-                        </div>
-                        <div className="flex justify-center items-center">
-                            <h2>검색된 레시피</h2>
-                            <Tooltip className="ml-2" title="레시피를 클릭하여 추가" arrow>
-                                <HelpOutlineIcon/>
-                            </Tooltip>
-                        </div>
-                        <div className="w-full h-72 overflow-y-scroll">
-                            {searchedRecipeComps}
-                        </div>
-                    </div>
-                </div>
                 </Box>
             </Modal>
         </div>

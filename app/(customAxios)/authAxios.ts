@@ -13,6 +13,8 @@ export const defaultAxios = axios.create({
 defaultAxios.interceptors.response.use((res)=>{
   return res;
 }, (err)=>{
+
+  //have to :: swal 적용 여부 리체크
   return Promise.reject(err);
 })
 

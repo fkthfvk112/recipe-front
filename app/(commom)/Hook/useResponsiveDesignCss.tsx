@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useResponsiveDesignCss = (): {navCss:string, layoutPadding:string,layoutMargin:string, layoutBottomMargin:string}=>{
-    const [navCss, setNavCss] = useState<string>("w-full h-20 bg-white fixed top-0 z-50");
+    const [navCss, setNavCss] = useState<string>("w-full h-20 bg-white fixed top-0 z-[10000]");
     const [layoutPadding, setLayoutPadding] = useState<string>("pt-20")
     const [layoutMargin, setLayoutMargin]   = useState<string>("mt-20");
     const [layoutBottomMargin, setLayoutBottomMargin]   = useState<string>("");

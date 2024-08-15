@@ -2,12 +2,15 @@ import { Recipe } from "@/app/(recipe)/types/recipeType"
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import RecipeVerticalItem from "../../../create/(Recipe)/RecipeVerticalItem";
+import Link from "next/link";
 
 export default async function BoardRecipeHolder({recipes}:{recipes:Recipe[]}){
 
     const recipeProps = recipes.map((recipe, inx)=>
-        <RecipeVerticalItem key={inx} recipe={recipe}/>);
-
+        <Link key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+            <RecipeVerticalItem recipe={recipe}/>
+        </Link>
+    );
 
     return (
         <Accordion defaultExpanded>
