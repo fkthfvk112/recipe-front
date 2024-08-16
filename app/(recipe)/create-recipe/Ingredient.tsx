@@ -16,11 +16,18 @@ interface IngredientProp {
 }
 
 export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
-  const [ingredients, setIngredients] = useState<ingred[]>([
-    { name: "", qqt: "", order: 0 },
-    { name: "", qqt: "", order: 1 },
-  ]);
-
+  const [ingredients, setIngredients] = useState<ingred[]>(()=>{
+    if(recipe.ingredients && recipe.ingredients.length > 0){
+      return recipe.ingredients;
+    }
+    else{
+      return[
+        { name: "", qqt: "", order: 0 },
+        { name: "", qqt: "", order: 1 },
+      ]
+    }
+  })
+    
   useEffect(() => {
     const ingres: ingred[] = ingredients
       .filter((ingre) => ingre.name.length >= 1 && ingre.qqt.length >= 1)

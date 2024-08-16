@@ -7,6 +7,7 @@ import RecipeStepInfo from "./RecipeStepInfo";
 import EditDel from "@/app/(commom)/CRUD/EditDel";
 import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 import ReviewContainer from "../(review)/ReviewContainer";
+import serverFetch from "@/app/(commom)/serverFetch";
 
 interface RecipeDetail {
   recipeName: string;
@@ -32,19 +33,16 @@ export default async function RecipeDetail({
 }: {
   params: { recipeId: number };
 }) {
-  const fetchData = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/get-recipe?recipeId=${params.recipeId}`,
-    {
-      cache: "no-cache", // 수정 - 시간 조절...views 세팅용
-    }
-  ).then((res) => {
-    if (!res.ok) {
-      console.log("RecipeDetail fetch error!!", res.status);
-      redirect("/");
-    } else {
-      return res.json();
-    }
-  });
+
+  const fetchData = await serverFetch({
+    url:`recipe/get-recipe?recipeId=${params.recipeId}`,
+    option:{
+        cache: "force-cache",
+        next:{
+              tags: [`boardDetail-${params.recipeId}`],
+          }
+      }
+  })
 
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData.recipeOwnerInfo;

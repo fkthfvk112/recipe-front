@@ -32,7 +32,7 @@ function PhotoHolderWithChk({photos, setPhotos, setPhotoChangeChk}:{photos:File[
             //보더 등 설정, x하면 삭제되게 설정
             <div key={inx} className="m-1 relative border rounded-xl min-w-[120px] min-h-[120px] w-[120px] h-[120px]">
                 <div className="w-full text-right">
-                    <button onClick={()=>deletePhoto(inx)} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                    <button onClick={()=>deletePhoto(inx)} className="border-none w-5 h-5 absolute -top-3 right-1 z-10">
                         <ClearIcon className="bg-white"/>
                     </button>
                 </div> 

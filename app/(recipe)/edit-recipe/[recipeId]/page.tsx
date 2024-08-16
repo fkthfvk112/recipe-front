@@ -2,24 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { CookingMethod, CookingSteps_create, Recipe, RecipeSelection } from "../../types/recipeType";
-import RecipeName from "./RecipeName";
-import Serving from "./Serving";
-import Categori from "./Categori";
-import CookMethod from "./CookMethod";
-import Description from "./Description";
-import CookStep from "./(cookStepDnd)/CookStep";
-import Ingredient from "./Ingredient";
 import { Modal, Typography, Box, CircularProgress } from "@mui/material";
-import ErrorText from "./ErrorText";
 import WarningIcon from "@mui/icons-material/Warning";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
 import withReactContent from 'sweetalert2-react-content'
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import RepriPric from "./RepriPic";
 import Swal from "sweetalert2";
 import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
+import RecipeName from "../../create-recipe/RecipeName";
+import Description from "../../create-recipe/Description";
+import Categori from "../../create-recipe/Categori";
+import Serving from "../../create-recipe/Serving";
+import CookMethod from "../../create-recipe/CookMethod";
+import Ingredient from "../../create-recipe/Ingredient";
+import RepriPic from "../../create-recipe/RepriPic";
+import ErrorText from "../../create-recipe/ErrorText";
+import CookStep from "../../create-recipe/(cookStepDnd)/CookStep";
+import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -106,9 +107,9 @@ export default function CreateRecipePage({
             title: "게시가 완료되었습니다!",
             icon: "success",
           }).then(() => {
-            router.push(`/`);
+            revalidateByTagName(`boardDetail-${params.recipeId}`);
+            router.push(`/recipe-detail/${params.recipeId}`);
           });
-          //have to 리발리데이트 
         }
       })
       .catch((err) => {
@@ -138,7 +139,7 @@ export default function CreateRecipePage({
       </div>
     )
   }
-  
+
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>
@@ -146,7 +147,7 @@ export default function CreateRecipePage({
       <Categori recipe={recipe} setRecipe={setRecipe}></Categori>
       <Serving recipe={recipe} setRecipe={setRecipe}></Serving>
       <CookMethod recipe={recipe} setRecipe={setRecipe}></CookMethod>
-      <RepriPric recipe={recipe} setRecipe={setRecipe}></RepriPric>
+      <RepriPic  recipe={recipe} setRecipe={setRecipe}></RepriPic>
       <Ingredient recipe={recipe} setRecipe={setRecipe}></Ingredient>
       <CookStep
         recipe={recipe}
@@ -156,7 +157,6 @@ export default function CreateRecipePage({
         className="saveBtn"
         onClick={() => {
           setIsModalOpen(true);
-          //clickPostHandler();
         }}
       >
         레시피 발행

@@ -19,26 +19,40 @@ export const ContainerDnd = ({
   recipe,
   setRecipe,
 }: CookStepProp) => {
-  const [cards, setCards] = useState<CookingSteps_create[]>([
-    {
-      order: 0,
-      photo: "",
-      description: "",
-      time: 0,
-    },
-    {
-      order: 1,
-      photo: "",
-      description: "",
-      time: 0,
-    },
-    {
-      order: 2,
-      photo: "",
-      description: "",
-      time: 0,
-    },
-  ]);
+  const [cards, setCards] = useState<CookingSteps_create[]>(()=>{
+    if(recipe.steps && recipe.steps.length > 0){
+      const initialData:CookingSteps_create[] = recipe.steps.map(ele=>{
+        const existPhoto:string = !(ele.photo === null || ele.photo === undefined) && ele.photo.length > 10 ? ele.photo : "";    
+        return {
+          ...ele,
+          photo: existPhoto
+        }
+      })
+      return initialData;
+    }
+    else{
+      return[
+        {
+          order: 0,
+          photo: "",
+          description: "",
+          time: 0,
+        },
+        {
+          order: 1,
+          photo: "",
+          description: "",
+          time: 0,
+        },
+        {
+          order: 2,
+          photo: "",
+          description: "",
+          time: 0,
+        },
+      ]
+    }
+  })
 
   useEffect(() => {
     const addCard: CookingSteps_create[] = cards

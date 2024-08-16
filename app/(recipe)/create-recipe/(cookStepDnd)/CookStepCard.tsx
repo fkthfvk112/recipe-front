@@ -223,12 +223,13 @@ const CookStepCard: FC<CardProps> = ({
               className="border border-slate-500"
               onChange={handleFileChange}
               id={`fileInput${card.order.toString()}`}
+              type="file"
               accept=".jpg, .jpeg, .png, .gif, .webp"
               hidden
             />
             {card.photo ? (
               <div className="w-[100px] h-[100px] img-wrapper-square">
-                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-1 z-50">
+                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-1 z-10">
                   <ClearIcon className="bg-white"/>
                 </button>
                 <Image
@@ -244,8 +245,6 @@ const CookStepCard: FC<CardProps> = ({
                 <FileUploadIcon className="text-gray-500 w-10 h-10" />
               </label>
             )}
-
-          {/* <FilePreview file={card?.photo}></FilePreview> */}
         </div>
         <textarea
           placeholder="3자 이상 200자 이하"
