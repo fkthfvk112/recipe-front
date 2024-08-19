@@ -1,5 +1,4 @@
 import { CookingSteps_show, Ingredient } from "../../types/recipeType";
-import { redirect } from "next/navigation";
 import UserInfo from "./UserInfo";
 import Ingredients from "./Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "./RecipeInfo";

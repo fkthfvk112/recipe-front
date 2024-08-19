@@ -27,9 +27,9 @@ export default async function RecentRecipes() {
       <h2 className="text-xl">최근 레시피</h2>
       <p className="mb-10">최근에 공개된 레시피에요.</p>
       {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
-      <div className="flex overflow-x-scroll">
+      <ul className="flex overflow-x-scroll h-[350px]">
         {recentRecipes}
-      </div>
+      </ul>
     </div>
   );
 }

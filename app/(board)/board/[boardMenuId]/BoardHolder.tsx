@@ -6,11 +6,13 @@ import React, { useEffect, useState } from "react";
 import { useInView } from 'react-intersection-observer';
 import BoardPreviewHoriItem from "../../BoardPreviewHoriItem";
 import serverFetch from "@/app/(commom)/serverFetch";
+import { CircularProgress } from "@mui/material";
 
 function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<BoardPreview[], number>, boardMenuId:number}){
-    const [data, setData] = useState<BoardPreview[]>(initialData.data);
-    const [isEnd, setIsEnd] = useState<boolean>(initialData.isEnd);
-    const [pageInx, setPageInx] = useState<number>(initialData.index);
+    const [data, setData]           = useState<BoardPreview[]>(initialData.data);
+    const [isEnd, setIsEnd]         = useState<boolean>(initialData.isEnd);
+    const [pageInx, setPageInx]     = useState<number>(initialData.index);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [viewRef, inview] = useInView();
 
     const initialDatas = data?.map((ele, inx)=>{
@@ -18,6 +20,7 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
     })
 
     const fetchData = async()=>{
+        setIsLoading(true);
         const boardData:IndexPagenation<BoardPreview[], number> = await serverFetch({
             url:"board/previews",
             queryParams:{
@@ -32,12 +35,15 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
                 }
             }
         })
+        .finally(()=>{
+            setIsLoading(false);
+        })
 
         setIsEnd(boardData.isEnd);
         setData([...data, ...boardData.data]);
         setPageInx(boardData.index);
     }
-
+    
     useEffect(()=>{
         if(!isEnd && inview){
             fetchData();
@@ -46,10 +52,12 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
 
     return (
         <>
-        <div className="w-full h-full min-h-lvh p-2">
+        <ul className="w-full h-full min-h-lvh p-2">
             {initialDatas}
+        </ul>
+        <div ref={viewRef}>
+            {isLoading && <CircularProgress />}
         </div>
-        <div ref={viewRef}></div>
         </>
     )
 }

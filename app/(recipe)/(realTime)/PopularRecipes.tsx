@@ -32,9 +32,9 @@ export default async function PopularRecipes() {
       <h2 className="text-xl">인기 레시피</h2>
       <p className="mb-10">인기있는 레시피들을 모아봤어요.</p>
       {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
-      <div className="flex overflow-x-scroll">
+      <ul className="flex overflow-x-scroll h-[350px]">
         {recentRecipes}
-      </div>
+      </ul>
     </div>
   );
 }

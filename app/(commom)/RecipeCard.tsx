@@ -13,9 +13,9 @@ import { truncateString } from "../(utils)/StringUtil";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
-    <Card variant="outlined" sx={{ width: 260, height: 260,margin:"5px" }}>
+    <Card variant="outlined" sx={{ aspectRatio:"1 / 1", minWidth:"140px" }}>
       <CardOverflow>
-        <AspectRatio ratio="2">
+        <AspectRatio sx={{ overflow:"hidden"}} ratio="1/1">
           <Image
             src={recipe.repriPhotos[0]}
             width={300}
@@ -26,34 +26,23 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </AspectRatio>
       </CardOverflow>
       <CardContent>
-        <Typography className="font-bold" level="title-md">{truncateString(recipe.recipeName, 15)}</Typography>
-        <Typography level="body-sm">{truncateString(recipe.description, 18)}</Typography>
+        <Typography level="title-md"><h2>{truncateString(recipe.recipeName, 12)}</h2></Typography>
+        <Typography level="body-sm" sx={{height:"35px"}}>{truncateString(recipe.description, 18)}</Typography>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
         <Divider inset="context" />
-        <div className="flex justify-between text-sm pt-2 pb-2">
+        <div className="flex justify-between text-sm pt-2 pb-2 text-[#3b3b3b]">
           <div className="flex">
             <div>
-              <div className="flex">
-                <svg width="40" height="23" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="13" cy="11" r="8" fill="transparent" stroke="black" stroke-width="3"/>
-                  <circle cx="10" cy="11" r="3" fill="black"/>
-                  <circle cx="26" cy="11" r="8" fill="transparent" stroke="black" stroke-width="3"/>
-                  <circle cx="23" cy="11" r="3" fill="black"/>
-                </svg>
-                <span>{recipe.viewCnt}</span>
-              </div>
+              <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
             </div>
             <div className="ms-2">
-            <FavoriteIcon/><span className="ms-1">{recipe?.likeCnt}</span>
-            </div>
-            <div className="ms-2">
-              <CommentIcon/><span className="ms-1">{recipe?.reviewCnt}</span>
+              <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>
             </div>
           </div>
-          <div>
+          <div className="text-[10px] flex justify-center items-center">
             {recipe.createdAt &&
-              timeDifferenceString(new Date(recipe.createdAt))}
+            timeDifferenceString(new Date(recipe.createdAt))}
           </div>
         </div>
       </CardOverflow>

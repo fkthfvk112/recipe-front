@@ -46,7 +46,7 @@ export default async function SearchingByCondition({
 
   const recentRecipes = fetchData && fetchData.length ? (
     fetchData.map((recipe, inx) => (
-      <div key={inx} className="m-3">
+      <div key={inx}>
         <Link href={`/recipe-detail/${recipe.recipeId}`}>
           <RecipeCard recipe={recipe} />
         </Link>
@@ -57,9 +57,9 @@ export default async function SearchingByCondition({
   );
 
   return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full mb-10">
-      <div className="flex flex-wrap justify-center items-center w-full min-h-[300px] mb-16">
-        {recentRecipes}
+    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
+      <div className="grid media-gridcol-3-to-2 r w-full gap-3">
+      {recentRecipes}
       </div>
       {
       pnMaxCnt >= 2 &&

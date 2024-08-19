@@ -15,44 +15,33 @@ import { truncateString } from "@/app/(utils)/StringUtil";
 function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
 
   return (
-    <div className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] h-[200px] m-1 shadow-md border border-[#e1e1e1]">
-      <div>
-        <div className="w-full h-20 img-wrapper-square">
-          <Image
-            className="inner-img"
-              src={recipe.repriPhotos[0]}
-              width={300}
-              height={300}
-              loading="lazy"
-              alt=""
-            />
-        </div>
-        <section className="W-full p-2">
-          <div className="w-full h-[35px]">
-            <h2 className="text-[14px]">{truncateString(recipe.recipeName, 20)}</h2>
-          </div>
-          <div className="text-[12px] h-7">{truncateString(recipe.description, 25)}</div>
-        </section>
+    <li className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] m-1 border border-[#e1e1e1] rounded-md">
+      <div className="aspect-square w-full img-wrapper-square overflow-hidden">
+        <Image
+          className="inner-img"
+            src={recipe.repriPhotos[0]}
+            width={300}
+            height={300}
+            loading="lazy"
+            alt=""
+          />
       </div>
+      <section className="W-full p-2">
+        <div className="w-full h-[35px]">
+          <h2 className="text-[14px]">{truncateString(recipe.recipeName, 12)}</h2>
+        </div>
+        <div className="text-[12px] h-7">{truncateString(recipe.description, 18)}</div>
+      </section>
       <div className="w-full ps-2 pe-2">
         <Divider inset="context" />
-        <div className="flex justify-between text-sm pt-2 pb-2">
+        <div className="flex justify-between text-sm pt-2 pb-2 text-[#3b3b3b]">
             <div className="flex justify-center items-center">
-              <div className="flex justify-center items-center">
-                <svg width="28" height="15" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="7" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
-                  <circle cx="5" cy="7" r="2" fill="black" />
-                  <circle cx="19" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
-                  <circle cx="16.5" cy="7" r="2" fill="black"/>
-                </svg>
-                <span className="text-[10px]">{recipe.viewCnt}</span>
+              <div className="ms-2 flex justify-center items-center">
+                <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
               </div>
-                <div className="ms-2 flex justify-center items-center">
-                    <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[10px]">{recipe?.likeCnt}</span>
-                </div>
-                <div className="ms-2 flex justify-center items-center">
-                <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[10px]">{recipe?.reviewCnt}</span>
-                </div>
+              <div className="ms-2 flex justify-center items-center">
+                <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>
+              </div>
             </div>
             <div className="text-[10px] flex justify-center items-center">
                 {recipe.createdAt &&
@@ -60,7 +49,7 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
             </div>
         </div>
       </div>
-    </div>
+    </li>
   );
 }
 
