@@ -21,12 +21,11 @@ export default function RecipePagination({
 
 
   return (
-    <div className="flex justify-center items-center mt-10 w-full max-w-full">
       <Pagination
+      size="small"
         onChange={handlePageChange}
         count={pageMax}
         defaultPage={pageNow}
       />
-    </div>
   );
 }
