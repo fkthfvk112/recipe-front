@@ -44,7 +44,7 @@ export default async function SearchingByCondition({
     pageMaxCnt % 10 === 0 ? pageMaxCnt / 10 : pageMaxCnt / 10 + 1
   );
 
-  const recentRecipes = fetchData && fetchData.length ? (
+  const recentRecipes = fetchData &&
     fetchData.map((recipe, inx) => (
       <div key={inx}>
         <Link href={`/recipe-detail/${recipe.recipeId}`}>
@@ -52,9 +52,6 @@ export default async function SearchingByCondition({
         </Link>
       </div>
     ))
-  ) : (
-    <NoContent_Recipe />
-  );
 
   return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
@@ -62,7 +59,10 @@ export default async function SearchingByCondition({
       {recentRecipes}
       </div>
       {
-      pnMaxCnt >= 2 &&
+        fetchData.length <= 0 && <NoContent_Recipe />
+      }
+      {
+      pnMaxCnt >= 1 &&
       <RecipePagination
         queryStr={decodedUrl}
         pageNow={Number(params.pageNumber)}

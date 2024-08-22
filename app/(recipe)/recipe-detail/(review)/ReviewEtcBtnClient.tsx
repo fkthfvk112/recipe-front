@@ -6,6 +6,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { domainId, domainName } from './ReviewContainer';
+import Swal from 'sweetalert2';
 
 
 interface ReviewEtcState{
@@ -20,28 +21,40 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
     const [open, setOpen] = useState<boolean>(false);
     const outRef = useRef<HTMLDivElement | null>(null);
 
-    console.log("여기 도메이이인", domainName);
-
-    
+   
     const deleteReview = ()=>{
-        console.log("딜리트 버튼", reviewId)
-        switch(domainName){
-            case 'board':
-                axiosAuthInstacne
-                    .delete(`review/board/delete/${reviewId}`)
-                    .then((res)=>{
-                        revalidateByTagName(`reviews-${domainId}`)
-                    })
-            break;
-            case 'recipe':
-                axiosAuthInstacne
-                    .delete(`review/recipe/delete/${reviewId}`)
-                    .then((res)=>{
-                        revalidateByTagName(`reviews-${domainId}`)
-                    })
-            break;
-        }
-       
+        Swal.fire({
+            title: "삭제하시겠습니까?",
+            text: "삭제하면 되돌릴 수 없어요. 정말 삭제하시겠어요?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "아니요",
+            confirmButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                switch(domainName){
+                    case 'board':
+                        axiosAuthInstacne
+                            .delete(`review/board/delete/${reviewId}`)
+                            .then((res)=>{
+                                Swal.fire({
+                                    title: "삭제 완료",
+                                    icon: "success",
+                                });
+                                revalidateByTagName(`reviews-${domainId}`)
+                            })
+                    break;
+                    case 'recipe':
+                        axiosAuthInstacne
+                            .delete(`review/recipe/delete/${reviewId}`)
+                            .then((res)=>{
+                                revalidateByTagName(`reviews-${domainId}`)
+                            })
+                    break;
+                }
+            }
+        });
     }
     
     useEffect(()=>{

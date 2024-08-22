@@ -64,7 +64,7 @@ export default async function BoardDetail({
             <div className="bottom-line">
                 <h1>{boardData.title}</h1>
             </div>
-            <p className="mb-12 mt-5">
+            <p className="mb-12 mt-5 whitespace-pre-wrap break-words">
                 {boardData.content}
             </p>
             {

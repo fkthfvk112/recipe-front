@@ -11,6 +11,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useInView } from 'react-intersection-observer';
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import { IndexPagenation } from "@/app/(type)/Pagenation";
+import { CircularProgress } from "@mui/material";
 
 const style = {
     position: "absolute" as "absolute",
@@ -43,6 +44,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
 
     const [isSearchMode, setSearchMode] = useState<boolean>(false);
     const [reSearchToggle, setResearchToggle] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [viewRef, inview] = useInView();
 
@@ -63,16 +65,18 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
     /** 내 레시피 보기 */
     const showMyRecipe = ()=>{
         setSearchingTerm("");
+        setIsLoading(true);
         defaultAxios.get("recipe/my-recipe/inx-pagination", { 
             params:{
                 dateInx:"",
                 size:10
             }
         }).then((res)=>{
-            console.log("데이터", res.data);
-
             setMyRecipe(res.data);
             setSearchMode(false);
+        })
+        .finally(()=>{
+            setIsLoading(false);
         })
     }
 
@@ -83,6 +87,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
 
     //for pagination
     useEffect(()=>{
+        if(isLoading) return;
         if(!isSearchMode && inview && !myRecipe.isEnd){
             defaultAxios.get("recipe/my-recipe/inx-pagination", { 
                 params:{
@@ -95,7 +100,6 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                     index:res.data.index,
                     data:[...prev.data, ...res.data.data]
                 }));
-                console.log("요청", res.data);
             })
         }
 
@@ -113,16 +117,16 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                     index:res.data.index,
                     data:[...prev.data, ...res.data.data]
                 }));
-                console.log("데이터", res.data);
             })       
         }
 
-    }, [inview])
+    }, [inview, isLoading])
 
 
     //for search
     useEffect(()=>{
         if(isSearchMode){
+            setIsLoading(true);
             defaultAxios.get("recipe/searchingTerm/inx-pagination", { 
                 params:{
                     searchingTerm:searchingTerm,
@@ -134,6 +138,9 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                 setSearchedRecipe(res.data);
                 setSearchingTerm("");
             }) 
+            .finally(()=>{
+                setIsLoading(false); 
+            })
         }
     }, [reSearchToggle])
 
@@ -238,8 +245,10 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                                 </Tooltip>
                             </div>
                             <section className="w-full h-80 overflow-y-scroll">
-                                {!isSearchMode && searchedMyRecipeComps}
-                                {isSearchMode && searchedRecipeComps}
+                                {}
+                                {!isLoading && !isSearchMode && searchedMyRecipeComps}
+                                {!isLoading && isSearchMode && searchedRecipeComps}
+                                {isLoading && <CircularProgress className="mt-[100px]"/>}
                                 <div ref={viewRef}></div>
                             </section>
                         </div>

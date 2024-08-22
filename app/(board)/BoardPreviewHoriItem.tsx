@@ -12,9 +12,6 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    console.log("가로 길이", containerWidth)
-
-
     useEffect(()=>{
         if(containerRef.current){
             setContinerWidth(containerRef.current.clientWidth);
@@ -24,7 +21,7 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
         <Link href={`/board/${boardPreview.boardMenuId}/detail/${boardPreview.boardId}`} className="w-full flex flex-col mt-2 p-3 shadow-sm border bg-white border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <li className="w-full">
                 <div ref={containerRef} className="w-full">
-                    <h1>{truncateString(boardPreview.boardName, 12)}</h1>
+                    <h1>{truncateString(boardPreview.boardName, containerWidth/16)}</h1>
                     <p className="whitespace-pre-wrap h-[40px] overflow-y-hidden text-[14px]">{truncateString(boardPreview.content, containerWidth/14)}</p>
                     {/* <p dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(truncateString(boardPreview.content, 30))}}/> */}
                 </div>

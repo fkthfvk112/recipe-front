@@ -40,12 +40,12 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
 
     const deleteData = ()=>{
         Swal.fire({
-            title: "정말로 삭제하시겠습니까?",
+            title: "삭제하시겠습니까?",
             text: "삭제하면 되돌릴 수 없어요. 정말 삭제하시겠어요?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "삭제할래요.",
-            cancelButtonText: "아니요!",
+            confirmButtonText: "삭제",
+            cancelButtonText: "아니요",
             confirmButtonColor: '#d33',
           }).then((result) => {
             if (result.isConfirmed) {
@@ -53,7 +53,7 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
                 .delete(delPostUrl)
                 .then((res) => {
                   Swal.fire({
-                    title: "삭제가 완료되었습니다!",
+                    title: "삭제 완료",
                     icon: "success",
                   }).then(() => {
                     if(revalidateTagName){
@@ -65,8 +65,6 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
                 .catch((err) => {
                   console.log(err);
                 });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-              Swal.fire("걱정마요. 안전해요!");
             }
           });          
     }

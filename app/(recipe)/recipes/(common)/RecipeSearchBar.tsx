@@ -2,13 +2,11 @@
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import DetailSearchingModal from "./DetailSearchingModal";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
-export default function SearchBar() {
+export default function RecipeSearchBar() {
   const [searchingData, setSearchingData] = useState<string>("");
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const searchTerm = ()=>{
@@ -38,11 +36,8 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center pt-20 pb-10 w-full text-center bg-[#52cf63] p-10">
-      <div className="w-full text-start max-w-[800px] mb-5">
-        <h1 className="text-2xl">레시피 검색</h1>
-        <p>재료, 요리명 등의 키워드로 입맛에 맞는 완벽한 레시피를 발견하세요!</p>
-      </div>
+    <div className="flex flex-col justify-center items-center pb-10 w-full text-center shadow-sm p-10 pt-5 bg-[#52cf63]">
+
       <div className="relative w-full max-w-[800px]">
         <input
           placeholder="요리명, 설명, 재료 (2자 이상)"
@@ -63,10 +58,6 @@ export default function SearchBar() {
         </button>
       </div>
       <button className="rounded-3xl border-none mt-5 bg-[#FB8500] font-bold" onClick={() => router.push("/search/recipe-detail")}>상세 검색</button>
-      <DetailSearchingModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      ></DetailSearchingModal>
     </div>
   );
 }

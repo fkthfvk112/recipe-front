@@ -4,6 +4,7 @@ import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import SearchBar from "@/app/SearchBar";
 import CreateIcon from '@mui/icons-material/Create';
 import Link from "next/link";
+import RecipeSearchBar from "./(common)/RecipeSearchBar";
 
 export default function RecipeLayout({
   children,
@@ -13,8 +14,8 @@ export default function RecipeLayout({
   const {layoutMargin} = useResponsiveDesignCss();
 
   return (
-    <div className="w-full flex flex-col justify-center items-center">
-      <SearchBar></SearchBar>
+    <div className="w-full flex flex-col justify-center items-center bg-white">
+      <RecipeSearchBar></RecipeSearchBar>
       <div className="w-full min-h-lvh max-w-[1024px] p-2 mt-10">
         {children}
         <Link href={`/create-recipe`} className={`fixed bottom-6 right-12 roundRreenBtn ${layoutMargin} z-10`}>

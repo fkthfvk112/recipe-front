@@ -79,7 +79,7 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
         <>
         <div onClick={()=>{
             setOpen(true);
-        }} className="text-[#a1a1a1] cursor-pointer">대댓글</div>
+        }} className="text-[#a1a1a1] cursor-pointer whitespace-nowrap">대댓글</div>
             <Modal
                 open={open}
                 onClose={() => {

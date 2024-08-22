@@ -13,7 +13,7 @@ import { truncateString } from "../(utils)/StringUtil";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
-    <Card variant="outlined" sx={{ aspectRatio:"1 / 1", minWidth:"140px" }}>
+    <Card variant="outlined" sx={{ aspectRatio:"1 / 1", minWidth:"140px", marginBottom:"1rem" }}>
       <CardOverflow>
         <AspectRatio sx={{ overflow:"hidden"}} ratio="1/1">
           <Image
