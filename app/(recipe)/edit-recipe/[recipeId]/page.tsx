@@ -194,7 +194,7 @@ export default function CreateRecipePage({
             </button>
             }
             <button className="cancelBtn ms-2" onClick={() => setIsModalOpen(false)}>
-              아니요
+              취소
             </button>
           </div>
         </Box>

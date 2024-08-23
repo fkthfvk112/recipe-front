@@ -141,7 +141,7 @@ export default function EditBoardPost({
             icon: "question",
             showCancelButton: true,
             confirmButtonText: "저장하기",
-            cancelButtonText: "아니요",
+            cancelButtonText: "취소",
             confirmButtonColor: '#38c54b',
         }).then((result) => {
             if (result.isConfirmed) {

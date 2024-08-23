@@ -162,12 +162,20 @@ export default function MyDiet(){
                     placeholder="60자 이하"/>
                 </div>
 
-                <div className="flex flex-wrap justify-center items-start mt-10">
-                    <DietDayBox title="아침" dietItemRow={dietItemRowOne} setDietItemRow={setDietItemRowOne}></DietDayBox>
-                    <DietDayBox title="점심" dietItemRow={dietItemRowTwo} setDietItemRow={setDietItemRowTwo}></DietDayBox>
-                    <DietDayBox title="저녁" dietItemRow={dietItemRowThree} setDietItemRow={setDietItemRowThree}></DietDayBox>
-                    <DietDayBox title="간식" dietItemRow={dietItemRowFour} setDietItemRow={setDietItemRowFour}></DietDayBox>
-                </div>
+                <section className="grid grid-cols-2 mt-10 gap-1 w-full">
+                    <div className="col-span-1 aspect-auto">
+                        <DietDayBox title="아침" dietItemRow={dietItemRowOne} setDietItemRow={setDietItemRowOne}></DietDayBox>
+                    </div>
+                    <div className="col-span-1 aspect-auto">
+                        <DietDayBox title="점심" dietItemRow={dietItemRowTwo} setDietItemRow={setDietItemRowTwo}></DietDayBox>
+                    </div>
+                    <div className="col-span-1 aspect-auto">
+                        <DietDayBox title="저녁" dietItemRow={dietItemRowThree} setDietItemRow={setDietItemRowThree}></DietDayBox>
+                    </div>
+                    <div className="col-span-1 aspect-auto">
+                        <DietDayBox title="간식" dietItemRow={dietItemRowFour} setDietItemRow={setDietItemRowFour}></DietDayBox>
+                    </div>
+                </section>
 
                 <SaveModal open={saveModalOpen} setOpen={setSaveModalOpen}
                     content="식단을 저장하시겠습니까?" data={saveData}

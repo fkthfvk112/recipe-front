@@ -8,10 +8,10 @@ import BoardPreviewHoriItem from "../../BoardPreviewHoriItem";
 import serverFetch from "@/app/(commom)/serverFetch";
 import { CircularProgress } from "@mui/material";
 
-function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<BoardPreview[], number>, boardMenuId:number}){
+function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<BoardPreview[], string>, boardMenuId:number}){
     const [data, setData]           = useState<BoardPreview[]>(initialData.data);
     const [isEnd, setIsEnd]         = useState<boolean>(initialData.isEnd);
-    const [pageInx, setPageInx]     = useState<number>(initialData.index);
+    const [dateInx, setDateInx]     = useState<string>(initialData.index);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [viewRef, inview] = useInView();
 
@@ -21,12 +21,13 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
 
     const fetchData = async()=>{
         setIsLoading(true);
-        const boardData:IndexPagenation<BoardPreview[], number> = await serverFetch({
-            url:"board/previews",
+        const boardData:IndexPagenation<BoardPreview[], string> = await serverFetch({
+            url:"board/previews/inx-pagination",
             queryParams:{
-                sortingCondition:"REAL_TIME",
+                sortingCon:"LATEST",
                 boardMenuId:boardMenuId,
-                inx:pageInx
+                dateInx:dateInx,
+                size:5 //have to resize
             },
             option:{
                 cache:"no-cache",
@@ -41,7 +42,7 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
 
         setIsEnd(boardData.isEnd);
         setData([...data, ...boardData.data]);
-        setPageInx(boardData.index);
+        setDateInx(boardData.index);
     }
     
     useEffect(()=>{
@@ -55,7 +56,7 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
         <ul className="w-full h-full min-h-lvh p-2">
             {initialDatas}
         </ul>
-        <div ref={viewRef}>
+        <div className="h-10" ref={viewRef}>
             {isLoading && <CircularProgress />}
         </div>
         </>

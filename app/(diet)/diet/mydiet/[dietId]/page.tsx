@@ -19,8 +19,11 @@ export default async function DietDetail({
 
     const dietDay:DietDay|undefined = await authFetch(`diet/day/my-day?dietId=${params.dietId}`);
   
-    const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) => 
-       <DietDayShowBox key={inx} title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>);
+    const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) =>
+      <div className="col-span-1 aspect-auto" key={inx}>
+        <DietDayShowBox title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>
+      </div>
+    );
 
     return (
       dietDay&&
@@ -37,7 +40,7 @@ export default async function DietDetail({
             </div>
             }
 
-            <div className="flex flex-wrap justify-center items-start mt-10">
+            <div className="grid grid-cols-2 mt-10 gap-1 w-full p-3">
               {dietItems}
             </div>
         </div>

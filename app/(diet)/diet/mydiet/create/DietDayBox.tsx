@@ -109,7 +109,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
             icon: "question",
             showCancelButton: true,
             confirmButtonText: "초기화",
-            cancelButtonText: "아니요",
+            cancelButtonText: "취소",
             confirmButtonColor: '#f22707',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -123,7 +123,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
 
     const itemInputSections = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
-            <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">
+            <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative mt-2">
                 <button name={`delete-${inx}`} onClick={(evt)=>handleDelete(evt)} className="absolute right-0 top-0 flex justify-center items-center border-none h-8 w-8">
                         <ClearIcon className="bg-white"/>
                 </button>
@@ -163,7 +163,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
 
 
     return (
-        <div className="flex flex-col justify-start items-center border-2 rounded-xl w-52 min-h-[208px] p-3 m-3">
+        <div className="flex flex-col justify-start items-center border-2 rounded-xl min-h-[208px] p-3">
             <div className="flex-center-col w-full bottom-line">
                 <div className="w-full mb-2 font-bold text-xl flex justify-between">
                     {title}

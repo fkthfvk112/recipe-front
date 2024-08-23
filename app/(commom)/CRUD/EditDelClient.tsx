@@ -45,7 +45,7 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "삭제",
-            cancelButtonText: "아니요",
+            cancelButtonText: "취소",
             confirmButtonColor: '#d33',
           }).then((result) => {
             if (result.isConfirmed) {

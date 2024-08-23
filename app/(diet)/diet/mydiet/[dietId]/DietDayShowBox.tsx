@@ -76,56 +76,56 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
     })
 
     return (
-        <div className="flex flex-col justify-start items-center border-2 rounded-xl w-52 min-h-[208px] p-3 m-3">
-        <div className="flex-center-col w-full bottom-line">
-            <div className="w-full mb-2 font-bold text-xl flex justify-between">
-                {title}
-                <div onClick={()=>{setIsModalOpen(true)}}>
-                    <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 상세</button>
-                    {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
-                </div>
-            </div>
-        </div>
-        {
-            dietItemRow?.photo&&
-            <div className="w-full flex-center">
-                <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
-                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
-                        <Image src={dietItemRow.photo} alt="no img" fill/>
-                        {dietItemRow?.photo}
+        <div className="flex flex-col justify-start items-center border-2 rounded-xl min-h-[208px] p-3 mt-2">
+            <div className="flex-center-col w-full bottom-line">
+                <div className="w-full mb-2 font-bold text-xl flex justify-between">
+                    {title}
+                    <div onClick={()=>{setIsModalOpen(true)}}>
+                        <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 상세</button>
+                        {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
                     </div>
                 </div>
             </div>
-        }
-        <div className="flex w-full flex-wrap text-sm">
-            {dietItemRow.dietItemList?.map((item, inx)=>{
-                return (
-                    <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
-                )
-            })}
+            {
+                dietItemRow?.photo&&
+                <div className="w-full flex-center">
+                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
+                        <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
+                            <Image src={dietItemRow.photo} alt="no img" fill/>
+                            {dietItemRow?.photo}
+                        </div>
+                    </div>
+                </div>
+            }
+            <div className="flex w-full flex-wrap text-sm">
+                {dietItemRow.dietItemList?.map((item, inx)=>{
+                    return (
+                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
+                    )
+                })}
+            </div>
+            
+            <Modal
+                open={isModalOpen}
+                onClose={() => {
+                setIsModalOpen(false);
+                }}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description">
+                <Box sx={style}>
+                    <div className="w-full relative">
+                        <h1 className="m-2 mb-2 text-2xl">{title}</h1>
+                        <button onClick={()=>setIsModalOpen(false)} className="closeBtnParent">
+                            <CloseIcon/>
+                        </button>
+                    </div>
+                    <div className="bottom-line"/>
+                    <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
+                            {itemBageList}
+                    </div>
+                </Box>
+            </Modal>
         </div>
-        
-        <Modal
-            open={isModalOpen}
-            onClose={() => {
-            setIsModalOpen(false);
-            }}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
-            <Box sx={style}>
-                <div className="w-full relative">
-                    <h1 className="m-2 mb-2 text-2xl">{title}</h1>
-                    <button onClick={()=>setIsModalOpen(false)} className="closeBtnParent">
-                        <CloseIcon/>
-                    </button>
-                </div>
-                <div className="bottom-line"/>
-                <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
-                        {itemBageList}
-                </div>
-            </Box>
-        </Modal>
-    </div>
     )
 }
 

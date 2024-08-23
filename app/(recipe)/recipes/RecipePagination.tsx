@@ -22,7 +22,7 @@ export default function RecipePagination({
 
   return (
       <Pagination
-      size="small"
+        size="small"
         onChange={handlePageChange}
         count={pageMax}
         defaultPage={pageNow}

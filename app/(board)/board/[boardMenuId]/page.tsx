@@ -14,11 +14,13 @@ export default async function Board({
   }: {
     params:{boardMenuId:number};
   }){
-    const boardData:IndexPagenation<BoardPreview[], number> = await serverFetch({
-        url:"board/previews",
+    const boardData:IndexPagenation<BoardPreview[], string> = await serverFetch({
+        url:"board/previews/inx-pagination",
         queryParams:{
-            sortingCondition:"REAL_TIME",
-            boardMenuId:params.boardMenuId
+            sortingCon:"LATEST",
+            boardMenuId:params.boardMenuId,
+            dateInx:"",
+            size:5//have to resize
         },
         option:{
             cache:"no-store",
