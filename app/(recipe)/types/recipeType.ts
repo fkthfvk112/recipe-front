@@ -50,4 +50,5 @@ export interface Recipe {
   steps:        CookingSteps_create[] | CookingSteps_show[];
   reviewCnt?:   number;
   likeCnt?:     number;
+  reviewAvg?:     number;
 }

@@ -10,6 +10,9 @@ import { timeDifferenceString } from "../(utils)/timeUtils";
 import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { truncateString } from "../(utils)/StringUtil";
+import StarIcon from '@mui/icons-material/Star';
+import { roundToNPlaces } from "../(utils)/NumberUtil";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
@@ -26,15 +29,24 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </AspectRatio>
       </CardOverflow>
       <CardContent>
-        <Typography level="title-md"><h2>{truncateString(recipe.recipeName, 12)}</h2></Typography>
-        <Typography level="body-sm" sx={{height:"35px"}}>{truncateString(recipe.description, 18)}</Typography>
+        <Typography level="title-md">
+          <div className="flex justify-start items-center flex-wrap">
+            <h2 className="flex items-center me-1">
+              {truncateString(recipe.recipeName, 10)}
+            </h2>
+            <span className="text-[0.8rem] text-[#3b3b3b]">
+              <StarIcon className="mb-1 fill-[#FFB701]"/>{recipe.reviewAvg?roundToNPlaces(recipe.reviewAvg, 2):"-"}
+            </span>
+          </div>
+        </Typography>
+        <Typography level="body-sm" sx={{height:"35px"}}>{truncateString(recipe.description, 15)}</Typography>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
         <Divider inset="context" />
         <div className="flex justify-between text-sm pt-2 pb-2 text-[#3b3b3b]">
           <div className="flex">
             <div>
-              <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
+              <BookmarkAddedIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
             </div>
             <div className="ms-2">
               <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>

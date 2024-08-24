@@ -26,6 +26,8 @@ export default async function SearchingByCondition({
     }
   });
 
+  console.log("패치이", fetchData);
+
   //페이지 총 개수
   const pageMaxCnt: number = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/searchingTerm/cnt?${decodedUrl}`,
