@@ -4,14 +4,16 @@ import { IndexPagenation } from "@/app/(type)/Pagenation";
 import { BoardPreview } from "@/app/(type)/board";
 import React, { useEffect, useState } from "react";
 import { useInView } from 'react-intersection-observer';
-import BoardPreviewHoriItem from "../../BoardPreviewHoriItem";
 import serverFetch from "@/app/(commom)/serverFetch";
 import { CircularProgress } from "@mui/material";
+import BoardPreviewHoriItem from "@/app/(board)/BoardPreviewHoriItem";
 
-function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<BoardPreview[], string>, boardMenuId:number}){
-    const [data, setData]           = useState<BoardPreview[]>(initialData.data);
-    const [isEnd, setIsEnd]         = useState<boolean>(initialData.isEnd);
-    const [dateInx, setDateInx]     = useState<string>(initialData.index);
+function BoardSearchHolder({searchedData}:{searchedData:string}){
+    const [isSearched, setIsSearched] = useState<boolean>(false);//검색 데이터 패칭 한 적 있는지 확인
+
+    const [data, setData]           = useState<BoardPreview[]>([]);
+    const [isEnd, setIsEnd]         = useState<boolean>(false);
+    const [dateInx, setDateInx]     = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [viewRef, inview] = useInView();
 
@@ -22,22 +24,20 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
     const fetchData = async()=>{
         setIsLoading(true);
         const boardData:IndexPagenation<BoardPreview[], string> = await serverFetch({
-            url:"board/previews/inx-pagination",
+            url:"board/search-previews/inx-pagination",
             queryParams:{
                 sortingCon:"LATEST",
-                boardMenuId:boardMenuId,
+                searchingTerm:searchedData,
                 dateInx:dateInx,
                 size:5 //have to resize
             },
             option:{
                 cache:"no-cache",
-                next:{
-                    tags: [`boardmst-${boardMenuId}`],
-                }
             }
         })
         .finally(()=>{
             setIsLoading(false);
+            setIsSearched(true);
         })
 
         setIsEnd(boardData.isEnd);
@@ -46,15 +46,21 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
     }
     
     useEffect(()=>{
-        if(!isEnd && inview){
+        if(!isEnd && inview && searchedData.length >= 2){
             fetchData();
         }
     }, [inview])
 
+    console.log("히히히,", searchedData)
+
     return (
         <>
-            <ul className="w-full h-full min-h-lvh p-2">
+            <ul className="w-full h-full min-h-10 p-2">
                 {initialDatas}
+                {
+                    isSearched&&initialDatas.length === 0&&
+                    <div className="flex-center mt-5 mb-5">검색 결과가 존재하지 않습니다.</div>
+                }
             </ul>
             <div className="h-10" ref={viewRef}>
                 {isLoading && <CircularProgress />}
@@ -63,4 +69,4 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
     )
 }
 
-export default React.memo(BoardHolder);
+export default React.memo(BoardSearchHolder);
