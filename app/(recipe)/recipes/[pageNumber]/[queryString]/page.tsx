@@ -53,7 +53,6 @@ export default async function SearchingByCondition({
       </div>
     ))
 
-
   return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
       <div className="grid media-gridcol-3-to-2 r w-full gap-3">
@@ -63,12 +62,12 @@ export default async function SearchingByCondition({
         fetchData.length <= 0 && <NoContent_Recipe />
       }
       {
-      pnMaxCnt >= 1 &&
-      <RecipePagination
-        queryStr={decodedUrl}
-        pageNow={Number(params.pageNumber)}
-        pageMax={pnMaxCnt}
-      ></RecipePagination>
+        pnMaxCnt >= 1 &&
+        <RecipePagination
+          queryStr={decodedUrl}
+          pageNow={Number(params.pageNumber)}
+          pageMax={pnMaxCnt}
+        ></RecipePagination>
       }
     </div>
   );

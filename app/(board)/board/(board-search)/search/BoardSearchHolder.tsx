@@ -62,7 +62,7 @@ function BoardSearchHolder({searchedData}:{searchedData:string}){
                     <div className="flex-center mt-5 mb-5">검색 결과가 존재하지 않습니다.</div>
                 }
             </ul>
-            <div className="h-10" ref={viewRef}>
+            <div className="h-10 w-full flex-center" ref={viewRef}>
                 {isLoading && <CircularProgress />}
             </div>
         </>
