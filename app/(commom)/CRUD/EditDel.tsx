@@ -1,8 +1,5 @@
-"use server"
-import { Jwt } from "@/app/(type)/user";
 import { decodeUserJwt, decodedUserInfo } from "@/app/(utils)/decodeJwt";
 import EditDelClient from "./EditDelClient";
-import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 
 export interface EditDel{
     ownerUserId:string,

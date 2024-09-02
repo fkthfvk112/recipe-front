@@ -11,7 +11,9 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: '95%',
+    maxWidth:450,
+    minWidth:280,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -30,7 +32,6 @@ interface SaveModalProp<T>{
 function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveModalProp<T>) {
     const router = useRouter();
     const handleSave = ()=>{
-        console.log("세이브 데이터", data);
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
         withReactContent(Swal).fire({
             title:"저장하는 중...",

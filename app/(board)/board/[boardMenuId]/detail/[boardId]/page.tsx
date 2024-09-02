@@ -13,6 +13,7 @@ import ReviewContainer from "@/app/(recipe)/recipe-detail/(review)/ReviewContain
 import BoardPhotoHolder from "./(Photo)/BoardPhotoHolder";
 import BoardRecipeHolder from "./(recipe)/BoardRecipeHolder";
 import BoardDietHolder from "./(Diet)/BoardDietHolder";
+import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 
 export default async function BoardDetail({
     params
@@ -85,6 +86,7 @@ export default async function BoardDetail({
                 {/* have to : user ID -> user uuid */}
                 <EditDel ownerUserId={boardData.userId} editReturnURl={`board/${boardData.boardMenuId}/edit/${params.boardId}`} delPostUrl={`board/del?boardId=${params.boardId}`}
                  delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagName={`boardmst-${boardData.boardMenuId}`}/>
+                <ReportPost domainType={DomainType.Board} domainId={params.boardId}/>
             </div>
             <ReviewContainer domainId={params.boardId} domainName="board"/>
         </section>

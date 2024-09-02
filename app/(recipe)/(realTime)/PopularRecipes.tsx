@@ -10,6 +10,8 @@ export default async function PopularRecipes() {
       next: { revalidate: 300 },
     }
   ).then((res) => {
+
+
     if (!res.ok) {
       console.log("RecipeDetail fetch error!!", res.status);
     } else {
@@ -26,6 +28,7 @@ export default async function PopularRecipes() {
         <RecipeVerticalItem recipe={recipe}></RecipeVerticalItem>
       </Link>
   ));
+
 
   return (
     <div className="w-full max-w-5xl p-5 mt-10 mb-5">

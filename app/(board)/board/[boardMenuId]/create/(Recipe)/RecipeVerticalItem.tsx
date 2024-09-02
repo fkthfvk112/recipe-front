@@ -1,7 +1,4 @@
-import AspectRatio from "@mui/joy/AspectRatio";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import CardOverflow from "@mui/joy/CardOverflow";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Divider from "@mui/joy/Divider";
 import Typography from "@mui/joy/Typography";
 import Image from "next/image";
@@ -37,7 +34,7 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
         <div className="flex justify-between text-sm pt-2 pb-2 text-[#3b3b3b]">
             <div className="flex justify-center items-center">
               <div className="ms-2 flex justify-center items-center">
-                <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
+                <BookmarkAddedIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
               </div>
               <div className="ms-2 flex justify-center items-center">
                 <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>

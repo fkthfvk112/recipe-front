@@ -7,6 +7,8 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { domainId, domainName } from './ReviewContainer';
 import Swal from 'sweetalert2';
+import ReportPostClient from '@/app/(commom)/Component/(report)/ReportPostClient';
+import { DomainType } from '@/app/(commom)/Component/(report)/ReportPost';
 
 
 interface ReviewEtcState{
@@ -18,9 +20,23 @@ interface ReviewEtcState{
 
 /**신고하기, 글삭제,  */
 function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEtcState){
+    const [reportModalOpen, setReportModalOpen] = useState<boolean>(false);//영역 바깥 클릭시 닫히는 문제 해결 플래그
+
+    const [domainType, setDomainType] = useState<DomainType>();
     const [open, setOpen] = useState<boolean>(false);
     const outRef = useRef<HTMLDivElement | null>(null);
 
+
+    useEffect(()=>{
+        switch (domainName){
+            case "board":
+                setDomainType(DomainType.BoardReview);
+                break;
+            case "recipe":
+                setDomainType(DomainType.RecipeReview);
+                break;
+        }
+    }, [])
    
     const deleteReview = ()=>{
         Swal.fire({
@@ -60,6 +76,7 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
     useEffect(()=>{
         const clickOutside = (e:MouseEvent)=>{
             if(open && outRef.current && !outRef.current.contains(e.target as Node)){
+                if(reportModalOpen) return;
                 setOpen(false);
             }
         };
@@ -79,7 +96,10 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
             open&&
             <div ref={outRef}>
                 <div className="absolute flex flex-col justify-center items-start right-0 bg-[#d1d1d1] p-3 w-[150px] z-50">
-                    <div className='mt-0.5 mb-0.5 cursor-pointer'>신고하기</div>
+                    <div onClick={()=>setReportModalOpen(true)} className='flex justify-start items-center'>
+                        <ReportPostClient domainType={domainType} domainId={domainId} etcText={"신고하기"} modalCancelCallback={()=>setReportModalOpen(false)} />
+                    </div>
+                    
                     {canDelete&&<div onClick={deleteReview} className='mt-0.5 mb-0.5 cursor-pointer'>리뷰 삭제</div>}
                 </div>
             </div>

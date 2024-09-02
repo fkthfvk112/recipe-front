@@ -51,8 +51,6 @@ function BoardSearchHolder({searchedData}:{searchedData:string}){
         }
     }, [inview])
 
-    console.log("히히히,", searchedData)
-
     return (
         <>
             <ul className="w-full h-full min-h-10 p-2">

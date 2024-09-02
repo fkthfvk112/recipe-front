@@ -40,7 +40,6 @@ function RecipeHoriItem({recipe, selectedRecipe, setSelectedRecipe}:{recipe:Reci
         }
     };
 
-    console.log("사진", recipe.repriPhotos[0])
     return (
         <div onClick={()=>{hadleSelectRecipe()}} className=" w-full grid grid-cols-6 mt-2 p-3 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <div className="col-span-2 flex justify-center items-center">

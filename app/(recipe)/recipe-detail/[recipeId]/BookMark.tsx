@@ -3,8 +3,10 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function BookMark({ recipeId }: { recipeId: number }) {
   const isSignIn = useRecoilValue<boolean>(siginInState);
@@ -38,7 +40,7 @@ export default function BookMark({ recipeId }: { recipeId: number }) {
   };
 
   const bookMark = isOn ? (
-    <BookmarkAddedIcon className="w-10 h-10"></BookmarkAddedIcon>
+    <BookmarkAddedIcon className="w-10 h-10"/>
   ) : (
     <BookmarkBorderOutlinedIcon className="w-10 h-10" />
   );

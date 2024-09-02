@@ -7,6 +7,7 @@ import EditDel from "@/app/(commom)/CRUD/EditDel";
 import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 import ReviewContainer from "../(review)/ReviewContainer";
 import serverFetch from "@/app/(commom)/serverFetch";
+import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 
 interface RecipeDetail {
   recipeName: string;
@@ -68,10 +69,11 @@ export default async function RecipeDetail({
           <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
           <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
         </div>
-        <div className="w-full p-3 text-left">
+        <div className="w-full p-3 text-left flex">
             <CopyUrl></CopyUrl>
             {/* have to : user ID -> user uuid */}
             <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} delPostUrl="/" delReturnUrl="/"/>
+            <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">
           <ReviewContainer domainId={params.recipeId} domainName={"recipe"}></ReviewContainer>

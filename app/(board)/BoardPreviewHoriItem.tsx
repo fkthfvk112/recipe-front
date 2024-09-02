@@ -6,6 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import { truncateString } from "../(utils)/StringUtil";
 import Link from "next/link";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 
 function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
     const [containerWidth, setContinerWidth] = useState<number>(200);
@@ -37,7 +38,7 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
                     </div>
                     <div className="flex justify-center items-center">
                     <div className="ms-2 flex justify-center items-center">
-                        <FavoriteIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{boardPreview?.heartCnt}</span>
+                        <BookmarkAddedIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{boardPreview?.heartCnt}</span>
                     </div>
                     <div className="ms-2 flex justify-center items-center">
                         <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{boardPreview?.reviewCnt}</span>

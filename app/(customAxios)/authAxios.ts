@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { errorCode } from "../(commom)/Error/ErrorCode";
 
 
 /** 기본 서버로 요청하는 axios */
@@ -77,7 +78,15 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       
       return Promise.reject(err);
     }
-
+    else if(errorCode.includes(err.response.data.code)){
+      Swal.fire({
+        text: err.response.data.message,
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey:false
+        });
+    }
     return Promise.reject(err);
   })
 })
