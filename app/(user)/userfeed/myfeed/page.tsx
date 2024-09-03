@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import MyFeed from "./MyFeed";
+import MyFeed from "./MyRecipe";
 import BurstModeOutlinedIcon from "@mui/icons-material/BurstModeOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { Divider } from "@mui/material";
 import UserInfo from "./UserInfo";
 import MyLike from "./MyLike";
 import MyDiet from "./MyDiet";
+import MyRecipe from "./MyRecipe";
 
 export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useState<0 | 1 | 2>(0);
@@ -44,7 +45,7 @@ export default function Userfeed() {
           내 식단
         </button>
       </div>
-      {menuSelect === 0 && <MyFeed></MyFeed>}
+      {menuSelect === 0 && <MyRecipe></MyRecipe>}
       {menuSelect === 1 && <MyLike></MyLike>}
       {menuSelect === 2 && <MyDiet></MyDiet>}
     </div>

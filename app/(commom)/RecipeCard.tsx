@@ -8,7 +8,6 @@ import Typography from "@mui/joy/Typography";
 import Image from "next/image";
 import { timeDifferenceString } from "../(utils)/timeUtils";
 import CommentIcon from '@mui/icons-material/Comment';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { truncateString } from "../(utils)/StringUtil";
 import StarIcon from '@mui/icons-material/Star';
 import { roundToNPlaces } from "../(utils)/NumberUtil";

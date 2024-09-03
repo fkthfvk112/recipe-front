@@ -1,3 +1,4 @@
+import DietSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietSquareItem";
 import DietVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { DietDay } from "@/app/(type)/diet";
@@ -21,19 +22,18 @@ export default function MyDiet() {
 
   const feedInfos = myDiets.map((diet, inx) => (
     <Link
-      className="flex justify-center items-center"
       key={inx}
       href={`/diet/mydiet/${diet.dietDayId}`}
     >
-      <DietVerticalItem dietDay={diet}/>
+      <DietSquareItem dietDay={diet}/>
     </Link>
   ));
 
   return (
-    <div className="flex justify-center items-start h-screen">
-      <div className="flex justify-center items-center flex-wrap w-full p-2">
+    <div className="h-screen w-full">
+      <ul className="grid grid-cols-3 w-full gap-3 p-2">
         {feedInfos}
-      </div>
+      </ul>
     </div>
   )
 }

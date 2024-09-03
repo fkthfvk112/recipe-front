@@ -1,3 +1,4 @@
+import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
 import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
@@ -26,18 +27,17 @@ export default function MyLike() {
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
-      className="flex justify-center items-center"
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}>
-      <RecipeVerticalItem key={inx} recipe={recipe}/>
-    </Link>
+        <RecipeSquareItem key={inx} recipe={recipe}/>
+      </Link>
   ));
 
   return(
-    <div className="flex justify-center items-start h-screen">
-      <div className="flex justify-center items-center flex-wrap w-full p-2">
+    <div className="h-screen w-full">
+      <ul className="grid grid-cols-3 w-full gap-3 p-2">
         {feedPhotos}
-      </div>
+      </ul>
     </div>
   )
 }

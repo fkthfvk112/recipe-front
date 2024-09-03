@@ -1,10 +1,11 @@
+import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
 import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function MyFeed() {
+export default function MyRecipe() {
   const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
@@ -20,19 +21,18 @@ export default function MyFeed() {
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
-      className="flex justify-center items-center"
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}
     >
-      <RecipeVerticalItem key={inx} recipe={recipe}/>
+      <RecipeSquareItem key={inx} recipe={recipe}/>
     </Link>
   ));
 
   return (
-    <div className="flex justify-center items-start h-screen">
-      <div className="flex justify-center items-center flex-wrap w-full p-2">
-        {feedPhotos}
-       </div>
+    <div className="h-screen w-full">
+      <ul className="grid grid-cols-3 w-full gap-3 p-2">
+      {feedPhotos}
+       </ul>
     </div>
   );
 }

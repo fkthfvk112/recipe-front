@@ -18,6 +18,7 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
             setContinerWidth(containerRef.current.clientWidth);
         }
     }, [])
+    
     return(
         <Link href={`/board/${boardPreview.boardMenuId}/detail/${boardPreview.boardId}`} className="w-full flex flex-col mt-2 p-3 shadow-sm border bg-white border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <li className="w-full">
