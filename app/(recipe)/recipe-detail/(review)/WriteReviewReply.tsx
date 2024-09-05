@@ -107,7 +107,7 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                         <div className="flex justify-center items-center">
                           <div className="me-5">{reply.message.length}/200</div>
                           {
-                            reply.message.length >= 1 && reply.message.length <= 200?
+                            reply.message.length >= 2 && reply.message.length <= 200?
                             <button className="greenBtn" onClick={() => handleSaveReply()}>
                               댓글 쓰기
                             </button>:

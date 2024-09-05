@@ -231,9 +231,9 @@ export default function FeedEditModal({
             />
           </div>
         </div>
-        <div className="flex justify-around p-3">
-          <button className="grayBtn" onClick={handleClose}>취소</button>
-          <button className="greenBtn" onClick={updateDbData}>수정</button>
+        <div className="grid grid-cols-2 w-full gap-2 mt-5">
+          <button className="grayBtn col-span-1 w-full" onClick={handleClose}>취소</button>
+          <button className="greenBtn col-span-1 w-full" onClick={updateDbData}>수정</button>
         </div>
       </Box>
     </Modal>

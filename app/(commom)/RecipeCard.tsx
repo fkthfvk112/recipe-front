@@ -1,3 +1,5 @@
+"use client"
+
 import { Recipe } from "../(recipe)/types/recipeType";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
@@ -8,12 +10,12 @@ import Typography from "@mui/joy/Typography";
 import Image from "next/image";
 import { timeDifferenceString } from "../(utils)/timeUtils";
 import CommentIcon from '@mui/icons-material/Comment';
-import { truncateString } from "../(utils)/StringUtil";
 import StarIcon from '@mui/icons-material/Star';
 import { roundToNPlaces } from "../(utils)/NumberUtil";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
+
   return (
     <Card variant="outlined" sx={{ aspectRatio:"1 / 1", minWidth:"140px", marginBottom:"1rem" }}>
       <CardOverflow>
@@ -29,16 +31,14 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
       </CardOverflow>
       <CardContent>
         <Typography level="title-md">
-          <div className="flex justify-start items-center flex-wrap">
-            <h2 className="flex items-center me-1">
-              {truncateString(recipe.recipeName, 10)}
-            </h2>
-            <span className="text-[0.8rem] text-[#3b3b3b]">
+          <div className="flex justify-start items-center w-full">
+            <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.recipeName}</h1>
+            <span className="flex-center font-bold text-[0.8rem] mr-2 text-[#3b3b3b]">
               <StarIcon className="mb-1 fill-[#FFB701]"/>{recipe.reviewAvg?roundToNPlaces(recipe.reviewAvg, 2):"-"}
             </span>
           </div>
         </Typography>
-        <Typography level="body-sm" sx={{height:"35px"}}>{truncateString(recipe.description, 15)}</Typography>
+        <section className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.description}</section>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
         <Divider inset="context" />

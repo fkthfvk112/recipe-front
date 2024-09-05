@@ -27,6 +27,7 @@ function RecipeSquareItem({ recipe }: { recipe: Recipe }) {
             if(textContainerRef.current && starRef.current){
                 textContainerRef.current.style.fontSize = '0.6rem';
                 textContainerRef.current.style.padding = '0.3rem';
+                starRef.current.style.fontSize = '0.6rem';
                 starRef.current.style.width = '1rem';
                 starRef.current.style.height = '1rem';
             }
@@ -34,6 +35,7 @@ function RecipeSquareItem({ recipe }: { recipe: Recipe }) {
             if(textContainerRef.current && starRef.current){
                 textContainerRef.current.style.fontSize = '0.5rem';
                 textContainerRef.current.style.padding = '0.2rem';
+                starRef.current.style.fontSize = '0.5rem';
                 starRef.current.style.width = '0.6rem';
                 starRef.current.style.height = '0.6rem';
             }
@@ -42,6 +44,7 @@ function RecipeSquareItem({ recipe }: { recipe: Recipe }) {
             if(textContainerRef.current && starRef.current){
                 textContainerRef.current.style.fontSize = '1rem';
                 textContainerRef.current.style.padding = '0.5rem';
+                starRef.current.style.fontSize = '1rem';
                 starRef.current.style.width = '2rem';
                 starRef.current.style.height = '2rem';
 
@@ -61,11 +64,11 @@ function RecipeSquareItem({ recipe }: { recipe: Recipe }) {
                     alt=""
                 />
             </section>
-            <section ref={textContainerRef} className="flex justify-start items-center flex-wrap p-2 border border-[#e1e1e1] rounded-b-md max-h-[20%]">
-                <h2 className="flex items-center me-1">
-                {truncateString(recipe.recipeName, containerWidth/10)}
-                </h2>
-                <span className="text-[#3b3b3b]">
+            <section ref={textContainerRef} className="flex justify-start items-center p-2 border border-[#e1e1e1] rounded-b-md max-h-[20%]">
+                <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">
+                    {recipe.recipeName}
+                </h1>
+                <span className="flex-center font-bold mr-2 text-[#3b3b3b]">
                     <StarIcon ref={starRef} className="mb-1 fill-[#FFB701]"/>{recipe.reviewAvg?roundToNPlaces(recipe.reviewAvg, 2):"_"}
                 </span>
             </section>

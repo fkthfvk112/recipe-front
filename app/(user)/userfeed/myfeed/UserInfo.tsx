@@ -64,7 +64,7 @@ export default function UserInfo() {
           </div>
         }
         <div>
-          <button onClick={modalOpen} className="btn-outline-gray mt-5 m-2">
+          <button onClick={modalOpen} className="btn-outline-gray mt-3 m-2">
             프로필 편집
           </button>
         </div>

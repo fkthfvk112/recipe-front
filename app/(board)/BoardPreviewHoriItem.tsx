@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { BoardPreview } from "../(type)/board";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import { truncateString } from "../(utils)/StringUtil";
 import Link from "next/link";

@@ -112,7 +112,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
             <div className="flex justify-center items-center">
               <div className="me-5">{review.message.length}/200</div>
               {
-                review.message.length >= 1 && review.message.length <= 200?
+                review.message.length >= 2 && review.message.length <= 200?
                 <button className="greenBtn" onClick={() => saveReview()}>
                   댓글 쓰기
                 </button>:
