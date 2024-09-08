@@ -248,24 +248,18 @@ export default function SignUp() {
     }
     setEmailCertifLoading(true);
 
-    setTimeout(()=>{
-      setEmailCertifLoading(false);
-      Swal.fire({
-        title: "인증 번호 발송",
-        text:"인증 번호를 발송하였습니다. 이메일을 확인해주세요.",
-        icon: "success",
-      })
-      setTimer(60*3);
-      startTimer();
-      setTimerStarted(true);
-      
-    },2000)
- 
     axios.post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/send-certif-number`, {email:userEmail}, {
       withCredentials: true,
     })
     .then((res)=>{
-
+        Swal.fire({
+          title: "인증 번호 발송",
+          text:"인증 번호를 발송하였습니다. 이메일을 확인해주세요.",
+          icon: "success",
+        })
+        setTimer(60*3);
+        startTimer();
+        setTimerStarted(true);
       })
     .catch((err)=>{
       setEmailCertifLoading(false);
@@ -436,7 +430,7 @@ export default function SignUp() {
         </p>
       </div>
       <div className="flex justify-center items-center w-full">
-        <button className={`${allValid()?"greenBtn":"grayBtn-noHover"} w-full h-12 mt-8`} onClick={sendSignUpRequest}>회원가입</button>
+        <button className={`${allValid()?"greenBtn":"grayBtn-noHover"} w-full h-12 mt-8`} onClick={sendSignUpRequest} disabled={!allValid()}>회원가입</button>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ export default function FeedRecipes({
       .catch((err) => {
         console.log("아시오스 에러", err);
       });
-  }, []);
+  }, [userNickName]);
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link

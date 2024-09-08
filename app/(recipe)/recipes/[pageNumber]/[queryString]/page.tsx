@@ -6,6 +6,7 @@ import Link from "next/link";
 import RecipePagination from "../../RecipePagination";
 import NoContent_Recipe from "../../(common)/NoContent_Recipe";
 import RecipeCardSkeletion from "@/app/(recipe)/(skeleton)/RecipeCardSkeletion";
+import { useEffect } from "react";
 
 export default async function SearchingByCondition({
   params,
@@ -53,6 +54,7 @@ export default async function SearchingByCondition({
         </Link>
       </div>
     ))
+
 
   return (
     <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">

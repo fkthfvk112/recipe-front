@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { usePathname } from "next/navigation";
 import AccountMenu from "./AccountMenu";
@@ -13,10 +13,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Avatar } from "@mui/material";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import GoBoardBtn from "./GoBoardBtn";
 const Navbar = () => {
   const [localSignInState, setLocalSignInState] = useState<boolean>(false);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const {navCss} = useResponsiveDesignCss();
+
   const router = useRouter();
 
   const pathname = usePathname();
@@ -43,6 +45,11 @@ const Navbar = () => {
 
       setLocalSignInState(isSignIn);
   }, [isSignIn])
+
+
+  const goBoard = () => {
+      router.push("/board/1");
+  };
 
   return (
     <>
@@ -74,13 +81,16 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href={`/board/1`}>
+                <GoBoardBtn/>
+              </li>
+              {/* <li>
+                <div onClick={goBoard}>
                   <div className="flex flex-col justify-center items-center">
                     <LibraryBooksIcon sx={{width:'30px', height:'30px'}}/>
                     <p>게시판</p>
                   </div>
-                </Link>
-              </li>
+                </div>
+              </li> */}
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
                 {localSignInState ? (

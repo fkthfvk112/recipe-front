@@ -5,7 +5,7 @@ const { persistAtom } = recoilPersist();
 // const sessionStorage =
 //   typeof window !== "undefined" ? window.sessionStorage : undefined;
 
-export const siginInState = atom({
+export const siginInState = atom<boolean>({
   key: "isSignIn",
   default: false,
   effects_UNSTABLE: [persistAtom],
@@ -16,3 +16,4 @@ export const searchPage = atom<number>({
   default: 1,
   effects_UNSTABLE: [persistAtom],
 });
+

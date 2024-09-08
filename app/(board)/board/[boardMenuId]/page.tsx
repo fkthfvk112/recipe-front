@@ -20,26 +20,36 @@ export default async function Board({
             sortingCon:"LATEST",
             boardMenuId:params.boardMenuId,
             dateInx:"",
-            size:5//have to resize
+            size:10
         },
         option:{
-            cache:"no-store",
             next:{
-                tags: [`boardmst-${params.boardMenuId}`],
+                revalidate: 60,
+                tags: [`boardMenu-${params.boardMenuId}`],
             }
         }
     })
 
-    const baseMenuList:BoardMenu[] = await serverFetch({url:"board-menu/base"});
+    const baseMenuList:BoardMenu[] = await serverFetch({
+        url:"board-menu/base",
+        option:{
+            next:{
+                revalidate:3600,
+            }
+        }
+    },);
     const selectedMenu = baseMenuList.find(menu=>Number(menu.boardMenuId) === Number(params.boardMenuId));
+
+    console.log("랜더링")
+    const isDataLoaded = !!boardData && baseMenuList !== undefined;
 
     return (
         <div className="w-full flex flex-col justify-center items-center">
             <BoardNav baseMenuList={baseMenuList} selectedMenu={params.boardMenuId}/>
             <TitleDescription title={`${selectedMenu?.menuName}`} desc={`${selectedMenu?.description}`}/>
             <div className="defaultInnerContainer  flex flex-col justify-center items-center w-full min-h-lvh">
-                <BoardHolder initialData={boardData} boardMenuId={params.boardMenuId}/>
-                <WriteBtn boardMenuId={params.boardMenuId.toString()} />
+            {isDataLoaded && <BoardHolder initialData={boardData} boardMenuId={params.boardMenuId} />}
+            <WriteBtn boardMenuId={params.boardMenuId.toString()} />
             </div>
          </div>
     )

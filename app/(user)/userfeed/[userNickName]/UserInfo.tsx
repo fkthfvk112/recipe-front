@@ -17,7 +17,6 @@ export interface UserFeedInfo {
 
 export default function UserInfo({ userNickName }: { userNickName: string }) {
   const [userData, setUserData] = useState<UserFeedInfo>();
-  const [updateData, setUpdateData] = useState<number>(0);
 
   useEffect(() => {
     axios
@@ -28,7 +27,7 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
       .catch((e) => {
         alert(e);
       });
-  }, [updateData]);
+  }, [userNickName]);
 
   return (
     <div className="w-full max-w-[500px] p-3">

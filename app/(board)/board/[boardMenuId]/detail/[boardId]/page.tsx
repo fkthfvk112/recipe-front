@@ -85,7 +85,7 @@ export default async function BoardDetail({
                 <CopyUrl></CopyUrl>
                 {/* have to : user ID -> user uuid */}
                 <EditDel ownerUserId={boardData.userId} editReturnURl={`board/${boardData.boardMenuId}/edit/${params.boardId}`} delPostUrl={`board/del?boardId=${params.boardId}`}
-                 delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagName={`boardmst-${boardData.boardMenuId}`}/>
+                 delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagName={`boardMenu-${boardData.boardMenuId}`}/>
                 <ReportPost domainType={DomainType.Board} domainId={params.boardId}/>
             </div>
             <ReviewContainer domainId={params.boardId} domainName="board"/>
