@@ -38,7 +38,6 @@ function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<Boa
                 size:10
             },
             option:{
-                cache:"no-cache",
                 next:{
                     revalidate: 60,
                     tags: [`boardMenu-${boardMenuId}`],

@@ -40,7 +40,6 @@ export default async function Board({
     },);
     const selectedMenu = baseMenuList.find(menu=>Number(menu.boardMenuId) === Number(params.boardMenuId));
 
-    console.log("랜더링")
     const isDataLoaded = !!boardData && baseMenuList !== undefined;
 
     return (

@@ -3,7 +3,7 @@
 import { axiosAuthInstacne } from '@/app/(customAxios)/authAxios';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useRef, useState } from 'react';
 import { domainId, domainName } from './ReviewContainer';
 import Swal from 'sweetalert2';
@@ -95,12 +95,15 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
             {
             open&&
             <div ref={outRef}>
-                <div className="absolute flex flex-col justify-center items-start right-0 bg-[#d1d1d1] p-3 w-[150px] z-50">
+                <div className="absolute flex flex-col justify-center items-start right-0 bg-[#ebebeb] p-3 w-[150px] z-50">
                     <div onClick={()=>setReportModalOpen(true)} className='flex justify-start items-center'>
                         <ReportPostClient domainType={domainType} domainId={domainId} etcText={"신고하기"} modalCancelCallback={()=>setReportModalOpen(false)} />
                     </div>
                     
-                    {canDelete&&<div onClick={deleteReview} className='mt-0.5 mb-0.5 cursor-pointer'>리뷰 삭제</div>}
+                    {canDelete&&<div onClick={deleteReview} className='mt-0.5 mb-0.5 cursor-pointer'>
+                                    <DeleteIcon className='hover-pointer m-2'/>
+                                    리뷰 삭제
+                                </div>}
                 </div>
             </div>
             }
