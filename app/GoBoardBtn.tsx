@@ -4,13 +4,16 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { useRouter } from 'next/navigation';
 import { useResetRecoilState } from 'recoil';
 import { boardCacheSelectorAtom, cacheKey } from './(recoil)/boardCacheSelector';
+import { scrollYCacheAtom } from './(recoil)/scrollYCacheSelector';
 
 export default function GoBoardBtn() {
     const router = useRouter();
-    const resetBoardCache = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + 1));
+    const boardCacheReset = useResetRecoilState(scrollYCacheAtom(cacheKey.board_key + 1));
+    const boardScrollYReset = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + 1));
     
     const goBoard = () => {
-        resetBoardCache();
+        boardCacheReset();
+        boardScrollYReset();
         router.push("/board/1");
     };
 

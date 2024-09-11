@@ -29,7 +29,6 @@ export default function CreateNewBoardPost({
     const [photos, setPhotos]                 = useState<File[]>([]);
     const [dietDay, setDietDay]               = useState<DietDay[]>([]);
     const {layoutBottomMargin}                = useResponsiveDesignCss(); 
-    const resetBoardCache = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + params.boardMenuId));
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -77,7 +76,6 @@ export default function CreateNewBoardPost({
             })
         .then((res) => {
             revalidateByTagName(`boardMenu-${params.boardMenuId}`);
-            resetBoardCache();
             Swal.fire({
                 title: "게시가 완료되었습니다!",
                 icon: "success",

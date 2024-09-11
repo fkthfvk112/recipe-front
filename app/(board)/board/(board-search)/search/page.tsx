@@ -4,7 +4,6 @@ import { useState } from "react";
 import BoardSearchBar from "./BoardSearchBar";
 import BoardSearchHolder from "./BoardSearchHolder";
 
-
 //searchingTerm으로 입력값 조절, lastSearchedData은 마지막 검색된 데이터, 이 데이터로 페이지 네이션 처리, doSearch로 검색 마지막 데이터 변경
 export default function BoardSearch(){
     const [searchingTerm, setSearchingTerm] = useState<string>("");

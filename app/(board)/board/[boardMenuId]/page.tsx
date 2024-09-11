@@ -14,21 +14,6 @@ export default async function Board({
   }: {
     params:{boardMenuId:number};
   }){
-    const boardData:IndexPagenation<BoardPreview[], string> = await serverFetch({
-        url:"board/previews/inx-pagination",
-        queryParams:{
-            sortingCon:"LATEST",
-            boardMenuId:params.boardMenuId,
-            dateInx:"",
-            size:10
-        },
-        option:{
-            next:{
-                revalidate: 60,
-                tags: [`boardMenu-${params.boardMenuId}`],
-            }
-        }
-    })
 
     const baseMenuList:BoardMenu[] = await serverFetch({
         url:"board-menu/base",
@@ -40,14 +25,12 @@ export default async function Board({
     },);
     const selectedMenu = baseMenuList.find(menu=>Number(menu.boardMenuId) === Number(params.boardMenuId));
 
-    const isDataLoaded = !!boardData && baseMenuList !== undefined;
-
     return (
         <div className="w-full flex flex-col justify-center items-center">
             <BoardNav baseMenuList={baseMenuList} selectedMenu={params.boardMenuId}/>
             <TitleDescription title={`${selectedMenu?.menuName}`} desc={`${selectedMenu?.description}`}/>
             <div className="defaultInnerContainer  flex flex-col justify-center items-center w-full min-h-lvh">
-            {isDataLoaded && <BoardHolder initialData={boardData} boardMenuId={params.boardMenuId} />}
+            <BoardHolder boardMenuId={params.boardMenuId} />
             <WriteBtn boardMenuId={params.boardMenuId.toString()} />
             </div>
          </div>

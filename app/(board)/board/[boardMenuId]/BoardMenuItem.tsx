@@ -1,13 +1,17 @@
 import { boardCacheSelectorAtom, cacheKey } from "@/app/(recoil)/boardCacheSelector";
+import { scrollYCacheAtom, scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { useRouter } from "next/navigation";
 import {  useResetRecoilState } from "recoil";
 
 export default function BoardMenuItem({boardMenuId, boardMenuName, selectedMenuId}:{boardMenuId:string, boardMenuName:string, selectedMenuId:string}){
     const router = useRouter();
-    const resetBoardCache = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + boardMenuId));
+    const boardCacheReset = useResetRecoilState(scrollYCacheAtom(cacheKey.board_key + boardMenuId));
+    const boardScrollYReset = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + boardMenuId));
+    
 
     const goBoardList = ()=>{
-        resetBoardCache();
+        boardCacheReset();
+        boardScrollYReset();
         router.push(`/board/${boardMenuId}`)
     }
 

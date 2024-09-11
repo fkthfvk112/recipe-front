@@ -1,5 +1,6 @@
 "use client"
 
+import { debounce } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 const useScrollPosition = () => {
@@ -25,10 +26,3 @@ const useScrollPosition = () => {
 export default useScrollPosition;
 
 
-const debounce = <T extends (...args: any[]) => any>(func: T, delay: number) => {
-  let timerId: NodeJS.Timeout | undefined;
-  return (...args: Parameters<T>) => {
-    if (timerId) clearTimeout(timerId);
-    timerId = setTimeout(() => func(...args), delay);
-  };
-};

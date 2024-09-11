@@ -1,99 +1,50 @@
 "use client"
 
-import { IndexPagenation } from "@/app/(type)/Pagenation";
-import { BoardPreview } from "@/app/(type)/board";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useInView } from 'react-intersection-observer';
 import BoardPreviewHoriItem from "../../BoardPreviewHoriItem";
-import serverFetch from "@/app/(commom)/serverFetch";
 import { CircularProgress } from "@mui/material";
 import useScrollPosition from "@/app/(commom)/Hook/useScrollPosition";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { boardCacheSelectorAtom, cacheKey } from "@/app/(recoil)/boardCacheSelector";
+import { useBoardInxPagenation } from "@/app/(commom)/Hook/useBoardInxPagenation";
+import { useRecoilState } from "recoil";
+import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
+import { cacheKey } from "@/app/(recoil)/boardCacheSelector";
 
-function BoardHolder({initialData, boardMenuId}:{initialData:IndexPagenation<BoardPreview[], string>, boardMenuId:number}){
-    const [isInitial, setIsInitial] = useState<boolean>(true);
+function BoardHolder({boardMenuId}:{boardMenuId:number}){
+    const [boardData, boardRefetcher, isLoading] = useBoardInxPagenation({boardMenuId});
+    const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.board_key + boardMenuId));
 
-    const [data, setData]           = useState<BoardPreview[]>(initialData.data);
-    const [isEnd, setIsEnd]         = useState<boolean>(initialData.isEnd);
-    const [dateInx, setDateInx]     = useState<string>(initialData.index);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [viewRef, inview] = useInView();
     const {scrollY} = useScrollPosition();
-    const [boardCache, setBoardCache] = useRecoilState(boardCacheSelectorAtom(cacheKey.board_key + boardMenuId));
-    const resetBoardCache = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + boardMenuId));
 
-    const initialDatas = data?.map((ele, inx)=>{
+    const boardPreviews = boardData.cachedData.data.map((ele, inx)=>{
         return <BoardPreviewHoriItem key={inx} boardPreview={ele}/>
-    })
+    });
 
-    const fetchData = async()=>{
-        setIsLoading(true);
-        const boardData:IndexPagenation<BoardPreview[], string> = await serverFetch({
-            url:"board/previews/inx-pagination",
-            queryParams:{
-                sortingCon:"LATEST",
-                boardMenuId:boardMenuId,
-                dateInx:dateInx,
-                size:10
-            },
-            option:{
-                next:{
-                    revalidate: 60,
-                    tags: [`boardMenu-${boardMenuId}`],
-                }
-            }
-        })
-        .finally(()=>{
-            setIsLoading(false);
-        })
-
-        setIsEnd(boardData.isEnd);
-        setData([...data, ...boardData.data]);
-        setDateInx(boardData.index);
-    }
 
     useEffect(()=>{
         if(isLoading) return;
-        if(isInitial){
-            if(boardCache?.cachedData && boardCache.cachedData.data.length >= 1){             
-                setData(boardCache.cachedData.data)
-                setDateInx(boardCache.cachedData.dateInx);
-                setIsEnd(boardCache.cachedData.isEnd);
-                window.scrollTo({
-                    top:boardCache.cachedData.scrollY,
-                })
-
-            }else{
-                fetchData();
-            }
-            setIsInitial(false);
-        }else{
-            if(!isEnd && inview && !isLoading){
-                fetchData();
-            }
+        if(inview){
+            boardRefetcher();
         }
     }, [inview, isLoading])
 
-
     useEffect(()=>{
+        if(cachedScrollY){
+            window.scrollTo({
+                top: cachedScrollY
+            });
+        }
         return()=>{
-            setBoardCache({
-                cacheId:cacheKey.board_key + boardMenuId,
-                cachedData:{
-                    data:data,
-                    dateInx:dateInx,
-                    isEnd:isEnd,
-                    scrollY:scrollY
-              }
-            })
-          }
+            setScrollYCache(scrollY);
+        }
     }, [])
+
 
     return (
         <>
             <ul className="w-full h-full min-h-lvh p-2">
-                {initialDatas}
+                {boardPreviews}
             </ul>
             <div className="h-10" ref={viewRef}>
                 {isLoading && <CircularProgress />}
