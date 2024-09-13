@@ -28,13 +28,13 @@ function PhotoHolder({photos, setPhotos}:{photos:File[], setPhotos:(files:File[]
 
         return (
             //보더 등 설정, x하면 삭제되게 설정
-            <div key={inx} className="m-1 relative border rounded-xl min-w-[120px] min-h-[120px] w-[120px] h-[120px]">
+            <div key={inx} className="m-1 relative border rounded-xl min-w-[150px] min-h-[150px] w-[150px] h-[150px]">
                 <div className="w-full text-right">
                     <button onClick={()=>deletePhoto(inx)} className="right-top-xboxBtn">
                         <ClearIcon className="bg-white"/>
                     </button>
                 </div> 
-                <Image className="inner-img" width={120} height={120} src={fileUrl} alt="no imgage"/>
+                <Image className="inner-img" width={150} height={150} src={fileUrl} alt="no imgage"/>
             </div>
             )
     })

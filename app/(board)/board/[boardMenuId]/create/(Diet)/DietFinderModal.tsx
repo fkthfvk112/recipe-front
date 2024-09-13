@@ -9,6 +9,7 @@ import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import DietHoriItem from "./DietHoriItem";
 import DietVerticalItem from "./DietVerticalItem";
 import ClearIcon from '@mui/icons-material/Clear';
+import DietSquareItem from "./DietSquareItem";
 
 const style = {
     position: "absolute" as "absolute",
@@ -81,7 +82,9 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
                         <ClearIcon/>
                     </button>
                 </div> 
-            <DietVerticalItem key={inx} dietDay={ele}/>
+                <ul className="w-[150px] h-[150px] m-1">
+                    <DietSquareItem key={inx} dietDay={ele}/>
+                </ul>
         </div>)
 
     return(

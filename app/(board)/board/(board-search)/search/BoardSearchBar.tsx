@@ -2,6 +2,7 @@
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Dispatch, SetStateAction, useState } from "react";
+import Swal from "sweetalert2";
 
 interface BoardSearchProp{
     searchingTerm:string;
@@ -11,6 +12,16 @@ interface BoardSearchProp{
 export default function BoardSearchBar({searchingTerm, setSearchingTerm, setLastSearchedData}:BoardSearchProp){
 
     const searchTerm = ()=>{
+        if(searchTerm.length < 2){
+            Swal.fire({
+                title: "2자 이상 입력해주세요.",
+                icon: "warning",
+                confirmButtonText: "확인",
+                confirmButtonColor: '#d33',
+                allowEnterKey:false
+              });
+              return;
+        }
         setLastSearchedData(searchingTerm);
     }
 

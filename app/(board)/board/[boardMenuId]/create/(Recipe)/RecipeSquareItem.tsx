@@ -53,7 +53,7 @@ function RecipeSquareItem({ recipe }: { recipe: Recipe }) {
     }, [containerWidth])
 
     return(
-        <li ref={containerRef} className="min-w-[80px] min-h-[80px] aspect-square">
+        <li ref={containerRef} className="min-w-[80px] min-h-[80px] aspect-square hover:bg-[#e1e1e1] cursor-pointer">
             <section className="h-[80%] w-full img-wrapper-square overflow-hidden rounded-t-md">
                 <Image
                     className="inner-img"

@@ -83,14 +83,6 @@ const Navbar = () => {
               <li>
                 <GoBoardBtn/>
               </li>
-              {/* <li>
-                <div onClick={goBoard}>
-                  <div className="flex flex-col justify-center items-center">
-                    <LibraryBooksIcon sx={{width:'30px', height:'30px'}}/>
-                    <p>게시판</p>
-                  </div>
-                </div>
-              </li> */}
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
                 {localSignInState ? (

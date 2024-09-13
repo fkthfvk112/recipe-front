@@ -1,3 +1,5 @@
+"use client"
+
 import { truncateString } from "@/app/(utils)/StringUtil";
 import { DietDay } from "@/app/(type)/diet";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -50,7 +52,7 @@ function DietSquareItem({dietDay}:{dietDay:DietDay}){
     }, [containerWidth])
     
     return (
-        <li ref={containerRef} className="min-w-[80px] min-h-[80px] aspect-square flex flex-col p-3 m-2 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1] cursor-pointer">
+        <li ref={containerRef} className="min-w-[80px] min-h-[80px] aspect-square flex flex-col p-3 border border-[#e1e1e1] rounded-md hover:bg-[#e1e1e1] cursor-pointer">
             <div ref={textContainerRef} className="relative w-full text-center text-[1rem]">
                 {
                     (!dietDay?.isPublic)&&

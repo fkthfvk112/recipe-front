@@ -5,25 +5,12 @@ import Divider from "@mui/joy/Divider";
 import Image from "next/image";
 import CommentIcon from '@mui/icons-material/Comment';
 import { timeDifferenceString } from "@/app/(utils)/timeUtils";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
-import { truncateString } from "@/app/(utils)/StringUtil";
 import StarIcon from '@mui/icons-material/Star';
 import { roundToNPlaces } from "@/app/(utils)/NumberUtil";
 
 function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
-  const [titleWidth, setTitleWidth] = useState<number>(200);
-  const [descWidth, setDescWidth] = useState<number>(200);
-
-  const titleRef = useRef<HTMLDivElement>(null);
-  const descRef = useRef<HTMLDivElement>(null);
-
-  useEffect(()=>{
-      if(titleRef.current && descRef.current){
-        setTitleWidth(titleRef.current.clientWidth);
-        setDescWidth(descRef.current.clientWidth);
-      }
-  }, [])
 
   return (
     <li className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] m-1 border border-[#e1e1e1] rounded-md">

@@ -15,9 +15,6 @@ export default function MyDiet() {
       .then((res) => {
         setMyDiets(res.data);
       })
-      .catch((err) => {
-        console.log("아시오스 에러", err);
-      });
   }, []);
 
   const feedInfos = myDiets.map((diet, inx) => (

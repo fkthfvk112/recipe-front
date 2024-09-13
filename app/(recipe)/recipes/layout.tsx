@@ -14,9 +14,9 @@ export default function RecipeLayout({
   const {layoutMargin} = useResponsiveDesignCss();
 
   return (
-    <div className="w-full flex flex-col justify-center items-center bg-white">
+    <div className="defaultOuterContainer bg-white">
       <RecipeSearchBar></RecipeSearchBar>
-      <div className="w-full min-h-lvh max-w-[1024px] p-2 mt-10">
+      <div className="w-full h-full max-w-[1024px] p-2 mt-10">
         {children}
         <Link href={`/create-recipe`} className={`fixed bottom-6 right-12 roundRreenBtn ${layoutMargin} z-10`}>
           <CreateIcon sx={{width:"25px", height:"25px"}}/>

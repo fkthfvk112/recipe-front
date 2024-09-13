@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NoContent_Recipe(){
     return (
-        <div className="min-h-lvh">
+        <div>
             <div className="text-2xl font-bold mb-10">
                 일치하는 검색 결과가 없습니다.
             </div>

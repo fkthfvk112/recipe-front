@@ -12,6 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import { IndexPagenation } from "@/app/(type)/Pagenation";
 import { CircularProgress } from "@mui/material";
+import RecipeSquareItem from "./RecipeSquareItem";
 
 const style = {
     position: "absolute" as "absolute",
@@ -195,7 +196,9 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                         <ClearIcon className="bg-white"/>
                     </button>
                 </div> 
-            <RecipeVerticalItem key={inx} recipe={ele}/>
+                <ul className="w-[150px] h-[150px] m-1">
+                    <RecipeSquareItem key={inx} recipe={ele}/>
+                </ul>
         </div>)
 
     return(

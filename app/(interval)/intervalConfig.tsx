@@ -28,15 +28,19 @@ function IntervalConfig(){
                     deleteCookie("refresh-token");
                     deleteCookie("authorization");
                 }
+                else{
+                    setIsSignIn(true);
+                }
             }
-            if(!refreshTokenStr){
-                setIsSignIn(false);
-                deleteCookie("authorization");
-            }
-            if(!isSignIn){ //토큰과 리코일 싱크 맞추기
-                deleteCookie("refresh-token");
-                deleteCookie("authorization");
-            }
+            // if(!refreshTokenStr){
+            //     setIsSignIn(false);
+            //     deleteCookie("refresh-token");
+            //     deleteCookie("authorization");
+            // }
+            // if(!isSignIn){ //토큰과 리코일 싱크 맞추기
+            //     deleteCookie("refresh-token");
+            //     deleteCookie("authorization");
+            // }
         });
         
 

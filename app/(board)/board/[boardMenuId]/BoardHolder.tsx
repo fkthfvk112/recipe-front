@@ -43,7 +43,7 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
 
     return (
         <>
-            <ul className="w-full h-full min-h-lvh p-2">
+            <ul className="w-full h-full min-h-[300px] p-2">
                 {boardPreviews}
             </ul>
             <div className="h-10" ref={viewRef}>

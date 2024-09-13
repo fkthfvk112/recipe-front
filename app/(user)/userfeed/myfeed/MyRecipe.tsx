@@ -14,9 +14,6 @@ export default function MyRecipe() {
       .then((res) => {
         setMyRecipes(res.data);
       })
-      .catch((err) => {
-        console.log("아시오스 에러", err);
-      });
   }, []);
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (

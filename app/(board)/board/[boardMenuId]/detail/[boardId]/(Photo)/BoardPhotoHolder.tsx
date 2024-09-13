@@ -6,9 +6,9 @@ export default async function BoardPhotoHolder({imgUrls}:{imgUrls:string[]}){
 
     const images = imgUrls.map((imgUrl, inx)=>{
         return(
-            <div key={inx} className="m-1 relative border rounded-xl min-w-[120px] min-h-[120px] w-[120px] h-[120px]">
+            <li key={inx} className="m-1 relative border rounded-xl min-w-[150px] min-h-[150px] w-[150px] h-[150px]">
                 <Image className="inner-img border" src={imgUrl} height={120} width={120}  alt="no imgage"/>
-            </div>
+            </li>
         )
     })
     return (
@@ -20,9 +20,9 @@ export default async function BoardPhotoHolder({imgUrls}:{imgUrls:string[]}){
                 <h2>사진</h2>
             </AccordionSummary>
             <AccordionDetails>
-                <div className="flex justify-start items-center w-full overflow-x-scroll">
+                <ul className="flex justify-start items-center w-full overflow-x-scroll">
                     {images}
-                </div>
+                </ul>
             </AccordionDetails>
         </Accordion>
     )

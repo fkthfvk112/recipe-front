@@ -14,8 +14,6 @@ import { useRouter } from 'next/navigation';
 import { Validation } from '@/app/(user)/check';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
-import { useResetRecoilState } from 'recoil';
-import { boardCacheSelectorAtom, cacheKey } from '@/app/(recoil)/boardCacheSelector';
 
 export default function CreateNewBoardPost({
     params
