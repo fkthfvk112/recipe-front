@@ -62,8 +62,9 @@ export default async function BoardDetail({
     return(
         <section className="defaultInnerContainer" style={{paddingLeft:'1rem', marginTop:'2.5rem', paddingRight:'1rem'}}>
             {boardData.userNickName === "익명"? anonymousUser:identityUser}
+            <div className="mt-5"/>
             <div className="bottom-line">
-                <h1>{boardData.title}</h1>
+                <h1 className="text-2xl">{boardData.title}</h1>
             </div>
             <p className="mb-12 mt-5 whitespace-pre-wrap break-words">
                 {boardData.content}

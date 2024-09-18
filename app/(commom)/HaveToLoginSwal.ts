@@ -6,7 +6,7 @@ const haveToLoginSwal = (routeCallback: () => void, logInCallbacks: (() => void)
     if (res === false) {
       Swal.fire({
         title: "로그인이 필요합니다.!",
-        icon: "warning", // "success"보다 "warning" 아이콘이 더 적합할 수 있습니다.
+        icon: "warning",
         confirmButtonText: "로그인",
         cancelButtonText: "취소",
         showCancelButton: true,

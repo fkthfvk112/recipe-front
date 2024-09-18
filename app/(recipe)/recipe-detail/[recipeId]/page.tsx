@@ -37,7 +37,7 @@ export default async function RecipeDetail({
   const fetchData = await serverFetch({
     url:`recipe/get-recipe?recipeId=${params.recipeId}`,
     option:{
-        cache: "force-cache",
+        cache: "default",
         next:{
               tags: [`boardDetail-${params.recipeId}`],
           }
@@ -72,7 +72,9 @@ export default async function RecipeDetail({
         <div className="w-full p-3 text-left flex">
             <CopyUrl></CopyUrl>
             {/* have to : user ID -> user uuid */}
-            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} delPostUrl="/" delReturnUrl="/"/>
+            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
+              delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
+              revalidateTagName={`/boardDetail-${params.recipeId}`}/>
             <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">

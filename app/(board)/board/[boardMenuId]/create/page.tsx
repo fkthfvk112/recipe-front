@@ -14,6 +14,9 @@ import { useRouter } from 'next/navigation';
 import { Validation } from '@/app/(user)/check';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
+import { useResetRecoilState } from 'recoil';
+import { scrollYCacheAtom } from '@/app/(recoil)/scrollYCacheSelector';
+import { boardCacheSelectorAtom, cacheKey } from '@/app/(recoil)/boardCacheSelector';
 
 export default function CreateNewBoardPost({
     params
@@ -27,6 +30,11 @@ export default function CreateNewBoardPost({
     const [photos, setPhotos]                 = useState<File[]>([]);
     const [dietDay, setDietDay]               = useState<DietDay[]>([]);
     const {layoutBottomMargin}                = useResponsiveDesignCss(); 
+
+    
+    const boardCacheReset = useResetRecoilState(scrollYCacheAtom(cacheKey.board_key + params.boardMenuId));
+    const boardScrollYReset = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + params.boardMenuId));
+    
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -74,6 +82,8 @@ export default function CreateNewBoardPost({
             })
         .then((res) => {
             revalidateByTagName(`boardMenu-${params.boardMenuId}`);
+            boardCacheReset();
+            boardScrollYReset();
             Swal.fire({
                 title: "게시가 완료되었습니다!",
                 icon: "success",
