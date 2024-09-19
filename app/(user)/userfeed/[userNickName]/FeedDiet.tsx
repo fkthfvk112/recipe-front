@@ -1,17 +1,19 @@
 import DietSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietSquareItem";
-import DietVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietVerticalItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { DietDay } from "@/app/(type)/diet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-
-export default function MyDiet() {
+export default function FeedDiet({
+  userNickName,
+}: {
+  userNickName: String;
+}) {
   const [myDiets, setMyDiets] = useState<DietDay[]>([]);
 
   useEffect(() => {
     axiosAuthInstacne
-      .get(`diet/day/my-days`)
+      .get(`diet/day/user-days?userNickName=${userNickName}`)
       .then((res) => {
         setMyDiets(res.data);
       })

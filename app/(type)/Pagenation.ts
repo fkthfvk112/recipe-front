@@ -3,3 +3,9 @@ export interface IndexPagenation<T1, T2>{
     index: T2;
     isEnd: boolean;
 }
+
+export interface PageSizePagenation<T>{
+    data: T;
+    page:number;
+    size:number;
+}

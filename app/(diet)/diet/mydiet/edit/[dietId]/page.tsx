@@ -205,10 +205,3 @@ export default function MyDietEdit({
         </main>
     )
 }
-
-/*
-         <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
-                 content="수정하시겠습니까?" data={saveData}
-                 postUrl="diet/day/my-day/update" returnUrl={`/diet/mydiet/${params.dietId}`} ></UpdateModal>
-
-*/

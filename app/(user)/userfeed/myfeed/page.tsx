@@ -23,8 +23,7 @@ export default function Userfeed() {
           ${menuSelect === 0 ? "text-black" : "text-gray-400"}`}
           onClick={() => setMenuSelect(0)}
         >
-          <BurstModeOutlinedIcon className="me-1"></BurstModeOutlinedIcon>내
-          레시피
+          <BurstModeOutlinedIcon className="me-1"></BurstModeOutlinedIcon>내 레시피
         </button>
         <button
           className={`max-w-60 min-w-32 text-xs flex justify-center items-center border-none ${

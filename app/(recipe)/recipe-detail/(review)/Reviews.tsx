@@ -84,7 +84,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
         }
         <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId} domainId={domainId} domainName={domainName} isDel={review.isDel}/>
       </div>
-      <div className="ms-12 break-words break-keep">
+      <div className="ms-12 break-words break-keep whitespace-pre-wrap">
         {
           review.isDel?"삭제된 댓글입니다."
           :

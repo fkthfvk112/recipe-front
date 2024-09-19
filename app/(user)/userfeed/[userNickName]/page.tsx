@@ -6,6 +6,7 @@ import BurstModeOutlinedIcon from "@mui/icons-material/BurstModeOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { Divider } from "@mui/material";
 import UserInfo from "./UserInfo";
+import FeedDiet from "./FeedDiet";
 
 export default function UserFeed({
   params,
@@ -37,9 +38,8 @@ export default function UserFeed({
           공개 식단
         </button>
       </div>
-      {menuSelect === 0 && (
-        <FeedRecipes userNickName={params.userNickName}></FeedRecipes>
-      )}
+      {menuSelect === 0 &&<FeedRecipes userNickName={params.userNickName}/>}
+      {menuSelect === 1 &&<FeedDiet userNickName={params.userNickName}/>}
     </div>
   );
 }

@@ -41,9 +41,11 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
         </div>
       </div>
       <div className="w-full text-center mt-5">
+        {userData?.userIntro &&
           <div className="w-full p-3 m-3 text-start bg-[#f1f1f1] rounded-xl">
             {userData?.userIntro}
           </div>
+        }
       </div>
     </div>
   );

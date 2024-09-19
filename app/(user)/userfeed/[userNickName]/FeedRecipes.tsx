@@ -1,3 +1,5 @@
+import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
+import { Recipe } from "@/app/(recipe)/types/recipeType";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +16,7 @@ export default function FeedRecipes({
 }: {
   userNickName: String;
 }) {
-  const [myRecipes, setMyRecipes] = useState<myRecipe[]>([]);
+  const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
     axios
@@ -24,27 +26,22 @@ export default function FeedRecipes({
       .then((res) => {
         setMyRecipes(res.data);
       })
-      .catch((err) => {
-        console.log("아시오스 에러", err);
-      });
   }, [userNickName]);
 
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
-      className="flex justify-center items-center relative w-1/3 aspect-square p-0.5"
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}
     >
-      <Image
-        style={{
-          objectFit: "cover",
-        }}
-        fill
-        src={recipe.repriPhotos[0]}
-        alt="no img"
-      ></Image>
+      <RecipeSquareItem key={inx} recipe={recipe}/>
     </Link>
   ));
 
-  return <div className="flex flex-wrap w-full">{feedPhotos}</div>;
+  return (
+    <div className="h-screen w-full">
+      <ul className="grid grid-cols-3 w-full gap-1 p-2">
+      {feedPhotos}
+       </ul>
+    </div>
+  );
 }

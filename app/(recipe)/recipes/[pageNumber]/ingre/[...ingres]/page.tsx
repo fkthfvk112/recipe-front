@@ -55,17 +55,20 @@ export default async function RecipesByIngre({
                         
 
    return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full mb-10">
-      <div className="flex flex-wrap justify-center items-center w-full min-h-[300px] mb-16">
+    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
+      <div className="grid media-gridcol-3-to-2 w-full gap-3">
         {recentRecipes}
       </div>
       {
         fetchData.length <= 0 && <NoContent_Recipe />
       }
+      {
+      pnMaxCnt >= 1 &&
       <RecipePagination
         queryStr={`/ingre/${params.ingres.join(",")}`}
         pageNow={Number(params.pageNumber)}
         pageMax={pnMaxCnt}
       ></RecipePagination>
+      }
     </div>);
 }

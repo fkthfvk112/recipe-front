@@ -133,11 +133,11 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                 </div>
                 <div className="w-full flex flex-col mt-3">
                     <span className="font-bold">음식 설명</span>
-                    <textarea className="p-2" name={`memo-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.memo} placeholder="음식 설명(최대 60자)" />
+                    <textarea className="p-2" name={`memo-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.memo} placeholder="음식 설명(최대 60자)" maxLength={60} />
                 </div>
                 <div className="w-full mt-3 grid grid-cols-2">
                     <div className="col-span-1">
-                        <input name={`qqt-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.qqt} placeholder="음식양" className="col-span-1" type="text" />
+                        <input name={`qqt-${inx}`} onChange={(evt)=>handleValChg(evt)} value={dietItem.qqt} placeholder="음식양" className="col-span-1" type="text" maxLength={15} />
                     </div>
                     <div className="col-span-1 relative">
                         <div className="absolute font-bold text-[#a1a1a1]" style={{top:"7px", right:"17px"}}>kcal</div>

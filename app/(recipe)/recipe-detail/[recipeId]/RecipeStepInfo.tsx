@@ -19,7 +19,7 @@ export default function RecipeStepInfo({
         <div className="bottom-line-noM mb-3 w-full"/>
 
         <div className="grid grid-cols-3 ">
-          <div className="col-span-2 p-3 break-words break-keep">{step.description}</div>
+          <div className="col-span-2 p-3 break-words break-keep whitespace-pre-wrap">{step.description}</div>
           {step.photo ? (
             <div className="img-wrapper-square w-full pb-[100%]">
               <Image className="inner-img" src={step.photo} fill alt="noimg" />

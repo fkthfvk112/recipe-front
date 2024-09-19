@@ -159,7 +159,7 @@ export default function CreateRecipePage({
           setIsModalOpen(true);
         }}
       >
-        레시피 발행
+        레시피 수정
       </button>
 
       <ScrollToTopButton/>
@@ -172,28 +172,27 @@ export default function CreateRecipePage({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <div className="text-center text-xl font-bold text-[#3d3d3d]">
             <div className="text-center">
               {errorCnt !== 0 && <WarningIcon color="error"></WarningIcon>}
             </div>
             <ErrorText recipe={recipe} setErrorCnt={setErrorCnt}></ErrorText>
             {errorCnt === 0 && "레시피를 수정하시겠습니까?"}
-          </Typography>
+          </div>
           <div className="w-full text-center mt-6">
-
             {
               errorCnt===0 &&
             <button
               onClick={() => {
                 saveRecipeToDb();
               }}
-              className={`me-2 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
+              className={`me-1 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
               disabled={errorCnt === 0 ? false : true}
             >
               수정하기
             </button>
             }
-            <button className="cancelBtn ms-2" onClick={() => setIsModalOpen(false)}>
+            <button className="cancelBtn ms-1" onClick={() => setIsModalOpen(false)}>
               취소
             </button>
           </div>

@@ -54,7 +54,7 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                 <div className="w-full flex flex-col">
                     {
                     dietItem?.memo&&
-                    <div className="bg-[#e1e1e1] mt-3 img-wrapper-square p-2 rounded-lg">
+                    <div className="bg-[#e1e1e1] mt-3 img-wrapper-square p-2 rounded-lg whitespace-pre-wrap">
                         {dietItem.memo}
                     </div>
                     }

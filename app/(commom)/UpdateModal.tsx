@@ -55,14 +55,14 @@ function UpdateModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: Sav
       >
         <Box sx={style}>
           <div className="text-center">
-            <div className="w-full p-3">
+            <div className="w-full p-3 text-xl font-bold text-[#3d3d3d]">
                 {content}
             </div>
-            <div>
-                <button onClick={handleSave}>
-                    저장
+            <div className="w-full text-center mt-6">
+                <button className="greenBtn me-1" onClick={handleSave}>
+                    수정하기
                 </button>
-                <button onClick={()=>{
+                <button className="cancelBtn ms-1" onClick={()=>{
                     setOpen(false);
                 }}>
                     취소

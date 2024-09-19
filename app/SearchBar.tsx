@@ -38,10 +38,9 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center pt-20 pb-10 w-full text-center bg-[#52cf63] p-10">
-      <div className="w-full text-start max-w-[800px] mb-5">
+    <div className="flex flex-col justify-center items-center w-full text-center bg-[#52cf63] p-5">
+      <div className="w-full text-start max-w-[800px] mb-2">
         <h1 className="text-2xl">레시피 검색</h1>
-        <p>재료, 요리명 등의 키워드로 입맛에 맞는 완벽한 레시피를 발견하세요!</p>
       </div>
       <div className="relative w-full max-w-[800px]">
         <input

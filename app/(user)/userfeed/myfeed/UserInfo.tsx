@@ -33,10 +33,6 @@ export default function UserInfo() {
       });
   }, [updateData]);
 
-  const goToAccountMenu = ()=>{
-    router.push(`/setting`);
-  }
-
   return (
     <div className="w-full max-w-[500px] p-3">
       {userData && (

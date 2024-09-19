@@ -144,7 +144,7 @@ export default function MyDiet(){
     
     return (
         <main className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
-            <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
+            <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl p-3">
                 <div className="w-80">
                     <h3 className="mt-6">날짜</h3>
                     <input className="bg-[#f5f5f5] ps-2 pe-2 border placeholder-gray-600" value={dietDate} type="date" onChange={(evt)=>setDietDate(evt.target.value)}/>
