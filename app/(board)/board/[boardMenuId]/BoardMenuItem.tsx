@@ -1,5 +1,6 @@
-import { boardCacheSelectorAtom, cacheKey } from "@/app/(recoil)/boardCacheSelector";
-import { scrollYCacheAtom, scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
+import { boardCacheSelectorAtom } from "@/app/(recoil)/boardCacheSelector";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
+import { scrollYCacheAtom } from "@/app/(recoil)/scrollYCacheSelector";
 import { useRouter } from "next/navigation";
 import {  useResetRecoilState } from "recoil";
 
