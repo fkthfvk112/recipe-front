@@ -69,12 +69,6 @@ export default function CreateRecipePage() {
           //have to 리발리데이트 
         }
       })
-      .catch((err) => {
-        Swal.fire({
-          title: "에러가 발생하였습니다.",
-          icon: "error",
-        });
-      });
   };
 
   const style = {

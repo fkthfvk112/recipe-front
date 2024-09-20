@@ -54,12 +54,6 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
                     router.push(returnUrl)
                 });
             })
-            .catch((e) => {
-                Swal.fire({
-                    title: "에러가 발생하였습니다.",
-                    icon: "error",
-                  });
-            });
     }
 
     return(

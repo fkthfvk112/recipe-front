@@ -1,8 +1,8 @@
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
-import { BoardCacheData, boardCacheSelectorAtom, CacheData, cacheKey } from "@/app/(recoil)/boardCacheSelector";
-import { Board, BoardPreview } from "@/app/(type)/board";
+import { BoardCacheData, boardCacheSelectorAtom, CacheData } from "@/app/(recoil)/boardCacheSelector";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
+import { BoardPreview } from "@/app/(type)/board";
 import { IndexPagenation } from "@/app/(type)/Pagenation";
-import axios from "axios";
 import { DispatchWithoutAction, useEffect, useReducer, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -35,7 +35,6 @@ export const useBoardInxPagenation = ({boardMenuId, paramOption}:boadInxPagenati
                     })
                     .then((res)=>{
                         const fetchedData = res.data as IndexPagenation<BoardPreview[], string>;
-                        console.log("res", res.data);
                         setBoardCache({
                             cacheId:cacheKey.board_key + boardMenuId,
                             cachedData:{
@@ -49,4 +48,4 @@ export const useBoardInxPagenation = ({boardMenuId, paramOption}:boadInxPagenati
     }, [toggle])
 
     return [boardCache, ()=>refetcher(), isLoading]
-}   
+} 

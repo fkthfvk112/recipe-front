@@ -107,13 +107,6 @@ export default function FeedEditModal({
           setIsOpenModal(false);
         });
       })
-      .catch((err) => {
-        Swal.fire({
-          title: "에러가 발생하였습니다.",
-          icon: "error",
-          text:err.response.data.message
-        });
-      });
   };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (

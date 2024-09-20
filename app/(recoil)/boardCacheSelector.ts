@@ -14,11 +14,6 @@ export interface BoardCacheData{
     scrollY?:number;
 }
 
-export enum cacheKey{
-    board_key = 'board_key#',
-
-}
-
 export const defaultBoadCacheData ={
     cacheId:"",
     cachedData:{

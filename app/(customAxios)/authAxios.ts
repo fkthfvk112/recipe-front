@@ -80,6 +80,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     }
     else if(errorCode.includes(err.response.data.code)){
       Swal.fire({
+        title: "에러가 발생하였습니다.",
         text: err.response.data.message,
         icon: "warning",
         confirmButtonText: "확인",

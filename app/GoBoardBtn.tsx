@@ -3,8 +3,9 @@ import React from 'react';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { usePathname, useRouter } from 'next/navigation';
 import { useResetRecoilState } from 'recoil';
-import { boardCacheSelectorAtom, cacheKey } from './(recoil)/boardCacheSelector';
+import { boardCacheSelectorAtom } from './(recoil)/boardCacheSelector';
 import { scrollYCacheAtom } from './(recoil)/scrollYCacheSelector';
+import { cacheKey } from './(recoil)/cacheKey';
 
 export default function GoBoardBtn() {
     const router = useRouter();

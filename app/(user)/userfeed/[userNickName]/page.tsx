@@ -7,13 +7,16 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import { Divider } from "@mui/material";
 import UserInfo from "./UserInfo";
 import FeedDiet from "./FeedDiet";
+import { useRecoilState } from "recoil";
+import { userFeedMenuAtom } from "@/app/(recoil)/userFeedAtom";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
 
 export default function UserFeed({
   params,
 }: {
   params: { userNickName: string };
 }) {
-  const [menuSelect, setMenuSelect] = useState<0 | 1>(0);
+  const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + params.userNickName));
 
   return (
     <div className="bg-white max-w-xl w-dvw m-3  flex flex-col justify-start items-center">

@@ -8,7 +8,7 @@ import useScrollPosition from "@/app/(commom)/Hook/useScrollPosition";
 import { useBoardInxPagenation } from "@/app/(commom)/Hook/useBoardInxPagenation";
 import { useRecoilState } from "recoil";
 import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
-import { cacheKey } from "@/app/(recoil)/boardCacheSelector";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
 
 function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const [boardData, boardRefetcher, isLoading] = useBoardInxPagenation({boardMenuId});

@@ -25,6 +25,7 @@ export const errorCode = [
     "M012",
 
     "B001",
+    "B002",
 
     "S001",
     "S002",

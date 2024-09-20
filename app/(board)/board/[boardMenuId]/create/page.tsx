@@ -16,7 +16,8 @@ import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
 import { useResetRecoilState } from 'recoil';
 import { scrollYCacheAtom } from '@/app/(recoil)/scrollYCacheSelector';
-import { boardCacheSelectorAtom, cacheKey } from '@/app/(recoil)/boardCacheSelector';
+import { boardCacheSelectorAtom } from '@/app/(recoil)/boardCacheSelector';
+import { cacheKey } from '@/app/(recoil)/cacheKey';
 
 export default function CreateNewBoardPost({
     params
@@ -89,13 +90,6 @@ export default function CreateNewBoardPost({
                 icon: "success",
               }).then(() => {
                 router.push(`/board/${params.boardMenuId}`);
-              });
-        })
-        .catch((err)=>{
-            Swal.fire({
-                title: "에러가 발생하였습니다.",
-                icon: "error",
-                text:err.response.data.message
               });
         })
     }
