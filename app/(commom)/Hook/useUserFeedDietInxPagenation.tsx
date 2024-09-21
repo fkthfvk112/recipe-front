@@ -10,22 +10,26 @@ import { useRecoilState } from "recoil";
 
 interface userFeedDietInxPagenationProp{
     userNickName:string;
+    isMyFeed?:boolean;
     paramOption?:{
         size?:number;
     }
 }
 
-export const useUserFeedDietInxPagenation = ({userNickName, paramOption}:userFeedDietInxPagenationProp):[CacheData<FeedDietCacheData>, DispatchWithoutAction, boolean]=>{
+export const useUserFeedDietInxPagenation = ({userNickName, isMyFeed=false, paramOption}:userFeedDietInxPagenationProp):[CacheData<FeedDietCacheData>, DispatchWithoutAction, boolean]=>{
     const [dietCache, setDietCache] = useRecoilState(
         userFeedDietCacheSelectorAtom(cacheKey.user_feed_diet_key + userNickName)
     );
     const [toggle, refetcher] = useReducer((state:boolean)=>!state, false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    let requestUrl = isMyFeed?'diet/day/my-days/inx-pagination' : 'diet/day/user-days/inx-pagination';
+
+
     useEffect(()=>{
         if(dietCache.cachedData.isEnd) return;
         setIsLoading(true);
-        defaultAxios.get("diet/day/user-days/inx-pagination", {
+        defaultAxios.get(requestUrl, {
                         params:{
                             userNickName:userNickName,
                             dateInx:dietCache.cachedData.dateInx,

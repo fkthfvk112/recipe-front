@@ -1,21 +1,41 @@
 import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
+import { useUserFeedRecipeInxPagenation } from "@/app/(commom)/Hook/useUserFeedRecipeInxPagenation";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
+import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
+import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { useRecoilState } from "recoil";
 
 export default function MyRecipe() {
-  const [myRecipes, setMyRecipes] = useState<Recipe[]>([]);
+  const [recipeData, recipeRefetcher, isLoading] = useUserFeedRecipeInxPagenation({userNickName:'myFeedRecipe', isMyFeed:true});
+  const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.user_feed_recipe_key + 'myFeedRecipe'));
 
-  useEffect(() => {
-    axiosAuthInstacne
-      .get(`recipe/get-my-recipe`)
-      .then((res) => {
-        setMyRecipes(res.data);
-      })
-  }, []);
+  const [viewRef, inview] = useInView();
 
-  const feedPhotos = myRecipes?.map((recipe, inx) => (
+  useEffect(()=>{
+    if(isLoading) return;
+    if(inview){
+      recipeRefetcher();
+    }
+  }, [inview, isLoading])
+
+  useEffect(()=>{
+    if(cachedScrollY){
+        window.scrollTo({
+            top: cachedScrollY
+        });
+    }
+    return()=>{
+        setScrollYCache(scrollY);
+    }
+  }, [])
+
+
+  const feedPhotos = recipeData.cachedData.data?.map((recipe, inx) => (
     <Link
       key={inx}
       href={`/recipe-detail/${recipe.recipeId}`}
@@ -27,8 +47,11 @@ export default function MyRecipe() {
   return (
     <div className="h-screen w-full">
       <ul className="grid grid-cols-3 w-full gap-1 p-2">
-      {feedPhotos}
-       </ul>
+        {feedPhotos}
+      </ul>
+      <div className="h-10 w-full text-center mt-10" ref={viewRef}>
+          {isLoading && <CircularProgress />}
+      </div>
     </div>
   );
 }

@@ -18,7 +18,6 @@ export default function FeedRecipes({
 
   const [viewRef, inview] = useInView();
 
-  console.log("데이터 개수", recipeData);
 
   useEffect(()=>{
     if(isLoading) return;

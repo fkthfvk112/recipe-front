@@ -26,12 +26,12 @@ export default async function Board({
     const selectedMenu = baseMenuList.find(menu=>Number(menu.boardMenuId) === Number(params.boardMenuId));
 
     return (
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-start items-center">
             <BoardNav baseMenuList={baseMenuList} selectedMenu={params.boardMenuId}/>
             <TitleDescription title={`${selectedMenu?.menuName}`} desc={`${selectedMenu?.description}`}/>
-            <div className="defaultInnerContainer  flex flex-col justify-center items-center w-full min-h-lvh">
-            <BoardHolder boardMenuId={params.boardMenuId} />
-            <WriteBtn boardMenuId={params.boardMenuId.toString()} />
+            <div className="defaultInnerContainer  flex flex-col justify-start items-center w-full min-h-lvh">
+                <BoardHolder boardMenuId={params.boardMenuId} />
+                <WriteBtn boardMenuId={params.boardMenuId.toString()} />
             </div>
          </div>
     )

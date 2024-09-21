@@ -8,29 +8,24 @@ import { DispatchWithoutAction, useEffect, useReducer, useState } from "react";
 import { useRecoilState } from "recoil";
 
 
-interface userFeedRecipeInxPagenationProp{
-    userNickName:string;
-    isMyFeed?:boolean;
+interface useLikeRecipeInxPagenationProp{
     paramOption?:{
         size?:number;
     }
 }
 
-export const useUserFeedRecipeInxPagenation = ({userNickName, isMyFeed=false, paramOption}:userFeedRecipeInxPagenationProp):[CacheData<FeedRecipeCacheData>, DispatchWithoutAction, boolean]=>{
+export const useLikeRecipeInxPagenation = ({paramOption}:useLikeRecipeInxPagenationProp):[CacheData<FeedRecipeCacheData>, DispatchWithoutAction, boolean]=>{
     const [recipeCache, setRecipeCache] = useRecoilState(
-        userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_recipe_key + userNickName)
+        userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_like_recipe_key + 'myFeedRecipe')
     );
     const [toggle, refetcher] = useReducer((state:boolean)=>!state, false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    let requestUrl = isMyFeed?'recipe/get-my-recipe/inx-pagination' : 'recipe/get-user-recipe/inx-pagination';
-
     useEffect(()=>{
         if(recipeCache.cachedData.isEnd) return;
         setIsLoading(true);
-        axiosAuthInstacne.get(requestUrl, {
+        axiosAuthInstacne.get('like/recipe/like-list/inx-pagination', {
                         params:{
-                            userNickName:userNickName,
                             dateInx:recipeCache.cachedData.dateInx,
                             size:paramOption?.size||9
                         }
@@ -38,7 +33,7 @@ export const useUserFeedRecipeInxPagenation = ({userNickName, isMyFeed=false, pa
                     .then((res)=>{
                         const fetchedData = res.data as IndexPagenation<Recipe[], string>;
                         setRecipeCache({
-                            cacheId:cacheKey.user_feed_recipe_key + userNickName,
+                            cacheId:cacheKey.user_feed_like_recipe_key + 'myFeedRecipe',
                             cachedData:{
                                 data:    fetchedData.data,
                                 dateInx: fetchedData.index,

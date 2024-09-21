@@ -2,27 +2,29 @@
 
 import {
   Avatar,
-  Box,
   Divider,
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
-  Tooltip,
 } from "@mui/material";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { deleteAuthToken } from "./(user)/signin/utils/authUtil";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { userFeedRecipeCacheSelectorAtom } from "./(recoil)/userFeedRecipeCacheSelector";
+import { cacheKey } from "./(recoil)/cacheKey";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const likeRecipeReset = useResetRecoilState(userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_like_recipe_key + "myFeedRecipe"));
 
   const router = useRouter();
 
@@ -46,6 +48,11 @@ export default function AccountMenu() {
 
   const goToCreatMyDiet = ()=>{
     router.push(`/diet/mydiet/create`);
+  }
+
+  const goToLikeRecipe = ()=>{
+    likeRecipeReset();
+    router.push(`/mylike/recipe`);
   }
 
   return (
@@ -111,7 +118,16 @@ export default function AccountMenu() {
         }}>
           <RestaurantIcon className="me-3"/> 식단 작성
         </MenuItem>
+
+        <MenuItem onClick={()=>{
+          handleClose();
+          goToLikeRecipe();
+        }}>
+          <BookmarkAddedIcon className="me-3"/> 찜한 레시피
+        </MenuItem>
+
         <Divider />
+        
         <MenuItem onClick={()=>{
           handleClose();
           router.push("/accountSetting");
@@ -121,6 +137,7 @@ export default function AccountMenu() {
           </ListItemIcon>
           계정설정
         </MenuItem>
+
         <MenuItem
           onClick={() => {
             handleClose();

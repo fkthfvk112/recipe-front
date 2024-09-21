@@ -9,9 +9,12 @@ import UserInfo from "./UserInfo";
 import MyLike from "./MyLike";
 import MyDiet from "./MyDiet";
 import MyRecipe from "./MyRecipe";
+import { useRecoilState } from "recoil";
+import { userFeedMenuAtom } from "@/app/(recoil)/userFeedAtom";
+import { cacheKey } from "@/app/(recoil)/cacheKey";
 
 export default function Userfeed() {
-  const [menuSelect, setMenuSelect] = useState<0 | 1 | 2>(0);
+  const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + "myFeedMenu"));
 
   return (
     <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
@@ -32,21 +35,11 @@ export default function Userfeed() {
           onClick={() => setMenuSelect(1)}
         >
           <BookmarkBorderOutlinedIcon className="me-1"></BookmarkBorderOutlinedIcon>
-          찜한 레시피
-        </button>
-        <button
-          className={`max-w-60 min-w-32 text-xs flex justify-center items-center border-none ${
-            menuSelect === 2 ? "text-black" : "text-gray-400"
-          }`}
-          onClick={() => setMenuSelect(2)}
-        >
-          <BookmarkBorderOutlinedIcon className="me-1"></BookmarkBorderOutlinedIcon>
           내 식단
         </button>
       </div>
       {menuSelect === 0 && <MyRecipe></MyRecipe>}
-      {menuSelect === 1 && <MyLike></MyLike>}
-      {menuSelect === 2 && <MyDiet></MyDiet>}
+      {menuSelect === 1 && <MyDiet></MyDiet>}
     </div>
   );
 }
