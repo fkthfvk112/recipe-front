@@ -12,7 +12,7 @@ interface BoardSearchProp{
 export default function BoardSearchBar({searchingTerm, setSearchingTerm, setLastSearchedData}:BoardSearchProp){
 
     const searchTerm = ()=>{
-        if(searchTerm.length < 2){
+        if(searchingTerm.length < 2){
             Swal.fire({
                 title: "2자 이상 입력해주세요.",
                 icon: "warning",

@@ -13,6 +13,7 @@ import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import { IndexPagenation } from "@/app/(type)/Pagenation";
 import { CircularProgress } from "@mui/material";
 import RecipeSquareItem from "./RecipeSquareItem";
+import Swal from "sweetalert2";
 
 const style = {
     position: "absolute" as "absolute",
@@ -60,6 +61,26 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
     /** 엔터시 레시피 검색*/
     const handleEnterInput = (e:React.KeyboardEvent<HTMLInputElement>)=>{
         if (e.key === "Enter") {
+            if(searchingTerm.length <= 0){
+                Swal.fire({
+                  title: "검색어를 입력해주세요.",
+                  icon: "warning",
+                  confirmButtonText: "확인",
+                  confirmButtonColor: '#d33',
+                  allowEnterKey:false
+                });
+                return;
+              }
+              if(searchingTerm.length < 2){
+                Swal.fire({
+                  title: "2자 이상 입력해주세요.",
+                  icon: "warning",
+                  confirmButtonText: "확인",
+                  confirmButtonColor: '#d33',
+                  allowEnterKey:false
+                });
+                return;
+              }
             setSearchMode(true);
             setResearchToggle((prev)=>!prev)
         }
@@ -183,7 +204,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
         }
         return false;
     }
-    
+
 
     /**선택 미리보기 */
     const selectedRecipeCardComps = recipes.map((ele, inx)=>
@@ -228,7 +249,9 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                                 <div className="w-full text-start">
                                     <h2>레시피 검색</h2>
                                 </div>
-                                <input onChange={(evt)=>setSearchingTerm(evt.target.value)}
+                                <input 
+                                    onChange={(evt)=>setSearchingTerm(evt.target.value)}
+                                    placeholder="요리명, 설명, 재료 (2자 이상)"
                                     type="text" value={searchingTerm}
                                     onKeyDown={(evt)=>handleEnterInput(evt)}/>
                                 <Tooltip className="absolute right-1" title="검색" arrow>
@@ -250,7 +273,6 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                                 </Tooltip>
                             </div>
                             <section className="w-full h-80 overflow-y-scroll">
-                                {}
                                 {!isLoading && !isSearchMode && searchedMyRecipeComps}
                                 {!isLoading && isSearchMode && searchedRecipeComps}
                                 {isLoading && <CircularProgress className="mt-[100px]"/>}

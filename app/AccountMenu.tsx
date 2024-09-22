@@ -12,10 +12,10 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
-import { deleteAuthToken } from "./(user)/signin/utils/authUtil";
+import { deleteAuthToken, isAdmin } from "./(user)/signin/utils/authUtil";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { userFeedRecipeCacheSelectorAtom } from "./(recoil)/userFeedRecipeCacheSelector";
 import { cacheKey } from "./(recoil)/cacheKey";
@@ -24,6 +24,8 @@ import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const [isAdminChk, setIsAdmin] = useState<boolean>(false);
+
   const likeRecipeReset = useResetRecoilState(userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_like_recipe_key + "myFeedRecipe"));
 
   const router = useRouter();
@@ -54,6 +56,18 @@ export default function AccountMenu() {
     likeRecipeReset();
     router.push(`/mylike/recipe`);
   }
+
+  const goToAdminPage = ()=>{
+    router.push(`/admin/ingredient`);
+  }
+
+  useEffect(()=>{
+    isAdmin().then((res)=>{
+        if(res === true){
+            setIsAdmin(true);
+        }
+    })
+  }, [])
 
   return (
     <>
@@ -125,6 +139,17 @@ export default function AccountMenu() {
         }}>
           <BookmarkAddedIcon className="me-3"/> 찜한 레시피
         </MenuItem>
+
+
+        {
+        isAdminChk&&
+        <MenuItem onClick={()=>{
+          goToAdminPage();
+        }}>
+          <BookmarkAddedIcon className="me-3"/> 어드민 페이지
+        </MenuItem>
+        }
+
 
         <Divider />
         

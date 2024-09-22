@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, CircularProgress, Modal } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
@@ -10,6 +10,8 @@ import DietHoriItem from "./DietHoriItem";
 import DietVerticalItem from "./DietVerticalItem";
 import ClearIcon from '@mui/icons-material/Clear';
 import DietSquareItem from "./DietSquareItem";
+import { useInView } from "react-intersection-observer";
+import { IndexPagenation } from "@/app/(type)/Pagenation";
 
 const style = {
     position: "absolute" as "absolute",
@@ -27,18 +29,40 @@ const style = {
 
 function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(dietDay:DietDay[])=>void}){
     const [open, setOpen] = useState<boolean>(false);
-    const [searchedDietDay, setSearchedDietDay] = useState<DietDay[]>([]);
+    const [searchedDietDay, setSearchedDietDay] = useState<IndexPagenation<DietDay[], string>>({
+        isEnd:false,
+        index:"",
+        data:[]
+    });
+    const [viewRef, inview] = useInView();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(()=>{
-        axiosAuthInstacne
-        .get(`diet/day/my-days`)
-        .then((res) => {
-            setSearchedDietDay(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }, [])
+        if(isLoading) return;
+        if(inview && !searchedDietDay.isEnd){
+            setIsLoading(true);
+            axiosAuthInstacne.get("diet/day/my-days/inx-pagination", { 
+                params:{
+                    dateInx:searchedDietDay?.index,
+                    size:10
+                }
+            }).then((res)=>{
+                setSearchedDietDay(prev=>({
+                    isEnd:res.data.isEnd,
+                    index:res.data.index,
+                    data:[...prev.data, ...res.data.data]
+                }));
+            }).catch((err)=>{
+                setSearchedDietDay(prev=>({
+                    ...prev,
+                    isEnd:true,
+                }));
+            })
+            .finally(()=>{
+                setIsLoading(false);
+            })
+        }
+    }, [inview, isLoading])
 
     const deleteDiet = (inx:number)=>{
         const deletedDiet = dietDay.filter((_, index) => index !== inx);
@@ -47,7 +71,7 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
 
 
     /**모달 내 선택 가능한 아이템(검색된 아이템) */
-    const searchedRecipeComps = searchedDietDay?.filter((ele) => {
+    const searchedRecipeComps = searchedDietDay?.data.filter((ele) => {
         return !dietDay.some((selected) => selected.dietDayId === ele.dietDayId);
       }).map((ele, inx) =>
         <DietHoriItem key={inx} dietDay={ele} selectedDietDay={dietDay} setSelectedDietDay={setDietDay}/>
@@ -125,6 +149,8 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
                         </div>
                         <section className="w-full h-80 overflow-y-scroll">
                             {searchedRecipeComps}
+                            {isLoading && <CircularProgress className="mt-[100px]"/>}
+                            <div ref={viewRef}></div>
                         </section>
                     </div>
                 </Box>
