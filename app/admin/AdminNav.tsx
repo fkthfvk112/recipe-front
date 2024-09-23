@@ -2,12 +2,12 @@
 
 import AdminMenuItem from "./AdminMenuItem"
 
-export default function AdminNav({selectedMenu}:{selectedMenu:string}){
+export default function AdminNav(){
 
-    const adminMenu = ["ingredient"]
+    const adminMenu = ["ingredient", "ingredient-redis"]
 
     const baseMenu = adminMenu.map((menuName, inx)=>
-        <AdminMenuItem key={inx} adminMenuName={menuName} selectedMenuName={selectedMenu}/>)
+        <AdminMenuItem key={inx} adminMenuName={menuName}/>)
         
     return (
         <div className="w-full flex justify-between items-center bg-white p-2 h-[55px] overflow-x-scroll scroll">
