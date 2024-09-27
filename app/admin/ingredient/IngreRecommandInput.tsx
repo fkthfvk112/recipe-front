@@ -18,6 +18,8 @@ export default function IngreRecommandInput({inputStyleStr, containerStyleStr, p
         }
 
         if(ingre.length === 0){
+            setRecommendTermList([]);
+            setLastSearchedTerm("");
             return;
         }
 
@@ -60,8 +62,8 @@ export default function IngreRecommandInput({inputStyleStr, containerStyleStr, p
             />
             {
             recommendList&&recommendList.length > 0 &&
-            <div className="relative">
-                <div className="border border-gray-200 w-full absolute top-0 z-10 bg-white">
+            <div className="relative ">
+                <div className="border border-gray-200 w-full absolute top-0 z-10 bg-white rounded-b-lg pb-1.5 shadow-md">
                     {recommendList}
                 </div>
             </div>
