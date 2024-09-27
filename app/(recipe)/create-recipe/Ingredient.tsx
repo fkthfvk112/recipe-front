@@ -3,6 +3,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import AddIcon from "@mui/icons-material/Add";
 import { RecipeCreate } from "./page";
 import { Ingredient as ingred } from "../types/recipeType";
+import IngreRecommandInput from "@/app/admin/ingredient/IngreRecommandInput";
 
 // export interface Ingredient {
 //   name: string;
@@ -44,6 +45,8 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
     });
   }, [ingredients]);
 
+  console.log("레시피", recipe);
+  
   const ingreItems = ingredients.map((ingre, inx) => {
     return (
       <div
@@ -52,19 +55,22 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
       >
         {inx === 0 ? (
           <>
-            <input
-              className="col-span-3 rounded-none"
-              placeholder="예) 삼겹살"
-              name="name"
-              type="text"
-              value={ingre.name}
-              onChange={(evt) => {
-                handleInputChange(evt, inx);
-              }}
+            <IngreRecommandInput dataSettingCallback={(ingre:string)=>{
+              const newIngre = [...ingredients];
+              newIngre[inx] = {
+                ...newIngre[inx],
+                name: ingre,
+              };
+              setIngredients(newIngre);
+            }}
+            placeholderStr="예) 삼겹살"
+            inputStyleStr="col-span-3 rounded-none"
+            containerStyleStr="col-span-3"
             />
             <input
               className="col-span-2 rounded-none"
               placeholder="예) 200g"
+              maxLength={10}
               name="qqt"
               type="text"
               value={ingre.qqt}
@@ -75,21 +81,24 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
           </>
         ) : (
           <>
-            <input
-              className="col-span-3 rounded-none"
-              name="name"
-              type="text"
-              placeholder="재료"
-              value={ingre.name}
-              onChange={(evt) => {
-                handleInputChange(evt, inx);
-              }}
+            <IngreRecommandInput dataSettingCallback={(ingre:string)=>{
+              const newIngre = [...ingredients];
+              newIngre[inx] = {
+                ...newIngre[inx],
+                name: ingre,
+              };
+              setIngredients(newIngre);
+            }}
+            inputStyleStr="col-span-3 rounded-none"
+            containerStyleStr="col-span-3"
+            placeholderStr="재료"
             />
             <input
               className="col-span-2 rounded-none"
               name="qqt"
               type="text"
               placeholder="양"
+              maxLength={10}
               value={ingre.qqt}
               onChange={(evt) => {
                 handleInputChange(evt, inx);
