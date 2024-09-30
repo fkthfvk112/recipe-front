@@ -105,8 +105,13 @@ export default function LoginForm() {
       >
         {isLoading ? "Loading..." : "로그인"}
       </button>
-      <div className="w-full p-3 text-center">
+      <div className="w-full mt-3 text-center">
         회원이 아니신가요? <Link className="text-blue-500" href="/signup">회원가입</Link>
+      </div>
+      <div className="flex text-gray-400 text-sm">
+        <Link href="/findid">아이디 찾기</Link>
+        <p className="mx-1">·</p>
+        <Link href="/findpw">비밀번호 찾기</Link>
       </div>
     </div>
   );

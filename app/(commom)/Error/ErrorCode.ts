@@ -23,6 +23,9 @@ export const errorCode = [
     "M010",
     "M011",
     "M012",
+    "M013",
+    "M014",
+
 
     "B001",
     "B002",
@@ -31,4 +34,5 @@ export const errorCode = [
     "S002",
 
     "R001",
+    "R002",
 ];

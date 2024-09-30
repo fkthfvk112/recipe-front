@@ -5,6 +5,7 @@ import SearchBar from "@/app/SearchBar";
 import CreateIcon from '@mui/icons-material/Create';
 import Link from "next/link";
 import RecipeSearchBar from "./(common)/RecipeSearchBar";
+import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 
 export default function RecipeLayout({
   children,
@@ -23,6 +24,7 @@ export default function RecipeLayout({
           <span className="ms-2">레시피 작성</span>
         </Link>
       </div>
+      <ScrollToTopButton/>
     </div>
   );
 }
