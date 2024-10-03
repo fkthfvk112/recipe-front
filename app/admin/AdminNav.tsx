@@ -4,10 +4,14 @@ import AdminMenuItem from "./AdminMenuItem"
 
 export default function AdminNav(){
 
-    const adminMenu = ["ingredient", "ingredient-redis"]
+    const adminMenu = [
+        {eng:"ingredient", kor:"재료 등록"},
+        {eng:"ingredient-redis", kor:"재료 확인"},
+        {eng:"fridge-img", kor:"냉장고 식재료 등록"},
+    ];
 
-    const baseMenu = adminMenu.map((menuName, inx)=>
-        <AdminMenuItem key={inx} adminMenuName={menuName}/>)
+    const baseMenu = adminMenu.map((menu, inx)=>
+        <AdminMenuItem key={inx} adminMenuName={menu.eng} adminMenuKor={menu.kor}/>)
         
     return (
         <div className="w-full flex justify-between items-center bg-white p-2 h-[55px] overflow-x-scroll scroll">
