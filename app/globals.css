@@ -157,6 +157,16 @@ textarea{
 
 .grayBtn{
   border:none;
+  background-color: #8b8a8a;
+  border-radius: 15em;
+  color:white;
+  font-weight: 700;
+  transition: background-color 0.1s;
+  cursor: pointer;
+}
+
+.deadBtn{
+  border:none;
   background-color: #d1d1d1;
   border-radius: 15em;
   color:white;
@@ -221,14 +231,60 @@ textarea{
 .defaultInnerContainer{
   max-width: 1024px;
   min-height: 500px;
-  width: 95%;
+  width: 100%;
   min-width: 320px;
   border-radius: 2rem;
-  padding: 2rem 0rem 2rem 0rem; 
-  margin: 0.5rem;
+  padding: 2rem 0rem 2rem 0rem;
   background-color: white;
 }
 
+.fridge-container{
+  max-width: 500px;
+  min-height: 500px;
+  width: 100%;
+  min-width: 320px;
+  border-radius: 2rem;
+  padding: 2rem 0.5rem 2rem 0.5rem;
+  border: #cdd9db 0.3rem solid;
+  background-color: #f8f8f8;
+}
+
+.direction-right{
+  direction: rtl;
+}
+
+
+.fridge{
+  width: 100%;
+  min-height: 100%;
+  padding: 2rem 0rem 2rem 0rem;
+  background-color: #f8f8f8;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* 칸 자동 조정 */
+  row-gap:3rem;
+}
+
+.fridge-item::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; /* 아이템의 하단에 위치 */
+  left: 0;
+  right: 0; /* 전체 너비를 사용 */
+  height:0.3rem; /* 선의 두께 */
+  background-color: #cdd9db; /* 선의 색상 */
+  z-index: 1; /* 다른 요소 위에 오도록 설정 */
+}
+
+
+
+.fridge-item {
+  aspect-ratio: 1; /* 정사각형 유지 */
+  width: 100%; /* 가로 폭을 100%로 설정하여 부모에 맞춤 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
 
 .defaultInnerContainer-noPTop{
   max-width: 1024px;
@@ -460,4 +516,10 @@ textarea{
   .text-center-when-600{
     text-align: center;
   }
+}
+
+.ice-shadow-inner {
+  --tw-shadow: inset 0 8px 16px 0 rgba(135, 206, 250, 0.3);
+  --tw-shadow-colored: inset 0 8px 16px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }

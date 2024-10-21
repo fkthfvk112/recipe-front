@@ -62,9 +62,6 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
                     router.push(delReturnUrl);
                   });
                 })
-                .catch((err) => {
-                  console.log(err);
-                });
             }
           });          
     }

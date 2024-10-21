@@ -21,3 +21,26 @@ export const extractDate =(dateTimeString:string)=>{
   
     return `${datePart} ${time}`;
   };
+
+
+  /** nDay뒤의 날짜 출력(yyyy-mm-dd) */
+  export const getNDayAfterDateKST = (nDay: number) => {
+    const today = new Date();
+    
+    // 현재 시간의 UTC 시간 값 구하기
+    const utc = today.getTime() + (today.getTimezoneOffset() * 60000);
+
+    // 한국 표준시(KST) 시간차는 UTC + 9시간
+    const KST_TIME_DIFF = 9 * 60 * 60000;
+    const kst = new Date(utc + KST_TIME_DIFF);
+
+    // nDay일 만큼 더하거나 빼기
+    kst.setDate(kst.getDate() + nDay);
+
+    // 년, 월, 일 추출 후 형식 맞추기
+    const year = kst.getFullYear();
+    const month = String(kst.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(kst.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+};

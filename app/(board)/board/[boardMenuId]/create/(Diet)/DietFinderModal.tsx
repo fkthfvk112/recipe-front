@@ -1,5 +1,4 @@
 import { Box, CircularProgress, Modal } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
@@ -7,7 +6,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { DietDay } from "@/app/(type)/diet";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import DietHoriItem from "./DietHoriItem";
-import DietVerticalItem from "./DietVerticalItem";
 import ClearIcon from '@mui/icons-material/Clear';
 import DietSquareItem from "./DietSquareItem";
 import { useInView } from "react-intersection-observer";

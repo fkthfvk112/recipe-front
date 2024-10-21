@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 
 
 
-export default function IngreRecommandInput({inputStyleStr, containerStyleStr, placeholderStr, dataSettingCallback}:{inputStyleStr?:string, containerStyleStr?:string, placeholderStr?:string, dataSettingCallback?:(data:any)=>any}){
+export default function IngreRecommandInput({inputStyleStr, containerStyleStr, placeholderStr, dataSettingCallback, titleVideCnt}:{inputStyleStr?:string, containerStyleStr?:string, placeholderStr?:string, dataSettingCallback?:(data:any)=>any, titleVideCnt?:number}){
     const [ingre, setIngre] = useState<string>("");
     const [recommendTermList, setRecommendTermList] = useState<string[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -39,6 +39,12 @@ export default function IngreRecommandInput({inputStyleStr, containerStyleStr, p
         }
 
     }, [ingre, isFocused])
+
+    useEffect(()=>{
+        if(titleVideCnt){
+            setIngre("");
+        }
+    }, [titleVideCnt])
 
     const recommendList = isFocused && recommendTermList.filter((ele)=>ele !== ingre).map((term, inx)=>{
         return (

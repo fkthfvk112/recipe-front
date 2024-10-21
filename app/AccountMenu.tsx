@@ -20,6 +20,7 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { userFeedRecipeCacheSelectorAtom } from "./(recoil)/userFeedRecipeCacheSelector";
 import { cacheKey } from "./(recoil)/cacheKey";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import KitchenIcon from '@mui/icons-material/Kitchen';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -59,6 +60,10 @@ export default function AccountMenu() {
 
   const goToAdminPage = ()=>{
     router.push(`/admin/ingredient`);
+  }
+
+  const goToMyRefridge = ()=>{
+    router.push(`/fridge`)
   }
 
   useEffect(()=>{
@@ -131,6 +136,13 @@ export default function AccountMenu() {
           goToCreatMyDiet();
         }}>
           <RestaurantIcon className="me-3"/> 식단 작성
+        </MenuItem>
+        
+        <MenuItem onClick={()=>{
+          handleClose();
+          goToMyRefridge();
+        }}>
+          <KitchenIcon className="me-3"/> 나의 냉장고
         </MenuItem>
 
         <MenuItem onClick={()=>{
