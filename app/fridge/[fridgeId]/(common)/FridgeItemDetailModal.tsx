@@ -55,7 +55,11 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
             order:fridgeItem.itemOrder
           }).then((res)=>{
             if(res.data === 'UPDATE_SUCCESS'){
-                alert("변경 성공!!!!!");
+                Swal.fire({
+                    title: "변경 완료",
+                    icon: "success",
+                })
+                setOpen(false);
                 setRefetchCount(refetchCount);
             }
           })
