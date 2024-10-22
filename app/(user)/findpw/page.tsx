@@ -129,9 +129,7 @@ export default function FindPw(){
         })
     }
 
-    const sendNewPw = ()=>{ //인증 후 임시 비밀번호 발급
-        console.log("인코드", encodedEmail);
-        
+    const sendNewPw = ()=>{ //인증 후 임시 비밀번호 발급        
         setIsNewPwLoading(true);
         defaultAxios.post(`${process.env.NEXT_PUBLIC_API_URL}sign-api/send/new-pw`,  {email:encodedEmail, userId:validId}, {
             withCredentials: true,

@@ -30,7 +30,6 @@ export default function IngreRecommandInput({inputStyleStr, containerStyleStr, p
                 }
             })
             .then((res)=>{
-                console.log(res.data);
                 setLastSearchedTerm(ingre)
                 if(res.data?.length > 0){
                     setRecommendTermList(res.data);

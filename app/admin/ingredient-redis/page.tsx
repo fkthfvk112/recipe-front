@@ -32,7 +32,6 @@ export default function IngredientAdmin(){
                 }
             })
             .then((res)=>{
-                console.log(res.data);
                 setRecommendTermList(res.data);
             })
         }else{

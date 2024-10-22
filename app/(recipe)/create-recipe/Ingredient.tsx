@@ -44,8 +44,6 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
       ingredients: ingres,
     });
   }, [ingredients]);
-
-  console.log("레시피", recipe);
   
   const ingreItems = ingredients.map((ingre, inx) => {
     return (

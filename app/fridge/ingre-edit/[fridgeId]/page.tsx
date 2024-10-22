@@ -1,7 +1,6 @@
 "use client"
-import { Fridge, FridgeIdNameDesc, FridgeItem } from "@/app/(type)/fridge";
-import TitleDescription from "../../../(commom)/Component/TitleDescription";
-import { useEffect, useReducer, useState } from "react";
+import { FridgeIdNameDesc, FridgeItem } from "@/app/(type)/fridge";
+import { useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import SetFridgeItem from "./SetFridgeItem";
 import Image from "next/image";

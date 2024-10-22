@@ -34,17 +34,6 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
 
     const isChanged = ()=>{
-        console.log("포지션", position);
-        console.log("냉장", fridgeId);
-        console.log("name", fridgeItem.name);
-        console.log("title", title);
-        console.log("qqt", fridgeItem.qqt);
-        console.log("qqt2", qqt);
-        console.log("expiredAt", fridgeItem.expiredAt);
-        console.log("exDate", exDate);
-        console.log("description", fridgeItem.description);
-        console.log("description2", description);
-
         if(position != fridgeId) return true; 
         if(fridgeItem.name !== title) return true;
         if(fridgeItem.qqt !== qqt) return true;

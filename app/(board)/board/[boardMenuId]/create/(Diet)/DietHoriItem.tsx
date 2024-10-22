@@ -39,8 +39,6 @@ function DietHoriItem({dietDay, selectedDietDay, setSelectedDietDay}:{dietDay:Di
         }
     };
 
-    console.log()
-
     return (
         <div onClick={()=>{hadleSelectDiet()}} className="w-full h-[120px] grid grid-cols-7 mt-2 p-3 shadow-md border border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
             <div className="col-span-3 flex flex-col justify-center items-start">
