@@ -38,6 +38,14 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     useEffect(()=>{
         defaultAxios.get("fridge/images")
             .then((res)=>{
+                if(Array.isArray(res.data)){
+                  res.data.forEach((img)=>{
+                    if(img.fridgeImgId === 1){
+                      setSelectedFridgeImg(img);
+                    }
+                  })
+                  console.log(res.data);
+                }
                 setFridgeImgs(res.data);
             })
     }, [])
