@@ -4,7 +4,6 @@ import { cacheKey } from '@/app/(recoil)/cacheKey';
 import { siginInState } from '@/app/(recoil)/recoilAtom';
 import { userFeedRecipeCacheSelectorAtom } from '@/app/(recoil)/userFeedRecipeCacheSelector';
 import { deleteAuthToken, isAdmin } from '@/app/(user)/signin/utils/authUtil';
-import { decodeUserJwt } from '@/app/(utils)/decodeJwt';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -42,6 +41,10 @@ export default function MyAccountMenuList(){
         router.push(`/diet/mydiet/create`);
     }
 
+    const goToFridge = ()=>{
+        router.push(`/fridge`);
+    }
+
     const goToSetting = ()=>{
         router.push(`/accountSetting`);
     }
@@ -61,6 +64,10 @@ export default function MyAccountMenuList(){
             <ul className="w-full">
                 <li onClick={goToMyFeed} className={liClassName}>
                     <p>내 피드</p>
+                    <NavigateNextIcon sx={{height:'30px', width:'30px', fill:'#a1a1a1'}}/>
+                </li>
+                <li onClick={goToFridge} className={`${liClassName}`}>
+                    <p>내 냉장고</p>
                     <NavigateNextIcon sx={{height:'30px', width:'30px', fill:'#a1a1a1'}}/>
                 </li>
                 <li onClick={goToCreatMyDiet} className={`${liClassName}`}>
