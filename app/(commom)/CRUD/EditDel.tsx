@@ -12,7 +12,7 @@ export interface EditDel{
 export default async function EditDel({ownerUserId, editReturnURl, delPostUrl, delReturnUrl, revalidateTagName}:EditDel){
     const loginUser:decodedUserInfo|undefined = await decodeUserJwt();
     if(loginUser === undefined) return;
-    if(loginUser.sub !== ownerUserId && !loginUser.roles.includes("ADMIN")) return;
+    if(loginUser.sub !== ownerUserId && !loginUser.roles.includes("ROLE_ADMIN")) return;
     return(
         <EditDelClient editReturnURl={editReturnURl} delPostUrl={delPostUrl} delReturnUrl={delReturnUrl} revalidateTagName={revalidateTagName}></EditDelClient>
     )

@@ -100,10 +100,12 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
                         <ReportPostClient domainType={domainType} domainId={domainId} etcText={"신고하기"} modalCancelCallback={()=>setReportModalOpen(false)} />
                     </div>
                     
-                    {canDelete&&<div onClick={deleteReview} className='mt-0.5 mb-0.5 cursor-pointer'>
-                                    <DeleteIcon className='hover-pointer m-2'/>
-                                    리뷰 삭제
-                                </div>}
+                    {canDelete&&
+                    <div onClick={deleteReview} className='mt-0.5 mb-0.5 cursor-pointer'>
+                        <DeleteIcon className='hover-pointer m-2'/>
+                        리뷰 삭제
+                    </div>
+                    }
                 </div>
             </div>
             }

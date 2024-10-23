@@ -54,7 +54,7 @@ export default function FridgeDetail({
                 setModalItem(item);
                 setItemDetailModalOpen(true);
             }} className="fridge-item relative cursor-pointer">
-                <div className="absolute -top-3 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
+                <div className="absolute -top-5 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
                     {item.name}
                 </div>
                 <div className="w-full h-full img-wrapper-square">

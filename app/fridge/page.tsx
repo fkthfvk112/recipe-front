@@ -39,7 +39,7 @@ export default function Fridge(){
         <>
         <TitleDescription title={`나의 냉장고`} desc={'식재료를 저장하고, 관리하고, 낭김없이 사용해요.'}/>
         <div className="defaultInnerContainer flex flex-col justify-start items-center">
-            <section className="w-full max-w-[520px] min-w-[320px] grid grid-cols-3">
+            <section className="w-full max-w-[520px] min-w-[320px] grid grid-cols-3 p-3">
                 {isLoading?fridgeCompSkeleton:fridgeComp}
                 {!isLoading&&
                 <Link href={"/fridge/create"} className="aspect-square flex justify-center items-center shadow-md border border-[#e1e1e1] rounded-xl m-1 p-2">

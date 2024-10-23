@@ -84,7 +84,6 @@ export default async function BoardDetail({
             <div className="flex w-full pt-1 pb-1 text-left">
                 <HeartLike getUrl={`like/board/like-state?boardId=${params.boardId}`} putUrl="like/board/toggle" reqdata={{boardId:params.boardId}}/>
                 <CopyUrl></CopyUrl>
-                {/* have to : user ID -> user uuid */}
                 <EditDel ownerUserId={boardData.userId} editReturnURl={`board/${boardData.boardMenuId}/edit/${params.boardId}`} delPostUrl={`board/del?boardId=${params.boardId}`}
                  delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagName={`boardMenu-${boardData.boardMenuId}`}/>
                 <ReportPost domainType={DomainType.Board} domainId={params.boardId}/>

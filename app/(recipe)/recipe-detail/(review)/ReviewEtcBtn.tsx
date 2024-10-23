@@ -19,7 +19,7 @@ export default async function ReviewEtcBtn({reviewId, reviewOwnerId, domainId, d
     const loginUser:decodedUserInfo|undefined = await decodeUserJwt();
     if(loginUser === undefined) return; //로그인 안했을 시 랜더링 X
 
-    const canDel = loginUser.sub === reviewOwnerId || loginUser.roles.includes("ADMIN");
+    const canDel = loginUser.sub === reviewOwnerId || loginUser.roles.includes("ROLE_ADMIN");
     return (
         <div className="relative ms-2 me-2">
             <ReviewEtcBtnClient domainId={domainId} reviewId={reviewId} domainName={domainName} canDelete={canDel}/>

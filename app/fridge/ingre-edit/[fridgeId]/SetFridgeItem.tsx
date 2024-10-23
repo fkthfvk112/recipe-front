@@ -156,7 +156,9 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                 </div>
                 <div className="w-full bottom-line"/>
                 <h3 className="w-[100px]">이미지 선택</h3>
-                <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] overflow-y-scroll">
+                <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] overflow-y-scroll overscroll-none "
+                  onScroll={(e)=>{
+                    e.stopPropagation();}}>
                     {imageComps}
                 </section>
             </div>
