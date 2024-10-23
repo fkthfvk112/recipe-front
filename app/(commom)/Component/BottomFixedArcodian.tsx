@@ -36,13 +36,20 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
 
     useEffect(() => {
         if (isDragging) {
-            const handleMouseMoveWindow = (e: MouseEvent) => handleMouseMove(e);
+            const handleMouseMoveWindow = (e: MouseEvent | TouchEvent) => handleMouseMove(e);
+
             window.addEventListener("mousemove", handleMouseMoveWindow);
             window.addEventListener("mouseup", handleMouseUp);
+
+            window.addEventListener("touchmove", handleMouseMoveWindow, { passive: false });
+            window.addEventListener("touchend", handleMouseUp);
 
             return () => {
                 window.removeEventListener("mousemove", handleMouseMoveWindow);
                 window.removeEventListener("mouseup", handleMouseUp);
+
+                window.removeEventListener("touchmove", handleMouseMoveWindow);
+                window.removeEventListener("touchend", handleMouseUp);
             };
         }
     }, [isDragging]); // isDragging이 true일 때만 이벤트 리스너를 추가 
@@ -72,15 +79,18 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
     }
 
     const handleMouseDown = (e:any) => {
-        if(!isOpen) return;
+        if(!isOpen){
+            setOpen(true);
+            return;
+        };
         setIsDragging(true);
         setStartY(e.clientY || e.touches[0].clientY);
     };
 
-    const handleMouseMove = (e:any) => {
+    const handleMouseMove = (e: MouseEvent | TouchEvent) => {
         if(!isOpen || !isDragging) return;
         e.preventDefault();
-        const clientY = e.clientY || e.touches[0].clientY;
+        const clientY = (e instanceof MouseEvent) ? e.clientY : e.touches[0].clientY;
         const deltaY = clientY - startY; // 현재 Y 위치와 시작 Y 위치의 차이 계산
         const newBottomPosition = initialBottom - deltaY > 0? 0 : initialBottom - deltaY;
         setCurrentBottom(newBottomPosition); // bottom을 업데이트
