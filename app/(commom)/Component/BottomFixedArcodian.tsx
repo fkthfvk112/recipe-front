@@ -100,7 +100,7 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
         }
     };
 
-    const handleMouseUp = (e: MouseEvent | TouchEvent) => {
+    const handleMouseUp = (e: any) => {
         e.preventDefault();
         if(!isOpen) return;
         setIsDragging(false);
