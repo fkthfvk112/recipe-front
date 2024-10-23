@@ -110,14 +110,14 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
         <>
         {!setStaticComponent&&isOpen&&<div className="fixed inset-0 bg-black bg-opacity-50 z-30" />}
         {!loading&&
-        <section className={containerClass} 
+        <section className={`${containerClass} overscroll-none overflow-hidden`} 
             onMouseDown={(e)=>{handleMouseDown(e)}}
             onTouchStart={(e)=>{handleMouseDown(e)}}
             onMouseUp={(e)=>{handleMouseUp()}}
             onTouchEnd={(e)=>handleMouseUp()}
             style={{bottom:currentBottom}}
             >
-            <div className="w-full flex justify-between items-center">
+            <div className="w-full flex justify-between items-center select-none">
                 <h2 className="text-xl">{title}</h2>
                 {
                     !setStaticComponent&&isOpen&&
