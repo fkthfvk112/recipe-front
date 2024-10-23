@@ -79,7 +79,6 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
     }
 
     const handleMouseDown = (e:any) => {
-        e.preventDefault();
         if(!isOpen){
             setOpen(true);
             return;
@@ -101,7 +100,6 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
     };
 
     const handleMouseUp = (e: any) => {
-        e.preventDefault();
         if(!isOpen) return;
         setIsDragging(false);
         setInitialBottom(currentBottom); // 드래그 종료 시 현재 bottom 값을 초기화
