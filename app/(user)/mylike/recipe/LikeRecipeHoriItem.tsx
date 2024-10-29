@@ -28,9 +28,9 @@ function LikeRecipeHoriItem({recipe}:{recipe:Recipe}){
                 <div className="flex items-center justify-center text-sm mt-6 text-[#3b3b3b]">
                     <div className='flex '>
                         <svg width="40" height="23" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="13" cy="11" r="8" fill="transparent" stroke="black" stroke-width="3"/>
+                        <circle cx="13" cy="11" r="8" fill="transparent" stroke="black" strokeWidth="3"/>
                         <circle cx="10" cy="11" r="3" fill="black"/>
-                        <circle cx="26" cy="11" r="8" fill="transparent" stroke="black" stroke-width="3"/>
+                        <circle cx="26" cy="11" r="8" fill="transparent" stroke="black" strokeWidth="3"/>
                         <circle cx="23" cy="11" r="3" fill="black"/>
                         </svg>
                         {recipe.viewCnt}

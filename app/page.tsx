@@ -12,7 +12,7 @@ export default function Home() {
       <SiteDescription></SiteDescription>
       <SeasonalFood></SeasonalFood>
       <PopularRecipes></PopularRecipes>
-      <RecentRecipes></RecentRecipes>
+      <RecentRecipes></RecentRecipes> 
       <RealTimeLikeBoard></RealTimeLikeBoard>
     </div>
   );

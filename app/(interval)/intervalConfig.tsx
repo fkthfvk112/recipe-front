@@ -34,8 +34,6 @@ function IntervalConfig(){
 
             if(refreshTokenStr){
                 const refreshToken:Token = jwtDecode(refreshTokenStr);
-                const currentTime = Date.now();
-
                 const expDate = new Date(refreshToken.exp * 1000);
                 if(isNaN(expDate.getTime())){
                     setLogOut();

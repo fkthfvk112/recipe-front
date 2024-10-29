@@ -26,6 +26,8 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     const [description, setDescription] = useState<string>("");
     const windowSize = useWindowSize();
 
+    const [scrollLock, setScrollLock] = useState<boolean>(false);
+
 
     const initializeAllData = ()=>{
       setTitle("");
@@ -116,7 +118,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     }
     
     return (
-        <BottomFixedAccordion title="식재료 추가" setStaticComponent={(windowSize||0) >= 1024}>
+        <BottomFixedAccordion title="식재료 추가" setStaticComponent={(windowSize||0) >= 1024} scrollLock={scrollLock}>
             <div className="flex flex-col justify-start items-center w-full">
                 <div className="w-full">
                     <div className="mt-3">
@@ -157,8 +159,24 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                 <div className="w-full bottom-line"/>
                 <h3 className="w-[100px]">이미지 선택</h3>
                 <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] overflow-y-scroll overscroll-none "
-                  onScroll={(e)=>{
-                    e.stopPropagation();}}>
+                  onMouseDown={(e)=>{
+                    setScrollLock(true);
+                    e.stopPropagation();
+                  }}
+                  onTouchStart={(e)=>{
+                    setScrollLock(true);
+                    e.stopPropagation();
+                  }}
+                  onMouseUp={(e)=>{
+                    setScrollLock(false)
+                    e.stopPropagation();
+                  }}
+                  onTouchEnd={(e)=>{
+                    setScrollLock(false)
+                    e.stopPropagation();
+                  }}
+                  >
+                  
                     {imageComps}
                 </section>
             </div>

@@ -29,9 +29,9 @@ function BoardPreviewHoriItem({boardPreview}:{boardPreview:BoardPreview}){
                 <section className="flex items-center justify-start text-sm mt-2 text-[#3b3b3b]">
                     <div className="flex justify-center items-center">
                         <svg width="28" height="15" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="7" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="6" fill="transparent" stroke="black" strokeWidth="2"/>
                         <circle cx="5" cy="7" r="2" fill="black" />
-                        <circle cx="19" cy="7" r="6" fill="transparent" stroke="black" stroke-width="2"/>
+                        <circle cx="19" cy="7" r="6" fill="transparent" stroke="black" strokeWidth="2"/>
                         <circle cx="16.5" cy="7" r="2" fill="black"/>
                         </svg>
                         <span className="text-[12px] ms-[3px]">{boardPreview.viewCnt}</span>

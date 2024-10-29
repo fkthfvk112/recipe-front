@@ -167,6 +167,11 @@ export default function FindPw(){
                 placeholder="6~12자의 영문, 숫자"
                 type="text"
                 value={userId}
+                onKeyDown={(evt)=>{
+                    if(evt.key === 'Enter'){
+                        chkIdValid()
+                    }
+                }}
                 onChange={(e: any) => {
                     setUserId(e.target.value);
                 }}

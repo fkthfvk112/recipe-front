@@ -9,6 +9,7 @@ import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRecoilState } from "recoil";
 import { fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const style = {
     position: "absolute" as "absolute",
@@ -32,6 +33,21 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
     const [description, setDescription] = useState<string>(fridgeItem?.description || "");
 
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
+
+    useEffect(() => {
+        const handlePopState = (event:any) => {
+            setOpen(false);
+            history.pushState(null, "", location.href);
+        };
+    
+        window.addEventListener("popstate", handlePopState);
+    
+        history.pushState(null, "", location.href);
+    
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+      }, [open]);
 
     const isChanged = ()=>{
         if(position != fridgeId) return true; 
@@ -113,7 +129,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
                         <div className="w-full flex justify-between items-center">
                             <div className="text-start">
                                 <h2>식재료명</h2>
-                                <input className="w-[230px]" onChange={(evt)=>{setTitle(evt.target.value)}} value={title} type="text" />
+                                <input className="w-[180px]" onChange={(evt)=>{setTitle(evt.target.value)}} value={title} type="text" />
                             </div>
                             <div className="w-[100px] h-[100px] img-wrapper-square bg-[#e1e1e1] rounded-2xl">
                                 <Image className="inner-img" src={fridgeItem.imgUrl}  alt="ex" fill={true} />

@@ -4,17 +4,24 @@ import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SiteDescription() {
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const router = useRouter();
+
+  useEffect(()=>{
+    setIsLoading(false);
+  }, [isSignIn])
 
   const goToSiginInPage = () => {
     router.push("/signin");
   };
 
   return (
-    !isSignIn ? (
+    !isLoading && !isSignIn ? (
       <section className="flex flex-col justify-center items-center w-full text-center bg-white p-3">
         <div className="w-full text-start max-w-[1000px] mb-5 flex-center text-center-when-600 flex-wrap-when-600 bg-[#f1f1f1] p-10 rounded-md">
           <div>

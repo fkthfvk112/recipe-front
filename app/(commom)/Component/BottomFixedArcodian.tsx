@@ -1,24 +1,23 @@
 "use client"
 
-import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { debounce } from "../Function/debounc";
 
 interface BottomFixedAccordionProps {
     title: string; // 아코디언 제목
     children: ReactNode; // 자식 컴포넌트
     setStaticComponent?:boolean;//아코디언이 아닌 스태틱한 컴포넌트로 전환
+    scrollLock?:boolean;
 }
-export default function BottomFixedAccordion({ title, children, setStaticComponent=false}: BottomFixedAccordionProps) {
+export default function BottomFixedAccordion({ title, children, setStaticComponent=false, scrollLock=true}: BottomFixedAccordionProps) {
     const [initialBottom, setInitialBottom] = useState(0); // 초기 bottom 값
     const [startY, setStartY] = useState(0); // 마우스 누르기 시작한 Y 위치
     const [currentBottom, setCurrentBottom] = useState(initialBottom); // 현재 bottom 값
   
     const [isDragging, setIsDragging] = useState<boolean>(false);
 
-    
     const [isOpen, setOpen] = useState<boolean>(true);
     const {layoutBottomMargin} = useResponsiveDesignCss();
     const [containerClass, setContainerClass] = useState<string>('');
@@ -79,6 +78,7 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
     }
 
     const handleMouseDown = (e:any) => {
+        if(scrollLock === true) return;
         if(!isOpen){
             setOpen(true);
             return;
@@ -88,13 +88,15 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
     };
 
     const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+        if(scrollLock === true) return;
+
         if(!isOpen || !isDragging) return;
-        e.preventDefault();
+        //e.preventDefault();
         const clientY = (e instanceof MouseEvent) ? e.clientY : e.touches[0].clientY;
         const deltaY = clientY - startY; // 현재 Y 위치와 시작 Y 위치의 차이 계산
         const newBottomPosition = initialBottom - deltaY > 0? 0 : initialBottom - deltaY;
         setCurrentBottom(newBottomPosition); // bottom을 업데이트
-        if(newBottomPosition < -500){
+        if(newBottomPosition < -300){
             handleClose();
         }
     };
