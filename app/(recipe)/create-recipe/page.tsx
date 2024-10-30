@@ -115,13 +115,13 @@ export default function CreateRecipePage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <div>
             <div className="text-center">
               {errorCnt !== 0 && <WarningIcon color="error"></WarningIcon>}
             </div>
             <ErrorText recipe={recipe} setErrorCnt={setErrorCnt}></ErrorText>
             {errorCnt === 0 && "레시피를 세상에 내놓겠습니까?"}
-          </Typography>
+          </div>
           <div className="w-full text-center mt-6">
             <button className="cancelBtn me-2" onClick={() => setIsModalOpen(false)}>
               닫기

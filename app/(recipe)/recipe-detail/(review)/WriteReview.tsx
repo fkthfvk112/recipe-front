@@ -10,7 +10,7 @@ import { useRecoilState } from "recoil";
 import { domainId, domainName } from "./ReviewContainer";
 
 const domainReviewUrl = {
-  recipe: "review/create",
+  recipe: "review/recipe/create",
   board:  "review/board/create"
 } as const;
 
@@ -45,17 +45,15 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
       ...review
     }
 
-    if(domainName === "board"){
-      postData = {
-        ...postData, 
-        checkAnonymous:checkAnonymous
-      };
-    }
+    postData = {
+      ...postData, 
+      checkAnonymous:checkAnonymous
+    };
 
     axiosAuthInstacne
       .post(domainUrl, postData)
       .then((res) => {
-        revalidateByTagName(`reviews-${domainId}`);
+        revalidateByTagName(`reviews-${domainId}-${domainName}`);
         setReview({...review, message:""});
       })
       .catch((e) => {

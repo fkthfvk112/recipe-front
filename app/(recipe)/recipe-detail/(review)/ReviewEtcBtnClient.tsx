@@ -58,14 +58,14 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
                                     title: "삭제 완료",
                                     icon: "success",
                                 });
-                                revalidateByTagName(`reviews-${domainId}`)
+                                revalidateByTagName(`reviews-${domainId}-${domainName}`)
                             })
                     break;
                     case 'recipe':
                         axiosAuthInstacne
                             .delete(`review/recipe/delete/${reviewId}`)
                             .then((res)=>{
-                                revalidateByTagName(`reviews-${domainId}`)
+                                revalidateByTagName(`reviews-${domainId}-${domainName}`)
                             })
                     break;
                 }

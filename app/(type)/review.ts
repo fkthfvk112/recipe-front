@@ -4,6 +4,7 @@ export interface Review {
   score?:         number;
   message:        string;
   recipeId:       number|string;
+  checkAnonymous: boolean;
   parentReviewId: number|string;
   isDel:          boolean;
   createdAt?:     string;

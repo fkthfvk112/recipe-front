@@ -29,7 +29,8 @@ const modalstyle = {
   }
 
   const domainReviewUrl = {
-    board:  "review/board-reply/create"
+    board:  "review/board-reply/create",
+    recipe: "review/recipe-reply/create"
   } as const;
   
 function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:string, domainId:number|string, parentReviewId:number|string}){
@@ -52,18 +53,15 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
           checkAnonymous:checkAnonymous
         }
 
-        switch(domainName){
-            case "board":
-              axiosAuthInstacne
-              .post(domainUrl, postData)
-              .then((res) => {
-                revalidateByTagName(`reviews-${domainId}`);
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-            break;
-          }
+        
+        axiosAuthInstacne
+          .post(domainUrl, postData)
+          .then((res) => {
+            revalidateByTagName(`reviews-${domainId}-${domainName}`);
+          })
+          .catch((e) => {
+            console.log(e);
+          });          
     }
 
     const handleChangeData = (evt:ChangeEvent<HTMLTextAreaElement>)=>{

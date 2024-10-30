@@ -91,7 +91,7 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
         if(scrollLock === true) return;
 
         if(!isOpen || !isDragging) return;
-        //e.preventDefault();
+        e.preventDefault();
         const clientY = (e instanceof MouseEvent) ? e.clientY : e.touches[0].clientY;
         const deltaY = clientY - startY; // 현재 Y 위치와 시작 Y 위치의 차이 계산
         const newBottomPosition = initialBottom - deltaY > 0? 0 : initialBottom - deltaY;

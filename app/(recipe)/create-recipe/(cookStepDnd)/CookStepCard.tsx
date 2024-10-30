@@ -160,7 +160,7 @@ const CookStepCard: FC<CardProps> = ({
 
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const newCards = cards.map((card) => {
-      if (card.order === index && !isNaN(Number(e.target.value))) {
+      if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
         card.time = Number(e.target.value);
       }
       return card;
@@ -209,6 +209,7 @@ const CookStepCard: FC<CardProps> = ({
         <div className="mr-10">
           <AccessTimeIcon></AccessTimeIcon>
           <input
+            inputMode="numeric"
             onChange={handleTimeChange}
             value={card.time}
             className="w-20 m-1 border border-slate-500"
