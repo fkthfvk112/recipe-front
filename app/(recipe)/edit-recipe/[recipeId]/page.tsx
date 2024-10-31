@@ -107,7 +107,7 @@ export default function CreateRecipePage({
             title: "게시가 완료되었습니다!",
             icon: "success",
           }).then(() => {
-            revalidateByTagName(`boardDetail-${params.recipeId}`);
+            revalidateByTagName(`recipeDetail-${params.recipeId}`);
             router.push(`/recipe-detail/${params.recipeId}`);
           });
         }

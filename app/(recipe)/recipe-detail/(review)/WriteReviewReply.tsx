@@ -1,5 +1,6 @@
 "use client"
 
+import usePreventGoBack from "@/app/(commom)/Hook/usePreventGoBack";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
@@ -41,6 +42,7 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
         parentReviewId:parentReviewId,
         message:"",
       })
+    usePreventGoBack({callback:()=>{setOpen(false)}, useCondition:open})
 
     const reviewKey = `${domainName}Id`;
 

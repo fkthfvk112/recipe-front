@@ -52,7 +52,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
           :
           <div className="img-wrapper-round w-10 h-10 min-w-10 min-h-10"><Image className="rounded-full" src={review.userInfo.userPhoto} alt ="no img" fill/></div>
         }
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between items-center w-full">
           <div className="flex flex-col">
           {
             review.isDel ? (
@@ -63,7 +63,6 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
               review?.checkAnonymous === true ? (
                 <div>
                   <h3 className="ms-2 whitespace-nowrap">익명</h3>
-                  여기에 별점
                 </div>
               ) : (
                 <Link className="flex flex-wrap justify-center items-center" href={`/userfeed/${review.userInfo?.userNickName}`}>

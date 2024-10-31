@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
+import usePreventGoBack from "../Hook/usePreventGoBack";
 
 interface btn{
     name:string,
@@ -18,6 +19,9 @@ const additionalItemCss = "bg-white m-[4px] rounded-3xl p-2 px-5 text-center"
 export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
     const {layoutMargin} = useResponsiveDesignCss();
     const [plusBtnClicked, setPlusBtnClicked] = useState<boolean>(false);
+
+    usePreventGoBack({callback:()=>{setPlusBtnClicked(false)}, useCondition:plusBtnClicked})
+
 
     const clickPlusBtn = ()=>{
         setPlusBtnClicked((prev)=>!prev);

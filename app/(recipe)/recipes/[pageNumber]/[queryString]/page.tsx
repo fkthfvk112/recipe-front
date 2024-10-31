@@ -12,7 +12,7 @@ export default async function SearchingByCondition({
   params: { pageNumber: string; queryString: string };
 }) {
   const decodedUrl = decodeURIComponent(params.queryString);
-
+  
   const fetchData: Recipe[] = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?${decodedUrl}&page=${params.pageNumber}`,
     {

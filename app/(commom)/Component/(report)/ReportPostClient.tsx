@@ -6,6 +6,7 @@ import { axiosAuthInstacne } from '@/app/(customAxios)/authAxios';
 import { DomainType, Report, ReportType } from './ReportPost';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { Checkbox } from '@mui/material';
+import usePreventGoBack from "../../Hook/usePreventGoBack";
 
 const style = {
     border:'none',
@@ -39,7 +40,7 @@ export default function ReportPostClient({domainType, domainId, etcText, initial
     const [openModal, setOpenModal] = useState<boolean>(initialModalOpen===true?true:false);
     const [nowPageUrl, setNowPageUrl] = useState<string>("");
     const [reportType, setReportType] = useState<ReportType>(ReportType.NO_SELECT);
-
+    usePreventGoBack({callback:()=>{setOpenModal(false)}, useCondition:openModal})
 
     useEffect(()=>{
       setNowPageUrl(window.location.href);

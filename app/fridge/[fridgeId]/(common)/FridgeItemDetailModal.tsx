@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import usePreventGoBack from "@/app/(commom)/Hook/usePreventGoBack";
 
 const style = {
     position: "absolute" as "absolute",
@@ -33,21 +34,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
     const [description, setDescription] = useState<string>(fridgeItem?.description || "");
 
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
-
-    useEffect(() => {
-        const handlePopState = (event:any) => {
-            setOpen(false);
-            history.pushState(null, "", location.href);
-        };
-    
-        window.addEventListener("popstate", handlePopState);
-    
-        history.pushState(null, "", location.href);
-    
-        return () => {
-            window.removeEventListener("popstate", handlePopState);
-        };
-      }, [open]);
+    usePreventGoBack({callback:()=>{setOpen(false)}, useCondition:true})
 
     const isChanged = ()=>{
         if(position != fridgeId) return true; 

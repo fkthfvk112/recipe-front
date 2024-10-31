@@ -9,7 +9,7 @@ import { domainId, domainName } from './ReviewContainer';
 import Swal from 'sweetalert2';
 import ReportPostClient from '@/app/(commom)/Component/(report)/ReportPostClient';
 import { DomainType } from '@/app/(commom)/Component/(report)/ReportPost';
-
+import usePreventGoBack from '@/app/(commom)/Hook/usePreventGoBack';
 
 interface ReviewEtcState{
     reviewId:number,
@@ -25,6 +25,8 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
     const [domainType, setDomainType] = useState<DomainType>();
     const [open, setOpen] = useState<boolean>(false);
     const outRef = useRef<HTMLDivElement | null>(null);
+
+    usePreventGoBack({callback:()=>{setOpen(false)}, useCondition:open})
 
 
     useEffect(()=>{

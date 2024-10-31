@@ -18,6 +18,7 @@ interface RecipeDetail {
   description: string;
   ingredients: Ingredient[];
   steps: CookingSteps_show[];
+  reviewAvg:number;
 }
 
 export interface RecipeOwnerInfo {
@@ -35,11 +36,11 @@ export default async function RecipeDetail({
 }) {
 
   const fetchData = await serverFetch({
-    url:`recipe/get-recipe?recipeId=${params.recipeId}`,
+    url:`recipe/detail?recipeId=${params.recipeId}`,
     option:{
         cache: "default",
         next:{
-              tags: [`boardDetail-${params.recipeId}`],
+              tags: [`recipeDetail-${params.recipeId}`],
           }
       }
   })
@@ -55,6 +56,7 @@ export default async function RecipeDetail({
     repriPhotos: recipeDetail.repriPhotos,
     servings: recipeDetail.servings,
     description: recipeDetail.description,
+    reviewAvg:recipeDetail.reviewAvg,
     timeSum: recipeDetail.steps.reduce((accumulator, step) => {
       return accumulator + step.time;
     }, 0),
@@ -74,7 +76,7 @@ export default async function RecipeDetail({
             {/* have to : user ID -> user uuid */}
             <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
               delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
-              revalidateTagName={`/boardDetail-${params.recipeId}`}/>
+              revalidateTagName={`/recipeDetail-${params.recipeId}`}/>
             <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">

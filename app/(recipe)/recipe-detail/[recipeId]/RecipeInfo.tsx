@@ -3,6 +3,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import EmblaCarousel from "@/app/(commom)/EmbalCarousel/EmblaCarousel";
 import BookMark from "./BookMark";
+import StarIcon from '@mui/icons-material/Star';
+import { roundToNPlaces } from "@/app/(utils)/NumberUtil";
 
 export interface RecipeInfoProp {
   recipeId: number;
@@ -12,6 +14,7 @@ export interface RecipeInfoProp {
   description: string;
   repriPhotos: string[];
   timeSum: number;
+  reviewAvg:number;
 }
 
 export default function RecipeInfo({
@@ -50,6 +53,9 @@ export default function RecipeInfo({
           <AccessTimeIcon className="mr-2" />
           {timeText}
         </div>
+        <span className="flex-center font-bold mr-2 text-[#3b3b3b]">
+            <StarIcon className="mb-1 fill-[#000000]"/>{recipeInfoProp.reviewAvg?roundToNPlaces(recipeInfoProp.reviewAvg, 2):"_"}
+        </span>
       </div>
       <div className="p-2 mt-3 mb-3 bg-stone-100 rounded-xl break-words break-keep whitespace-pre-wrap">
         <p>{recipeInfoProp.description}</p>

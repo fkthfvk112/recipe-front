@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { axiosAuthInstacne } from '@/app/(customAxios)/authAxios';
 import { EditDel } from './EditDel';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
+import usePreventGoBack from '../Hook/usePreventGoBack';
 
 const style = {
     border:'none',
@@ -32,6 +33,7 @@ export interface EditDelClient{
 export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, revalidateTagName}:EditDelClient){
     const router = useRouter();
     const [openModal, setOpenModal] = useState<boolean>(false);
+    usePreventGoBack({callback:()=>{setOpenModal(false)}, useCondition:openModal})
 
     const sendToEditPage = ()=>{
         if(editReturnURl === undefined) return;

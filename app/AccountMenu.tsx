@@ -129,7 +129,7 @@ export default function AccountMenu() {
             goToMyFeed();
           }}
         >
-          <Avatar /> 내 피드
+        <Avatar /> 내 피드
         </MenuItem>
         <MenuItem onClick={()=>{
           handleClose();
