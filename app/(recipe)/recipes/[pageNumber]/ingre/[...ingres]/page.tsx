@@ -60,7 +60,7 @@ export default async function RecipesByIngre({
         {recentRecipes}
       </div>
       {
-        fetchData.length <= 0 && <NoContent_Recipe />
+        fetchData?.length <= 0 && <NoContent_Recipe />
       }
       {
       pnMaxCnt >= 1 &&

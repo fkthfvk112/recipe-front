@@ -200,7 +200,7 @@ export default function RecipeDetailSearch() {
             <section className="flex items-center justify-around flex-wrap w-full mt-8">
                 <div className="w-full flex-1">
                     <h3>요리양(인분)</h3>
-                    <div className="w-full px-5 min-w-[125px]">
+                    <div className="w-full ps-1 pe-4 min-w-[125px]">
                         <Slider
                             name="serving"
                             min={1}

@@ -59,7 +59,7 @@ export default async function SearchingByCondition({
       {recentRecipes}
       </div>
       {
-        fetchData.length <= 0 && <NoContent_Recipe />
+        fetchData?.length <= 0 && <NoContent_Recipe />
       }
       {
       pnMaxCnt >= 1 &&

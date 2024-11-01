@@ -20,8 +20,8 @@ export default function FridgeDetail({
     const [modalItem, setModalItem] = useState<FridgeItem>();
     const [itemDetailModalOpen, setItemDetailModalOpen] = useState<boolean>(false);
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
-
     useEffect(()=>{
+        setIsLoading(true)
         axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}`)
             .then((res)=>{
                 setIsLoading(false);
@@ -52,14 +52,17 @@ export default function FridgeDetail({
             </li>)
     })
 
-
     const additionalBtnInfo = [
         {name:"식재료 추가", url:`/fridge/ingre-edit/${params.fridgeId}`},
         {name:"냉장고 수정", url:`/fridge/${params.fridgeId}/edit`}
     ]
 
+    console.log("부모")
+    console.log("Current history length:", window.history.length);
+
     return (
         <>
+        {!isLoading&&
         <div className="defaultInnerContainer mt-6 flex-center-col">
             <div className="w-[93%] flex-col justify-start items-center mb-3">
                 <h1 className="text-2xl mb-2">{fridgeData?.name}</h1>
@@ -76,9 +79,9 @@ export default function FridgeDetail({
                 </div>
             </section>
             <AdditionalBtn additionalBtns={additionalBtnInfo}/>
-        </div>
+        </div>}
         {
-        modalItem &&
+        modalItem && !isLoading && 
         <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} open={itemDetailModalOpen} setOpen={setItemDetailModalOpen} />
         }
         </>
