@@ -20,8 +20,12 @@ export default function SiteDescription() {
     router.push("/signin");
   };
 
+  if(isLoading){
+    return <></>
+  }
+
   return (
-    !isLoading && !isSignIn ? (
+    !isSignIn ? (
       <section className="flex flex-col justify-center items-center w-full text-center bg-white p-3">
         <div className="w-full text-start max-w-[1000px] mb-5 flex-center text-center-when-600 flex-wrap-when-600 bg-[#f1f1f1] p-10 rounded-md">
           <div>
@@ -47,7 +51,15 @@ export default function SiteDescription() {
         </div>
       </section>
     ) : (
-      <></>
+      <section className="flex flex-col justify-center items-center w-full text-center bg-white p-3">
+        {/* <ul className="grid grid-cols-5 w-full gap-1 p-2  max-w-[1000px]">
+          <li className="aspect-square bg-red-300">하하</li>
+          <li className="aspect-square bg-red-300">하하</li>
+          <li className="aspect-square bg-red-300">하하</li>
+          <li className="aspect-square bg-red-300">하하</li>
+          <li className="aspect-square bg-red-300">하하</li>
+        </ul> */}
+      </section>
     )
   );
 }

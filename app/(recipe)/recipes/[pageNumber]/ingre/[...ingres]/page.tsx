@@ -2,7 +2,6 @@ import RecipeCard from "@/app/(commom)/RecipeCard";
 import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../../RecipePagination";
-import CreateIcon from '@mui/icons-material/Create';
 import NoContent_Recipe from "../../../(common)/NoContent_Recipe";
 
 export default async function RecipesByIngre({

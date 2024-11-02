@@ -260,9 +260,9 @@ export default function DetailSearchingModal({
                   <MenuItem value="POPULARITY">인기순</MenuItem>
                   <MenuItem value="LATEST">최신순</MenuItem>
                   <MenuItem value="LIKE_MANY">좋아요 많은순</MenuItem>
-                  <MenuItem value="LIKE_FEW">좋아요 적은 순</MenuItem>
-                  <MenuItem value="VIEW_MANY">조회수 많은 순</MenuItem>
-                  <MenuItem value="VIEW_FEW">조회수 적은 순</MenuItem>
+                  <MenuItem value="LIKE_FEW">좋아요 적은순</MenuItem>
+                  <MenuItem value="VIEW_MANY">조회수 많은순</MenuItem>
+                  <MenuItem value="VIEW_FEW">조회수 적은순</MenuItem>
                 </Select>
               </FormControl>
             </div>

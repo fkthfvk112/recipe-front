@@ -30,14 +30,12 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </AspectRatio>
       </CardOverflow>
       <CardContent>
-        <Typography level="title-md">
           <div className="flex justify-start items-center w-full">
             <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.recipeName}</h1>
             <span className="flex-center font-bold text-[0.8rem] mr-2 text-[#3b3b3b]">
               <StarIcon className="mb-1 fill-[#FFB701]"/>{recipe.reviewAvg?roundToNPlaces(recipe.reviewAvg, 2):"-"}
             </span>
           </div>
-        </Typography>
         <section className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.description}</section>
       </CardContent>
       <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>

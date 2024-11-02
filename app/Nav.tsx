@@ -2,20 +2,19 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { usePathname } from "next/navigation";
 import AccountMenu from "./AccountMenu";
-import { deleteAuthToken, isLogin } from "./(user)/signin/utils/authUtil";
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import HomeIcon from '@mui/icons-material/Home';
 import { Avatar } from "@mui/material";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import GoBoardBtn from "./GoBoardBtn";
 const Navbar = () => {
-  const [localSignInState, setLocalSignInState] = useState<boolean>(false);
+  //const [localSignInState, setLocalSignInState] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const {navCss} = useResponsiveDesignCss();
 
@@ -32,27 +31,14 @@ const Navbar = () => {
   };
 
   useEffect(()=>{
-    if(isSignIn === false){
-      deleteAuthToken();
-    }
-
-    isLogin()
-      .then((res)=>{
-        if(res === false){
-          setIsSignIn(false);
-        }
-      })
-
-      setLocalSignInState(isSignIn);
+    setIsLoading(false);
   }, [isSignIn])
 
 
-  const goBoard = () => {
-      router.push("/board/1");
-  };
-
   return (
     <>
+    {
+      !isLoading&&
       <div className={navCss}>
         <div className="container mx-auto px-4 h-full">
           <ul className="flex justify-around items-center h-full">
@@ -65,7 +51,7 @@ const Navbar = () => {
             </Link>
             </li>
               <li>
-                <Link href="/recipes/1/servingsMin=1&servingsMax=20&sortingCondition=POPULARITY">
+                <Link href="/recipes/1/sortingCondition=POPULARITY">
                   <div className="flex flex-col justify-center items-center">
                     <RestaurantMenuIcon sx={{width:'30px', height:'30px'}}/>
                     <p>레시피</p>
@@ -85,7 +71,7 @@ const Navbar = () => {
               </li>
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
-                {localSignInState ? (
+                {isSignIn ? (
                   <AccountMenu />
                 ) : (
                   <div className="cursor-pointer" onClick={goToSiginInPage}>
@@ -97,6 +83,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+    }
     </>
   );
 };

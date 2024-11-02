@@ -38,14 +38,14 @@ export default function SearchBar() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full text-center bg-[#52cf63] p-5">
+    <div className="flex flex-col justify-center items-center w-full text-center bg-[#52cf63] p-5 pb-7">
       <div className="w-full text-start max-w-[800px] mb-2">
         <h1 className="text-2xl">레시피 검색</h1>
       </div>
       <div className="relative w-full max-w-[800px]">
         <input
-          placeholder="요리명, 설명, 재료 (2자 이상)"
-          className="h-12 rounded-full ps-5 pe-12"
+          placeholder="요리명, 설명, 재료"
+          className="h-12 rounded-full ps-11 pe-[72px]"
           onChange={(evt) => {
             setSearchingData(evt.target.value);
           }}
@@ -56,12 +56,14 @@ export default function SearchBar() {
           }}
           value={searchingData}
           type="text"/>
-        <button className="flex absolute top-0 right-1 justify-center items-center border-none rounded-full w-12 h-12"
+        <button className="flex absolute top-0 left-1 justify-center items-center border-none rounded-full w-12 h-12"
           onClick={()=>searchTerm()}>
           <SearchIcon sx={{fill:"a1a1a1"}} />
         </button>
+        <span className="flex-center absolute top-1.5 w-[60px] h-[35px] right-2 bg-[#FB8500] rounded-full">
+          <button className="border-none font-semibold text-sm text-[#121212]" onClick={() => router.push("/search/recipe-detail")}>상세</button>
+        </span>
       </div>
-      <button className="rounded-3xl border-none mt-5 bg-[#FB8500] font-bold" onClick={() => router.push("/search/recipe-detail")}>상세 검색</button>
       <DetailSearchingModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

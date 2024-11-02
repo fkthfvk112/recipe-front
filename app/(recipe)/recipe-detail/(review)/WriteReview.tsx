@@ -102,7 +102,12 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
           />
           <div className="flex justify-between items-center p-2">
             <div className="felx justify-center items-center">
-              <Checkbox checked={checkAnonymous} value={checkAnonymous} onClick={()=>{setCheckAnonymous(!checkAnonymous)}} className="p-0 mb-1" defaultChecked color="success" />
+              <Checkbox 
+                checked={checkAnonymous} 
+                value={checkAnonymous} 
+                onClick={()=>{setCheckAnonymous(!checkAnonymous)}}
+                className="p-0 mb-1"
+                color="success" />
               <span className="font-bold text-[#31853c] ms-1">
                 익명
               </span>

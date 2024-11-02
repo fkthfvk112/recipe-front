@@ -5,7 +5,7 @@ import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe
 
 export default async function PopularRecipes() {
   const fetchData: Recipe[] = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?servingsMin=1&servingsMax=20&sortingCondition=POPULARITY&page=1&size=10`,
+    `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?sortingCondition=POPULARITY&page=1&size=10`,
     {
       next: { revalidate: 300 },
     }
