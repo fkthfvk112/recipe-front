@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import { usePathname, useRouter } from "next/navigation";
 import { MenuItem, Select } from "@mui/material";
 import { sortingCondition } from "@/app/(type)/search";
+import Link from "next/link";
 
 const queryConvert: { [key: string]: string } = {
     recipeName: "레시피명",
@@ -22,7 +23,9 @@ const sortingConvert:{[key:string]:string} = {
 
 function RecipeConditionBtns() {
     const [queryMap, setQueryMap] = useState<Map<string, string[]>>(new Map());
+    const [fullPath, setFullPath] = useState<string>("");
 
+    const linkRef = useRef<HTMLAnchorElement>(null); // 타입을 지정합니다.
     const currentUrl = usePathname();
     const router = useRouter();
 
@@ -41,7 +44,8 @@ function RecipeConditionBtns() {
         const urlOrg = currentUrl.slice(0, currentUrl.lastIndexOf("/")) + "/";
         const queryStr = queryStrArr.length > 0 ? queryStrArr.join('&') : '';
         
-        router.push(urlOrg + queryStr);
+        //router.push(urlOrg + queryStr);
+        setFullPath(urlOrg + queryStr);
     }
 
     const getSortingCon = () => {
@@ -67,7 +71,8 @@ function RecipeConditionBtns() {
         const queryStr = queryStrArr.length > 0 ? queryStrArr.join('&') : '';
         
 
-        router.push(urlOrg + queryStr);
+        //router.push(urlOrg + queryStr);
+        setFullPath(urlOrg + queryStr);
     };
 
     useEffect(() => {
@@ -105,26 +110,33 @@ function RecipeConditionBtns() {
             }).filter(ele => ele);
     }, [queryMap, queryConvert]);
 
+    useEffect(()=>{
+        if(fullPath.length > 10 && linkRef && linkRef.current){
+            linkRef.current.click();
+        }
+    }, [fullPath])
+
     return (
         <div className="flex justify-between w-full max-w-[1024px]">
             <section className="flex flex-row overflow-x-scroll no-scroll">
                 {queryBtns}
+                <Link ref={linkRef} className="hidden" href={fullPath}>링크</Link>
             </section>
-            <section>
-            <select
-                name="sorting"
-                value={getSortingCon()}
-                onChange={(evt) => {
-                    setSortingCon(evt.target.value);
-                }}
-                className="rounded p-2"
-                >
-                <option value="POPULARITY">인기순</option>
-                <option value="LATEST">최신순</option>
-                <option value="LIKE_MANY">좋아요 많은순</option>
-                <option value="LIKE_FEW">좋아요 적은순</option>
-                <option value="VIEW_MANY">조회수 많은순</option>
-                <option value="VIEW_FEW">조회수 적은순</option>
+            <section className="w-[150px] px-2">
+                <select
+                    name="sorting"
+                    value={getSortingCon()}
+                    onChange={(evt) => {
+                        setSortingCon(evt.target.value);
+                    }}
+                    className="rounded p-2"
+                    >
+                    <option value="POPULARITY">인기순</option>
+                    <option value="LATEST">최신순</option>
+                    <option value="LIKE_MANY">좋아요 많은순</option>
+                    <option value="LIKE_FEW">좋아요 적은순</option>
+                    <option value="VIEW_MANY">조회수 많은순</option>
+                    <option value="VIEW_FEW">조회수 적은순</option>
                 </select>
             </section>
         </div>
