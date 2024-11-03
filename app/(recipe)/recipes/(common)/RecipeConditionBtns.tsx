@@ -1,11 +1,9 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import { usePathname, useRouter } from "next/navigation";
-import { MenuItem, Select } from "@mui/material";
-import { sortingCondition } from "@/app/(type)/search";
-import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 
 const queryConvert: { [key: string]: string } = {
     recipeName: "레시피명",
@@ -23,9 +21,7 @@ const sortingConvert:{[key:string]:string} = {
 
 function RecipeConditionBtns() {
     const [queryMap, setQueryMap] = useState<Map<string, string[]>>(new Map());
-    const [fullPath, setFullPath] = useState<string>("");
-
-    const linkRef = useRef<HTMLAnchorElement>(null); // 타입을 지정합니다.
+    const [isLoading, setIsLoading] = useState<boolean>(false); //have to 스켈레톤으로 변경할 방법 찾기 loading.tsx발동시키기
     const currentUrl = usePathname();
     const router = useRouter();
 
@@ -43,9 +39,9 @@ function RecipeConditionBtns() {
         
         const urlOrg = currentUrl.slice(0, currentUrl.lastIndexOf("/")) + "/";
         const queryStr = queryStrArr.length > 0 ? queryStrArr.join('&') : '';
-        
-        //router.push(urlOrg + queryStr);
-        setFullPath(urlOrg + queryStr);
+    
+        setIsLoading(true);
+        router.push(urlOrg + queryStr);
     }
 
     const getSortingCon = () => {
@@ -69,13 +65,13 @@ function RecipeConditionBtns() {
         queryStrArr.push(`sortingCondition=${sortingCon}`);
         const urlOrg = currentUrl.slice(0, currentUrl.lastIndexOf("/")) + "/";
         const queryStr = queryStrArr.length > 0 ? queryStrArr.join('&') : '';
-        
 
-        //router.push(urlOrg + queryStr);
-        setFullPath(urlOrg + queryStr);
+        setIsLoading(true);
+        router.push(urlOrg + queryStr);
     };
 
     useEffect(() => {
+        setIsLoading(false);
         if (!currentUrl) return;
         const last = currentUrl.split("/").at(-1);
         const queryStrings = last?.split("&");
@@ -110,17 +106,13 @@ function RecipeConditionBtns() {
             }).filter(ele => ele);
     }, [queryMap, queryConvert]);
 
-    useEffect(()=>{
-        if(fullPath.length > 10 && linkRef && linkRef.current){
-            linkRef.current.click();
-        }
-    }, [fullPath])
-
     return (
         <div className="flex justify-between w-full max-w-[1024px]">
+            {
+            !isLoading?
+            <>
             <section className="flex flex-row overflow-x-scroll no-scroll">
                 {queryBtns}
-                <Link ref={linkRef} className="hidden" href={fullPath}>링크</Link>
             </section>
             <section className="w-[150px] px-2">
                 <select
@@ -139,6 +131,8 @@ function RecipeConditionBtns() {
                     <option value="VIEW_FEW">조회수 적은순</option>
                 </select>
             </section>
+            </>:<div className="flex justify-center w-full"><CircularProgress /></div>
+            }
         </div>
     )
 }
