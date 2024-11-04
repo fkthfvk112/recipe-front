@@ -32,15 +32,14 @@ export default function ExpBar({expDateStr, k}:{expDateStr:string, k:number}){
     }
 
 
-    console.log("1", now)
-    console.log("2", expDate)
-    console.log("y값", y);
+    const dateDiffString = dateDiff > 0?`${dateDiff}일 남음`:"만료"
     return (
         <div className="mx-1 h-[30px]">
             <p className="flex items-center text-[0.6rem] justify-start font-normal">
                 <AccessAlarmIcon sx={{width:"1rem", height:"1rem", marginRight:"0.1rem", marginBottom:"0.1rem"}}/>
-                {dateDiff}일 남음</p> 
-            <LinearProgress     sx={{
+                {dateDiffString}
+            </p> 
+            <LinearProgress sx={{
                 '& .MuiLinearProgress-bar': {
                     backgroundColor: color,
                 },
