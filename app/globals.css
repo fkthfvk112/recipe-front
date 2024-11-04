@@ -254,7 +254,6 @@ textarea{
   direction: rtl;
 }
 
-
 .fridge{
   width: 100%;
   min-height: 100%;
@@ -281,6 +280,7 @@ textarea{
 .fridge-item {
   aspect-ratio: 1; /* 정사각형 유지 */
   width: 100%; /* 가로 폭을 100%로 설정하여 부모에 맞춤 */
+  margin-top:3.5rem;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { fridgeDataAtom, fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
 import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
+import ExpBar from "./(common)/ExpBar";
 
 export default function FridgeDetail({
     params
@@ -43,7 +44,8 @@ export default function FridgeDetail({
                 setModalItem(item);
                 setItemDetailModalOpen(true);
             }}  className="fridge-item relative cursor-pointer">
-                <div className="absolute -top-5 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
+                <div className="absolute -top-14 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
+                    {item.expiredAt?<ExpBar expDateStr={item.expiredAt as string} k={2}/>:<div className="h-[30px]"></div>}
                     {item.name}
                 </div>
                 <div className="w-full h-full img-wrapper-square">
@@ -56,9 +58,6 @@ export default function FridgeDetail({
         {name:"식재료 추가", url:`/fridge/ingre-edit/${params.fridgeId}`},
         {name:"냉장고 수정", url:`/fridge/${params.fridgeId}/edit`}
     ]
-
-    console.log("부모")
-    console.log("Current history length:", window.history.length);
 
     return (
         <>

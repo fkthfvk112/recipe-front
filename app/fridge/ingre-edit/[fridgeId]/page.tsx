@@ -7,6 +7,7 @@ import Image from "next/image";
 import FridgeItemDetailModal from "../../[fridgeId]/(common)/FridgeItemDetailModal";
 import { useRecoilState } from "recoil";
 import { fridgeDataAtom, fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
+import ExpBar from "../../[fridgeId]/(common)/ExpBar";
 
 
 export interface FridgeItem_IN extends FridgeItem{
@@ -53,8 +54,9 @@ export default function FridgeDetail({
             <li key={inx} onClick={()=>{
                 setModalItem(item);
                 setItemDetailModalOpen(true);
-            }} className="fridge-item relative cursor-pointer">
-                <div className="absolute -top-5 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
+            }}  className="fridge-item relative cursor-pointer">
+                <div className="absolute -top-14 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
+                    {item.expiredAt?<ExpBar expDateStr={item.expiredAt as string} k={2}/>:<div className="h-[30px]"></div>}
                     {item.name}
                 </div>
                 <div className="w-full h-full img-wrapper-square">
