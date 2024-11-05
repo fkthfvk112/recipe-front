@@ -52,6 +52,12 @@ export default function Fridge(){
                 </Link>
                 }
             </section>
+            <section className="m-12 w-full">
+                <div className="w-full text-start">
+                    <TitleDescription title={"레시피 추천"} desc={"내 냉장고 속 식재료가 포함된 레시피들이에요."} />
+
+                </div>
+            </section>
         </div>
         </>
     )

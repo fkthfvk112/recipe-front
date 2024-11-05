@@ -17,8 +17,8 @@ export default function RootLayout({
       <body>
         <RecoilRoot>
           <Nav></Nav>
-          <IntervalConfig/>
           <main className={`min-h-screen flex flex-col justify-start items-center ${layoutPadding} bg-[#f0f0f0]`}>
+          <IntervalConfig/>
             {children}
           </main>
         </RecoilRoot>

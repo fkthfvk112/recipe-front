@@ -2,6 +2,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import { errorCode } from "../(commom)/Error/ErrorCode";
+import { deleteAuthToken } from "../(user)/signin/utils/authUtil";
 
 
 /** 기본 서버로 요청하는 axios */
@@ -77,6 +78,17 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       });
       
       return Promise.reject(err);
+    }
+    else if(err.response.data.code === "T002" || err.response.data.code === "T003" || err.response.data.code === "T004" ){//리프래시 토큰 만료
+      Swal.fire({
+        title: "에러가 발생하였습니다.",
+        text: "로그인 유효시간이 만료되었습니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey:false
+        });
+        deleteAuthToken();
     }
     else if(errorCode.includes(err.response.data.code)){
       Swal.fire({
