@@ -10,11 +10,12 @@ export default function CreateFridge(){
     const [fridgeName, setFridgeName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const checkingDone = useChkLoginToken("refreshNeed");
+    const router = useRouter();
+
     if(!checkingDone){
       return <></>
     }
 
-    const router = useRouter();
 
     const saveFridge = ()=>{
         Swal.fire({

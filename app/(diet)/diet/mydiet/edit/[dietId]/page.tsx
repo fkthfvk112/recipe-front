@@ -15,11 +15,6 @@ export default function MyDietEdit({
     params: { dietId: string };
   }){
 
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
-    
     const setInitialRecipeData = (fetchedData:DietDay)=>{
         if(fetchedData.memo!==undefined && fetchedData.memo.length > 0){
             setMemo(fetchedData.memo);
@@ -101,6 +96,11 @@ export default function MyDietEdit({
         dietItemList:[]
     });
 
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
+    
     const handleSubmit = ()=>{
         setSaveModalOpen(true);
 

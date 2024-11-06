@@ -22,11 +22,6 @@ export default function MyDiet(){
     const [isPublic, setIsPublic]               = useState<boolean>(true);
     const [saveData, setSaveData]               = useState<DietDay>();
     const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
-    
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",
@@ -57,6 +52,11 @@ export default function MyDiet(){
         setTodayDateKST();
     }, [])
 
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
+
     const handleSubmit = ()=>{
         if(!chkDietValid().isValid){
             Swal.fire({
@@ -66,8 +66,9 @@ export default function MyDiet(){
               });
             return;
         }
-
+    
         setSaveModalOpen(true);
+
 
         const existInnerItemOne = dietItemRowOne.dietItemList.filter(item=>item.title!= undefined && item.title.length >= 1);
         const existDietRowOne:DietItemRow = {...dietItemRowOne, dietItemList:existInnerItemOne};

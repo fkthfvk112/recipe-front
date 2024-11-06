@@ -7,8 +7,6 @@ export default function fridgeLayout({
 }:{
     children: React.ReactNode;
 }){
-    useChkLoginToken("refreshNeed");
-
     return (
         <div className="defaultOuterContainer flex flex-col justify-start items-center">
             {children}

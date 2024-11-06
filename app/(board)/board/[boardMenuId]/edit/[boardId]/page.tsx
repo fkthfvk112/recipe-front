@@ -43,11 +43,6 @@ export default function EditBoardPost({
     const router = useRouter();
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
         
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
-
     const setInitialBoardData = (fetchData:Board)=>{
         setInitialData(fetchData);
 
@@ -178,6 +173,11 @@ export default function EditBoardPost({
             const canWriteCon:boolean = height <= 620 && title.length <= 1024;
             canWriteCon&&setContent(e.target.value)            
         }
+    }
+
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
     }
 
     return (

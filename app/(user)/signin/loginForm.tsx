@@ -16,10 +16,10 @@ export default function LoginForm() {
   const [userPw, setUserPw] = useState<string>("");
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
   const checkingDone = useChkLoginToken('refreshNoNeed');
+  const router = useRouter();
 
   if(!checkingDone) return <></>
 
-  const router = useRouter();
 
   if (isSignIn) {
     router.push("/");
