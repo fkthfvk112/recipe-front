@@ -12,10 +12,15 @@ import MyRecipe from "./MyRecipe";
 import { useRecoilState } from "recoil";
 import { userFeedMenuAtom } from "@/app/(recoil)/userFeedAtom";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + "myFeedMenu"));
-
+  const checkingDone = useChkLoginToken("refreshNeed");
+  if(!checkingDone){
+    return <></>
+  }
+  
   return (
     <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
       <UserInfo></UserInfo>

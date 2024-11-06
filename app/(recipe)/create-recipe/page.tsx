@@ -20,6 +20,7 @@ import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import RepriPric from "./RepriPic";
 import Swal from "sweetalert2";
 import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -46,7 +47,10 @@ export default function CreateRecipePage() {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
-
+  const checkingDone = useChkLoginToken("refreshNeed");
+  if(!checkingDone){
+    return <></>
+  }
 
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({

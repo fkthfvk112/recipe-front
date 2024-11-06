@@ -8,12 +8,16 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
+  const checkingDone = useChkLoginToken('refreshNoNeed');
+
+  if(!checkingDone) return <></>
 
   const router = useRouter();
 

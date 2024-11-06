@@ -18,6 +18,7 @@ import { useResetRecoilState } from 'recoil';
 import { scrollYCacheAtom } from '@/app/(recoil)/scrollYCacheSelector';
 import { boardCacheSelectorAtom } from '@/app/(recoil)/boardCacheSelector';
 import { cacheKey } from '@/app/(recoil)/cacheKey';
+import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
 
 export default function CreateNewBoardPost({
     params
@@ -40,6 +41,11 @@ export default function CreateNewBoardPost({
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const router = useRouter();
+
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
 
     /**게시물 post 제출 */
     const postbtn = ()=>{

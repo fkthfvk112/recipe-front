@@ -3,7 +3,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { errorCode } from "../(commom)/Error/ErrorCode";
 import { deleteAuthToken } from "../(user)/signin/utils/authUtil";
-
+import { useRecoilState } from "recoil";
+import { siginInState } from "../(recoil)/recoilAtom";
 
 /** 기본 서버로 요청하는 axios */
 export const defaultAxios = axios.create({
@@ -33,7 +34,10 @@ axiosAuthInstacne.interceptors.response.use((res) => {
   return res;
 },
 (err)=>{
+  console.log("에러", err)
   if(err.response.data === "T001"){
+    console.log("에러2", err)
+
     console.log("Access cookie expired set new cookie success");
     const originBaseUrl = err?.config?.baseURL;
     const originUrl = err?.config?.url;
@@ -67,6 +71,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     return res;
   },
   (err)=>{
+    console.log("공통 에러 캐치", err);
     if (err.message === "Network Error" || err.code === 'ERR_INTERNET_DISCONNECTED') {
       Swal.fire({
       title: "인터넷 연결 실패",
@@ -79,7 +84,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       
       return Promise.reject(err);
     }
-    else if(err.response.data.code === "T002" || err.response.data.code === "T003" || err.response.data.code === "T004" ){//리프래시 토큰 만료
+    else if(err.response.data.code === "T002" || err.response.data.code === "T003" || err.response.data.code === "T004" || err.response.data.code === "T005"){//리프래시 토큰 만료
       Swal.fire({
         title: "에러가 발생하였습니다.",
         text: "로그인 유효시간이 만료되었습니다.",
@@ -89,6 +94,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
         allowEnterKey:false
         });
         deleteAuthToken();
+        location.href = '/signin'
     }
     else if(errorCode.includes(err.response.data.code)){
       Swal.fire({

@@ -21,6 +21,7 @@ import RepriPic from "../../create-recipe/RepriPic";
 import ErrorText from "../../create-recipe/ErrorText";
 import CookStep from "../../create-recipe/(cookStepDnd)/CookStep";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -44,6 +45,10 @@ export default function CreateRecipePage({
   });
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const router = useRouter();
+  const checkingDone = useChkLoginToken("refreshNeed");
+  if(!checkingDone){
+    return <></>
+  }
 
   const setInitialRecipeData = (fetchData:RecipeCreate)=>{
     setInitialData(fetchData);

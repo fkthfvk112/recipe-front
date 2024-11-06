@@ -15,6 +15,7 @@ import SetRecipe from '../../create/(Recipe)/SetRecipe';
 import SetDiet from '../../create/(Diet)/SetDiet';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
+import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
 
 interface BoardChangeChk{
     titleChk:    boolean,
@@ -41,6 +42,11 @@ export default function EditBoardPost({
 
     const router = useRouter();
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+        
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
 
     const setInitialBoardData = (fetchData:Board)=>{
         setInitialData(fetchData);

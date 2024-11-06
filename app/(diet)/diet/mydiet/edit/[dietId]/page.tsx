@@ -7,14 +7,19 @@ import DietDayBox from "../../create/DietDayBox";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import UpdateModal from "@/app/(commom)/UpdateModal";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export default function MyDietEdit({
     params,
   }: {
     params: { dietId: string };
   }){
-    
 
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
+    
     const setInitialRecipeData = (fetchedData:DietDay)=>{
         if(fetchedData.memo!==undefined && fetchedData.memo.length > 0){
             setMemo(fetchedData.memo);

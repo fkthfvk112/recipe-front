@@ -1,10 +1,13 @@
-import TitleDescription from "../(commom)/Component/TitleDescription";
+"use client"
+
+import useChkLoginToken from "../(commom)/Hook/useChkLoginToken";
 
 export default function fridgeLayout({
     children
 }:{
     children: React.ReactNode;
 }){
+    useChkLoginToken("refreshNeed");
 
     return (
         <div className="defaultOuterContainer flex flex-col justify-start items-center">

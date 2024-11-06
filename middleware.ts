@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { decodedUserInfo, decodeUserJwt } from './app/(utils)/decodeJwt';
+import { deleteCookie, getCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -10,16 +12,14 @@ export async function middleware(request: NextRequest) {
   if(authCookie === undefined || refreshCookie === undefined || !authCookie.value.startsWith("Bearer_")){
     return NextResponse.redirect(new URL('/signin', request.url))
   }
+
   if(request.nextUrl.pathname.startsWith("/admin")){
     const jwt:decodedUserInfo|undefined = await decodeUserJwt();
     if(!jwt?.roles?.includes("ROLE_ADMIN")){
       return NextResponse.redirect(new URL('/', request.url))
     }
   }
-
-  const response = NextResponse.next();
-
-  return response;
+  return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more

@@ -34,8 +34,6 @@ export default function MyLikeRecipe(){
           setScrollYCache(scrollY);
       }
     }, [])
-
-
     
   const likeRecipes = recipeData.cachedData.data?.map((recipe, inx) => (
     <Link

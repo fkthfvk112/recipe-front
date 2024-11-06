@@ -12,6 +12,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Validation } from "@/app/(user)/check";
 import Swal from "sweetalert2";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export default function MyDiet(){
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
@@ -21,6 +22,11 @@ export default function MyDiet(){
     const [isPublic, setIsPublic]               = useState<boolean>(true);
     const [saveData, setSaveData]               = useState<DietDay>();
     const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
+    
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",

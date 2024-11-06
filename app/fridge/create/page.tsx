@@ -1,5 +1,6 @@
 "use client"
 
+import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
@@ -8,6 +9,10 @@ import Swal from "sweetalert2";
 export default function CreateFridge(){
     const [fridgeName, setFridgeName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const checkingDone = useChkLoginToken("refreshNeed");
+    if(!checkingDone){
+      return <></>
+    }
 
     const router = useRouter();
 
