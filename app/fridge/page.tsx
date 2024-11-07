@@ -7,10 +7,13 @@ import { axiosAuthInstacne } from "../(customAxios)/authAxios";
 import { truncateString } from "../(utils)/StringUtil";
 import Link from "next/link";
 import TitleDescription from "../(commom)/Component/TitleDescription";
+import RecipeVerticalItem from "../(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
+import { Recipe } from "../(recipe)/types/recipeType";
 
 export default function Fridge(){
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [fridgeDate, setFridgeDate] = useState<FridgeIdNameDesc[]>([]);
+    const [recommandRecipe, setRecommandRecipe] = useState<Recipe[]>([]);
 
     useEffect(()=>{
         setIsLoading(true);
@@ -22,9 +25,26 @@ export default function Fridge(){
         
     }, [])
 
+    useEffect(()=>{
+        if(!isLoading){
+            axiosAuthInstacne.get("recipe/my-fridge/ingres?ingreSize=1")
+                .then((res)=>{
+                    console.log(":레스", res.data)
+                    setRecommandRecipe(res.data);
+                })
+        }
+    }, [isLoading, fridgeDate])
+
+    const recommandRecipes = recommandRecipe?.map((recipe, inx) => (
+        <Link className="inline-block" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+          <RecipeVerticalItem recipe={recipe}></RecipeVerticalItem>
+        </Link>
+    ));
+  
+
+
     const fridgeCompSkeleton = [1, 2, 3, 4, 5, 6].map((fridge, inx)=>
         <div key={inx} className="aspect-square shadow-md border border-[#e1e1e1] rounded-xl m-1 p-2 overflow-hidden text-ellipsis bg-[#e1e1e1]">
-            
         </div>
     )
 
@@ -55,7 +75,9 @@ export default function Fridge(){
             <section className="m-12 w-full">
                 <div className="w-full text-start">
                     <TitleDescription title={"레시피 추천"} desc={"내 냉장고 속 식재료가 포함된 레시피들이에요."} />
-
+                    <ul className="flex overflow-x-scroll h-[350px]">
+                        {recommandRecipes}
+                    </ul>
                 </div>
             </section>
         </div>
