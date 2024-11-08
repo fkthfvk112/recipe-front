@@ -1,7 +1,5 @@
 "use client"
 
-import useChkLoginToken from "../(commom)/Hook/useChkLoginToken";
-
 export default function fridgeLayout({
     children
 }:{

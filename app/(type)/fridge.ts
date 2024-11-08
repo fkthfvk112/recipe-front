@@ -14,6 +14,7 @@ export interface FridgeIdNameDesc{
     fridgeId:number;
     fridgeName:string;
     description:string;
+    recommendRecipeFlag?:boolean;
 }
 
 export interface FridgeItem{

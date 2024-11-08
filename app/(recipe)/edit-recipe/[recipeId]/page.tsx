@@ -91,7 +91,6 @@ export default function CreateRecipePage({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
   const checkingDone = useChkLoginToken("refreshNeed");
-
   if(!checkingDone){
     return <></>
   }
