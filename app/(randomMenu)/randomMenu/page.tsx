@@ -120,7 +120,7 @@ export default function RandomMenu(){
     }
 
     return (
-        <main className="defaultInnerContainer-noPTop">
+        <>
             <div className="flex flex-col justify-center items-center w-full text-center bg-[#61df72] mb-12 p-8 rounded-t-3xl">
                 <div className="text-start">
                     <h1 className="text-2xl">랜덤 메뉴 추천</h1>
@@ -146,9 +146,12 @@ export default function RandomMenu(){
                     </div>
                 </div>
                 <div>
-                    <button className={`w-[230px] h-[60px] ${nowRotating?'bg-[#e1e1e1] border-none':'border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
+                    <button className={`mb-20 w-[230px] ${nowRotating?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
                 </div>
             </section>
-        </main>
+        </>
     )
 }
+
+
+//fixed bottom-6 roundRreenBtn mb-20

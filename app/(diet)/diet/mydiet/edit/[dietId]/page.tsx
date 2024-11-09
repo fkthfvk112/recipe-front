@@ -14,6 +14,7 @@ export default function MyDietEdit({
   }: {
     params: { dietId: string };
   }){
+    const isTokenValid = useChkLoginToken("refreshNeed");
 
     const setInitialRecipeData = (fetchedData:DietDay)=>{
         if(fetchedData.memo!==undefined && fetchedData.memo.length > 0){
@@ -51,7 +52,8 @@ export default function MyDietEdit({
     }
 
     useEffect(()=>{
-        axiosAuthInstacne
+        if(isTokenValid){
+            axiosAuthInstacne
             .get(`diet/day/my-day?dietId=${params.dietId}`)
             .then((res) => {
                 setInitialRecipeData(res.data);
@@ -60,7 +62,8 @@ export default function MyDietEdit({
             if (err.response) {
             }
             });
-    }, [])
+        }
+    }, [isTokenValid])
 
 
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
@@ -95,11 +98,6 @@ export default function MyDietEdit({
         photo:"",
         dietItemList:[]
     });
-
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
     
     const handleSubmit = ()=>{
         setSaveModalOpen(true);
@@ -159,7 +157,7 @@ export default function MyDietEdit({
         setDietDate(`${year}-${month}-${day}`);
     };
     
-
+    if(!isTokenValid) return <></>
     return (
         <main className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
             <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">

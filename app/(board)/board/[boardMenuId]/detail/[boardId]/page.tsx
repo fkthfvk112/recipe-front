@@ -14,7 +14,51 @@ import BoardPhotoHolder from "./(Photo)/BoardPhotoHolder";
 import BoardRecipeHolder from "./(recipe)/BoardRecipeHolder";
 import BoardDietHolder from "./(Diet)/BoardDietHolder";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
+import { Metadata, ResolvingMetadata } from "next";
 
+
+type Props = {
+    params: Promise<{ boardId: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  }
+  
+  export async function generateMetadata(
+    { params, searchParams }: Props,
+    parent: ResolvingMetadata
+  ): Promise<Metadata> {
+    // read route params
+    const boardId = (await params).boardId
+    
+    const boardData:Board = await serverFetch({
+        url:"board/detail",
+        queryParams:{
+            boardId:boardId
+        },
+        option:{
+            cache:"default",
+            next: {
+                tags: [`boardId-${boardId}`],
+            }
+        }
+    })
+
+    const image = boardData?.photos && boardData.photos.length >= 1 ? boardData.photos[0] : "/common/favicon.png";
+   
+    return {
+      title: boardData.title,
+      description:boardData.content,
+      icons:{
+        icon:"/common/favicon.png"
+      },
+      openGraph:{
+        title:boardData.title,
+        description:boardData.content,
+        images:image
+      }
+    }
+  }
+ 
+  
 export default async function BoardDetail({
     params
   }: {
@@ -27,7 +71,7 @@ export default async function BoardDetail({
             boardId:params.boardId
         },
         option:{
-            cache:"no-cache",
+            cache:"default",
             next: {
                 tags: [`boardId-${params.boardId}`],
             }

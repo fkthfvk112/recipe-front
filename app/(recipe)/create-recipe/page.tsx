@@ -38,19 +38,17 @@ export default function CreateRecipePage() {
   });
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const router = useRouter();
+  const isTokenValid = useChkLoginToken("refreshNeed");
 
   useEffect(() => {
-    if (!isSignIn) {
+    if(isTokenValid && !isSignIn){
       router.push("/signin");
     }
-  }, [isSignIn, router]);
+
+  }, [isSignIn, router, isTokenValid]);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
-  const checkingDone = useChkLoginToken("refreshNeed");
-  if(!checkingDone){
-    return <></>
-  }
 
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({
@@ -87,6 +85,7 @@ export default function CreateRecipePage() {
     p: 4,
   };
 
+  if(!isTokenValid) return <></>
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>

@@ -59,7 +59,7 @@ export default function MyAccountMenuList(){
     }
 
     return(
-        <div className="flex justify-start items-center flex-col max-w-[1024px] w-full mt-10 bg-white p-3">
+        <nav className="flex justify-start items-center flex-col max-w-[1024px] w-full mt-10 bg-white p-3">
             <h3 className='m-6'>마이</h3>
             <ul className="w-full">
                 <li onClick={goToMyFeed} className={liClassName}>
@@ -93,6 +93,6 @@ export default function MyAccountMenuList(){
                     <button onClick={handelLogOut} className='border-none underline underline-offset-4'>로그아웃</button>
                 </div>
             </ul>
-        </div>
+        </nav>
     )
 }

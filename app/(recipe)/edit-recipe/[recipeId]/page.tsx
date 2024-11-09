@@ -44,6 +44,8 @@ export default function CreateRecipePage({
     viewCnt:0,
   });
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+  const isTokenValid = useChkLoginToken("refreshNeed");
+
   const router = useRouter();
 
   const setInitialRecipeData = (fetchData:RecipeCreate)=>{
@@ -90,10 +92,7 @@ export default function CreateRecipePage({
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [errorCnt, setErrorCnt] = useState<number>(0);
-  const checkingDone = useChkLoginToken("refreshNeed");
-  if(!checkingDone){
-    return <></>
-  }
+
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({
       title:"레시피를 공개하는 중...",
@@ -143,6 +142,7 @@ export default function CreateRecipePage({
     )
   }
 
+  if(isTokenValid) return <></>
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>

@@ -13,9 +13,9 @@ export default async function BoardLayout({
     const selectedMenu = baseMenuList.find(menu=>Number(menu.boardMenuId) === Number(params.boardMenuId));
 
     return (
-      <div className={`bg-[${selectedMenu?.themeColor}] defaultOuterContainer flex pb-20`}>
+      <main className={`bg-[${selectedMenu?.themeColor}] defaultOuterContainer flex pb-20`}>
           {children}
           <ScrollToTopButton/>
-      </div>
+      </main>
     )
 }

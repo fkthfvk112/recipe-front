@@ -5,6 +5,23 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../RecipePagination";
 import NoContent_Recipe from "../../(common)/NoContent_Recipe";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+
+  //let recipeDetail: RecipeDetail = fetchData.recipeDTO;
+  return {
+    title: "머그인 - 레시피 검색",
+    description:"입맛에 맞는 다양한 레시피를 검색해보세요.",
+    icons:{
+      icon:"/common/favicon.png"
+    },
+    openGraph:{
+      title: "머그인 - 레시피 검색",
+      description:"입맛에 맞는 다양한 레시피를 검색해보세요.",
+    }
+  }
+}
 
 export default async function SearchingByCondition({
   params,
@@ -16,7 +33,7 @@ export default async function SearchingByCondition({
   const fetchData: Recipe[] = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?${decodedUrl}&page=${params.pageNumber}`,
     {
-      cache: "no-cache", //수정
+      cache: "default", 
     }
   ).then((res) => {
     if (!res.ok) {

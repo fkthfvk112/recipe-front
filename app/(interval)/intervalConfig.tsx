@@ -37,7 +37,7 @@ function IntervalConfig(){
             if (expDate.getTime() < Date.now()) { //리프래시 토큰 만료
                 setLogOut();
                 Swal.fire({
-                    title: "로그인 유효시간",
+                    title: "로그인 에러",
                     text:"로그인 유효시간이 만료되었습니다.",
                     icon: "info",
                     confirmButtonText: "확인",

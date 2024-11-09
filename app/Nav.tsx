@@ -39,7 +39,7 @@ const Navbar = () => {
     <>
     {
       !isLoading&&
-      <div className={navCss}>
+      <nav className={navCss}>
         <div className="container mx-auto px-4 h-full">
           <ul className="flex justify-around items-center h-full">
             <li>
@@ -82,7 +82,7 @@ const Navbar = () => {
               </li>
           </ul>
         </div>
-      </div>
+      </nav>
     }
     </>
   );

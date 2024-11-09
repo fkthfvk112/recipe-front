@@ -8,6 +8,23 @@ import TitleDescription from "@/app/(commom)/Component/TitleDescription";
 import { BoardMenu } from "@/app/(type)/menu";
 import BoardNav from "./BoardNav";
 import WriteBtn from "./WriteBtn";
+import { Metadata, ResolvingMetadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+    
+return {
+    title: "머그인 게시판",
+    description:"다양한 레시피 관련된 의견을 공유하는 게시판이에요. 여러 유저들과 다양한 의견을 나눠보세요.",
+    icons:{
+    icon:"/common/favicon.png"
+    },
+    openGraph:{
+    title:"머그인 게시판",
+    description:"다양한 레시피 관련된 의견을 공유하는 게시판이에요. 여러 유저들과 다양한 의견을 나눠보세요.",
+    images:"/common/logo.png"
+    }
+}
+}
 
 export default async function Board({
     params

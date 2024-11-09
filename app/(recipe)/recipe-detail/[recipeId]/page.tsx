@@ -8,6 +8,45 @@ import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 import ReviewContainer from "../(review)/ReviewContainer";
 import serverFetch from "@/app/(commom)/serverFetch";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
+import { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: Promise<{ recipeId: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const recipeId = (await params).recipeId
+  
+  const fetchData = await serverFetch({
+    url:`recipe/detail?recipeId=${recipeId}`,
+    option:{
+        cache: "default",
+        next:{
+              tags: [`recipeDetail-${recipeId}`],
+          }
+      }
+  })
+  let recipeDetail: RecipeDetail = fetchData.recipeDTO;
+
+  return {
+    title: recipeDetail.recipeName,
+    description: recipeDetail?.description || "",
+    icons:{
+      icon:"/common/favicon.png"
+    },
+    openGraph:{
+      title: recipeDetail.recipeName,
+      description: recipeDetail?.description || "",
+      images:recipeDetail.repriPhotos
+    }
+  }
+}
+
 
 interface RecipeDetail {
   recipeName: string;

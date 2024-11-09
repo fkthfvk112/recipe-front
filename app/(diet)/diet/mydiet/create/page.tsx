@@ -22,6 +22,7 @@ export default function MyDiet(){
     const [isPublic, setIsPublic]               = useState<boolean>(true);
     const [saveData, setSaveData]               = useState<DietDay>();
     const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
+    const isTokenValid = useChkLoginToken("refreshNeed");
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
         title:"아침",
@@ -51,11 +52,6 @@ export default function MyDiet(){
     useEffect(()=>{
         setTodayDateKST();
     }, [])
-
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
 
     const handleSubmit = ()=>{
         if(!chkDietValid().isValid){
@@ -148,7 +144,7 @@ export default function MyDiet(){
         setDietDate(`${year}-${month}-${day}`);
     };
     
-    
+    if(!isTokenValid) return <></>
     return (
         <main className='w-full bg-[#1d3124] flex flex-col justify-center items-center pt-14'>
             <section className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl p-3">

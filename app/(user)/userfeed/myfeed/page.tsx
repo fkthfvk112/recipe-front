@@ -1,12 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import MyFeed from "./MyRecipe";
 import BurstModeOutlinedIcon from "@mui/icons-material/BurstModeOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { Divider } from "@mui/material";
 import UserInfo from "./UserInfo";
-import MyLike from "./MyLike";
 import MyDiet from "./MyDiet";
 import MyRecipe from "./MyRecipe";
 import { useRecoilState } from "recoil";
@@ -16,11 +13,12 @@ import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 
 export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + "myFeedMenu"));
-  const checkingDone = useChkLoginToken("refreshNeed");
-  if(!checkingDone){
+  const isTokenValid = useChkLoginToken("refreshNeed");
+
+  if(!isTokenValid){
     return <></>
   }
-  
+
   return (
     <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
       <UserInfo></UserInfo>

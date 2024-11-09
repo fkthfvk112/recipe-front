@@ -21,27 +21,24 @@ export default function Fridge(){
     const [containIngre, setContainIngre] = useState<number>(3);
 
     const [refetcher, setRefetcher] = useState<number>(0);
+    const isTokenValid = useChkLoginToken("refreshNeed");
 
     useEffect(()=>{
-        setIsLoading(true);
-        Promise.all([
-            axiosAuthInstacne.get("fridge/my"),
-            axiosAuthInstacne.get(`recipe/my-fridge/ingres?ingreSize=${containIngre}`),
-        ]).then(([fridgeRes, recipeRes])=>{
-            setFridgeDate(fridgeRes.data);
-            setRecommandRecipe(recipeRes.data);
-            setInitialSetted(true);
-        })
-        .finally(()=>{
-            setIsLoading(false);
-        })
-
-    }, [refetcher, containIngre])
-
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
+        if(isTokenValid){
+            setIsLoading(true);
+            Promise.all([
+                axiosAuthInstacne.get("fridge/my"),
+                axiosAuthInstacne.get(`recipe/my-fridge/ingres?ingreSize=${containIngre}`),
+            ]).then(([fridgeRes, recipeRes])=>{
+                setFridgeDate(fridgeRes.data);
+                setRecommandRecipe(recipeRes.data);
+                setInitialSetted(true);
+            })
+            .finally(()=>{
+                setIsLoading(false);
+            })
+        }
+    }, [refetcher, containIngre, isTokenValid])
 
     const updateRecommand = (fridId:number)=>{
         axiosAuthInstacne.put(`fridge/recommendable/${fridId}`)
@@ -72,7 +69,7 @@ export default function Fridge(){
         <span onClick={()=>updateRecommand(fridge.fridgeId)} className={`${fridge.recommendRecipeFlag?'bg-[#38C54B]':'bg-[#e1e1e1]'} p-1 ps-2 pe-2 m-1 rounded-xl whitespace-nowrap cursor-pointer`} key={inx}>{fridge.fridgeName}</span>
     )
 
-
+    if(!isTokenValid) return <></>
     return (
         <>
         <div className="defaultInnerContainer flex flex-col justify-start items-center mt-3">

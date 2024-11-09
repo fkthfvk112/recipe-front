@@ -34,9 +34,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
   return res;
 },
 (err)=>{
-  console.log("에러", err)
   if(err.response.data === "T001"){
-    console.log("에러2", err)
 
     console.log("Access cookie expired set new cookie success");
     const originBaseUrl = err?.config?.baseURL;

@@ -42,7 +42,8 @@ export default function EditBoardPost({
 
     const router = useRouter();
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
-        
+    const isTokenValid = useChkLoginToken("refreshNeed");
+
     const setInitialBoardData = (fetchData:Board)=>{
         setInitialData(fetchData);
 
@@ -78,14 +79,16 @@ export default function EditBoardPost({
     }
 
     useEffect(()=>{
-        if (!isSignIn) {
-            router.push("/signin");
+        if(isTokenValid){
+            if (!isSignIn) {
+                router.push("/signin");
+            }
+            axiosAuthInstacne.get(`board/detail?boardId=${params.boardId}`)
+                .then((res)=>{
+                    setInitialBoardData(res.data);
+                })
         }
-        axiosAuthInstacne.get(`board/detail?boardId=${params.boardId}`)
-            .then((res)=>{
-                setInitialBoardData(res.data);
-            })
-    }, [])
+    }, [isTokenValid])
 
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -175,11 +178,7 @@ export default function EditBoardPost({
         }
     }
 
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
-
+    if(!isTokenValid) return <></>
     return (
         <div className="defaultOuterContainer pt-10 pb-[100px]">
             <section className="defaultInnerContainer">

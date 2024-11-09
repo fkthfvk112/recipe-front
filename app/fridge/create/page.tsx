@@ -9,10 +9,10 @@ import Swal from "sweetalert2";
 export default function CreateFridge(){
     const [fridgeName, setFridgeName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const checkingDone = useChkLoginToken("refreshNeed");
+    const isTokenValid = useChkLoginToken("refreshNeed");
     const router = useRouter();
 
-    if(!checkingDone){
+    if(!isTokenValid){
       return <></>
     }
 

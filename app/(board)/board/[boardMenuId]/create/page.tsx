@@ -42,10 +42,7 @@ export default function CreateNewBoardPost({
 
     const router = useRouter();
 
-    const checkingDone = useChkLoginToken("refreshNeed");
-    if(!checkingDone){
-      return <></>
-    }
+    const isTokenValid = useChkLoginToken("refreshNeed");
 
     /**게시물 post 제출 */
     const postbtn = ()=>{
