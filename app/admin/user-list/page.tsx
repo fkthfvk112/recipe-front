@@ -100,7 +100,7 @@ export default function UserListAdmin(){
         <div className="flex flex-col justify-start items-center w-full min-h-lvh p-5">
             <section className="w-full mb-20">
                 <TitleDescription title="유저 목록" desc={"가입한 유저 목록 확인"}/>
-                <section>
+                <section className="w-full overflow-y-scroll">
                     <table className={`w-full ${styles.searchTalble}`}>
                         <tr>
                             <td>
