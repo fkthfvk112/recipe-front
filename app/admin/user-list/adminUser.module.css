@@ -1,9 +1,22 @@
 .searchTalble tr td:nth-child(odd){
-    background-color: rgb(196, 222, 233);
+    background-color: #c4dee9;
     text-align: center;
 }
 
+.searchTalble tr td:nth-child(even){
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+}
+
+.searchTalble select{
+    border: solid #e1e1e1 1px;
+    padding: 0.3rem;
+}
 
 .searchTalble tr{
+    border: 1px solid #a1a1a1;
+}
+
+
+.resultTable td{
     border: 1px solid #a1a1a1;
 }

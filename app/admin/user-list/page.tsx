@@ -103,30 +103,30 @@ export default function UserListAdmin(){
                 <section className="w-full overflow-x-scroll">
                     <table className={`w-full ${styles.searchTalble}`} >
                         <tr>
-                            <td>
-                                <span className="w-[150px] font-bold">유저 아이디</span>
+                            <td className="min-w-[150px]">
+                                <span className="font-bold">유저 아이디</span>
                             </td>
-                            <td>
+                            <td className="min-w-[150px]">
                                 <input name="userId" onChange={(evt)=>{setSearchDate(evt)}} type="text" value={userSearch?.userId} />
                             </td>
-                            <td>
-                                <span className="w-[150px] font-bold">유저 닉네임</span>
+                            <td className="min-w-[150px]">
+                                <span className="font-bold">유저 닉네임</span>
                             </td>
-                            <td>
+                            <td className="min-w-[150px]">
                                 <input name="nickName" onChange={(evt)=>{setSearchDate(evt)}} type="text" value={userSearch?.nickName} />
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <span className="w-[150px] font-bold">유저 이메일</span>
+                            <td className="min-w-[150px]">
+                                <span className="font-bold">유저 이메일</span>
                             </td>
-                            <td>
+                            <td className="min-w-[150px]">
                                 <input name="email" onChange={(evt)=>{setSearchDate(evt)}} type="text" value={userSearch?.email} />
                             </td>
-                            <td>
-                                <span className="w-[150px] font-bold">회원가입 타입</span>
+                            <td className="min-w-[150px]">
+                                <span className="font-bold">회원가입 타입</span>
                             </td>
-                            <td>
+                            <td className="min-w-[150px]">
                                 <input name="grantType" onChange={(evt)=>{setSearchDate(evt)}} type="text" value={userSearch?.grantType} />
                             </td>
                         </tr>
@@ -158,14 +158,14 @@ export default function UserListAdmin(){
                     <button onClick={()=>searchUser()} className="greenBtn">조회</button>
                 </div>
                 <section className="w-full overflow-x-scroll">
-                    <table className="w-full text-center">
+                    <table className={`w-full text-center ${styles.resultTable}` }>
                         <tr className="bg-[#c4dee9] font-bold">
-                            <td>아이디</td>
-                            <td>닉네임</td>
-                            <td>이메일</td>
-                            <td>회원가입 타입</td>
-                            <td>회원가입 일자</td>
-                            <td>상태</td>
+                            <td className="min-w-[150px]">아이디</td>
+                            <td className="min-w-[150px]">닉네임</td>
+                            <td className="min-w-[150px]">이메일</td>
+                            <td className="min-w-[150px]">회원가입 타입</td>
+                            <td className="min-w-[150px]">회원가입 일자</td>
+                            <td className="min-w-[150px]">상태</td>
                         </tr>
                         {userList}
                     </table>
