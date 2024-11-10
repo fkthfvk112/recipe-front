@@ -54,7 +54,7 @@ function IntervalConfig(){
         }
     }
 
-    useInterval(loginChk, 1000, "intervalKey#loginChk")
+    useInterval(loginChk, 3 * 60 * 1000, "intervalKey#loginChk")
     
     return <></>
 }

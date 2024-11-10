@@ -1,3 +1,4 @@
+import IntervalConfig from "./(interval)/intervalConfig";
 import "./globals.css";
 import MainContainer from "./MainContainer";
 
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <MainContainer>
+          <IntervalConfig/>
           {children}
         </MainContainer>
       </body>

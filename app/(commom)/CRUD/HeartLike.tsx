@@ -8,6 +8,7 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilValue } from "recoil";
 import haveToLoginSwal from "../HaveToLoginSwal";
 import { useRouter } from "next/navigation";
+import useSyncLogin from "../Hook/useSyncLogin";
 
 function HeartLike({getUrl, putUrl, reqdata}:{getUrl:string, putUrl:string, reqdata:object}){ //have to :: 뭔가 느리고 에러 있음 레디스 도입 후 수정해보기
     const [resetData, setResetData]       = useState<number>(0);

@@ -29,8 +29,6 @@ export default function UserListAdmin(){
     const [userSearch, setUserSearch] = useState<userSearchDTO>();
     const [userInfo, setUserInfo] = useState<userInfo[]>([]);
 
-
-
     useEffect(()=>{
         axiosAuthInstacne
             .get(`admin/user/list`, {

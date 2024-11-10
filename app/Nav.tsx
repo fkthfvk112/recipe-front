@@ -12,11 +12,13 @@ import { Avatar } from "@mui/material";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import GoBoardBtn from "./GoBoardBtn";
+import useSyncLogin from "./(commom)/Hook/useSyncLogin";
 const Navbar = () => {
   //const [localSignInState, setLocalSignInState] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
   const {navCss} = useResponsiveDesignCss();
+  const syncTrigger = useSyncLogin();
 
   const router = useRouter();
 
