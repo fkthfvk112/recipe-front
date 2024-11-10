@@ -1,0 +1,9 @@
+.searchTalble tr td:nth-child(odd){
+    background-color: rgb(196, 222, 233);
+    text-align: center;
+}
+
+
+.searchTalble tr{
+    border: 1px solid #a1a1a1;
+}
