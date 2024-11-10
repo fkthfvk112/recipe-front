@@ -100,8 +100,8 @@ export default function UserListAdmin(){
         <div className="flex flex-col justify-start items-center w-full min-h-lvh p-5">
             <section className="w-full mb-20">
                 <TitleDescription title="유저 목록" desc={"가입한 유저 목록 확인"}/>
-                <section className="w-full overflow-y-scroll">
-                    <table className={`w-full ${styles.searchTalble}`}>
+                <section className="w-full overflow-x-scroll">
+                    <table className={`w-full ${styles.searchTalble}`} >
                         <tr>
                             <td>
                                 <span className="w-[150px] font-bold">유저 아이디</span>
@@ -157,17 +157,19 @@ export default function UserListAdmin(){
                 <div className="w-full text-center mt-3 mb-10">
                     <button onClick={()=>searchUser()} className="greenBtn">조회</button>
                 </div>
-                <table className="w-full text-center">
-                    <tr className="bg-[#c4dee9] font-bold">
-                        <td>아이디</td>
-                        <td>닉네임</td>
-                        <td>이메일</td>
-                        <td>회원가입 타입</td>
-                        <td>회원가입 일자</td>
-                        <td>상태</td>
-                    </tr>
-                    {userList}
-                </table>
+                <section className="w-full overflow-x-scroll">
+                    <table className="w-full text-center">
+                        <tr className="bg-[#c4dee9] font-bold">
+                            <td>아이디</td>
+                            <td>닉네임</td>
+                            <td>이메일</td>
+                            <td>회원가입 타입</td>
+                            <td>회원가입 일자</td>
+                            <td>상태</td>
+                        </tr>
+                        {userList}
+                    </table>
+                </section>
             </section>
         </div>
     )
