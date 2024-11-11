@@ -3,6 +3,7 @@ import { Box, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { axiosAuthInstacne } from "../(customAxios)/authAxios";
+import Swal from "sweetalert2";
 
 const style = {
     position: "absolute" as "absolute",
@@ -35,9 +36,16 @@ function UpdateModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: Sav
         axiosAuthInstacne
             .put(postUrl, data)
             .then((res) => {
-                alert("수정되었습니다!");
-                router.push(returnUrl);
-                router.refresh();
+                if (res.status === 200) {
+                    Swal.fire({
+                      title: "수정이 완료되었습니다!",
+                      icon: "success",
+                    }).then(() => {
+                        router.push(returnUrl);
+                        router.refresh();
+                    });
+                  }
+                
             })
             .catch((e) => {
                 alert(`에러가 발생하였습니다. ${e.data}`);

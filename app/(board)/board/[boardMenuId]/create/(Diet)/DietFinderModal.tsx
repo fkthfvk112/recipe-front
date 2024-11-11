@@ -42,6 +42,7 @@ function DietFinderModal({dietDay, setDietDay}:{dietDay:DietDay[], setDietDay:(d
             axiosAuthInstacne.get("diet/day/my-days/inx-pagination", { 
                 params:{
                     dateInx:searchedDietDay?.index,
+                    limitLock:true,
                     size:10
                 }
             }).then((res)=>{

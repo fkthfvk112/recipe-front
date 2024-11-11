@@ -1,10 +1,10 @@
 "use server"
-import { cookies } from 'next/headers'
 import { DietDay } from "@/app/(type)/diet";
 import DietDayShowBox from "./DietDayShowBox";
 import { authFetch, } from "@/app/(customAxios)/authFetch";
 import EditDel from '@/app/(commom)/CRUD/EditDel';
 import { Metadata, ResolvingMetadata } from 'next';
+import LockIcon from '@mui/icons-material/Lock';
 
 type Props = {
   params: Promise<{ dietId: string }>
@@ -68,11 +68,17 @@ export default async function DietDetail({
       </div>
     );
 
+    console.log("이퍼 ", dietDay);
+
     return (
       dietDay&&
       <div className='w-full bg-[#1d3124]  flex flex-col justify-center items-center pt-14'>
         <div className="max-w-xl bg-white pt-10 pb-10 mb-20 border shadow-xl flex flex-col flex-wrap w-full justify-center items-center rounded-xl">
-            <div className="w-[93%] flex justify-start items-center">
+            <div className="relative w-[93%] flex justify-start items-center">
+              {
+                (!dietDay?.isPublic)&&
+                <LockIcon className="w-[35px] h-[35px] mb-3"/>
+              }
               <h1 className="text-2xl mb-2">{dietDay.title}</h1>
               <EditDel ownerUserId={dietDay.userId as string} editReturnURl={`diet/mydiet/edit/${params.dietId}`} 
                 delPostUrl={`diet/day/my-day/del?dietDayId=${params.dietId}`} delReturnUrl='/userfeed/myfeed'/>
