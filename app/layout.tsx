@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import IntervalConfig from "./(interval)/intervalConfig";
 import "./globals.css";
 import MainContainer from "./MainContainer";
+import NextTopLoader from 'nextjs-toploader';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <NextTopLoader />
         <MainContainer>
           <IntervalConfig/>
           {children}
