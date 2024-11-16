@@ -34,14 +34,14 @@ export async function generateMetadata(
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
 
   return {
-    title: recipeDetail.recipeName,
-    description: recipeDetail?.description || "",
+    title: `${recipeDetail.recipeName} - 머그인`,
+    description: recipeDetail?.description || "맛있는 레시피",
     icons:{
       icon:"/common/favicon.png"
     },
     openGraph:{
-      title: recipeDetail.recipeName,
-      description: recipeDetail?.description || "",
+      title: `${recipeDetail.recipeName} - 머그인`,
+      description: recipeDetail?.description || "맛있는 레시피",
       images:recipeDetail.repriPhotos
     }
   }

@@ -31,8 +31,6 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
         },
     }
   })
-
-  console.log("패치 데이터", fetchData);
    
   const isBoardReview = (review: ReviewWithUserInfo | BoardReviewWithUserInfo): review is BoardReviewWithUserInfo => {
     return (review as BoardReviewWithUserInfo) !== undefined;

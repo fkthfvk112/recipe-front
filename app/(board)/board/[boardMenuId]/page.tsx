@@ -10,17 +10,37 @@ import BoardNav from "./BoardNav";
 import WriteBtn from "./WriteBtn";
 import { Metadata, ResolvingMetadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
-    
+type Props = {
+    params: Promise<{ boardMenuId: string }>
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const boardMenuId = (await params).boardMenuId
+
+    const baseMenuList:BoardMenu[] = await serverFetch({
+        url:"board-menu/base",
+        option:{
+            next:{
+                revalidate:3600,
+            }
+        }
+    },);
+
+    const boardInfo = baseMenuList.find(ele=>`${ele.boardMenuId}` === boardMenuId);
+    const boardTitle = boardInfo?.menuName || "게시판";
+    const boardDesc = boardInfo?.description || "다양한 의견을 공유하는 게시판이에요. 여러 유저들과 다양한 의견을 나눠보세요."
 return {
-    title: "머그인 게시판",
-    description:"다양한 레시피 관련된 의견을 공유하는 게시판이에요. 여러 유저들과 다양한 의견을 나눠보세요.",
+    title: `${boardTitle} - 머그인`,
+    description:boardDesc,
     icons:{
     icon:"/common/favicon.png"
     },
     openGraph:{
-    title:"머그인 게시판",
-    description:"다양한 레시피 관련된 의견을 공유하는 게시판이에요. 여러 유저들과 다양한 의견을 나눠보세요.",
+    title:`${boardTitle} - 머그인`,
+    description:boardDesc,
     images:"/common/logo.png"
     }
 }

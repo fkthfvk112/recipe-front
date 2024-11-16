@@ -45,7 +45,7 @@ type Props = {
     const image = boardData?.photos && boardData.photos.length >= 1 ? boardData.photos[0] : "/common/favicon.png";
    
     return {
-      title: boardData.title,
+      title: `${boardData.title} - 머그인`,
       description:boardData.content,
       icons:{
         icon:"/common/favicon.png"

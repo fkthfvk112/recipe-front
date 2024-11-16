@@ -18,7 +18,7 @@ function LikeRecipeHoriItem({recipe}:{recipe:Recipe}){
                     fill
                 />
             </section>
-            <div className="flex flex-col ms-5">
+            <div className="flex flex-col ms-5 w-full items-start justify-start">
                 <div className="flex justify-start items-center w-full">
                     <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.recipeName}</h1>
                     <span className="flex-center font-bold text-[0.8rem] mr-2 text-[#3b3b3b]">
