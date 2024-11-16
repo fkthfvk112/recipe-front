@@ -415,7 +415,7 @@ export default function SignUp() {
           {emailValid.message}
         </p>
         <div className="grid grid-cols-4 gap-3 mt-6">
-          <input placeholder="인증번호" inputMode="numeric" ref={emailCertifRef} onChange={(evt)=>{evt.target.value.length <= 4&&setEmailCertifNum(evt.target.value)}} 
+          <input placeholder="인증번호" inputMode="numeric" ref={emailCertifRef} onChange={(evt)=>{evt.target.value.length <= 6&&setEmailCertifNum(evt.target.value)}} 
                     value={emailCertifNum} className="media-col-3-to-4" type="number" maxLength={6} />
           <button onClick={()=>chkEmailCertifIsMatch()} className="col-span-1 w-[100px] p-3 ps-3 pe-3 border-2 border-[#a1a1a1]">인증</button>
         </div>
