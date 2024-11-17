@@ -28,9 +28,6 @@ export default function UserInfo() {
       .then((res) => {
         setUserData(res.data);
       })
-      .catch((e) => {
-        alert(e);
-      });
   }, [updateData]);
 
   return (

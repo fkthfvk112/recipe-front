@@ -35,7 +35,7 @@ export default function BookMark({ recipeId }: { recipeId: number }) {
         });
     } else {
       // have to 리다이렉트?
-      alert("로그인을 해주세요.");
+      //alert("로그인을 해주세요.");
     }
   };
 

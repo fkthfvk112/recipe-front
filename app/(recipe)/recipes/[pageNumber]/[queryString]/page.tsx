@@ -33,7 +33,10 @@ export default async function SearchingByCondition({
   const fetchData: Recipe[] = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/conditions?${decodedUrl}&page=${params.pageNumber}`,
     {
-      cache: "default", 
+      cache: "default",
+      next: {
+        tags: [`reviews-find`],
+      },
     }
   ).then((res) => {
     if (!res.ok) {

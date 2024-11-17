@@ -24,9 +24,6 @@ export default function UserInfo({ userNickName }: { userNickName: string }) {
       .then((res) => {
         setUserData(res.data);
       })
-      .catch((e) => {
-        alert(e);
-      });
   }, [userNickName]);
 
   return (

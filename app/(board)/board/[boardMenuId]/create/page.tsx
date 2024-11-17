@@ -104,10 +104,10 @@ export default function CreateNewBoardPost({
                 message:"제목의 길이는 1자 이상 30자 이하여야해요."
             }
         }
-        if(content.length < 5 || content.length > 1024){
+        if(content.length < 3 || content.length > 1024){
             return{
                 isValid:false,
-                message:"내용의 길이는 5자 이상 1024자 이하여야해요."
+                message:"내용의 길이는 3자 이상 1024자 이하여야해요."
             }
         }
         if(recipes.length > 3){

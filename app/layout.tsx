@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <NextTopLoader />
+      <NextTopLoader color="#FB8500" showSpinner={false} zIndex={50000}/>
         <MainContainer>
           <IntervalConfig/>
           {children}

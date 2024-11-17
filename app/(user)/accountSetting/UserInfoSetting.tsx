@@ -18,9 +18,6 @@ function UserInfoSetting(){
         .then((res) => {
           setUserData(res.data);
         })
-        .catch((e) => {
-          alert(e);
-        });
     }, [updateData]);
 
     return (

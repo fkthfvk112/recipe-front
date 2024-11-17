@@ -5,7 +5,6 @@ import RealTimeLikeBoard from "./(board)/(realTime)/RealTimeLikeBoard";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
 import SiteDescription from "./SiteDescription";
 import { Metadata, ResolvingMetadata } from "next";
-import IntervalConfig from "./(interval)/intervalConfig";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

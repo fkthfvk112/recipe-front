@@ -4,6 +4,7 @@ import { Validation, validationPwSameSentence, validationPwSentence } from "../c
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import Swal from "sweetalert2";
 import { UserFeedInfo } from "../userfeed/[userNickName]/UserInfo";
+import Link from "next/link";
 
 const style = {
     position: "absolute" as "absolute",
@@ -48,9 +49,6 @@ function UserInfoSetting_cantChg(){
           .then((res) => {
             setUserData(res.data);
           })
-          .catch((e) => {
-            alert(e);
-          });
       }, []);
 
 
@@ -163,6 +161,7 @@ function UserInfoSetting_cantChg(){
             <p className="col-span-2 h-7">{userData?.birthDate}</p> 
             <span className="col-span-1">비밀번호</span>
             <button onClick={handleOpen} className="col-span-2 h-7 p-0 btn-outline-gray">비밀번호변경</button>
+            <Link href="/accountSetting/del" className="mt-3 text-center col-span-3 text-[#a1a1a1] underline underline-offset-4">회원탈퇴</Link>
             <Modal
                 open={isOpenModal}
                 onClose={handleClose}

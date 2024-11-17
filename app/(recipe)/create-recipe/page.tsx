@@ -21,6 +21,7 @@ import RepriPric from "./RepriPic";
 import Swal from "sweetalert2";
 import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
+import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -66,6 +67,7 @@ export default function CreateRecipePage() {
             title: "게시가 완료되었습니다!",
             icon: "success",
           }).then(() => {
+            revalidateByTagName("reviews-find");
             router.push(`/`);
           });
           //have to 리발리데이트 
