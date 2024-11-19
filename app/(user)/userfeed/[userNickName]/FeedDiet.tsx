@@ -40,7 +40,7 @@ export default function FeedDiet({
   const feedInfos = dietData.cachedData.data.map((diet, inx) => (
     <Link
       key={inx}
-      href={`/diet/mydiet/${diet.dietDayId}`}
+      href={`/diet/user/${diet.dietDayId}`}
     >
       <DietSquareItem dietDay={diet}/>
     </Link>

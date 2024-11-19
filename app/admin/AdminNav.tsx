@@ -8,7 +8,8 @@ export default function AdminNav(){
         {eng:"ingredient", kor:"재료 등록"},
         {eng:"ingredient-redis", kor:"재료 확인"},
         {eng:"fridge-img", kor:"냉장고 식재료 등록"},
-        {eng:"user-list", kor:"유저 목록"}
+        {eng:"user-list", kor:"유저 목록"},
+        {eng:"access-log", kor:"액세스 로그"},
     ];
 
     const baseMenu = adminMenu.map((menu, inx)=>

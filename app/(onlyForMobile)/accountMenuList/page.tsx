@@ -63,7 +63,7 @@ export default function MyAccountMenuList(){
             <h3 className='m-6'>마이</h3>
             <ul className="w-full">
                 <li onClick={goToMyFeed} className={liClassName}>
-                    <p>내 피드</p>
+                    <p>나의 레시피/식단</p>
                     <NavigateNextIcon sx={{height:'30px', width:'30px', fill:'#a1a1a1'}}/>
                 </li>
                 <li onClick={goToFridge} className={`${liClassName}`}>
