@@ -68,9 +68,9 @@ export default function UserListAdmin(){
 
     }, [logData])
 
-    const simpleData = logSortedData.map((log)=>{
+    const simpleData = logSortedData.map((log, inx)=>{
         return(
-            <div className="my-3 bg-sky-200 p-3 text-2xl">
+            <div key={inx} className="my-3 bg-sky-200 p-3 text-2xl">
                 <span>날짜: {log.ymd}</span>
                 <span className="ms-3">개수: {log.extraData.length}</span>
             </div>
