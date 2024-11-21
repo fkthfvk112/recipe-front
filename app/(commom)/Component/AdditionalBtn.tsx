@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
+import ScrollToTopButton from "./GoToTopBtx";
 
 interface btn{
     name:string,
@@ -41,6 +42,7 @@ export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
         }
 
         <div className={`fixed bottom-6 right-6 direction-right ${layoutMargin} z-50`}>
+            <ScrollToTopButton marginBottom={3}/>
             {
             plusBtnClicked&&
             <div className="grid grid-cols-2">
@@ -54,5 +56,3 @@ export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
         </>
     )
 }
-
-// export default React.memo(WriteBtn);

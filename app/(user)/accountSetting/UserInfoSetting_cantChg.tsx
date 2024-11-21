@@ -169,9 +169,9 @@ function UserInfoSetting_cantChg(){
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <h1 className="text-xl">
                     비밀번호 변경
-                    </Typography>
+                    </h1>
                         <div className="flex flex-col mt-3 justify-center items-center">
                             <div className="mt-3 w-full text-gray-500">
                                 이전 비밀번호

@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import useResponsiveDesignCss from '../Hook/useResponsiveDesignCss';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function ScrollToTopButton(){
+function ScrollToTopButton({marginBottom}:{marginBottom?:number}){
+  if(marginBottom === undefined || marginBottom === null){
+    marginBottom = 0
+  };
+  
   const [isVisible, setIsVisible] = useState(false);
   const {layoutBottomMargin} = useResponsiveDesignCss();
 
@@ -31,9 +35,9 @@ function ScrollToTopButton(){
   }, []);
 
   return (
-    <div className={`fixed bottom-3 right-2 ${layoutBottomMargin}`}>
+    <div className={`relative mb-${marginBottom} ${layoutBottomMargin}`}>
       {isVisible && (
-        <button onClick={scrollToTop} className="rounded-full w-14 h-14 flex-center-col border-none bg-[#a1a1a1] opacity-55">
+        <button onClick={scrollToTop} className="rounded-full w-[60px] h-[60px] flex-center-col border-none bg-[#a1a1a1] opacity-55">
           <KeyboardArrowUpIcon sx={{width:"50px", height:"50px", fill:"white"}}/>
         </button>
       )}

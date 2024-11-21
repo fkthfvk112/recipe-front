@@ -3,17 +3,23 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import RecipeConditionBtns from "./RecipeConditionBtns";
 import RecipeDetailSearch from "./RecipeDetailSearch";
 
 export default function RecipeSearchBar() {
+  const pathname = usePathname();
+  const searchingTerm = 'searchingTerm=';
+  const isPresent = pathname.includes(searchingTerm);
+  const searchingValue = isPresent ? pathname.split(`${searchingTerm}`)[1].split('&')[0] : null;
+
   const [openDetailSearch, setOpenDtailSearch] = useState<boolean>(false);
-  const [searchingData, setSearchingData] = useState<string>("");
+  const [searchingData, setSearchingData] = useState<string>(decodeURIComponent(searchingValue||""));
   const {layoutTop} = useResponsiveDesignCss();
 
   const router = useRouter();
+
 
   const searchTerm = ()=>{
     if(searchingData.length <= 0){

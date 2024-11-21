@@ -1,11 +1,8 @@
 "use client"
 
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
-import SearchBar from "@/app/SearchBar";
-import CreateIcon from '@mui/icons-material/Create';
-import Link from "next/link";
 import RecipeSearchBar from "./(common)/RecipeSearchBar";
-import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
+import { AdditionalBtn } from "@/app/(commom)/Component/AdditionalBtn";
 
 export default function RecipeLayout({
   children,
@@ -19,12 +16,8 @@ export default function RecipeLayout({
       <RecipeSearchBar></RecipeSearchBar>
       <div className="flex justify-center w-full h-full max-w-[1024px] p-2 mt-10">
         {children}
-        <Link href={`/create-recipe`} className={`fixed bottom-6 roundRreenBtn ${layoutMargin} z-10`}>
-          <CreateIcon sx={{width:"25px", height:"25px"}}/>
-          <span className="ms-2">레시피 작성</span>
-        </Link>
+        <AdditionalBtn additionalBtns={[{name:"레시피 작성", url:"/create-recipe"}]}/>
       </div>
-      <ScrollToTopButton/>
     </div>
   );
 }

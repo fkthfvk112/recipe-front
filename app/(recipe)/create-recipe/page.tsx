@@ -109,8 +109,9 @@ export default function CreateRecipePage() {
       >
         레시피 발행
       </button>
-
-      <ScrollToTopButton/>
+      <div className="fixed bottom-6 right-6">
+        <ScrollToTopButton/>
+      </div>
       <Modal
         open={isModalOpen}
         onClose={() => {

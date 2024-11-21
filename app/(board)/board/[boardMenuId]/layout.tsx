@@ -1,4 +1,3 @@
-import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 import serverFetch from "@/app/(commom)/serverFetch";
 import { BoardMenu } from "@/app/(type)/menu";
 
@@ -15,7 +14,6 @@ export default async function BoardLayout({
     return (
       <main className={`bg-[${selectedMenu?.themeColor}] defaultOuterContainer flex pb-20`}>
           {children}
-          <ScrollToTopButton/>
       </main>
     )
 }
