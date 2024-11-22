@@ -18,6 +18,8 @@ import DateSelector from "./BirthdateSelection";
 import useDecreaseTimer from "@/app/(commom)/Hook/useDecreaseTimer";
 import { formatTime_mmss } from "@/app/(utils)/timeUtils";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import TermOfUsage from "@/app/(recipe)/recipes/(common)/document/TermOfUsage";
+import PrivacyPolicy from "@/app/(recipe)/recipes/(common)/document/PrivacyPolicy";
 
 export default function SignUp() {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
@@ -30,6 +32,9 @@ export default function SignUp() {
   const [userNickName, setUserNickName]             = useState<string>("");
   const [userBirthDate, setUserBirthDate]           = useState<string>("");
   const [userSex, setUserSex]                       = useState<SexEnum|String>("");
+  const [policyChk1, setPolicyChk1]                 = useState<boolean>(false);
+  const [policyChk2, setPolicyChk2]                 = useState<boolean>(false);
+
 
   const [idValid, setIdValid] = useState<Validation>({
     isValid: false,
@@ -82,8 +87,13 @@ export default function SignUp() {
     if (!emailValid.isValid) return false;
     if (!nickNameValid.isValid) return false;
     if (!emailCertifValid.isValid) return false;
+    if (!policyChk1 || !policyChk2) return false;
     return true;
   }
+
+  console.log("체크1", policyChk1)
+
+  console.log("체크2", policyChk2)
 
   useEffect(() => {
     if (userId === "") {
@@ -428,6 +438,25 @@ export default function SignUp() {
         <p className={emailCertifValid.isValid ? "text-green-400" : "text-red-500"}>
           {emailCertifValid.message}
         </p>
+      </div>
+      <div className="m-3 mt-6">
+        <div className="flex justify-between items-center mb-3">
+          <div>이용약관 동의 <span className="text-red-500">(필수)</span></div>
+          <input checked={policyChk1} onChange={()=>setPolicyChk1((prev)=>!prev)}  className="w-5 h-5" type="checkbox" />
+        </div>
+        
+        <section className="h-[200px] overflow-y-scroll border">
+          <TermOfUsage/>
+        </section>
+      </div>
+      <div className="m-3 mt-6">
+        <div className="flex justify-between items-center mb-3">
+          <div>개인정보 수집 및 이용 동의 <span className="text-red-500">(필수)</span></div>
+          <input checked={policyChk2} onChange={()=>setPolicyChk2((prev)=>!prev)}  className="w-5 h-5" type="checkbox" />
+        </div>
+        <section className="h-[200px] overflow-y-scroll border">
+          <PrivacyPolicy/>
+        </section>
       </div>
       <div className="flex justify-center items-center w-full">
         <button className={`${allValid()?"greenBtn":"grayBtn-noHover"} w-full h-12 mt-8`} onClick={sendSignUpRequest} disabled={!allValid()}>회원가입</button>
