@@ -91,10 +91,6 @@ export default function SignUp() {
     return true;
   }
 
-  console.log("체크1", policyChk1)
-
-  console.log("체크2", policyChk2)
-
   useEffect(() => {
     if (userId === "") {
       setIdValid({
