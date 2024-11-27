@@ -6,11 +6,18 @@ import { useEffect, useState } from "react"
 
 
 
-export default function IngreRecommandInput({inputStyleStr, containerStyleStr, placeholderStr, dataSettingCallback, titleVideCnt}:{inputStyleStr?:string, containerStyleStr?:string, placeholderStr?:string, dataSettingCallback?:(data:any)=>any, titleVideCnt?:number}){
+export default function IngreRecommandInput({inputStyleStr, containerStyleStr, placeholderStr, dataSettingCallback, titleVideCnt, defaultVal}:{inputStyleStr?:string, containerStyleStr?:string, placeholderStr?:string, dataSettingCallback?:(data:any)=>any, titleVideCnt?:number, defaultVal?:string}){
     const [ingre, setIngre] = useState<string>("");
     const [recommendTermList, setRecommendTermList] = useState<string[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [lastSearchedTerm, setLastSearchedTerm] = useState<string>("");
+
+
+    useEffect(()=>{
+        if(defaultVal){
+            setIngre(defaultVal);
+        }
+    }, [])
 
     useEffect(()=>{
         if(dataSettingCallback){

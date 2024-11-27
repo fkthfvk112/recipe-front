@@ -7,7 +7,6 @@ export default function RecipeStepInfo({
 }: {
   steps: CookingSteps_show[];
 }) {
-  const skeltonImg = <div style={{ width: "100px", height: "100px" }}></div>;//have to 스켈레톤이미지 넣기
 
   const stepItems = steps.map((step, inx) => {
     return (
@@ -19,14 +18,12 @@ export default function RecipeStepInfo({
         <div className="bottom-line-noM mb-3 w-full"/>
 
         <div className="grid grid-cols-3 ">
-          <div className="col-span-2 p-3 break-words break-keep whitespace-pre-wrap">{step.description}</div>
-          {step.photo ? (
-            <div className="img-wrapper-square w-full pb-[100%]">
+          <div className={`${step.photo?'col-span-2':'col-span-3'} p-3 break-words break-keep whitespace-pre-wrap`}>{step.description}</div>
+          {step.photo &&
+            <div className="img-wrapper-square aspect-square w-full pb-[100%]">
               <Image className="inner-img" src={step.photo} fill alt="noimg" />
             </div>
-          ) : (
-            skeltonImg
-          )}
+          }
         </div>
       </div>
     );

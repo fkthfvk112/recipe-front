@@ -83,7 +83,7 @@ export default function CreateRecipePage({
     if (!isSignIn) {
       router.push("/signin");
     }
-    axiosAuthInstacne.get(`recipe/get-recipe?recipeId=${params.recipeId}`)
+    axiosAuthInstacne.get(`recipe/detail-upd?recipeId=${params.recipeId}`)
     .then((res)=>{
       setInitialRecipeData(res.data.recipeDTO);
       setLoading(false);
@@ -142,7 +142,7 @@ export default function CreateRecipePage({
     )
   }
 
-  if(isTokenValid) return <></>
+  if(!isTokenValid) return <></>
   return (
     <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
       <RecipeName recipe={recipe} setRecipe={setRecipe}></RecipeName>

@@ -61,6 +61,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
               };
               setIngredients(newIngre);
             }}
+            defaultVal={ingre.name}
             placeholderStr="예) 삼겹살"
             inputStyleStr="col-span-3 rounded-none"
             containerStyleStr="col-span-3"
@@ -87,6 +88,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
               };
               setIngredients(newIngre);
             }}
+            defaultVal={ingre.name}
             inputStyleStr="col-span-3 rounded-none"
             containerStyleStr="col-span-3"
             placeholderStr="재료"

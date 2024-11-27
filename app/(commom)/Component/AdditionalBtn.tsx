@@ -36,7 +36,7 @@ export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
         <>
         {
         plusBtnClicked&&
-        <div onClick={()=>setPlusBtnClicked(false)} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40">
+        <div onClick={()=>setPlusBtnClicked(false)} className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
 
         </div>
         }
