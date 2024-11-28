@@ -5,7 +5,7 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Link from "next/link";
 import RecipePagination from "../../RecipePagination";
 import NoContent_Recipe from "../../(common)/NoContent_Recipe";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
 

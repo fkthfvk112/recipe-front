@@ -2,51 +2,49 @@
 import { DietDay } from "@/app/(type)/diet";
 import DietDayShowBox from "./DietDayShowBox";
 import { authFetch, } from "@/app/(customAxios)/authFetch";
-import EditDel from '@/app/(commom)/CRUD/EditDel';
 import { Metadata, ResolvingMetadata } from 'next';
-import LockIcon from '@mui/icons-material/Lock';
+import serverFetch from "@/app/(commom)/serverFetch";
 
 type Props = {
   params: Promise<{ dietId: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
-  const dietId = (await params).dietId
+// export async function generateMetadata(
+//   { params, searchParams }: Props,
+// ): Promise<Metadata> {
+//   // read route params
+//   const dietId = (await params).dietId
   
-  const dietDay:DietDay|undefined = await authFetch(`diet/day/my-day?dietId=${dietId}`);
+//   const dietDay:DietDay|undefined = await authFetch(`diet/day/my-day?dietId=${dietId}`);
 
 
-  //const image = boardData?.photos && boardData.photos.length >= 1 ? boardData.photos[0] : "/common/favicon.png";
+//   //const image = boardData?.photos && boardData.photos.length >= 1 ? boardData.photos[0] : "/common/favicon.png";
  
-  let image = "/common/favicon.png";
-  let title = "머그인 - 나의 식단";
-  let desc = "내 오늘의 식단을 공유하는 페이지입니다. 오늘의 식단을 작성하고 게시판을 통해 공유해보세요!";
-  if(dietDay?.isPublic){
-    const tempImg = dietDay.dietItemRowList[0]?.photo;
-    image = tempImg.length >= 10 ? "/common/favicon.png":image;
+//   let image = "/common/favicon.png";
+//   let title = "머그인 - 나의 식단";
+//   let desc = "내 오늘의 식단을 공유하는 페이지입니다. 오늘의 식단을 작성하고 게시판을 통해 공유해보세요!";
+//   if(dietDay?.isPublic){
+//     const tempImg = dietDay.dietItemRowList[0]?.photo;
+//     image = tempImg.length >= 10 ? "/common/favicon.png":image;
 
-    title = dietDay?.title ? dietDay.title:title
-    desc = dietDay?.memo ? dietDay.memo : desc
-  }
+//     title = dietDay?.title ? dietDay.title:title
+//     desc = dietDay?.memo ? dietDay.memo : desc
+//   }
 
-  return {
-    title: title,
-    description:desc,
-    icons:{
-      icon:"/common/favicon.png"
-    },
-    openGraph:{
-      title: dietDay?.title ? dietDay.title:"머그인 - 나의 식단",
-      description:desc,
-      images:image
-    }
-  }
-}
+//   return {
+//     title: title,
+//     description:desc,
+//     icons:{
+//       icon:"/common/favicon.png"
+//     },
+//     openGraph:{
+//       title: dietDay?.title ? dietDay.title:"머그인 - 나의 식단",
+//       description:desc,
+//       images:image
+//     }
+//   }
+// }
 
 export default async function UserDietDetail({
     params,
@@ -60,13 +58,29 @@ export default async function UserDietDetail({
     //하지만 유저는 다 볼 수 있어야한다.
     //다이어트 폼을 공통으로 사용하자.
 
-    const dietDay:DietDay|undefined = await authFetch(`diet/day/user-day?dietId=${params.dietId}`);
+    //const dietDay:DietDay|undefined = await serverFetch(`diet/day/user-day?dietId=${params.dietId}`);
+    
+    const dietDay:DietDay|undefined = await serverFetch({
+      url:"diet/day/user-day",
+        queryParams:{
+        dietId:params.dietId
+      },
+      option:{
+          cache:"no-cache",
+      }
+    })
+    
+    
+    
+    console.log("뭔데 ", dietDay)
   
     const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) =>
       <div className="col-span-1 aspect-auto" key={inx}>
         <DietDayShowBox title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>
       </div>
     );
+
+    console.log("히히", dietDay);
 
     return (
       dietDay&&

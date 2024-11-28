@@ -169,7 +169,6 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                     {title}
                     <div onClick={()=>{setIsModalOpen(true)}}>
                         <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 추가</button>
-                        {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
                     </div>
                 </div>
             </div>
@@ -220,10 +219,21 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
                     </div>
                     <div className="bottom-line"/>
                         <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
+                            {
+                            dietItemRow?.photo&&
+                            <div className="w-full flex-center">
+                                <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
+                                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
+                                        <Image src={dietItemRow.photo} alt="no img" fill/>
+                                    </div>
+                                </div>
+                            </div>
+                            }
                             {itemInputSections}
                             <div className="text-center mt-4">
                                 <AddIcon
-                                className="m-1 w-[60px] h-[60px] border border-slate-500 hover:cursor-pointer"
+                                sx={{width:"45px", height:"45px"}}
+                                className="m-1 border border-slate-500 hover:cursor-pointer"
                                 onClick={handleAddItem}
                                 >
                                 </AddIcon>

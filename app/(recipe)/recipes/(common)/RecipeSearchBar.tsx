@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { usePathname, useRouter } from "next/navigation";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import RecipeConditionBtns from "./RecipeConditionBtns";
-import RecipeDetailSearch from "./RecipeDetailSearch";
 
 export default function RecipeSearchBar() {
   const pathname = usePathname();
@@ -14,7 +13,6 @@ export default function RecipeSearchBar() {
   const isPresent = pathname.includes(searchingTerm);
   const searchingValue = isPresent ? pathname.split(`${searchingTerm}`)[1].split('&')[0] : null;
 
-  const [openDetailSearch, setOpenDtailSearch] = useState<boolean>(false);
   const [searchingData, setSearchingData] = useState<string>(decodeURIComponent(searchingValue||""));
   const {layoutTop} = useResponsiveDesignCss();
 
@@ -69,14 +67,13 @@ export default function RecipeSearchBar() {
           <SearchIcon sx={{fill:"a1a1a1"}} />
         </button>
         <span className="flex-center absolute top-1.5 w-[80px] h-[35px] right-2 bg-[#FB8500] rounded-full">
-          <button className="border-none font-semibold text-[#121212]" onClick={() => setOpenDtailSearch(true)}>상세</button>
+          <button className="border-none font-semibold text-sm text-[#121212]" onClick={() => router.push("/search/recipe-detail")}>상세</button>
         </span>
       </div>   
     </div>
     <div className={`flex bg-white justify-center items-center pb-3 pt-3 w-full text-center shadow-sm sticky ${layoutTop} z-50`}>
         <RecipeConditionBtns/>
     </div>
-    <RecipeDetailSearch setModalOpen={setOpenDtailSearch} modalOpen={openDetailSearch} />  
     </>
   );
 }

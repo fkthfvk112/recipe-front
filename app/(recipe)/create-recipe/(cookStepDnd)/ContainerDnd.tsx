@@ -139,6 +139,7 @@ export const ContainerDnd = ({
         {cards.map((card, i) => renderCard(card, i))}
         <div className="w-full flex justify-center">
           <AddIcon
+            sx={{width:"45px", height:"45px"}}
             className="m-1 w-12 h-12 border border-slate-500 hover:cursor-pointer"
             onClick={addNewStep}
           >

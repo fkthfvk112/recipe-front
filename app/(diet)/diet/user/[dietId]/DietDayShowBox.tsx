@@ -29,22 +29,6 @@ interface DietDayRowProp{
 function DietDayBox({title, dietItemRow}:DietDayRowProp){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    // const getImg = (inx:number)=>{
-    //     const itemNow:DietItem = dietItemRow.dietItemList[inx];
-    //     if(itemNow?.photo === undefined || itemNow.photo === ""){
-    //         return <Avatar className="w-16 h-16" />
-    //     }
-    //     return (
-    //             <Image
-    //             className="rounded-full"
-    //             width={64}
-    //             height={64}
-    //             src={itemNow.photo as string}
-    //             alt="no img">
-    //             </Image>
-    //     )
-    //   }
-    
     const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
             <div key={inx} className="flex flex-col justify-center items-center p-3 bottom-line pb-10 relative">
@@ -82,7 +66,6 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                     {title}
                     <div onClick={()=>{setIsModalOpen(true)}}>
                         <button className="font-normal text-sm border-none p-0 m-0 w-20 greenBtn">음식 상세</button>
-                        {/* <AddIcon sx={{fill:'#38c54b', width:'2.5rem', height:'2.5rem'}}></AddIcon> */}
                     </div>
                 </div>
             </div>
@@ -92,7 +75,6 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                     <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
                         <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
                             <Image src={dietItemRow.photo} alt="no img" fill/>
-                            {dietItemRow?.photo}
                         </div>
                     </div>
                 </div>
@@ -121,7 +103,17 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                     </div>
                     <div className="bottom-line"/>
                     <div className="p-3 min-h-[500px] max-h-[500px] overflow-y-scroll">
-                            {itemBageList}
+                        {
+                            dietItemRow?.photo&&
+                            <div className="w-full flex-center">
+                                <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
+                                    <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
+                                        <Image src={dietItemRow.photo} alt="no img" fill/>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        {itemBageList}
                     </div>
                 </Box>
             </Modal>

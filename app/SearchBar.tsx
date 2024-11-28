@@ -64,10 +64,6 @@ export default function SearchBar() {
           <button className="border-none font-semibold text-sm text-[#121212]" onClick={() => router.push("/search/recipe-detail")}>상세</button>
         </span>
       </div>
-      <DetailSearchingModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      ></DetailSearchingModal>
     </div>
   );
 }

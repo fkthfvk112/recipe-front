@@ -56,7 +56,7 @@ function DietSquareItem({dietDay}:{dietDay:DietDay}){
             <div ref={textContainerRef} className="relative w-full text-center text-[1rem]">
                 {
                     (!dietDay?.isPublic)&&
-                    <LockIcon className="absolute -left-6 -top-8 w-[30px] h-[30px]"/>
+                    <div className="text-[#727272]">(비공개)</div>
                 }
                 <h2>{dietDay?.title&&truncateString(dietDay.title, 8)}</h2>
             </div>

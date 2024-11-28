@@ -158,7 +158,8 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
       </div>
       <div className="text-center mt-4">
         <AddIcon
-          className="m-1 w-[45px] h-[45px] border border-slate-500 hover:cursor-pointer"
+          sx={{width:"45px", height:"45px"}}
+          className="m-1 border border-slate-500 hover:cursor-pointer"
           onClick={addIngre}
         >
         </AddIcon>
