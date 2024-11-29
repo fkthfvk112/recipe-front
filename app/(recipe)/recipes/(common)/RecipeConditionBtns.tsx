@@ -63,11 +63,12 @@ function RecipeConditionBtns() {
         })
 
         queryStrArr.push(`sortingCondition=${sortingCon}`);
-        const urlOrg = currentUrl.slice(0, currentUrl.lastIndexOf("/")) + "/";
+        const urlOrg = currentUrl.slice(0, currentUrl.lastIndexOf("/"));
+        const urlNotIncludePage = urlOrg.slice(0, urlOrg.lastIndexOf("/")) + "/1/";
         const queryStr = queryStrArr.length > 0 ? queryStrArr.join('&') : '';
 
         setIsLoading(true);
-        router.push(urlOrg + queryStr);
+        router.push(urlNotIncludePage + queryStr);
     };
 
     useEffect(() => {
