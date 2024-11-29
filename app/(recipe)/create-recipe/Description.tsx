@@ -22,7 +22,7 @@ export default function Description({ recipe, setRecipe }: DescProp) {
         placeholder="3자 이상 200자 이하"
         value={recipe.description}
         onChange={handleDescText}
-        className="border border-slate-500 rounded-2xl w-full h-24 p-3 resize-none"
+        className="border border-slate-500 rounded-2xl w-full h-[150px] p-3 resize-none"
         maxLength={200}
         name=""
         id=""

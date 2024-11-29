@@ -218,7 +218,7 @@ const CookStepCard: FC<CardProps> = ({
           분
         </div>
       </div>
-      <div className=" p-3 flex flex-row justify-center items-center w-full">
+      <div className=" p-3 flex flex-row justify-center items-start w-full">
         <div className="bg-slate-50 border border-slate-400 m-2 w-24 h-24 ">
             <input
               className="border border-slate-500"
@@ -249,13 +249,13 @@ const CookStepCard: FC<CardProps> = ({
         </div>
         <textarea
           placeholder="3자 이상 200자 이하"
-          className="ml-2 flex-grow rounded-2xl w-auto h-24 p-2 border border-slate-500 border-solid resize-none"
+          className="ml-2 flex-grow rounded-2xl w-auto h-[150px] p-3 border border-slate-500 border-solid resize-none"
           onChange={handleTextChange}
           value={card.description}
           maxLength={200}
         ></textarea>
         <div ref={dragRef}>
-          <ImportExportIcon className="hover:cursor-pointer h-12 w-12"></ImportExportIcon>
+          <ImportExportIcon className="hover:cursor-pointer h-12 w-12 mt-10"></ImportExportIcon>
         </div>
       </div>
     </div>

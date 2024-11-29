@@ -25,6 +25,7 @@ export default function UserListAdmin(){
     const [logData, setLogData] = useState<logDate[]>([]);
     const [logSortedData, setLogSortedData]  = useState<sortedData[]>([]);
 
+    console.log("로그 데이터", logData);
 
     useEffect(()=>{
         axiosAuthInstacne
