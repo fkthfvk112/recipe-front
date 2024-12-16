@@ -9,8 +9,10 @@ export default async function serverFetch({url, queryParams, option}:{url:string
         `${fullUrl}`, option
       ).then((res) => {
         if (!res.ok) {
-          console.log("RecipeDetail fetch error!!", res.status);
-          throw new Error();
+          return res.json().then((errorData)=>{
+            throw new Error(errorData.message || '알 수 없는 에러가 발생하였습니다.');
+          })
+
         } else {
           return res.json();
         }

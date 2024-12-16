@@ -45,5 +45,5 @@ export const errorCode = [
     "F003",
 
     "BK001",
-    "BK002"
+    "BK002",
 ];

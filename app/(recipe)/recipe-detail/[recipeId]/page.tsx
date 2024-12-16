@@ -115,7 +115,7 @@ export default async function RecipeDetail({
             {/* have to : user ID -> user uuid */}
             <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
               delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
-              revalidateTagName={`/recipeDetail-${params.recipeId}`}/>
+              revalidateTagName={`recipeDetail-${params.recipeId}`}/>
             <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
         </div>
         <div className="bg-white p-5 mb-3 w-full">

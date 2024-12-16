@@ -8,6 +8,8 @@ import { useRecoilState } from "recoil";
 import { fridgeDataAtom, fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
 import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
 import ExpBar from "./(common)/ExpBar";
+import Link from "next/link";
+import AddIcon from '@mui/icons-material/Add';
 
 export default function FridgeDetail({
     params
@@ -75,6 +77,13 @@ export default function FridgeDetail({
             <section className="relative fridge-container shadow-md ice-shadow-inner mt-6">
                 <div className="fridge">
                     {fridgeItemProp}
+                    {fridgeItemProp&&fridgeItemProp?.length < 50 &&
+                        <li className="fridge-item relative cursor-pointer">
+                            <Link href={`/fridge/ingre-edit/${params.fridgeId}`}>
+                                <AddIcon sx={{fill:'#121212', width:'6rem', height:'6rem'}}/>
+                            </Link>
+                        </li>
+                    }
                 </div>
             </section>
             <AdditionalBtn additionalBtns={additionalBtnInfo}/>

@@ -8,7 +8,6 @@ export default function UserInfo({
 }: {
   recipeOwner: RecipeOwnerInfo;
 }) {
-  console.log('오너', recipeOwner);
   return (
     <div className="flex flex-col justify-center items-start mb-5 mt-5 ps-6">
       <div className="flex justify-center items-center">
