@@ -11,13 +11,15 @@ module.exports = {
       const paths = [];
       for (let i = 1; i <= lastRecipeId; i++) {
         console.log("사이트맵 에드", `/recipe-detail/${i}`)
-        paths.push(await config.transform(`/recipe-detail/${i}`));
+        paths.push(await config.transform(config, `/recipe-detail/${i}`));
       }
 
       for (let i = 1; i <= lastBoardId; i++) {
-        paths.push(await config.transform(`/board/1/detail/${i}`));
-        paths.push(await config.transform(`/board/2/detail/${i}`));
+        paths.push(await config.transform(config, `/board/1/detail/${i}`));
+        paths.push(await config.transform(config, `/board/2/detail/${i}`));
       }
+
+      console.log("패쓰", paths);
       return paths;
     },
     generateRobotsTxt: true, // robots.txt 생성
