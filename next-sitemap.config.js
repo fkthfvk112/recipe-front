@@ -7,8 +7,10 @@ module.exports = {
       const board_res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}board/last-board-id`)
       const lastBoardId = await board_res.json();
 
+      console.log("레시피 아이디", lastRecipeId)
       const paths = [];
       for (let i = 1; i <= lastRecipeId; i++) {
+        console.log("사이트맵 에드", `/recipe-detail/${i}`)
         paths.push(await config.transform(`/recipe-detail/${i}`));
       }
 
