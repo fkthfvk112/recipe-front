@@ -13,8 +13,8 @@ export interface authFetchOptions{
 
 export const authFetch = async(url:string, options?:authFetchOptions)=>{
     const cookieStore = cookies()
-    const authCookie = cookieStore.get('authorization')
-    const refreshCookie = cookieStore.get('refresh-token');
+    const authCookie = cookieStore.get('mugin-authtoken')
+    const refreshCookie = cookieStore.get('mugin-refreshtoken');
     const initialContentType = options?.['Content-Type'] || 'application/json';
 
 

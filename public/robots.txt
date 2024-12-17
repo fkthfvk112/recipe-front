@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: http://localhost:3001
+Host: https://mug-in.com
 
 # Sitemaps
-Sitemap: http://localhost:3001/sitemap.xml
+Sitemap: https://mug-in.com/sitemap.xml

@@ -3,15 +3,15 @@ import { decodedUserInfo, decodeUserJwt } from "@/app/(utils)/decodeJwt";
 import { cookies } from "next/headers";
 
 export async function deleteAuthToken() {
-  cookies().delete("authorization");
-  cookies().delete("refresh-token");
+  cookies().delete("mugin-authtoken");
+  cookies().delete("mugin-refreshtoken");
 }
 
 export async function isLogin(){
   const cookieStore = cookies()
-  const auth = cookieStore.get('authorization');
+  const auth = cookieStore.get('mugin-authtoken');
 
-  if(cookieStore.has('authorization') && auth?.value.startsWith('Bearer_')){
+  if(cookieStore.has('mugin-authtoken') && auth?.value.startsWith('Bearer_')){
       return true;
   }
   return false;

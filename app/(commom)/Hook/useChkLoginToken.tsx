@@ -22,8 +22,8 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
     const router = useRouter();
 
     const setLogOut = ()=>{
-        deleteCookie("refresh-token");
-        deleteCookie("authorization");
+        deleteCookie("mugin-refreshtoken");
+        deleteCookie("mugin-authtoken");
         setIsSignIn(false);
     }
       
@@ -37,7 +37,7 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
         }
 
         try{
-            const refreshTokenStr = getCookie("refresh-token");
+            const refreshTokenStr = getCookie("mugin-refreshtoken");
             if(refreshTokenStr){
                 const refreshToken:Token = jwtDecode(refreshTokenStr);
                 const expDate = new Date(refreshToken.exp * 1000);

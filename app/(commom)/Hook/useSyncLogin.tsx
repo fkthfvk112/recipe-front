@@ -8,7 +8,7 @@ export default function useSyncLogin() {
     const [trigger, setTrigger] = useState(false); // 상태 변경을 위한 trigger 추가
 
     useEffect(() => {
-        const refreshTokenStr = getCookie("refresh-token");
+        const refreshTokenStr = getCookie("mugin-refreshtoken");
         if (!refreshTokenStr) {
             setIsSignIn(false);
         }

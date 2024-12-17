@@ -6,8 +6,8 @@ import { jwtDecode } from 'jwt-decode';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get('authorization');
-  const refreshCookie = request.cookies.get('refresh-token');
+  const authCookie = request.cookies.get('mugin-authtoken');
+  const refreshCookie = request.cookies.get('mugin-refreshtoken');
   
   if(authCookie === undefined || refreshCookie === undefined || !authCookie.value.startsWith("Bearer_")){
     return NextResponse.redirect(new URL('/signin', request.url))

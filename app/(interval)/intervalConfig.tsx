@@ -17,12 +17,12 @@ interface Token{
 function IntervalConfig(){
     const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
     function loginChk(){
-        const refreshTokenStr = getCookie("refresh-token");
+        const refreshTokenStr = getCookie("mugin-refreshtoken");
 
         const setLogOut = ()=>{
             setIsSignIn(false);
-            deleteCookie("refresh-token");
-            deleteCookie("authorization");
+            deleteCookie("mugin-refreshtoken");
+            deleteCookie("mugin-authtoken");
         }
 
         if(refreshTokenStr){
