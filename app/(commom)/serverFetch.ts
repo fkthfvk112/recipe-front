@@ -4,20 +4,13 @@ export default async function serverFetch({url, queryParams, option}:{url:string
     const queryString = queryParams ? `?${objectToQueryString(queryParams)}` : '';
     const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}${url}${queryString}`;
 
-
-    return fetch(
-        `${fullUrl}`, option
-      ).then((res) => {
-        if (!res.ok) {
-          return res.json().then((errorData)=>{
-            throw new Error(errorData.message || '알 수 없는 에러가 발생하였습니다.');
-          })
-
-        } else {
-          return res.json();
-        }
-      });
-}
+    const res = await fetch(`${fullUrl}`, option);
+    if (!res.ok) {
+      const result = await res.json();
+      throw new Error(result?.message || '알 수 없는 오류가 발생했습니다.');
+    }
+    return res.json();
+ }
 
 const objectToQueryString = (queryParam:Object)=>{
     return Object.entries(queryParam)

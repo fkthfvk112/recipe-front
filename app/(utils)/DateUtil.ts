@@ -12,7 +12,8 @@ export const extractDate =(dateTimeString:string)=>{
   export const extractDateTime = (dateTimeString:string) => {
     // 입력이 유효한지 확인 (간단한 형식 검사)
     if (typeof dateTimeString !== 'string' || !dateTimeString.includes('T')) {
-      throw new Error('유효한 날짜 시간 문자열을 입력해주세요.');
+      return "";
+      //throw new Error('유효한 날짜 시간 문자열을 입력해주세요.');
     }
   
     // 날짜와 시간 부분을 추출

@@ -34,15 +34,15 @@ export async function generateMetadata(
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
 
   return {
-    title: `${recipeDetail.recipeName} - 머그인`,
+    title: `${recipeDetail?.recipeName} - 머그인`,
     description: recipeDetail?.description || "맛있는 레시피",
     icons:{
       icon:"/common/favicon.png"
     },
     openGraph:{
-      title: `${recipeDetail.recipeName} - 머그인`,
+      title: `${recipeDetail?.recipeName} - 머그인`,
       description: recipeDetail?.description || "맛있는 레시피",
-      images:recipeDetail.repriPhotos
+      images:recipeDetail?.repriPhotos
     }
   }
 }
@@ -84,19 +84,19 @@ export default async function RecipeDetail({
       }
   })
 
-  let recipeDetail: RecipeDetail = fetchData.recipeDTO;
-  let recipeOwner: RecipeOwnerInfo = fetchData.recipeOwnerInfo;
+  let recipeDetail: RecipeDetail = fetchData?.recipeDTO;
+  let recipeOwner: RecipeOwnerInfo = fetchData?.recipeOwnerInfo;
 
 
   const recipeInfo: RecipeInfoProp = {
     recipeId: Number(params.recipeId),
-    recipeName: recipeDetail.recipeName,
-    categorie: recipeDetail.categorie,
-    repriPhotos: recipeDetail.repriPhotos,
-    servings: recipeDetail.servings,
-    description: recipeDetail.description,
-    reviewAvg:recipeDetail.reviewAvg,
-    timeSum: recipeDetail.steps.reduce((accumulator, step) => {
+    recipeName: recipeDetail?.recipeName,
+    categorie: recipeDetail?.categorie,
+    repriPhotos: recipeDetail?.repriPhotos,
+    servings: recipeDetail?.servings,
+    description: recipeDetail?.description,
+    reviewAvg:recipeDetail?.reviewAvg,
+    timeSum: recipeDetail?.steps.reduce((accumulator, step) => {
       return accumulator + step.time;
     }, 0),
   };
