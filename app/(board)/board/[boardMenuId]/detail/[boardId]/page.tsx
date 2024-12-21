@@ -129,7 +129,7 @@ export default async function BoardDetail({
                 <HeartLike getUrl={`like/board/like-state?boardId=${params.boardId}`} putUrl="like/board/toggle" reqdata={{boardId:params.boardId}}/>
                 <CopyUrl></CopyUrl>
                 <EditDel ownerUserId={boardData.userId} editReturnURl={`board/${boardData.boardMenuId}/edit/${params.boardId}`} delPostUrl={`board/del?boardId=${params.boardId}`}
-                 delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagName={`boardMenu-${boardData.boardMenuId}`}/>
+                 delReturnUrl={`/board/${boardData.boardMenuId}`} revalidateTagNames={[`boardMenu-${boardData.boardMenuId}`, `boardId-${params.boardId}`]}/>
                 <ReportPost domainType={DomainType.Board} domainId={params.boardId}/>
             </div>
             <ReviewContainer domainId={params.boardId} domainName="board"/>

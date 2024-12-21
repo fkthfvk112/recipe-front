@@ -26,10 +26,10 @@ export interface EditDelClient{
   editReturnURl:string,
   delPostUrl:string,
   delReturnUrl:string,
-  revalidateTagName?:string,
+  revalidateTagNames?:string[],
 }
 
-export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, revalidateTagName}:EditDelClient){
+export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, revalidateTagNames}:EditDelClient){
     const router = useRouter();
     const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -56,8 +56,10 @@ export default function EditDelClient({editReturnURl, delPostUrl, delReturnUrl, 
                     title: "삭제 완료",
                     icon: "success",
                   }).then(() => {
-                    if(revalidateTagName){
-                      revalidateByTagName(revalidateTagName);
+                    if(revalidateTagNames){
+                      revalidateTagNames.forEach((tag)=>{
+                        revalidateByTagName(tag);
+                      })
                     }
                     router.push(delReturnUrl);
                   });
