@@ -35,10 +35,7 @@ type Props = {
             boardId:boardId
         },
         option:{
-            cache:"default",
-            next: {
-                tags: [`boardId-${boardId}`],
-            }
+            cache:"no-cache"
         }
     })
 
