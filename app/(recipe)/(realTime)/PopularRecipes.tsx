@@ -33,7 +33,6 @@ export default async function PopularRecipes() {
   return (
     <div className="w-full max-w-5xl p-5 mt-10 mb-5">
       <h2 className="text-xl">인기 레시피</h2>
-      <p className="mb-3">인기있는 레시피들을 모아봤어요.</p>
       {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
       <ul className="flex overflow-x-scroll h-[350px]">
         {recentRecipes}

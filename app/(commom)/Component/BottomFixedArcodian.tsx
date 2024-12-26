@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { motion } from 'framer-motion';
 
 interface BottomFixedAccordionProps {
     title: string; // 아코디언 제목
@@ -110,31 +111,37 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
 
     return (
         <>
-        {!setStaticComponent&&isOpen&&<div className="fixed inset-0 bg-black bg-opacity-50 z-30" />}
+        {!setStaticComponent&&isOpen&&<div className="fixed inset-0 bg-black bg-opacity-50 z-30" onClick={()=>setOpen(false)} />}
         {!loading&&
-        <section className={`${containerClass} overscroll-none overflow-y-hidden touch-none`} 
+        <motion.section 
+            className={`${containerClass} overscroll-none overflow-y-hidden touch-none pb-10`} 
             onMouseDown={(e)=>{handleMouseDown(e)}}
             onTouchStart={(e)=>{handleMouseDown(e)}}
             onMouseUp={(e)=>{handleMouseUp(e)}}
             onTouchEnd={(e)=>handleMouseUp(e)}
             style={{bottom:currentBottom}}
+            animate={{ height: isOpen ? 'auto' : 0 }}
+            transition={{
+                ease:"easeIn",
+                duration:0.3
+            }}
             >
             <div className="w-full flex justify-between items-center select-none">
                 <h2 className="text-xl">{title}</h2>
                 {
                     !setStaticComponent&&isOpen&&
-                    <KeyboardArrowDownIcon sx={{width:"35px", height:"35px"}}  onClick={()=>handleClose()}/>
+                    <KeyboardArrowDownIcon sx={{width:"35px", height:"35px"}}/>
                 }
                 {
                     !setStaticComponent&&!isOpen&&
-                    <KeyboardArrowUpIcon sx={{width:"35px", height:"35px"}}  onClick={()=>handleOpen()}/>
+                    <KeyboardArrowUpIcon sx={{width:"35px", height:"35px"}}/>
                 }
                 
             </div>
-            <div className={`transition-all duration-150 ease-in-out ${isOpen?'max-h-500':'max-h-0'} overflow-y-hidden`}>
+            <div className={`${isOpen?'max-h-500':'max-h-0'} overflow-y-hidden `}>
                 {children}
             </div>
-        </section>
+        </motion.section>
         }
         </>
     )

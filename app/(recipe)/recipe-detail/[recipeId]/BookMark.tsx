@@ -40,14 +40,14 @@ export default function BookMark({ recipeId }: { recipeId: number }) {
   };
 
   const bookMark = isOn ? (
-    <BookmarkAddedIcon className="w-10 h-10"/>
+    <BookmarkAddedIcon sx={{width:"35px", height:"35px"}} />
   ) : (
-    <BookmarkBorderOutlinedIcon className="w-10 h-10" />
+    <BookmarkBorderOutlinedIcon sx={{width:"35px", height:"35px"}} />
   );
   return (
     <button
       onClick={handleBookMarkClick}
-      className="w-12 h-10 flex justify-center items-center border-none"
+      className="w-10 h-10 flex justify-center items-center border-none"
     >
       {bookMark}
     </button>
