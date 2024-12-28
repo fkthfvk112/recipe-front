@@ -44,7 +44,6 @@ export default function SiteDescription() {
               src={"/common/logo.png"}
               width={350}
               height={300}
-              loading="lazy"
               alt=""
             />
           </div>

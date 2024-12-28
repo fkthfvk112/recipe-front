@@ -5,6 +5,7 @@ import RealTimeLikeBoard from "./(board)/(realTime)/RealTimeLikeBoard";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
 import SiteDescription from "./SiteDescription";
 import { Metadata, ResolvingMetadata } from "next";
+import InViewContainer from "./(commom)/Component/InViewContainer";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,9 +27,15 @@ export default function Home() {
       <SearchBar></SearchBar>
       <SiteDescription></SiteDescription>
       <SeasonalFood></SeasonalFood>
-      <PopularRecipes></PopularRecipes>
-      <RecentRecipes></RecentRecipes> 
-      <RealTimeLikeBoard></RealTimeLikeBoard>
+      <InViewContainer defaultHeight={500}>
+        <PopularRecipes/>
+      </InViewContainer>
+      <InViewContainer defaultHeight={500}>
+        <RecentRecipes/>
+      </InViewContainer>
+      <InViewContainer defaultHeight={500}>
+        <RealTimeLikeBoard/>
+      </InViewContainer>
     </div>
   );
 }
