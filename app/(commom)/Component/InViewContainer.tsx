@@ -26,9 +26,9 @@ export default function InViewContainer({
         isLoading?
         <div style={{height:defaultHeight}}></div>:
         <motion.div className="w-full flex justify-center items-center" 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
             >
             {children}
         </motion.div>
