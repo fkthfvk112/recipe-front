@@ -37,6 +37,12 @@ const Navbar = () => {
   }, [isSignIn])
 
 
+  const containInRoute = (text:string):boolean=>{
+    if(text === "home" && pathname === "/") return true;
+    if(pathname.includes(text)) return true;
+    return false;
+  }
+
   return (
     <>
     {
@@ -47,7 +53,7 @@ const Navbar = () => {
             <li>
             <Link href="/">
               <div className="flex flex-col justify-center items-center">
-                <HomeIcon sx={{width:'30px', height:'30px'}}/>
+                <HomeIcon sx={{width:'30px', height:'30px', fill:containInRoute("home")?"black":"gray"}}/>
                 <p>홈</p>
               </div>
             </Link>
@@ -55,7 +61,7 @@ const Navbar = () => {
               <li>
                 <Link href="/recipes/1/sortingCondition=POPULARITY">
                   <div className="flex flex-col justify-center items-center">
-                    <RestaurantMenuIcon sx={{width:'30px', height:'30px'}}/>
+                    <RestaurantMenuIcon sx={{width:'30px', height:'30px', fill:containInRoute("recipe")?"black":"gray"}}/>
                     <p>레시피</p>
                   </div>
                 </Link>
@@ -63,13 +69,13 @@ const Navbar = () => {
               <li>
                 <Link href="/randomMenu">
                   <div className="flex flex-col justify-center items-center">
-                    <QuestionMarkIcon sx={{width:'30px', height:'30px'}}/>
+                    <QuestionMarkIcon sx={{width:'30px', height:'30px', fill:containInRoute("randomMenu")?"black":"gray"}}/>
                     <p>뭐먹지?</p>
                   </div>
                 </Link>
               </li>
               <li>
-                <GoBoardBtn/>
+                <GoBoardBtn />
               </li>
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
@@ -77,7 +83,7 @@ const Navbar = () => {
                   <AccountMenu />
                 ) : (
                   <div className="cursor-pointer" onClick={goToSiginInPage}>
-                    <Avatar sx={{ width: 43, height: 43 }}><span className="text-sm font-extrabold">로그인</span></Avatar>
+                    <Avatar sx={{ width: 43, height: 43, fill:containInRoute("recipe")?"black":"gray" }}><span className="text-sm font-extrabold">로그인</span></Avatar>
                   </div>
                 )}
                 </div>
