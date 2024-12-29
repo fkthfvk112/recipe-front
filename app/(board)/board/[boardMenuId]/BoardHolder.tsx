@@ -46,8 +46,11 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
 
     return (
         <>
-            {cookie}
+
             <ul className="w-full h-full min-h-[300px] p-2">
+            <p className="max-w-[300px] break-words">
+                {cookie}
+            </p>
                 {boardPreviews}
             </ul>
             <div className="h-10" ref={viewRef}>
