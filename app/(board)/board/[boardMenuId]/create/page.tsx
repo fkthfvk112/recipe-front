@@ -14,18 +14,19 @@ import { useRouter } from 'next/navigation';
 import { Validation } from '@/app/(user)/check';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
-import { useResetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { scrollYCacheAtom } from '@/app/(recoil)/scrollYCacheSelector';
 import { boardCacheSelectorAtom } from '@/app/(recoil)/boardCacheSelector';
 import { cacheKey } from '@/app/(recoil)/cacheKey';
 import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
+import { checkAnonymousAtom } from '@/app/(recoil)/userFeedAtom';
 
 export default function CreateNewBoardPost({
     params
   }: {
     params:{boardMenuId:number};
   }){
-    const [checkAnonymous, setCheckAnonymous] = useState<boolean>(true);
+    const [checkAnonymous, setCheckAnonymous] = useRecoilState<boolean>(checkAnonymousAtom);
     const [title, setTitle]                   = useState<string>("");
     const [content, setContent]               = useState<string>("");
     const [recipes, setRecipes]               = useState<Recipe[]>([]);

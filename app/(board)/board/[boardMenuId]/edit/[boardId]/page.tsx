@@ -16,6 +16,7 @@ import SetDiet from '../../create/(Diet)/SetDiet';
 import useResponsiveDesignCss from '@/app/(commom)/Hook/useResponsiveDesignCss';
 import { revalidateByTagName } from '@/app/(utils)/revalidateServerTag';
 import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
+import { checkAnonymousAtom } from '@/app/(recoil)/userFeedAtom';
 
 interface BoardChangeChk{
     titleChk:    boolean,
@@ -29,7 +30,7 @@ export default function EditBoardPost({
   }: {
     params:{boardMenuId:number, boardId:string};
   }){
-    const [checkAnonymous, setCheckAnonymous] = useState<boolean>(true);
+    const [checkAnonymous, setCheckAnonymous] = useRecoilState<boolean>(checkAnonymousAtom);
     const [title, setTitle]                   = useState<string>("");
     const [content, setContent]               = useState<string>("");
     const [recipes, setRecipes]               = useState<Recipe[]>([]);

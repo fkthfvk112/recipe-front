@@ -2,6 +2,7 @@
 
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
+import { checkAnonymousAtom } from "@/app/(recoil)/userFeedAtom";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 import { Checkbox, Modal } from "@mui/material";
 import Link from "next/link";
@@ -36,7 +37,8 @@ const modalstyle = {
 function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:string, domainId:number|string, parentReviewId:number|string}){
     const [isSignIn] = useRecoilState(siginInState);
     const [open, setOpen] = useState<boolean>(false);
-    const [checkAnonymous, setCheckAnonymous] = useState<boolean>(false);
+    const [checkAnonymous, setCheckAnonymous] = useRecoilState<boolean>(checkAnonymousAtom);
+
     const [reply, setReply] = useState<commonReviewReply>({
         parentReviewId:parentReviewId,
         message:"",

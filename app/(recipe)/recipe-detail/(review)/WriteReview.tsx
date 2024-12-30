@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { domainId, domainName } from "./ReviewContainer";
+import { checkAnonymousAtom } from "@/app/(recoil)/userFeedAtom";
 
 const domainReviewUrl = {
   recipe: "review/recipe/create",
@@ -29,7 +30,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
     message: "",
   });
 
-  const [checkAnonymous, setCheckAnonymous] = useState<boolean>(false);
+  const [checkAnonymous, setCheckAnonymous] = useRecoilState<boolean>(checkAnonymousAtom);
   const [isSignIn] = useRecoilState(siginInState);
   const [isClient, setIsClient] = useState(false);
 

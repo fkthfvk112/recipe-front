@@ -11,6 +11,8 @@ import RecipeVerticalItem from "../(board)/board/[boardMenuId]/create/(Recipe)/R
 import { Recipe } from "../(recipe)/types/recipeType";
 import { CircularProgress } from "@mui/material";
 import useChkLoginToken from "../(commom)/Hook/useChkLoginToken";
+import { useRecoilState } from "recoil";
+import { ingreNSelectAtom } from "../(recoil)/userFeedAtom";
 
 export default function Fridge(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,8 +20,7 @@ export default function Fridge(){
     const [initialSetted, setInitialSetted] = useState<boolean>(false);
     const [fridgeDate, setFridgeDate] = useState<FridgeIdNameDesc[]>([]);
     const [recommandRecipe, setRecommandRecipe] = useState<Recipe[]>([]);
-    const [containIngre, setContainIngre] = useState<number>(3);
-
+    const [containIngre, setContainIngre] = useRecoilState<number>(ingreNSelectAtom);
     const [refetcher, setRefetcher] = useState<number>(0);
     const isTokenValid = useChkLoginToken("refreshNeed");
 
