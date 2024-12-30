@@ -1,6 +1,5 @@
 import serverFetch from "@/app/(commom)/serverFetch";
 import { BoardMenu } from "@/app/(type)/menu";
-import { deleteCookie, getCookie } from 'cookies-next';
 
 export default async function BoardLayout({
     children,

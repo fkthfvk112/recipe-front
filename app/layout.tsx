@@ -29,7 +29,7 @@ export default function RootLayout({
       <body>
       <NextTopLoader color="#FB8500" showSpinner={false} zIndex={50000}/>
         <MainContainer>
-          <IntervalConfig/>
+          {/* <IntervalConfig/> */}
           {children}
         </MainContainer>
       </body>

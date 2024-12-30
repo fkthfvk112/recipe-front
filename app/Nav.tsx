@@ -83,7 +83,7 @@ const Navbar = () => {
                   <AccountMenu />
                 ) : (
                   <div className="cursor-pointer" onClick={goToSiginInPage}>
-                    <Avatar sx={{ width: 43, height: 43, fill:containInRoute("recipe")?"black":"gray" }}><span className="text-sm font-extrabold">로그인</span></Avatar>
+                    <Avatar sx={{ width: 43, height: 43, fill:containInRoute("recipe")?"black":"gray"}}><span className="text-sm font-extrabold">로그인</span></Avatar>
                   </div>
                 )}
                 </div>

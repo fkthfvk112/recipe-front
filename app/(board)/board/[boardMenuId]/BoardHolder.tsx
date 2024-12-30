@@ -43,10 +43,10 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
 
     //have to 삭제
     const cookie = getCookie("mugin-refreshtoken")
+    const visit = getCookie("mug-in-visit")
 
     return (
         <>
-
             <ul className="w-full h-full min-h-[300px] p-2">
             <p className="max-w-[300px] break-words">
                 {cookie}

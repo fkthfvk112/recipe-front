@@ -112,7 +112,6 @@ export default async function RecipeDetail({
         </div>
         <div className="w-full p-3 text-left flex">
             <CopyUrl></CopyUrl>
-            {/* have to : user ID -> user uuid */}
             <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
               delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
               revalidateTagNames={[`recipeDetail-${params.recipeId}`]}/>
