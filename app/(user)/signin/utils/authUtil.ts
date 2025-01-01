@@ -3,15 +3,17 @@ import { decodedUserInfo, decodeUserJwt } from "@/app/(utils)/decodeJwt";
 import { cookies } from "next/headers";
 
 export async function deleteAuthToken() {
+  const domain = process.env.NODE_ENV === 'development' ? 'localhost' : '.mug-in.com';
+
   cookies().delete({
     name:"mugin-refreshtoken",
-    domain:".mug-in.com",
+    domain:domain,
     path:"/"
   })
 
   cookies().delete({
     name:"mugin-authtoken",
-    domain:".mug-in.com",
+    domain:domain,
     path:"/"
   })
 }
