@@ -3,8 +3,17 @@ import { decodedUserInfo, decodeUserJwt } from "@/app/(utils)/decodeJwt";
 import { cookies } from "next/headers";
 
 export async function deleteAuthToken() {
-  cookies().delete("mugin-authtoken");
-  cookies().delete("mugin-refreshtoken");
+  cookies().delete({
+    name:"mugin-refreshtoken",
+    domain:".mug-in.com",
+    path:"/"
+  })
+
+  cookies().delete({
+    name:"mugin-authtoken",
+    domain:".mug-in.com",
+    path:"/"
+  })
 }
 
 export async function isLogin(){

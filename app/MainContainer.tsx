@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import Nav from "./Nav";
 import { useEffect } from "react";
-import { deleteCookie, getCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { defaultAxios } from "./(customAxios)/authAxios";
 
 export default function MainContainer({
