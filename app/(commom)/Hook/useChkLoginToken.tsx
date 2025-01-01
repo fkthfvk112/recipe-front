@@ -38,16 +38,22 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
 
         try{
             const refreshTokenStr = getCookie("mugin-refreshtoken");
+            //console.log(refreshTokenStr)
+
             if(refreshTokenStr){
+                //console.log(1)
                 const refreshToken:Token = jwtDecode(refreshTokenStr);
                 const expDate = new Date(refreshToken.exp * 1000);
+                //console.log("만료일", expDate.getTime())
+                //console.log("현재일", Date.now());
+
                 if(isNaN(expDate.getTime()) || expDate.getTime() < Date.now()){
                     setLogOut();
                     setValid();
                     Swal.fire({
                         title: "로그인 에러",
                         text:"로그인 유효시간이 만료되었습니다. 로그인 페이지로 이동하시겠습니까?.",
-                        icon: "info",
+                        icon: "warning",
                         confirmButtonText: "확인",
                         allowOutsideClick:false,
                     }).then((result) => {
@@ -59,19 +65,25 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
                     setIsValid(true);
                 }
             }else{
+                //console.log(2)
+
                 setLogOut();
                 setValid()
                 if(checkMode === 'refreshNeed'){
-                    console.log("토큰 에러")
+                    //console.log("토큰 에러")
                     Swal.fire({
                         title: "로그인 에러",
                         text:"로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?.",
-                        icon: "info",
+                        icon: "warning",
+                        showCancelButton:true,
+                        cancelButtonText:"취소",
                         confirmButtonText: "확인",
                         allowOutsideClick:false,
                     }).then((result) => {
                         if(result.isConfirmed){
                             router.push("/signin")
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            router.back();
                         }
                     })
                 }

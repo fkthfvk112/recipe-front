@@ -83,16 +83,20 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       return Promise.reject(err);
     }
     else if(err.response.data.code === "T002" || err.response.data.code === "T003" || err.response.data.code === "T004" || err.response.data.code === "T005"){//리프래시 토큰 만료
-      Swal.fire({
-        title: "에러가 발생하였습니다.",
-        text: "로그인 유효시간이 만료되었습니다.",
-        icon: "warning",
-        confirmButtonText: "확인",
-        confirmButtonColor: '#d33',
-        allowEnterKey:false
-        });
-        deleteAuthToken();
-        location.href = '/signin'
+      deleteAuthToken();
+      // Swal.fire({
+      //   title: "로그인 유효시간 만료.",
+      //   text:"로그인 유효시간이 만료되었습니다. 로그인 페이지로 이동하시겠습니까?.",
+      //   icon: "info",
+      //   showCancelButton:true,
+      //   confirmButtonText: "확인",
+      //   cancelButtonText:"취소",
+      //   allowEnterKey:false
+      //   }).then((result) => {
+      //     if(result.isConfirmed){
+      //       location.href = '/signin'
+      //     }
+      // })
     }
     else if(errorCode.includes(err.response.data.code)){
       Swal.fire({
