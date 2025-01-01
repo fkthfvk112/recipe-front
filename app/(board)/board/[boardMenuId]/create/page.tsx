@@ -1,7 +1,7 @@
 "use client"
 
 import { axiosAuthInstacne } from '@/app/(customAxios)/authAxios';
-import { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { Recipe } from '@/app/(recipe)/types/recipeType';
 import { DietDay } from '@/app/(type)/diet';
 import { Checkbox, CircularProgress } from '@mui/material';
@@ -21,7 +21,7 @@ import { cacheKey } from '@/app/(recoil)/cacheKey';
 import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
 import { checkAnonymousAtom } from '@/app/(recoil)/userFeedAtom';
 
-export default function CreateNewBoardPost({
+function CreateNewBoardPost({
     params
   }: {
     params:{boardMenuId:number};
@@ -176,3 +176,5 @@ export default function CreateNewBoardPost({
          </div>
     )
 }
+
+export default React.memo(CreateNewBoardPost)

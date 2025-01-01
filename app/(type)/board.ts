@@ -14,7 +14,7 @@ export interface BoardPreview{
 
 export interface Board{
     boardId:      number;
-    userId:       string; //have to :: encrypt
+    userId:       string;
     userNickName: string;
     boardUUID:    string;
     boardMenuId:  number;

@@ -17,6 +17,11 @@ export interface FridgeIdNameDesc{
     recommendRecipeFlag?:boolean;
 }
 
+export interface MyFridge extends FridgeIdNameDesc{
+    expIngreCnt:number;
+    normalIngreCnt:number;
+}
+
 export interface FridgeItem{
     fridgeItemId?:number;
     fridgeImgId?:number;

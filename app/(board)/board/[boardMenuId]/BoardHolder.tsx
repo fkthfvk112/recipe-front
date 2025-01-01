@@ -9,7 +9,6 @@ import { useBoardInxPagenation } from "@/app/(commom)/Hook/useBoardInxPagenation
 import { useRecoilState } from "recoil";
 import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
-import { deleteCookie, getCookie, getCookies } from "cookies-next";
 
 function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const [boardData, boardRefetcher, isLoading] = useBoardInxPagenation({boardMenuId});
@@ -21,7 +20,6 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const boardPreviews = boardData.cachedData.data.map((ele, inx)=>{
         return <BoardPreviewHoriItem key={inx} boardPreview={ele}/>
     });
-
 
     useEffect(()=>{
         if(isLoading) return;
@@ -41,16 +39,9 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
         }
     }, [])
 
-    //have to 삭제
-    const cookie = getCookie("mugin-refreshtoken")
-    const visit = getCookie("mug-in-visit")
-
     return (
         <>
             <ul className="w-full h-full min-h-[300px] p-2">
-            <p className="max-w-[300px] break-words">
-                {cookie}
-            </p>
                 {boardPreviews}
             </ul>
             <div className="h-10" ref={viewRef}>

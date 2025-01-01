@@ -156,8 +156,9 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                       <textarea value={description} className="p-2 h-[80px]" onChange={(evt)=>setDescription(evt.target.value)} maxLength={250}></textarea>
                     </div>
                 </div>
-                <div className="w-full bottom-line"/>
-                <h3 className="w-[100px]">이미지 선택</h3>
+                <div className="w-full mt-1">
+                  <h3 className="w-[100px]">이미지 선택</h3>
+                </div>
                 <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] overflow-y-scroll overscroll-none "
                   onMouseDown={(e)=>{
                     setScrollLock(true);

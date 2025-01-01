@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { FridgeIdNameDesc } from "../(type)/fridge";
+import { FridgeIdNameDesc, MyFridge } from "../(type)/fridge";
 import { axiosAuthInstacne } from "../(customAxios)/authAxios";
 import { truncateString } from "../(utils)/StringUtil";
 import Link from "next/link";
@@ -18,12 +18,13 @@ export default function Fridge(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [initialSetted, setInitialSetted] = useState<boolean>(false);
-    const [fridgeDate, setFridgeDate] = useState<FridgeIdNameDesc[]>([]);
+    const [fridgeDate, setFridgeDate] = useState<MyFridge[]>([]);
     const [recommandRecipe, setRecommandRecipe] = useState<Recipe[]>([]);
     const [containIngre, setContainIngre] = useRecoilState<number>(ingreNSelectAtom);
     const [refetcher, setRefetcher] = useState<number>(0);
     const isTokenValid = useChkLoginToken("refreshNeed");
 
+    console.log("히히");
     useEffect(()=>{
         if(isTokenValid){
             setIsLoading(true);
@@ -62,6 +63,8 @@ export default function Fridge(){
     const fridgeComp = fridgeDate.map((fridge, inx)=>
         <Link href={`/fridge/${fridge.fridgeId}`} key={inx} className="aspect-square shadow-md border border-[#e1e1e1] rounded-xl m-1 p-2 overflow-hidden text-ellipsis">
             <h1 className="overflow-hidden text-ellipsis">{fridge.fridgeName}</h1>
+                <span className="text-xs bg-green-400 rounded-2xl text-white p-0.5 ps-2 pe-2 font-semibold">{fridge.normalIngreCnt}개</span>
+                {fridge.expIngreCnt >= 1 && <span className="ms-1 text-xs bg-red-400 rounded-2xl text-white p-0.5 ps-2 pe-2 font-semibold">{fridge.expIngreCnt}개</span>}
             <p>{truncateString(fridge.description, 20)} </p>
         </Link>
     )

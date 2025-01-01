@@ -259,8 +259,12 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                                         <SearchIcon/>
                                     </button>
                                 </Tooltip>
-                                <div className="text-center">
-                                    <button className="saveBtn-outline-green mt-2 p-1" onClick={showMyRecipe}>내 레시피 보기</button>
+                                <div className="text-start">
+                                    {isSearchMode?
+                                        <button className="text-xs rounded-xl bg-[#a1a1a1] border-none font-semibold text-white mt-2 p-1" onClick={showMyRecipe}>내 레시피 보기</button>
+                                        :
+                                        <button className="text-xs rounded-xl bg-[#38c54b] border-none font-semibold text-white mt-2 p-1" onClick={showMyRecipe}>내 레시피 보기</button>
+                                    }
                                 </div>
                                 <div className="flex flex-wrap">
                                     {selectedRecipeComps}

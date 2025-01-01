@@ -1,6 +1,6 @@
 export interface Review {
   reviewId:       number;
-  userId:         number; //have to :: string으로 바꾸고 암호화
+  userId:         number;
   score?:         number;
   message:        string;
   recipeId:       number|string;
@@ -16,7 +16,7 @@ export interface ReviewWithUserInfo extends Review {
 
 export interface BoardReview{
   reviewId:       number;
-  userId:         number; //have to :: string으로 바꾸고 암호화
+  userId:         number;
   message:        string;
   boardId:        number|string;
   checkAnonymous: boolean;

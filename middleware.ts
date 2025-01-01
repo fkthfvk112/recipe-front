@@ -25,5 +25,5 @@ export async function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
   matcher: ['/fridge/:path*',
-            '/userfeed/myfeed', '/accountSetting', '/accountMenuList', '/board/:id*/create', '/admin/:path*'],
+            '/userfeed/myfeed', '/accountSetting', '/accountMenuList', '/admin/:path*'],
 }

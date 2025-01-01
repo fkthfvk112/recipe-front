@@ -1,12 +1,21 @@
 "use client"
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { usePathname } from 'next/navigation'
+import Swal from 'sweetalert2';
 
 export default function CopyUrl(){
-    const pathname = usePathname()//have to :: 앞에 도메인 넣기. 현재 /fdsfsd?=fsdfsd형태로만 복사됌
+    const pathname = usePathname()
+    const fullUrl = `${window.location.origin}${pathname}`;
+
     const copyToClip = ()=> {
-        navigator.clipboard.writeText(pathname)
+        navigator.clipboard.writeText(fullUrl)
             .then(() => {
+                Swal.fire({
+                    title:"URL 복사 완료",
+                    text: "URL이 클립보드에 복사되었습니다.",
+                    showConfirmButton:false,
+                    timer:1500
+                });
         })
             .catch(err => {
         })}
