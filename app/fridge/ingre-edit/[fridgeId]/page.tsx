@@ -1,12 +1,12 @@
 "use client"
-import { FridgeIdNameDesc, FridgeItem } from "@/app/(type)/fridge";
-import { useEffect, useState } from "react";
+import { FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import SetFridgeItem from "./SetFridgeItem";
 import Image from "next/image";
 import FridgeItemDetailModal from "../../[fridgeId]/(common)/FridgeItemDetailModal";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import ExpBar from "../../[fridgeId]/(common)/ExpBar";
 
 
@@ -23,6 +23,7 @@ export default function FridgeDetail({
 }:{
     params:{fridgeId:number};
 }){
+    const [fridgeSort, setFridgeSort] = useRecoilState(fridgeSortingAtom);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     //const [fridgeDate, setFridgeDate] = useState<Fridge>();
     //const [fridgeRefetch, fridgeRefetcher] = useReducer((state:boolean)=>!state, false);
@@ -34,12 +35,12 @@ export default function FridgeDetail({
     const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
 
     useEffect(()=>{
-        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}`)
+        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
             .then((res)=>{
                 setIsLoading(false);
                 setFridgeData(res.data);
             })
-    }, [refetchCount])
+    }, [refetchCount, fridgeSort])
 
 
     useEffect(()=>{
@@ -48,6 +49,12 @@ export default function FridgeDetail({
                 setFirdgeList(res.data);
             })
     }, [])
+
+    const handleSortingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+        setFridgeSort(Number(e.target.value));
+        console.log(fridgeSort);
+    };
+
 
     const fridgeItemProp = fridgeData?.fridgeItems.map((item, inx)=>{
         return (
@@ -76,6 +83,28 @@ export default function FridgeDetail({
                     <div className="text-lg">{fridgeData?.description}</div>
                 </div>
                 }
+                <div className="w-[93%] mt-3 text-right">
+                    <select
+                        onChange={handleSortingChange}
+                        className="border border-slate-300 rounded-2xl mr-2 text-center w-[170px] h-10 bg-zinc-100"
+                        value={fridgeSort}
+                        name=""
+                        id=""
+                        >
+                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpMany}>
+                            유통기한 넉넉한순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpFew}>
+                            유통기한 급한순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.Latest}>
+                            최신순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.Oldest}>
+                            오래된순
+                        </option>
+                    </select>
+                </div>
             </div>
             <div className="flex-center w-full p-3">
                 <section className="fridge-container shadow-md ice-shadow-inner mt-6">

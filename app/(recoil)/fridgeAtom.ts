@@ -1,5 +1,8 @@
 import { atom, selector } from "recoil";
-import { Fridge } from "../(type)/fridge";
+import { Fridge, FridgeDTO, FridgeSortingEnum } from "../(type)/fridge";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export const fridgeDataAtom = atom<Fridge|undefined>({
     key: "fridgeData",
@@ -23,3 +26,10 @@ export const fridgeDataRefetcherSelector = selector({
         set(fridgeDataRefetcher, (prev) => prev + 1); // 기존 값에 1을 더함
     },
 });
+
+
+export const fridgeSortingAtom = atom<FridgeSortingEnum>({
+  key:"fridgeSorting",
+  default:FridgeSortingEnum.Latest,
+  effects_UNSTABLE: [persistAtom],
+})

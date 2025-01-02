@@ -43,7 +43,7 @@ export default function MyDiet() {
   ));
 
   return (
-    <div className="h-screen w-full">
+    <div className="min-h-screen w-full">
       <ul className="grid grid-cols-3 w-full gap-1 p-2">
         {feedInfos}
       </ul>

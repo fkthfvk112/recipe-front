@@ -24,7 +24,6 @@ export default function Fridge(){
     const [refetcher, setRefetcher] = useState<number>(0);
     const isTokenValid = useChkLoginToken("refreshNeed");
 
-    console.log("히히");
     useEffect(()=>{
         if(isTokenValid){
             setIsLoading(true);

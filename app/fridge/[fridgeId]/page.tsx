@@ -1,11 +1,11 @@
 "use client"
-import { FridgeIdNameDesc, FridgeItem } from "@/app/(type)/fridge";
+import { FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
 import { AdditionalBtn } from "../../(commom)/Component/AdditionalBtn";;
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
 import ExpBar from "./(common)/ExpBar";
 import Link from "next/link";
@@ -16,6 +16,8 @@ export default function FridgeDetail({
 }:{
     params:{fridgeId:number};
 }){
+    const [fridgeSort, setFridgeSort] = useRecoilState(fridgeSortingAtom);
+
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     // const [fridgeDate, setFridgeDate] = useState<Fridge>();
@@ -25,12 +27,12 @@ export default function FridgeDetail({
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
     useEffect(()=>{
         setIsLoading(true)
-        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}`)
+        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
             .then((res)=>{
                 setIsLoading(false);
                 setFridgeData(res.data);
             })
-    }, [refetchCount])
+    }, [refetchCount, fridgeSort])
 
     useEffect(()=>{
         axiosAuthInstacne.get("fridge/my")
@@ -61,6 +63,11 @@ export default function FridgeDetail({
         {name:"냉장고 수정", url:`/fridge/${params.fridgeId}/edit`}
     ]
 
+    const handleSortingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+        setFridgeSort(Number(e.target.value));
+        console.log(fridgeSort);
+    };
+
     return (
         <>
         {!isLoading&&
@@ -73,6 +80,28 @@ export default function FridgeDetail({
                     <div className="text-lg">{fridgeData?.description}</div>
                 </div>
                 }
+                <div className="w-[93%] mt-3 text-right">
+                    <select
+                        onChange={handleSortingChange}
+                        className="border border-slate-300 rounded-2xl mr-2 text-center w-[170px] h-10 bg-zinc-100"
+                        value={fridgeSort}
+                        name=""
+                        id=""
+                        >
+                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpMany}>
+                            유통기한 넉넉한순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpFew}>
+                            유통기한 급한순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.Latest}>
+                            최신순
+                        </option>
+                        <option className="p-2 m-3" value={FridgeSortingEnum.Oldest}>
+                            오래된순
+                        </option>
+                    </select>
+                </div>
             </div>
             <section className="relative fridge-container shadow-md ice-shadow-inner mt-6">
                 <div className="fridge">

@@ -35,5 +35,13 @@ export interface FridgeItem{
 }
 
 
+export interface FridgeDTO{
+    fridgeId:number;
+    sortingEnum:FridgeSortingEnum
+}
+
+export enum FridgeSortingEnum{
+    ExpMany, ExpFew, Latest, Oldest
+}
 
 
