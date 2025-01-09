@@ -283,8 +283,8 @@ const CookStepCard: FC<CardProps> = ({
               hidden
             />
             {card.photo ? (
-              <div className="w-[100px] h-[100px] img-wrapper-square">
-                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-1 z-10">
+              <div className="w-20 h-20 img-wrapper-square">
+                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-3 z-10">
                   <ClearIcon className="bg-white"/>
                 </button>
                 <Image
@@ -296,8 +296,8 @@ const CookStepCard: FC<CardProps> = ({
                 />
               </div>
             ) : (
-              <label className="w-[100px] h-[100px] flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
-                <FileUploadIcon className="text-gray-500 w-10 h-10" />
+              <label className="w-20 h-20 flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
+                <FileUploadIcon className="text-gray-500 w-6 h-6" />
               </label>
             )}
         </div>
