@@ -9,28 +9,29 @@ import { useRecoilState } from "recoil";
 
 
 interface userFeedRecipeInxPagenationProp{
-    userNickName:string;
+    userId:string;
     isMyFeed?:boolean;
     paramOption?:{
         size?:number;
     }
 }
 
-export const useUserFeedRecipeInxPagenation = ({userNickName, isMyFeed=false, paramOption}:userFeedRecipeInxPagenationProp):[CacheData<FeedRecipeCacheData>, DispatchWithoutAction, boolean]=>{
+export const useUserFeedRecipeInxPagenation = ({userId, isMyFeed=false, paramOption}:userFeedRecipeInxPagenationProp):[CacheData<FeedRecipeCacheData>, DispatchWithoutAction, boolean]=>{
     const [recipeCache, setRecipeCache] = useRecoilState(
-        userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_recipe_key + userNickName)
+        userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_recipe_key + userId)
     );
     const [toggle, refetcher] = useReducer((state:boolean)=>!state, false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     let requestUrl = isMyFeed?'recipe/get-my-recipe/inx-pagination' : 'recipe/get-user-recipe/inx-pagination';
 
+    console.log("파람", userId);
     useEffect(()=>{
         if(recipeCache.cachedData.isEnd) return;
         setIsLoading(true);
         axiosAuthInstacne.get(requestUrl, {
                         params:{
-                            userNickName:userNickName,
+                            userId:userId,
                             dateInx:recipeCache.cachedData.dateInx,
                             size:paramOption?.size||9
                         }
@@ -38,7 +39,7 @@ export const useUserFeedRecipeInxPagenation = ({userNickName, isMyFeed=false, pa
                     .then((res)=>{
                         const fetchedData = res.data as IndexPagenation<Recipe[], string>;
                         setRecipeCache({
-                            cacheId:cacheKey.user_feed_recipe_key + userNickName,
+                            cacheId:cacheKey.user_feed_recipe_key + userId,
                             cachedData:{
                                 data:    fetchedData.data,
                                 dateInx: fetchedData.index,

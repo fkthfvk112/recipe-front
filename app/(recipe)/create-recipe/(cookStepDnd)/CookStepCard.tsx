@@ -2,6 +2,7 @@ import React, {
   Dispatch,
   FC,
   SetStateAction,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -15,13 +16,16 @@ import ClearIcon from "@mui/icons-material/Clear";
 import Image from "next/image";
 import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
 import { CookingSteps_create } from "../../types/recipeType";
+import { inView, motion, useAnimation } from 'framer-motion';
+import { RecipeDndCard } from "./ContainerDnd";
+
 export interface CardProps {
   id: any;
   index: number;
-  card: CookingSteps_create;
+  card: RecipeDndCard;
   moveCard: (dragIndex: number, hoverIndex: number, order: number) => void;
-  setCards: Dispatch<SetStateAction<CookingSteps_create[]>>;
-  cards: CookingSteps_create[];
+  setCards: Dispatch<SetStateAction<RecipeDndCard[]>>;
+  cards: RecipeDndCard[];
 }
 
 interface DragItem {
@@ -44,7 +48,7 @@ const CookStepCard: FC<CardProps> = ({
 }) => {
   const dragRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
-
+  const controls = useAnimation();
 
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -87,25 +91,35 @@ const CookStepCard: FC<CardProps> = ({
       // When dragging upwards, only move when the cursor is above 50%
 
       // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY-50) {
         return;
       }
 
       // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY+50) {
         return;
       }
 
       // Time to actually perform the action
-      moveCard(dragIndex, hoverIndex, card.order);
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
+      controls.start({
+        y: [hoverIndex * 300, dragIndex* 300], // 애니메이션 위치를 업데이트
+        transition: { duration: 0.1, ease: "easeOut" },
+      });
+
+      setTimeout(() => {
+        moveCard(dragIndex, hoverIndex, card.order);
+
+      }, 150)
+
       item.index = hoverIndex;
     },
   });
+
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CARD,
@@ -117,23 +131,46 @@ const CookStepCard: FC<CardProps> = ({
     }),
   });
 
+  useEffect(() => {
+    if (isDragging) {
+      const activeElement = document.activeElement as HTMLElement | null;
+      if (activeElement && activeElement.blur) {
+        activeElement.blur();
+      }
+    }
+  }, [isDragging]);
+
   const opacity = isDragging ? 0.5 : 1;
   //drag(drop(ref));
   drag(dragRef);
   drop(dropRef);
 
-  const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    const newCards = cards.map((card) => {
-      if (card.order === index) {
-        card.description = e.target.value;
-      }
-      return card;
-    });
+  const handleTextChange = useCallback(
+    (e:any) => {
+      const newCards = cards.map((card) => {
+        if (card.order === index) {
+          card.description = e.target.value;
+        }
+        return card;
+      });
+  
+      setCards(newCards);
+    },
+    [moveCard, setCards, cards]
+  );
 
-    setCards(newCards);
-  };
+  // const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
+  //   e
+  // ) => {
+  //   const newCards = cards.map((card) => {
+  //     if (card.order === index) {
+  //       card.description = e.target.value;
+  //     }
+  //     return card;
+  //   });
+
+  //   setCards(newCards);
+  // };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -158,16 +195,30 @@ const CookStepCard: FC<CardProps> = ({
     }
   };
 
-  const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const newCards = cards.map((card) => {
-      if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
-        card.time = Number(e.target.value);
-      }
-      return card;
-    });
+  // const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  //   const newCards = cards.map((card) => {
+  //     if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
+  //       card.time = Number(e.target.value);
+  //     }
+  //     return card;
+  //   });
 
-    setCards(newCards);
-  };
+  //   setCards(newCards);
+  // };
+
+    const handleTimeChange = useCallback(
+      (e:any) => {
+        const newCards = cards.map((card) => {
+          if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
+            card.time = Number(e.target.value);
+          }
+          return card;
+        });
+    
+        setCards(newCards);
+      },
+      [moveCard, setCards, cards]
+    );
 
   const deleteStep = () => {
     const newCards = cards
@@ -176,7 +227,7 @@ const CookStepCard: FC<CardProps> = ({
         return { ...card, order: inx };
       });
 
-    setCards(newCards as CookingSteps_create[]);
+    setCards(newCards as RecipeDndCard[]);
   };
 
 
@@ -192,11 +243,14 @@ const CookStepCard: FC<CardProps> = ({
   }
 
   return (
-    <div
-      className={"mt-3 w-full flex flex-col relative bg-zinc-100 rounded-2xl p-2"}
+    <motion.div
+      className={"mt-3 w-full flex flex-col bg-zinc-100 rounded-2xl p-2 absolute"}
       ref={dropRef}
       style={{ opacity }}
+      initial={{ y: index * 300 }}
+      animate={controls} 
       data-handler-id={handlerId}
+      key={id}
     >
       <ClearIcon
         className="w-6 h-6 hover:cursor-pointer absolute right-2 top-2"
@@ -258,7 +312,7 @@ const CookStepCard: FC<CardProps> = ({
           <ImportExportIcon className="hover:cursor-pointer h-12 w-12 mt-10"></ImportExportIcon>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

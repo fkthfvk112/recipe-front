@@ -17,6 +17,7 @@ interface IngredientProp {
 }
 
 export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
+
   const [ingredients, setIngredients] = useState<ingred[]>(()=>{
     if(recipe.ingredients && recipe.ingredients.length > 0){
       return recipe.ingredients;
@@ -151,19 +152,19 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
     setIngredients(newIngre);
   };
   return (
-    <div className="w-full flex flex-col mt-6 mb-6 p-5">
-      <h3 className="text-lg">재료</h3>
-      <div className="flex flex-col justify-center items-center mt-2">
-        {ingreItems}
-      </div>
-      <div className="text-center mt-4">
-        <AddIcon
-          sx={{width:"45px", height:"45px"}}
-          className="m-1 border border-slate-500 hover:cursor-pointer"
-          onClick={addIngre}
-        >
-        </AddIcon>
-      </div>
-    </div>
+      <div className="w-full flex flex-col mt-6 mb-6 p-5">
+        <h3 className="text-lg">재료</h3>
+        <div className="flex flex-col justify-center items-center mt-2">
+          {ingreItems}
+        </div>
+        <div className="text-center mt-4">
+          <AddIcon
+            sx={{width:"45px", height:"45px"}}
+            className="m-1 border border-slate-500 hover:cursor-pointer"
+            onClick={addIngre}
+          >
+          </AddIcon>
+        </div>
+      </div>    
   );
 }

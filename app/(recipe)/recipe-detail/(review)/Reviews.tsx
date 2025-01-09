@@ -63,7 +63,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
                   <h3 className="ms-2 whitespace-nowrap">익명</h3>
                 </div>
               ) : (
-                <Link className="flex flex-wrap justify-center items-center" href={`/userfeed/${review.userInfo?.userNickName}`}>
+                <Link className="flex flex-wrap justify-center items-center" href={`/userfeed/${review.userInfo?.userId}`}>
                   <h3 className="ms-2">{review.userInfo?.userNickName}</h3>
                   <span className="ms-2 text-[#a1a1a1]">· 약 {timeDifferenceString(new Date(review.createdAt as string))}</span>
                 </Link>

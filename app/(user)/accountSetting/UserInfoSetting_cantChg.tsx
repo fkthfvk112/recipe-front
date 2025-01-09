@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Validation, validationPwSameSentence, validationPwSentence } from "../check";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import Swal from "sweetalert2";
-import { UserFeedInfo } from "../userfeed/[userNickName]/UserInfo";
+import { UserFeedInfo } from "../userfeed/[userId]/UserInfo";
 import Link from "next/link";
 
 const style = {

@@ -15,16 +15,16 @@ export interface UserFeedInfo {
   userIntro: string | null; 
 }
 
-export default function UserInfo({ userNickName }: { userNickName: string }) {
+export default function UserInfo({ userNickName, userId }: { userNickName: string, userId:string }) {
   const [userData, setUserData] = useState<UserFeedInfo>();
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}feed/user/${userNickName}`)
+      .get(`${process.env.NEXT_PUBLIC_API_URL}feed/user/${userId}`)
       .then((res) => {
         setUserData(res.data);
       })
-  }, [userNickName]);
+  }, [userId]);
 
   return (
     <div className="w-full max-w-[500px] p-3">

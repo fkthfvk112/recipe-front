@@ -23,7 +23,7 @@ export interface FeedDietCacheData{
 
 export const userFeedDietCacheAtom = atomFamily<CacheData<FeedDietCacheData>, string>({
     key:"userFeedDietKey",
-    default: (userNickName:string)=>(defaultCacheData)
+    default: (userId:string)=>(defaultCacheData)
 })
 
 /**시간 desc순 */

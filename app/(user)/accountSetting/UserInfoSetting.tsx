@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { UserFeedInfo } from "../userfeed/[userNickName]/UserInfo";
+import { UserFeedInfo } from "../userfeed/[userId]/UserInfo";
 import FeedEditModal from "../userfeed/myfeed/FeedEditModal";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import MyFeedPhoto from "../userfeed/[userNickName]/MyFeedPhoto";
+import MyFeedPhoto from "../userfeed/[userId]/MyFeedPhoto";
 
 function UserInfoSetting(){
     const [userData, setUserData] = useState<UserFeedInfo>();

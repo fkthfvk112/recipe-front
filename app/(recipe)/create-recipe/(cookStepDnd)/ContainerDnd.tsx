@@ -14,18 +14,24 @@ export interface ContainerState {
   cards: Item[];
 }
 
+export interface RecipeDndCard extends CookingSteps_create{
+  id:number;
+}
 
 export const ContainerDnd = ({
   recipe,
   setRecipe,
 }: CookStepProp) => {
-  const [cards, setCards] = useState<CookingSteps_create[]>(()=>{
+  const [dndSectionHeight, setDndSectionHeight] = useState<number>(300);
+
+  const [cards, setCards] = useState<RecipeDndCard[]>(()=>{
     if(recipe.steps && recipe.steps.length > 0){
-      const initialData:CookingSteps_create[] = recipe.steps.map(ele=>{
+      const initialData:RecipeDndCard[] = recipe.steps.map((ele, inx)=>{
         const existPhoto:string = !(ele.photo === null || ele.photo === undefined) && ele.photo.length > 10 ? ele.photo : "";    
         return {
           ...ele,
-          photo: existPhoto
+          photo: existPhoto,
+          id:inx
         }
       })
       return initialData;
@@ -37,18 +43,21 @@ export const ContainerDnd = ({
           photo: "",
           description: "",
           time: 0,
+          id:0
         },
         {
           order: 1,
           photo: "",
           description: "",
           time: 0,
+          id:1
         },
         {
           order: 2,
           photo: "",
           description: "",
           time: 0,
+          id:2
         },
       ]
     }
@@ -68,6 +77,8 @@ export const ContainerDnd = ({
       ...recipe,
       steps: addCard,
     });
+
+    setDndSectionHeight(cards.length * 300);
   }, [cards]);
 
   const addNewStep = () => {
@@ -77,20 +88,21 @@ export const ContainerDnd = ({
       photo: "",
       description: "",
       time: 0,
+      id:cards.length+1
     });
     setCards(newCards);
   };
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number, order: number) => {
-      setCards((prevCards: CookingSteps_create[]) => {
+      setCards((prevCards: RecipeDndCard[]) => {
         const updatedCards = update(prevCards, {
           $splice: [
             [dragIndex, 1],
             [
               hoverIndex,
               0,
-              prevCards[dragIndex] as CookingSteps_create,
+              prevCards[dragIndex] as RecipeDndCard,
             ],
           ],
         });
@@ -111,13 +123,13 @@ export const ContainerDnd = ({
         order: number;
         description: string;
         time: number;
+        id: number;
       },
-      index: number
+      index: number,
     ) => {
       return (
         <CookStepCard
-          id={index}
-          key={index}
+          id={card.id}
           index={index}
           card={card}
           setCards={setCards}
@@ -135,8 +147,13 @@ export const ContainerDnd = ({
     <>
       <div className="w-full mt-6 mb-6 p-5">
         <h2 className="text-xl">요리 순서</h2>
+        <section className={`relative`} style={{height:dndSectionHeight}}>
+        {cards.map((card, i) => {
+          return renderCard(card, i)
+          })
+        }
 
-        {cards.map((card, i) => renderCard(card, i))}
+        </section>
         <div className="w-full flex justify-center">
           <AddIcon
             sx={{width:"45px", height:"45px"}}

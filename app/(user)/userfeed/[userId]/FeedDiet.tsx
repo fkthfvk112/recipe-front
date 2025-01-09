@@ -1,28 +1,27 @@
-import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
-import { useUserFeedRecipeInxPagenation } from "@/app/(commom)/Hook/useUserFeedRecipeInxPagenation";
+import DietSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Diet)/DietSquareItem";
+import { useUserFeedDietInxPagenation } from "@/app/(commom)/Hook/useUserFeedDietInxPagenation";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
 import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useRecoilState } from "recoil";
 
-export default function FeedRecipes({
-  userNickName,
+export default function FeedDiet({
+  userId,
 }: {
-  userNickName: string;
+  userId: string;
 }) {
-  const [recipeData, recipeRefetcher, isLoading] = useUserFeedRecipeInxPagenation({userNickName});
-  const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.user_feed_recipe_key + userNickName));
+  const [dietData, dietRefetcher, isLoading] = useUserFeedDietInxPagenation({userId});
+  const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.user_feed_diet_key + userId));
 
   const [viewRef, inview] = useInView();
-
 
   useEffect(()=>{
     if(isLoading) return;
     if(inview){
-      recipeRefetcher();
+      dietRefetcher();
     }
   }, [inview, isLoading])
 
@@ -37,23 +36,24 @@ export default function FeedRecipes({
     }
   }, [])
 
-  const feedPhotos = recipeData.cachedData.data?.map((recipe, inx) => (
+
+  const feedInfos = dietData.cachedData.data.map((diet, inx) => (
     <Link
       key={inx}
-      href={`/recipe-detail/${recipe.recipeId}`}
+      href={`/diet/user/${diet.dietDayId}`}
     >
-      <RecipeSquareItem key={inx} recipe={recipe}/>
+      <DietSquareItem dietDay={diet}/>
     </Link>
   ));
 
   return (
     <div className="min-h-screen w-full">
       <ul className="grid grid-cols-3 w-full gap-1 p-2">
-        {feedPhotos}
+        {feedInfos}
       </ul>
       <div className="h-10 w-full text-center mt-10" ref={viewRef}>
           {isLoading && <CircularProgress />}
       </div>
     </div>
-  );
+  )
 }

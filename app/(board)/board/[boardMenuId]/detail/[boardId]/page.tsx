@@ -91,7 +91,7 @@ export default async function BoardDetail({
                                  <Image className="rounded-full" src={boardData.userPhoto} width={50} height={50} alt="Picture of the author" loading="lazy"/>:
                                  <AccountCircleIcon sx={{width:"50px", height:"50px"}}/>}
                                 <div className="ms-3">
-                                    <Link href={`/userfeed/${boardData.userNickName}`}>
+                                    <Link href={`/userfeed/${boardData.userId}`}>
                                         <h3>{boardData.userNickName}</h3>
                                     </Link>
                                     <p className="text-sm text-[#a1a1a1]">

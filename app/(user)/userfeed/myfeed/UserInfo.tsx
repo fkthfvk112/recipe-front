@@ -18,7 +18,6 @@ export default function UserInfo() {
   const [userData, setUserData] = useState<UserFeedInfo>();
   const [updateData, setUpdateData] = useState<number>(0);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const router = useRouter();
 
   const modalOpen = () => setIsOpenModal(true);
   

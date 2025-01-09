@@ -1,7 +1,5 @@
 import RecipeSquareItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeSquareItem";
 import { useUserFeedRecipeInxPagenation } from "@/app/(commom)/Hook/useUserFeedRecipeInxPagenation";
-import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import { Recipe } from "@/app/(recipe)/types/recipeType";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
 import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { CircularProgress } from "@mui/material";
@@ -11,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { useRecoilState } from "recoil";
 
 export default function MyRecipe() {
-  const [recipeData, recipeRefetcher, isLoading] = useUserFeedRecipeInxPagenation({userNickName:'myFeedRecipe', isMyFeed:true});
+  const [recipeData, recipeRefetcher, isLoading] = useUserFeedRecipeInxPagenation({userId:'myFeedRecipe', isMyFeed:true});
   const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.user_feed_recipe_key + 'myFeedRecipe'));
 
   const [viewRef, inview] = useInView();

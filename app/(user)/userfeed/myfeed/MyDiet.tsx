@@ -10,7 +10,7 @@ import { useRecoilState } from "recoil";
 
 
 export default function MyDiet() {
-  const [dietData, dietRefetcher, isLoading] = useUserFeedDietInxPagenation({userNickName:"myFeedDeit", isMyFeed:true});
+  const [dietData, dietRefetcher, isLoading] = useUserFeedDietInxPagenation({userId:"myFeedDeit", isMyFeed:true});
   const [cachedScrollY, setScrollYCache] = useRecoilState(scrollYCacheSelector(cacheKey.user_feed_diet_key + 'myFeedDeit'));
 
   const [viewRef, inview] = useInView();

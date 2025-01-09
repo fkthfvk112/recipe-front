@@ -63,14 +63,14 @@ export default function ErrorText({
   
     if (
       recipe.steps.length < 3 ||
-      recipe.steps.find((step) => step.description.length < 5)
+      recipe.steps.find((step) => step.description.length < 3)
     ) {
       errCnt++;
       errorText = (
         <>
           {errorText}
           <div className="text-base">
-            레시피 단계를 추가해주세요(3단계 이상, 각 5글자 이상)
+            레시피 단계를 추가해주세요(3단계 이상, 각 3글자 이상)
           </div>
         </>
       );

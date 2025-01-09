@@ -14,13 +14,13 @@ import { cacheKey } from "@/app/(recoil)/cacheKey";
 export default function UserFeed({
   params,
 }: {
-  params: { userNickName: string };
+  params: { userId: string };
 }) {
-  const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + params.userNickName));
+  const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + params.userId));
 
   return (
     <div className="bg-white max-w-xl w-dvw m-3  flex flex-col justify-start items-center">
-      <UserInfo userNickName={params.userNickName}></UserInfo>
+      <UserInfo userNickName={params.userId} userId={params.userId}></UserInfo>
       <Divider className="mt-5" orientation="horizontal" flexItem />
       <div className="flex">
         <button
@@ -41,8 +41,8 @@ export default function UserFeed({
           공개 식단
         </button>
       </div>
-      {menuSelect === 0 &&<FeedRecipes userNickName={params.userNickName}/>}
-      {menuSelect === 1 &&<FeedDiet userNickName={params.userNickName}/>}
+      {menuSelect === 0 &&<FeedRecipes userId={params.userId}/>}
+      {menuSelect === 1 &&<FeedDiet userId={params.userId}/>}
     </div>
   );
 }
