@@ -107,6 +107,24 @@ axiosAuthInstacne.interceptors.response.use((res) => {
         confirmButtonColor: '#d33',
         allowEnterKey:false
         });
+    }else if(err.response.status === 403){
+      Swal.fire({
+        title: "에러가 발생하였습니다.",
+        text:"사용 권한이 없습니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey:false
+        });
+    }
+    else{
+      Swal.fire({
+        title: "에러가 발생하였습니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey:false
+        });
     }
     return Promise.reject(err);
   })

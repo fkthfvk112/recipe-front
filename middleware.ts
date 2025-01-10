@@ -4,10 +4,9 @@ import { decodedUserInfo, decodeUserJwt } from './app/(utils)/decodeJwt';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get('mugin-authtoken');
   const refreshCookie = request.cookies.get('mugin-refreshtoken');
   
-  if(authCookie === undefined || refreshCookie === undefined || !authCookie.value.startsWith("Bearer_")){
+  if(refreshCookie === undefined){
     return NextResponse.redirect(new URL('/signin', request.url))
   }
 

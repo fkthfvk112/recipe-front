@@ -20,9 +20,9 @@ export async function deleteAuthToken() {
 
 export async function isLogin(){
   const cookieStore = cookies()
-  const auth = cookieStore.get('mugin-authtoken');
+  //const auth = cookieStore.get('mugin-refreshtoken');
 
-  if(cookieStore.has('mugin-authtoken') && auth?.value.startsWith('Bearer_')){
+  if(cookieStore.has('mugin-refreshtoken')){
       return true;
   }
   return false;
