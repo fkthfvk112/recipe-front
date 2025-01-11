@@ -107,7 +107,8 @@ axiosAuthInstacne.interceptors.response.use((res) => {
         confirmButtonColor: '#d33',
         allowEnterKey:false
         });
-    }else if(err.response.status === 403){
+    }else if(err.response.status === 403 && err.response.data != "T001"){
+      console.log("에러", err)
       Swal.fire({
         title: "에러가 발생하였습니다.",
         text:"사용 권한이 없습니다.",
@@ -117,7 +118,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
         allowEnterKey:false
         });
     }
-    else{
+    else if(err.response.data != "T001"){
       Swal.fire({
         title: "에러가 발생하였습니다.",
         icon: "warning",

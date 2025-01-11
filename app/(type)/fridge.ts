@@ -45,3 +45,10 @@ export enum FridgeSortingEnum{
 }
 
 
+export interface FridgeImg{
+    fridgeImgId?:number;
+    imgName:string;
+    imgUrl:string;
+    imgSort:string;
+    createdAt:string;
+}

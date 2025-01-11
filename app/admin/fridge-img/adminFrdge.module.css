@@ -1,0 +1,17 @@
+.searchTalble tr:nth-child(1){
+    background-color: #c4dee9;
+    border: 1px solid #a1a1a1;
+}
+
+
+.searchTalble tr{
+    padding:0.5rem;
+    background-color: white;
+    border: 1px solid #a1a1a1;
+}
+
+
+.searchTalble td{
+    padding: 0.3rem;
+    border: 1px solid #a1a1a1;
+}
