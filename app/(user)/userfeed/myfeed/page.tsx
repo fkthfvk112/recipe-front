@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { userFeedMenuAtom } from "@/app/(recoil)/userFeedAtom";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
+import { AdditionalBtn } from "@/app/(commom)/Component/AdditionalBtn";
 
 export default function Userfeed() {
   const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + "myFeedMenu"));
@@ -43,6 +44,7 @@ export default function Userfeed() {
       </div>
       {menuSelect === 0 && <MyRecipe></MyRecipe>}
       {menuSelect === 1 && <MyDiet></MyDiet>}
+      <AdditionalBtn additionalBtns={[{name:"식단 작성", url:"/diet/mydiet/create"}, {name:"레시피 작성", url:"/create-recipe"}]}/>
     </div>
   );
 }

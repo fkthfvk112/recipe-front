@@ -141,7 +141,6 @@ const CookStepCard: FC<CardProps> = ({
   }, [isDragging]);
 
   const opacity = isDragging ? 0.5 : 1;
-  //drag(drop(ref));
   drag(dragRef);
   drop(dropRef);
 
@@ -158,19 +157,6 @@ const CookStepCard: FC<CardProps> = ({
     },
     [moveCard, setCards, cards]
   );
-
-  // const handleTextChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-  //   e
-  // ) => {
-  //   const newCards = cards.map((card) => {
-  //     if (card.order === index) {
-  //       card.description = e.target.value;
-  //     }
-  //     return card;
-  //   });
-
-  //   setCards(newCards);
-  // };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -195,17 +181,6 @@ const CookStepCard: FC<CardProps> = ({
     }
   };
 
-  // const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-  //   const newCards = cards.map((card) => {
-  //     if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
-  //       card.time = Number(e.target.value);
-  //     }
-  //     return card;
-  //   });
-
-  //   setCards(newCards);
-  // };
-
     const handleTimeChange = useCallback(
       (e:any) => {
         const newCards = cards.map((card) => {
@@ -221,10 +196,11 @@ const CookStepCard: FC<CardProps> = ({
     );
 
   const deleteStep = () => {
+    if(cards.length <= 1) return;
     const newCards = cards
       .filter((card) => card.order !== index)
       .map((card, inx) => {
-        return { ...card, order: inx };
+        return { ...card, order: inx, id:inx };
       });
 
     setCards(newCards as RecipeDndCard[]);
@@ -246,8 +222,7 @@ const CookStepCard: FC<CardProps> = ({
     <motion.div
       className={"mt-3 w-full flex flex-col bg-zinc-100 rounded-2xl p-2 absolute"}
       ref={dropRef}
-      style={{ opacity }}
-      initial={{ y: index * 300 }}
+      initial={{ y: index * 250 }}
       animate={controls} 
       data-handler-id={handlerId}
       key={id}

@@ -22,7 +22,7 @@ export const ContainerDnd = ({
   recipe,
   setRecipe,
 }: CookStepProp) => {
-  const [dndSectionHeight, setDndSectionHeight] = useState<number>(300);
+  const [dndSectionHeight, setDndSectionHeight] = useState<number>(250);
 
   const [cards, setCards] = useState<RecipeDndCard[]>(()=>{
     if(recipe.steps && recipe.steps.length > 0){
@@ -78,7 +78,7 @@ export const ContainerDnd = ({
       steps: addCard,
     });
 
-    setDndSectionHeight(cards.length * 300);
+    setDndSectionHeight(cards.length * 250);
   }, [cards]);
 
   const addNewStep = () => {
@@ -129,6 +129,7 @@ export const ContainerDnd = ({
     ) => {
       return (
         <CookStepCard
+          key={card.id}
           id={card.id}
           index={index}
           card={card}

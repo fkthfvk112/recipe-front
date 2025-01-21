@@ -144,6 +144,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
   };
 
   const deleteThisIngre = (order: number) => {
+    if(ingredients.length <= 1) return;
     const newIngre = ingredients
       .filter((ingre) => ingre.order !== order)
       .map((ingre, inx) => {
