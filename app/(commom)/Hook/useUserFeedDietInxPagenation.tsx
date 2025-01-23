@@ -25,7 +25,6 @@ export const useUserFeedDietInxPagenation = ({userId, isMyFeed=false, paramOptio
 
     let requestUrl = isMyFeed?'diet/day/my-days/inx-pagination' : 'diet/day/user-days/inx-pagination';
 
-
     useEffect(()=>{
         if(dietCache.cachedData.isEnd) return;
         setIsLoading(true);

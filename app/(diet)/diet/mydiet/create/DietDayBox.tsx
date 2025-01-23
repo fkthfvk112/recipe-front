@@ -199,7 +199,8 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
             <div className="flex w-full flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item, inx)=>{
                     return (
-                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
+                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold"
+                            onClick={()=>{setIsModalOpen(true)}}>{item.title}</span>
                     )
                 })}
             </div>

@@ -13,8 +13,11 @@ import { Validation } from "@/app/(user)/check";
 import Swal from "sweetalert2";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
+import { useUserFeedDietInxPagenation } from "@/app/(commom)/Hook/useUserFeedDietInxPagenation";
 
 export default function MyDiet(){
+    const [dietData, dietRefetcher, isLoading] = useUserFeedDietInxPagenation({userId:"myFeedDeit", isMyFeed:true});
+    
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
     const [dietDate, setDietDate]               = useState<string>("");
     const [title, setTitle]                     = useState<string>("");
@@ -182,7 +185,8 @@ export default function MyDiet(){
 
                 <SaveModal open={saveModalOpen} setOpen={setSaveModalOpen}
                     content="식단을 저장하시겠습니까?" data={saveData}
-                    postUrl="diet/day/my-days/save" returnUrl="/userfeed/myfeed" />
+                    postUrl="diet/day/my-days/save" returnUrl="/userfeed/myfeed"
+                    successCallback={()=>{window.location.href = "/userfeed/myfeed"}} />
             </section>
             <section className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
                 <div className='w-full flex justify-between max-w-[300px]'>

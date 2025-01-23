@@ -2,7 +2,6 @@
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import DetailSearchingModal from "./DetailSearchingModal";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 

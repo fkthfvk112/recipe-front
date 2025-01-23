@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { flushSync } from "react-dom";
 import "./embla.css";
 import Image from "next/image";
+import ImgModal from "../Component/ImgModal";
 
 const TWEEN_FACTOR = 3;
 
@@ -21,6 +22,14 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [tweenValues, setTweenValues] = useState<number[]>([]);
+
+  const [modalImg, setModalImg]  = useState<string>("");
+  const [modalOpen, openImgModal] = useState<boolean>(false);
+
+  const clickImgModalOpen = (imgStr:string)=>{
+      setModalImg(imgStr);
+      openImgModal(true);
+  }
 
   const imageByIndex = (index: number): string =>
     props.imgUrls[index % props.imgUrls.length];
@@ -61,6 +70,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   }, [emblaApi, onScroll]);
 
   return (
+    <>
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
@@ -71,12 +81,15 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                 src={imageByIndex(index)}
                 alt="no img"
                 fill
+                onClick={()=>clickImgModalOpen(imageByIndex(index))}
               />
             </div>
           ))}
         </div>
       </div>
     </div>
+    <ImgModal modalOpen={modalOpen} setModalOpen={openImgModal} modalImg={modalImg}/>
+    </>
   );
 };
 

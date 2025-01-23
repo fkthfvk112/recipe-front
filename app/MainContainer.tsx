@@ -6,6 +6,7 @@ import Nav from "./Nav";
 import { useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import { defaultAxios } from "./(customAxios)/authAxios";
+import ImgModal from "./(commom)/Component/ImgModal";
 
 export default function MainContainer({
     children,

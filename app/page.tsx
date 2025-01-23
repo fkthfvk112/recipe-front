@@ -6,6 +6,7 @@ import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
 import SiteDescription from "./SiteDescription";
 import { Metadata, ResolvingMetadata } from "next";
 import InViewContainer from "./(commom)/Component/InViewContainer";
+import ImgModal from "./(commom)/Component/ImgModal";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

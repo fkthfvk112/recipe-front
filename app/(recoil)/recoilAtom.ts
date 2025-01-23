@@ -16,4 +16,3 @@ export const searchPage = atom<number>({
   default: 1,
   effects_UNSTABLE: [persistAtom],
 });
-

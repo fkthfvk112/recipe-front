@@ -5,6 +5,7 @@ import { DietItemRow } from "@/app/(type)/diet";
 import React, { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import ImgModal from "@/app/(commom)/Component/ImgModal";
 
 const style = {
     position: "absolute" as "absolute",
@@ -28,6 +29,14 @@ interface DietDayRowProp{
 
 function DietDayBox({title, dietItemRow}:DietDayRowProp){
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+    const [modalImg, setModalImg]  = useState<string>("");
+    const [modalOpen, openImgModal] = useState<boolean>(false);
+
+    const clickImgModalOpen = (imgStr:string)=>{
+        setModalImg(imgStr);
+        openImgModal(true);
+    }
 
     const itemBageList = dietItemRow?.dietItemList.map((dietItem, inx)=>{
         return(
@@ -74,7 +83,8 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                 <div className="w-full flex-center">
                     <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
                         <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
-                            <Image src={dietItemRow.photo} alt="no img" fill/>
+                            <Image src={dietItemRow.photo} alt="no img" fill
+                                onClick={()=>clickImgModalOpen(dietItemRow.photo)}/>                        
                         </div>
                     </div>
                 </div>
@@ -82,7 +92,8 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
             <div className="flex w-full flex-wrap text-sm">
                 {dietItemRow.dietItemList?.map((item, inx)=>{
                     return (
-                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold">{item.title}</span>
+                        <span key={inx} className="bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 pe-1.5 rounded-md font-bold"
+                            onClick={()=>{setIsModalOpen(true)}}>{item.title}</span>
                     )
                 })}
             </div>
@@ -108,7 +119,8 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                             <div className="w-full flex-center">
                                 <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] mt-3 img-wrapper-square">
                                     <div className="relative flex-center w-[10rem] h-[10rem] bg-[#d1d1d1] img-wrapper-square">
-                                        <Image src={dietItemRow.photo} alt="no img" fill/>
+                                        <Image src={dietItemRow.photo} alt="no img" fill
+                                            onClick={()=>clickImgModalOpen(dietItemRow.photo)}/>                        
                                     </div>
                                 </div>
                             </div>
@@ -117,6 +129,7 @@ function DietDayBox({title, dietItemRow}:DietDayRowProp){
                     </div>
                 </Box>
             </Modal>
+            <ImgModal modalOpen={modalOpen} setModalOpen={openImgModal} modalImg={modalImg}/>
         </div>
     )
 }

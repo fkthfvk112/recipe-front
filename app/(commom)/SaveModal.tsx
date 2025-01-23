@@ -27,9 +27,10 @@ interface SaveModalProp<T>{
     data:T,
     postUrl:string,
     returnUrl:string
+    successCallback?:()=>any
 };
 
-function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveModalProp<T>) {
+function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl, successCallback}: SaveModalProp<T>) {
     const router = useRouter();
     const handleSave = ()=>{
         if(postUrl === undefined || postUrl === "" || data === undefined || data === null) return;
@@ -51,6 +52,9 @@ function SaveModal<T>({ open, setOpen, content, data, postUrl, returnUrl}: SaveM
                     //     console.log("리발리!!")
                     //     revalidateByTagName(revalidateTagName);
                     //   }
+                    if(successCallback){
+                        successCallback();
+                    }
                     router.push(returnUrl)
                 });
             })
