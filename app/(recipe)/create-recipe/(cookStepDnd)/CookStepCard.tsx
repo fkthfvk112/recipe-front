@@ -107,7 +107,7 @@ const CookStepCard: FC<CardProps> = ({
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       controls.start({
-        y: [hoverIndex * 300, dragIndex* 300], // 애니메이션 위치를 업데이트
+        y: [hoverIndex * 250, dragIndex* 250], // 애니메이션 위치를 업데이트
         transition: { duration: 0.1, ease: "easeOut" },
       });
 
