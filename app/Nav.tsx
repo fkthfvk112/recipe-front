@@ -26,7 +26,7 @@ const Navbar = () => {
 
   const goToSiginInPage = () => {
     const storage = globalThis?.sessionStorage;
-    if (storage) {
+    if (storage && !pathname.includes("signin") && !pathname.includes("signup") && !pathname.includes("callback")) {
       storage.setItem("prePath", pathname);
     }
     router.push("/signin");

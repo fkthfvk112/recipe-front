@@ -42,7 +42,6 @@ export default function NaverSignUp(){
 
     useEffect(()=>{
         axiosAuthInstacne.post("sns-sign-in/naver/userinfo").then((res)=>{
-            console.log("레스", res);
             setUserEmail(res.data.email)
         })
     }, [])
