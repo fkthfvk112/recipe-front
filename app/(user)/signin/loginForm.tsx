@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
+import NaverLogin from "./naver/NaverLogin";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -109,6 +110,7 @@ export default function LoginForm() {
       >
         {isLoading ? "Loading..." : "로그인"}
       </button>
+      <NaverLogin/>
       <div className="w-full mt-3 text-center">
         회원이 아니신가요? <Link className="text-blue-500" href="/signup">회원가입</Link>
       </div>

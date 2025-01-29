@@ -181,7 +181,7 @@ export default function FeedEditModal({
                   </button>
                  }
                  <label htmlFor="editingFeedPhoto" className="cursor-pointer">
-                    <div className="img-wrapper-round w-[120px] h-[120px]">
+                    <div className="img-wrapper-round w-[100px] h-[100px]">
                       {image}
                     </div>
                 </label>

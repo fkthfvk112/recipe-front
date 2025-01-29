@@ -3,6 +3,7 @@ import IntervalConfig from "./(interval)/intervalConfig";
 import "./globals.css";
 import MainContainer from "./MainContainer";
 import NextTopLoader from 'nextjs-toploader';
+import Script from "next/script";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -27,6 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <Script
+          src='https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js'
+          strategy='beforeInteractive'
+        />
       <NextTopLoader color="#FB8500" showSpinner={false} zIndex={50000}/>
         <MainContainer>
           {/* <IntervalConfig/> */}

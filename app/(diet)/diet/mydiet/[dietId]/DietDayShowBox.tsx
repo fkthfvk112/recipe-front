@@ -5,7 +5,6 @@ import { DietItemRow } from "@/app/(type)/diet";
 import React, { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-
 import ImgModal from "@/app/(commom)/Component/ImgModal";
 
 const style = {

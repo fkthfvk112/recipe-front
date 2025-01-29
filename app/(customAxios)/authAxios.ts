@@ -69,7 +69,6 @@ axiosAuthInstacne.interceptors.response.use((res) => {
     return res;
   },
   (err)=>{
-    console.log("공통 에러 캐치", err);
     if (err.message === "Network Error" || err.code === 'ERR_INTERNET_DISCONNECTED') {
       Swal.fire({
       title: "인터넷 연결 실패",
@@ -82,7 +81,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       
       return Promise.reject(err);
     }
-    else if(err.response.data.code === "T002" || err.response.data.code === "T003" || err.response.data.code === "T004" || err.response.data.code === "T005"){//리프래시 토큰 만료
+    else if(err.response.data === "T002" || err.response.data === "T003" || err.response.data === "T004" || err.response.data === "T005"){//리프래시 토큰 만료
       deleteAuthToken();
       // Swal.fire({
       //   title: "로그인 유효시간 만료.",

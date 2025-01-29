@@ -28,7 +28,7 @@ export default function UserInfo({ userNickName, userId }: { userNickName: strin
 
   return (
     <div className="w-full max-w-[500px] p-3">
-      <div className="w-full flex justify-center flex-wrap">
+      <div className="w-full flex justify-start flex-wrap mt-3">
         <div className=" flex justify-center items-center">
           <MyFeedPhoto photoUrl={userData?.userPhoto}></MyFeedPhoto>
         </div>
@@ -39,7 +39,7 @@ export default function UserInfo({ userNickName, userId }: { userNickName: strin
       </div>
       <div className="w-full text-center mt-5">
         {userData?.userIntro &&
-          <div className="w-full p-3 m-3 text-start bg-[#f1f1f1] rounded-xl">
+          <div className="w-full p-3 text-start bg-[#f0f0f0] rounded-xl">
             {userData?.userIntro}
           </div>
         }

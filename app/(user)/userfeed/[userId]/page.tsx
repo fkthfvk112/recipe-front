@@ -19,7 +19,7 @@ export default function UserFeed({
   const [menuSelect, setMenuSelect] = useRecoilState(userFeedMenuAtom(cacheKey.user_feed_menu_key + params.userId));
 
   return (
-    <div className="bg-white max-w-xl w-dvw m-3  flex flex-col justify-start items-center">
+    <div className="bg-white max-w-3xl w-dvw m-3  flex flex-col justify-start items-center">
       <UserInfo userNickName={params.userId} userId={params.userId}></UserInfo>
       <Divider className="mt-5" orientation="horizontal" flexItem />
       <div className="flex">

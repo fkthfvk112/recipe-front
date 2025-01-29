@@ -50,6 +50,7 @@ function UserInfoSetting_cantChg(){
             setUserData(res.data);
           })
       }, []);
+      console.log("그랜트 타입", userData);
 
 
     useEffect(() => {
@@ -158,9 +159,14 @@ function UserInfoSetting_cantChg(){
             <span className="col-span-1">이메일</span>
             <p className="col-span-2 h-7">{userData?.email}</p> 
             <span className="col-span-1">생년월일</span>
-            <p className="col-span-2 h-7">{userData?.birthDate}</p> 
-            <span className="col-span-1">비밀번호</span>
-            <button onClick={handleOpen} className="col-span-2 h-7 p-0 btn-outline-gray">비밀번호변경</button>
+            <p className="col-span-2 h-7">{userData?.birthDate}</p>
+            {
+                userData?.grantType === 'NORMAL' &&
+                    <>
+                    <span className="col-span-1">비밀번호</span>
+                    <button onClick={handleOpen} className="col-span-2 h-7 p-0 btn-outline-gray">비밀번호변경</button>
+                    </>
+            }
             <Link href="/accountSetting/del" className="mt-3 text-center col-span-3 text-[#a1a1a1] underline underline-offset-4">회원탈퇴</Link>
             <Modal
                 open={isOpenModal}

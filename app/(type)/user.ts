@@ -16,6 +16,11 @@ export interface UserSignUpDTO extends User {
   birthDate:string;
 }
 
+export interface NaverSignUpDTO{
+  nickName:string;
+  grantType:string;
+}
+
 export interface Jwt{
   name:string,
   value:string

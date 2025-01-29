@@ -14,8 +14,8 @@ export default function MyFeedPhoto({
       fill
     ></Image>
   ) : (
-    <Avatar className="w-full h-full" src="/broken-image.jpg" />
+    <Avatar sx={{width:100, height:100}} src="/broken-image.jpg" />
   );
 
-  return <div className="img-wrapper-round w-[120px] h-[120px]">{image}</div>;
+  return <div className="img-wrapper-round w-[100px] h-[100px]">{image}</div>;
 }
