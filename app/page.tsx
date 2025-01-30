@@ -7,6 +7,7 @@ import SiteDescription from "./SiteDescription";
 import { Metadata, ResolvingMetadata } from "next";
 import InViewContainer from "./(commom)/Component/InViewContainer";
 import ImgModal from "./(commom)/Component/ImgModal";
+import FridgeDescription from "./FridgeDescription";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -27,6 +28,7 @@ export default function Home() {
     <div className="bg-white w-full flex flex-col justify-center items-center">
       <SearchBar></SearchBar>
       <SiteDescription></SiteDescription>
+      <FridgeDescription></FridgeDescription>
       <SeasonalFood></SeasonalFood>
       <InViewContainer defaultHeight={500}>
         <PopularRecipes/>

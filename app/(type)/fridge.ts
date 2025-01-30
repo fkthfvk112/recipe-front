@@ -52,3 +52,8 @@ export interface FridgeImg{
     imgSort:string;
     createdAt:string;
 }
+
+export interface FridgeCntInfo{
+    fridgeCnt:number;
+    fridgeItemCnt:number;
+}

@@ -103,21 +103,27 @@ export default function LoginForm() {
       </div>
 
       <button
-        className="bg-[#fb8500] text-white h-8 rounded-md w-48 flex justify-center items-center border-none mt-3 font-bold"
+        className="bg-[#fb8500] text-white h-8 rounded-md w-full py-6 flex justify-center items-center border-none mt-3 font-bold"
         type="submit"
         disabled={isLoading}
         onClick={signInBtnClick}
       >
         {isLoading ? "Loading..." : "로그인"}
       </button>
-      <NaverLogin/>
       <div className="w-full mt-3 text-center">
         회원이 아니신가요? <Link className="text-blue-500" href="/signup">회원가입</Link>
       </div>
-      <div className="flex text-gray-400 text-sm">
+      <div className="flex text-gray-500 text-sm">
         <Link href="/findid">아이디 찾기</Link>
         <p className="mx-1">·</p>
         <Link href="/findpw">비밀번호 찾기</Link>
+      </div>
+      <div className="flex flex-col justify-center items-center mt-6">
+        <span className="border-t-2 border-gray-200 w-20"/>
+        <p className="text-xs text-gray-500 pt-3">SNS계정으로 간편 로그인/회원가입</p>
+        <div className="flex justify-around">
+          <NaverLogin/>
+        </div>
       </div>
     </div>
   );
