@@ -6,6 +6,7 @@ import TitleDescription from "@/app/(commom)/Component/TitleDescription";
 import styles from "./adminUser.module.css"
 import UserDetailModal from "./UserDetailModal";
 import BanModal from "./BanModal";
+import { PieChart, pieChart } from "./PieChart";
 
 interface userInfo{
     userId:string;
@@ -13,6 +14,8 @@ interface userInfo{
     email:string;
     grantType:string;
     blockEnum?:"UNBLOCK"|"CREATE_BLOCK_RECIPE_BOARD"|"CREATE_BLOCK_ALL"|"LOGIN_BLOCKED",
+    gender:string;
+    birthDate:string;
     createDate:string;
 }
 
@@ -34,6 +37,126 @@ export default function UserListAdmin(){
 
     const [selectedUser, setSelectedUser] = useState<string>("");
 
+    const [pieGenderChartData, setGenderpieChartData] = useState<pieChart[]>([]);
+
+    const [ageRangeData, setAgeRangeData] = useState<pieChart[]>([]);
+
+
+    const setGenderPieData = (userData:userInfo[])=>{
+        let maleCnt = 0;
+        let femaleCnt = 0;
+        userData.forEach((data)=>{
+            if(data.gender.toLowerCase() === 'm') maleCnt++;
+            else if(data.gender.toLowerCase() === 'f') femaleCnt++;
+        })
+
+        setGenderpieChartData([
+            {
+                id:"남성",
+                label:"남성",
+                value:maleCnt,
+                color:"#90CAF9"
+            },
+            {
+                id:"여성",
+                label:"여성",
+                value:femaleCnt,
+                color:"#FFC0CB"    
+            }
+        ])
+    }
+
+    const getAgeFromBirthDate = (birthDate: string): number => {
+        const birthYear = parseInt(birthDate.substring(0, 4), 10);
+        const birthMonth = parseInt(birthDate.substring(4, 6), 10);
+        const birthDay = parseInt(birthDate.substring(6, 8), 10);
+        
+        const today = new Date();
+        const age = today.getFullYear() - birthYear;
+        
+        // 생일이 지나지 않았으면 나이를 하나 빼야 함
+        const hasBirthdayPassed = today.getMonth() + 1 > birthMonth || 
+                                  (today.getMonth() + 1 === birthMonth && today.getDate() >= birthDay);
+        
+        return hasBirthdayPassed ? age : age - 1;
+    };
+
+    const setAgeRangePieDate = (userData:userInfo[])=>{
+        const ageGroups = {
+            '15-20': 0,
+            '20-25': 0,
+            '25-30': 0,
+            '30-35': 0,
+            '35-40': 0,
+            '40-45': 0,
+            '45-50': 0,
+            '50+': 0
+          };
+
+          userData.forEach(data => {
+            const age = getAgeFromBirthDate(data.birthDate);
+        
+            if (age >= 15 && age < 20) ageGroups['15-20']++;
+            else if (age >= 20 && age < 25) ageGroups['20-25']++;
+            else if (age >= 25 && age < 30) ageGroups['25-30']++;
+            else if (age >= 30 && age < 35) ageGroups['30-35']++;
+            else if (age >= 35 && age < 40) ageGroups['35-40']++;
+            else if (age >= 40 && age < 45) ageGroups['40-45']++;
+            else if (age >= 45 && age < 50) ageGroups['45-50']++;
+            else if (age >= 50) ageGroups['50+']++;
+          });
+
+          setAgeRangeData([
+            {
+                id:'15-20',
+                label:'15-20',
+                value:ageGroups['15-20'],
+                color:"#90CAF9"
+            },
+            {
+                id:'20-25',
+                label:'20-25',
+                value:ageGroups['20-25'],
+                color:"#90CAF9"
+            },
+            {
+                id:'20-25',
+                label:'20-25',
+                value:ageGroups['20-25'],
+                color:"#90CAF9"
+            },
+            {
+                id:'30-35',
+                label:'30-35',
+                value:ageGroups['30-35'],
+                color:"#90CAF9"
+            },
+            {
+                id:'30-35',
+                label:'40-45',
+                value:ageGroups['40-45'],
+                color:"#90CAF9"
+            },
+            {
+                id:'45-50',
+                label:'45-50',
+                value:ageGroups['45-50'],
+                color:"#90CAF9"
+            },
+            {
+                id:'50+',
+                label:'50+',
+                value:ageGroups['50+'],
+                color:"#90CAF9"
+            },
+          ])
+    }
+
+
+    console.log("차트 데이터", pieGenderChartData)
+
+
+
     useEffect(()=>{
         axiosAuthInstacne
             .get(`admin/user/list`, {
@@ -41,6 +164,8 @@ export default function UserListAdmin(){
             })
             .then((res)=>{
                 setUserInfo(res.data);
+                setGenderPieData(res.data);
+                setAgeRangePieDate(res.data);
             });
     }, [])
 
@@ -50,8 +175,9 @@ export default function UserListAdmin(){
             params:userSearch
         })
         .then((res)=>{
-            console.log("레슽", res.data)
             setUserInfo(res.data);
+            setGenderPieData(res.data);
+            setAgeRangePieDate(res.data);
         });
     }
 
@@ -182,6 +308,16 @@ export default function UserListAdmin(){
                         </tbody>
                     </table>
                 </section>
+            </section>
+            <section className="w-full h-[800px] mb-6">
+                <div className="w-full h-[300px] mb-10">
+                    <h3 className="text-center">성별</h3>
+                    <PieChart data={pieGenderChartData} customColors={['#90CAF9', '#FFC0CB']}/>
+                </div>
+                <div className="w-full h-[300px]">
+                    <h3 className="text-center">연령대</h3>
+                    <PieChart data={ageRangeData}/>
+                </div>
             </section>
         </div>
         <UserDetailModal userId={selectedUser} open={modalOpen} setOpen={setModalOpen} />
