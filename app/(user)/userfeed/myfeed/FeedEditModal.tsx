@@ -69,11 +69,31 @@ export default function FeedEditModal({
       return false;
     }
 
-    if(updatedUser.nickName.length < 2 || updatedUser.nickName.length > 10){
+    if(updatedUser.userIntro.length > 100){
       Swal.fire({
         title: "에러가 발생하였습니다.",
         icon: "warning",
-        text:"자기소개는 없거나 100자만 가능합니다."
+        text:"자기소개는 100자 이하만 가능합니다."
+      });
+      return false;
+    }
+
+    const nickNameRegex = /^[a-zA-Z0-9가-힣]+$/;
+    if(!nickNameRegex.test(updatedUser.nickName)){
+      Swal.fire({
+        title: "에러가 발생하였습니다.",
+        icon: "warning",
+        text:"올바르지 않은 닉네임 형식입니다."
+      });
+      return false;
+    }
+
+    const urlRegex = /^(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)|)$/;
+    if(!urlRegex.test(updatedUser.userUrl)){
+      Swal.fire({
+        title: "에러가 발생하였습니다.",
+        icon: "warning",
+        text:"올바르지 않은 URL형식입니다."
       });
       return false;
     }
@@ -190,7 +210,7 @@ export default function FeedEditModal({
           <div className="mt-3 w-full text-gray-500">
             닉네임
             <input
-              placeholder="2자 이상 10자 이하"
+              placeholder="2자 이상 10자 이하(한글, 숫자, 영문)"
               name="nickName"
               onChange={(e) => {
                 changeHandler(e);
@@ -203,6 +223,7 @@ export default function FeedEditModal({
             내 주소 (블로그, 유튜브 등)
             <input
               name="userUrl"
+              placeholder="올바른 URL형식(ex-https://mug-in.com)"
               onChange={(e) => {
                 changeHandler(e);
               }}

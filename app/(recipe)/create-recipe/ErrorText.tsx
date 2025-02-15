@@ -39,7 +39,7 @@ export default function ErrorText({
       );
     }
   
-    if (recipe.description.length < 3) {
+    if (recipe.description.length < 3 || recipe.description.length > 200) {
       errCnt++;
       errorText = (
         <>

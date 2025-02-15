@@ -21,6 +21,8 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
         return <BoardPreviewHoriItem key={inx} boardPreview={ele}/>
     });
 
+    const noContent = <li className="w-full min-h-[150px] text-xl flex justify-center items-center">아직 게시글이 없어요😢 첫 게시글을 작성해보세요.</li>
+
     useEffect(()=>{
         if(isLoading) return;
         if(inview){
@@ -42,7 +44,7 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
     return (
         <>
             <ul className="w-full h-full min-h-[300px] p-2">
-                {boardPreviews}
+                {boardPreviews?.length >= 1 ? boardPreviews : noContent}
             </ul>
             <div className="h-10" ref={viewRef}>
                 {isLoading && <CircularProgress />}

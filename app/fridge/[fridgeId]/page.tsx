@@ -95,10 +95,10 @@ export default function FridgeDetail({
                             유통기한 급한순
                         </option>
                         <option className="p-2 m-3" value={FridgeSortingEnum.Latest}>
-                            최신순
+                            등록 최신순
                         </option>
                         <option className="p-2 m-3" value={FridgeSortingEnum.Oldest}>
-                            오래된순
+                            등록 오래된순
                         </option>
                     </select>
                 </div>

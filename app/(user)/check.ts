@@ -87,6 +87,11 @@ export function validationEmailSentence(email: string): Validation {
 }
 
 export function validateNickName(nickName: string) {
+  const nickNameRegex = /^[a-zA-Z0-9가-힣]+$/;
+
+  if(!nickNameRegex.test(nickName)){
+    return false;
+  }
   if (nickName.length >= 2 && nickName.length <= 10) return true;
   else return false;
 }
