@@ -54,24 +54,8 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
         }
     }, [isDragging]); // isDragging이 true일 때만 이벤트 리스너를 추가 
 
-    const handelOpenClose = ()=>{
-        setOpen(!isOpen);
-        setInitialBottom(0);
-        setStartY(0);
-        setCurrentBottom(0);
-        setIsDragging(false);
-    }
-
     const handleClose = ()=>{
         setOpen(false);
-        setInitialBottom(0);
-        setStartY(0);
-        setCurrentBottom(0);
-        setIsDragging(false);
-    }
-
-    const handleOpen = ()=>{
-        setOpen(true);
         setInitialBottom(0);
         setStartY(0);
         setCurrentBottom(0);
@@ -138,7 +122,7 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
                 }
                 
             </div>
-            <div className={`${isOpen?'max-h-500':'max-h-0'} overflow-y-hidden `}>
+            <div className={`${isOpen?'max-h-500':'max-h-0'} overscroll-none overflow-y-hidden touch-none`}>
                 {children}
             </div>
         </motion.section>

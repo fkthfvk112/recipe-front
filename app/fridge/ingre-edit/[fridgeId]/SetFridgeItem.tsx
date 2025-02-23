@@ -119,7 +119,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     
     return (
         <BottomFixedAccordion title="식재료 추가" setStaticComponent={(windowSize||0) >= 1024} scrollLock={scrollLock}>
-            <div className="flex flex-col justify-start items-center w-full">
+            <div className="flex flex-col justify-start items-center w-full ">
                 <div className="w-full">
                     <div className="mt-3">
                       <h3>식재료명 (필수)</h3>
@@ -151,7 +151,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                         <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(7)}>+7일</button>
                         <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(30)}>+30일</button>
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-6 ">
                       <h3 className="w-[100px]">설명</h3>
                       <textarea value={description} className="p-2 h-[80px]" onChange={(evt)=>setDescription(evt.target.value)} maxLength={250}></textarea>
                     </div>

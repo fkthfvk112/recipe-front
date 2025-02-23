@@ -44,7 +44,7 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
     return (
         <>
             <ul className="w-full h-full min-h-[300px] p-2">
-                {boardPreviews?.length >= 1 ? boardPreviews : noContent}
+                {!isLoading && boardPreviews?.length <= 0 ? noContent : boardPreviews}
             </ul>
             <div className="h-10" ref={viewRef}>
                 {isLoading && <CircularProgress />}
