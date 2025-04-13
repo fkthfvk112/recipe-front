@@ -9,6 +9,9 @@ import { useBoardInxPagenation } from "@/app/(commom)/Hook/useBoardInxPagenation
 import { useRecoilState } from "recoil";
 import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
+import { BoardIdEnum } from "@/app/(type)/board";
+import Swal from "sweetalert2";
+
 
 function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const [boardData, boardRefetcher, isLoading] = useBoardInxPagenation({boardMenuId});
@@ -25,6 +28,22 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
 
     useEffect(()=>{
         if(isLoading) return;
+        if(!isLoading){
+            if(boardMenuId == BoardIdEnum.greetBoard){
+                const storage = globalThis?.sessionStorage;
+                const firstSignUp = storage.getItem("firstSignUp") as string;
+                if (typeof firstSignUp === "string") {
+                    if(firstSignUp == "true"){
+                        Swal.fire({
+                            title:"너무 환영해요!!",
+                            text:"오른쪽 아래 초록 버튼을 눌러 첫 인사를 작성해보세요",
+                            icon: "success",
+                        })
+                    }
+                    storage.removeItem("firstSignUp");
+                }
+            }
+        }
         if(inview){
             boardRefetcher();
         }

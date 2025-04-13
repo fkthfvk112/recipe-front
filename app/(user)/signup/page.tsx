@@ -227,6 +227,8 @@ export default function SignUp() {
             text:"회원가입에 성공했습니다.",
             icon: "success",
           }).then(() => {
+            const storage = globalThis?.sessionStorage;
+            storage.setItem("firstSignUp", "true");
             route.push("/signin");
           });
         

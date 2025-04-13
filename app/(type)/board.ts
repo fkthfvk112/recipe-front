@@ -28,3 +28,9 @@ export interface Board{
     updatedAt?:    string;
     userPhoto?:    string;
 }
+
+export enum BoardIdEnum{
+    freeBoard = 1,
+    dietBoard =2,
+    greetBoard = 3
+};

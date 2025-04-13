@@ -42,10 +42,16 @@ export default function LoginForm() {
         setIsSignIn(true);
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
+        const firstSignin = storage.getItem("firstSignUp");
         const prePath = storage.getItem("prePath");
-        if (storage && typeof prePath === "string") {
-          pathToGo = storage.getItem("prePath") as string;
-          storage.removeItem("prePath");
+        if(storage){
+          if (typeof prePath === "string") {
+            pathToGo = storage.getItem("prePath") as string;
+            storage.removeItem("prePath");
+          }
+          if(typeof firstSignin === "string" && firstSignin == "true"){
+            pathToGo = "/board/3"//3 == 인사게시판
+          }
         }
         location.href = pathToGo;
       })
