@@ -41,8 +41,6 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
         }
     }
 
-    console.log("이미지스", item);
-
     const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
         event
         ) => {
@@ -50,7 +48,7 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
             const file = event.target.files[0];
             if (file) {
             try {
-                const base64String = await resizeFileToBase64(file) as string;
+                const base64String = await resizeFileToBase64(file, 1200, 1200) as string;
                 setImgItem({
                     ...item,
                     imgUrl:base64String

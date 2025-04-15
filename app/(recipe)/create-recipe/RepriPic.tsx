@@ -35,7 +35,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
     const file = event.target.files[0];
     if (file) {
       try {
-        const base64StrImg = await resizeFileToBase64(file) as string;
+        const base64StrImg = await resizeFileToBase64(file, 1200, 1200) as string;
         const existRecipe = {...recipe};
         existRecipe.repriPhotos[inx] = base64StrImg;
         setRecipe(existRecipe);

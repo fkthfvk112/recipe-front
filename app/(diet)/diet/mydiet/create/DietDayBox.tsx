@@ -152,7 +152,7 @@ function DietDayBox({title, dietItemRow, setDietItemRow}:DietDayRowProp){
         const file: File | null | undefined = evt.target.files?.[0];
         
         if(file){
-            const resizedFile = await resizeFileToBase64(file) as string;
+            const resizedFile = await resizeFileToBase64(file, 1200, 1200) as string;
             setDietItemRow({...dietItemRow, photo:resizedFile});
         } 
     };

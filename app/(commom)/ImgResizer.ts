@@ -17,12 +17,12 @@ export const resizeFile = (file:File) =>
   });
 
   
-export const resizeFileToBase64 = (file:File) =>
+export const resizeFileToBase64 = (file:File, width:number = 512, height:number = 512) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       file,
-      512,
-      512,
+      width,
+      height,
       "WEBP",
       100,
       0,

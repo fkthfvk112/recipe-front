@@ -165,7 +165,7 @@ const CookStepCard: FC<CardProps> = ({
       const file = event.target.files[0];
       if (file) {
         try {
-          const base64String = await resizeFileToBase64(file) as string;
+          const base64String = await resizeFileToBase64(file, 1200, 1200) as string;
           const newCards = cards.map((card) => {
             if (card.order === index) {
               return { ...card, photo: base64String, photoSring: base64String };

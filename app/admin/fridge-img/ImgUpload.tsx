@@ -17,7 +17,7 @@ export default function ImgUpload(){
           setImgFile(file);
           if (file) {
             try {
-              const base64String = await resizeFileToBase64(file) as string;
+              const base64String = await resizeFileToBase64(file, 1200, 1200) as string;
               setImgString(base64String);
                 } catch (error) {
               console.error("파일 변환 오류:", error);

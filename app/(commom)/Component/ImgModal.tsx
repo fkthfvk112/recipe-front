@@ -21,19 +21,28 @@ export default function ImgModal({modalOpen, setModalOpen,modalImg}:{modalOpen:b
 
     useEffect(()=>{
     }, [modalImg, modalOpen])
-  
-    return(
-        modalOpen&&
-    <Modal
-        open={modalOpen}
-        onClose={() => {
-            setModalOpen(false);
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Box sx={style}>
-            <Image className="inner-img" width={150} height={150} src={modalImg} alt="no imgage" onClick={()=>setModalOpen(false)}/>
-        </Box>
-    </Modal>
-    )
+    return (
+        modalOpen && (
+          <Modal
+            open={modalOpen}
+            onClose={() => {
+              setModalOpen(false);
+            }}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Image
+                className="inner-img"
+                fill
+                src={modalImg}
+                alt="modal image"
+                quality={95}
+                priority
+                onClick={() => setModalOpen(false)}
+              />
+            </Box>
+          </Modal>
+        )
+      );
 }
