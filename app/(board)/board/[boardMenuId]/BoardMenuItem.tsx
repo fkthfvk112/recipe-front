@@ -1,16 +1,18 @@
 import { boardCacheSelectorAtom } from "@/app/(recoil)/boardCacheSelector";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
 import { scrollYCacheAtom } from "@/app/(recoil)/scrollYCacheSelector";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {  useResetRecoilState } from "recoil";
 
 export default function BoardMenuItem({boardMenuId, boardMenuName, selectedMenuId}:{boardMenuId:string, boardMenuName:string, selectedMenuId:string}){
     const router = useRouter();
+    const pathname = usePathname(); 
     const boardCacheReset = useResetRecoilState(scrollYCacheAtom(cacheKey.board_key + boardMenuId));
     const boardScrollYReset = useResetRecoilState(boardCacheSelectorAtom(cacheKey.board_key + boardMenuId));
     
 
     const goBoardList = ()=>{
+        if (pathname === `/board/${boardMenuId}`) return;
         boardCacheReset();
         boardScrollYReset();
         router.push(`/board/${boardMenuId}`)
