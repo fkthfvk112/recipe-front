@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import { defaultAxios } from "./(customAxios)/authAxios";
 import ImgModal from "./(commom)/Component/ImgModal";
+import { sendVisitLog } from "./(utils)/siteAccess";
 
 export default function MainContainer({
     children,
@@ -16,9 +17,7 @@ export default function MainContainer({
     const {layoutPadding} = useResponsiveDesignCss();
 
     useEffect(()=>{
-      if(!getCookie("mug-in-visit")){
-          defaultAxios.get("health/hello");
-      }
+      sendVisitLog();
     }, [])
 
     return (
