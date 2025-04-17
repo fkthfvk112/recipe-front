@@ -16,7 +16,7 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
     <li className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] m-1 border border-[#e1e1e1] rounded-md">
       <div className="aspect-square w-full img-wrapper-square overflow-hidden">
         <Image
-          className="inner-img"
+          className="inner-img hover:scale-105 transition-transform duration-300"
             src={recipe.repriPhotos[0]}
             width={300}
             height={300}

@@ -13,23 +13,22 @@ export default function SeasonalFood() {
     6
   );
 
-  const seasonIngres = seasonname.map((ele) => {
-    return (
-      <Link
-        href={`/recipes/1/ingre/${ele}`}
-        className="w-24 min-w-24 h-16 ms-3 border-2 rounded-md m-3 flex flex-row justify-center items-center border-slate-400"
-        key={ele}
-      >
-        <h3>{ele}</h3>
-      </Link>
-    );
-  });
-
   return (
-    <div className="w-full m-10 max-w-5xl p-5">
-      <h1 className="text-xl">이달의 식재료</h1>
-      <div className="flex justify-center items-center mt-6 w-full ">
-        <section className="flex flex-row overflow-x-scroll">{seasonIngres}</section>
+    <div className="w-full max-w-5xl mx-auto px-5 py-10">
+      <h1 className="text-2xl font-semibold text-gray-800">🌿 이달의 제철 식재료</h1>
+      {/* 스크롤 가능한 식재료 목록 */}
+      <div className="mt-6 flex overflow-x-auto space-x-4 p-3 scrollbar-hide">
+        {seasonname.map((ele) => (
+          <Link
+            href={`/recipes/1/ingre/${ele}`}
+            key={ele}
+            className="min-w-[100px] h-20 bg-white shadow-sm border border-gray-300 
+                      rounded-xl flex justify-center items-center text-center 
+                      text-gray-700 font-medium hover:bg-green-100 hover:scale-105 transition-all"
+          >
+            <h3>{ele}</h3>
+          </Link>
+        ))}
       </div>
     </div>
   );

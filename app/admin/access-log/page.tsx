@@ -25,16 +25,48 @@ interface SortedData {
   extraData: Data[];
 }
 
+interface LogSearch{
+  dateFrom?:string;
+  dateTo?:string;
+}
+
 export default function UserListAdmin() {
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+
+  // 날짜를 YYYY-MM-DD 형식으로 변환하는 함수
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const [searchData, setSearchData] = useState<LogSearch>({
+    dateFrom: formatDate(sevenDaysAgo),
+    dateTo: formatDate(today)
+  });
   const [logData, setLogData] = useState<LogDate[]>([]);
   const [logSortedData, setLogSortedData] = useState<SortedData[]>([]);
   const [pieSourceData, setPieSourceData] = useState<pieChart[]>([]);
 
   useEffect(() => {
-    axiosAuthInstacne.get(`access/site`).then((res) => {
+    axiosAuthInstacne.get(`access/site`, {
+      params:searchData
+    }).then((res) => {
       setLogData(res.data);
     });
   }, []);
+
+
+  const search = ()=>{
+    axiosAuthInstacne.get(`access/site`, {
+      params:searchData
+    }).then((res) => {
+      setLogData(res.data);
+    });
+  }
 
   const COLORS = [
     "#FFB3BA", // 연한 빨강
@@ -95,6 +127,18 @@ useEffect(() => {
     setLogSortedData(finalSortedData);
   }, [logData]);
 
+
+  
+  const setSearchDate = (evt:React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>)=>{
+    const name  = evt.target.name;
+    const value = evt.target.value;
+    setSearchData((prevSearch) => ({
+        ...prevSearch,
+        [name]: value,
+    }));
+}
+
+
   const simpleData = logSortedData.map((log, inx) => (
     <div key={inx} className="my-4 bg-sky-100 rounded-xl p-4 shadow-md">
       <div className="flex items-center justify-between mb-2 text-xl font-semibold">
@@ -123,9 +167,17 @@ useEffect(() => {
     </div>
   ));
   
+  console.log(searchData);
+
   return (
     <div className="flex flex-col justify-start items-center w-full min-h-lvh p-5">
       <section className="w-full mb-20">
+        <div className="flex justify-center items-center w-full">
+          <input name="dateFrom" onChange={(evt)=>{setSearchDate(evt)}} type="date" value={searchData?.dateFrom} />
+          <span className="mx-2">~</span>
+          <input name="dateTo" onChange={(evt)=>{setSearchDate(evt)}} type="date" value={searchData?.dateTo}/>
+          <button className="greenBtn ms-3" onClick={search}>조회</button>
+        </div>
         <TitleDescription title="방문자수 확인" desc={"방문자수 확인"} />
         <div className="w-full h-[300px] mb-10">
           <h3 className="text-center">접근 경로</h3>

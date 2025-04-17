@@ -16,11 +16,11 @@ export function BestRecipeCard({recipe}:{recipe:Recipe}){
     }
     return (
         <>
-        <h2 className="text-xl">최고의 레시피</h2>
-        <section className="mb-10 bg-[#edf6f9] text-center flex flex-col md:flex-row shadow-md">
+        <h1 className="text-2xl font-semibold text-gray-800">🌟 최고의 레시피</h1>
+        <section className="mb-10 bg-[#edf6f9] text-center flex flex-col md:flex-row shadow-md mt-3">
             <div className="aspect-[5/3] img-wrapper-square overflow-hidden w-full md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px]">
                 <Image
-                className="inner-img "
+                className="inner-img  hover:scale-105 transition-transform duration-300"
                     src={recipe.repriPhotos[0]}
                     width={300}
                     height={300}
@@ -36,16 +36,16 @@ export function BestRecipeCard({recipe}:{recipe:Recipe}){
                     </span>
                 </div>
                 <div className="flex flex-row text-xs/[14px] gap-x-3 lg:gap-x-6 justify-center lg:justify-start items-center  mb-3">
-                    <div>
+                    <div className="text-[#3b3b3b]">
                         <LocalDiningIcon className="w-[20px] h-[20px]"/>
                         {recipe.createdAt &&
                         new Date(recipe.createdAt).toLocaleDateString('en-CA')}
                     </div>
-                    <div>
+                    <div  className="text-[#3b3b3b]">
                         <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>
                     </div>
                 </div>
-                <div>
+                <div className="text-[#3b3b3b] md:text-start text-center">
                     {recipe.description}
                 </div>
                 <button onClick={goRecipe} className="greenBtn w-full mt-6">레시피 보러가기</button>
