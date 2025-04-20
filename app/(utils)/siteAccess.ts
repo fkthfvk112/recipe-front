@@ -10,12 +10,10 @@ export function sendVisitLog() {
   const userAgent = navigator.userAgent;
   const referrer  = document.referrer;
   if (isBot(userAgent)) {
-    console.log("봇")
     return;
   }
 
   if(getCookie("mug-in-visit")){
-    console.log("이미 방문")
     return;
   }
 1
