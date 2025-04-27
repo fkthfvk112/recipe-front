@@ -13,12 +13,13 @@ import { DomainType } from '@/app/(commom)/Component/(report)/ReportPost';
 interface ReviewEtcState{
     reviewId:number,
     canDelete:boolean,
+    reviewOwnerId:string,
     domainName:domainName
     domainId:domainId,
 }
 
 /**신고하기, 글삭제,  */
-function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEtcState){
+function ReviewEtcBtnClient({domainId, reviewId, domainName, reviewOwnerId, canDelete}:ReviewEtcState){    
     const [reportModalOpen, setReportModalOpen] = useState<boolean>(false);//영역 바깥 클릭시 닫히는 문제 해결 플래그
 
     const [domainType, setDomainType] = useState<DomainType>();
@@ -95,7 +96,7 @@ function ReviewEtcBtnClient({domainId, reviewId, domainName, canDelete}:ReviewEt
             <div ref={outRef}>
                 <div className="absolute flex flex-col justify-center items-start right-0 bg-[#ebebeb] p-3 w-[150px] z-50">
                     <div onClick={()=>setReportModalOpen(true)} className='flex justify-start items-center'>
-                        <ReportPostClient domainType={domainType} domainId={domainId} etcText={"신고하기"} modalCancelCallback={()=>setReportModalOpen(false)} />
+                        <ReportPostClient domainType={domainType} domainId={reviewId} etcText={"신고하기"} reportedUserId={reviewOwnerId} modalCancelCallback={()=>setReportModalOpen(false)} />
                     </div>
                     
                     {canDelete&&

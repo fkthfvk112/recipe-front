@@ -35,7 +35,7 @@ interface ReportProp extends Report{
   initialModalOpen?:boolean;
   modalCancelCallback?:(param?:any)=>any;
 }
-export default function ReportPostClient({domainType, domainId, etcText, initialModalOpen, modalCancelCallback}:ReportProp){
+export default function ReportPostClient({domainType, domainId, etcText, initialModalOpen, reportedUserId, modalCancelCallback}:ReportProp){
     const [openModal, setOpenModal] = useState<boolean>(initialModalOpen===true?true:false);
     const [nowPageUrl, setNowPageUrl] = useState<string>("");
     const [reportType, setReportType] = useState<ReportType>(ReportType.NO_SELECT);
@@ -91,15 +91,18 @@ export default function ReportPostClient({domainType, domainId, etcText, initial
         [x:string]: string|number;
         reportType:number;
         reportPageUrl:string;
+        reportedUserId:string;
       }
 
       const reportDTO:DTO = {
         [domainIdName]:domainId,
         reportType:reportType,
-        reportPageUrl:nowPageUrl
+        reportPageUrl:nowPageUrl,
+        reportedUserId:reportedUserId?reportedUserId:""
       }
-    
-    axiosAuthInstacne
+      console.log("리;포트,", reportDTO)
+      
+      axiosAuthInstacne
         .post(`${process.env.NEXT_PUBLIC_API_URL}${fetchPath}`, reportDTO)
         .then(()=>{
           Swal.fire({
