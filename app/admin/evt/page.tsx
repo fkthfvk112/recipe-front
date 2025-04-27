@@ -3,10 +3,6 @@
 import { use, useState } from "react"
 import RegisterEvt from "./RegisterEvt";
 import EventList from "./EventList";
-import UpdateEvt from "./UpdateEvt";
-import EvtUserList from "./EvtUserList";
-
-
 export interface EventDTO {
     eventId: number;
     name: string;
