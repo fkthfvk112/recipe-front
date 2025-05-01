@@ -117,7 +117,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
                                 <input className="w-[180px]" onChange={(evt)=>{setTitle(evt.target.value)}} value={title} type="text" />
                             </div>
                             <div className="w-[100px] h-[100px] img-wrapper-square bg-[#e1e1e1] rounded-2xl">
-                                <Image className="inner-img" src={fridgeItem.imgUrl}  alt="ex" fill={true} />
+                                <Image className="inner-img-whole" src={fridgeItem.imgUrl}  alt="ex" fill={true} quality={100}/>
                             </div>
                         </div>
                     </section>

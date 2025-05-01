@@ -108,7 +108,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
             <></>
           )}
           <div className="w-[60px] h-[60px] ">
-            <Image className="inner-img" src={img.imgUrl}  alt="ex" fill={true} />
+            <Image className="inner-img-whole" src={img.imgUrl}  alt="ex" fill={true} quality={100} />
           </div>
         </div>
       ));

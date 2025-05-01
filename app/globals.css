@@ -352,6 +352,12 @@ textarea{
   overflow: hidden;
 }
 
+.inner-img-whole{
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
 .inner-img{
   position: absolute;
   top: 0;

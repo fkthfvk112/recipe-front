@@ -67,7 +67,7 @@ export default function FridgeDetail({
                     {item.name}
                 </div>
                 <div className="w-full h-full img-wrapper-square">
-                    <Image className="inner-img" src={item.imgUrl}  alt="ex" fill={true} />
+                    <Image className="inner-img-whole" src={item.imgUrl}  alt="ex" fill={true} quality={100} />
                 </div>
             </li>)
     })
