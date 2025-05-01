@@ -20,6 +20,7 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
     RecipeSelection.분식,
     RecipeSelection.후식,
     RecipeSelection.건강식,
+    RecipeSelection.기타,
   ].map(
     (category) => RecipeSelection[category as keyof typeof RecipeSelection]
   );
@@ -68,7 +69,9 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
         <></>
       )}
       <div className="w-[60px] h-[60px]">
+        {item!=RecipeSelection.기타 &&
         <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" />
+        }
       </div>
       <div className="bottom-line w-full"/>
       {/* <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" /> */}

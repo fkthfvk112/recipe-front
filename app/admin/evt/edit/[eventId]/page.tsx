@@ -22,6 +22,7 @@ export default function UpdateEvt({
   }) {
     const [eventName, setEventName] = useState<string>('');
     const [evtContent, setEvtContent] = useState<string>('');
+    const [returnUrl, setReturnUrl] = useState<string>('');
     const [evtBannerImg, setEvtBannerImg] = useState<string>(""); // 배너 이미지 상태
     const [contentImg, setContentImg] = useState<string>(""); // 콘텐츠 이미지 상태
     const [startAt, setStartAt] = useState<string>('');
@@ -37,6 +38,7 @@ export default function UpdateEvt({
                 const data = res.data;
                 setEventName(data.name);
                 setEvtContent(data.content);
+                setReturnUrl(data.returnUrl)
                 setEvtBannerImg(data.bannerImgUrl);
                 setContentImg(data.contentImgUrl);
                 setStartAt(data.startAt?.slice(0, 16));
@@ -85,6 +87,7 @@ export default function UpdateEvt({
         const payload = {
             eventName,
             evtContent,
+            returnUrl,
             evtBannerImg,
             contentImg,
             startAt,
@@ -116,6 +119,11 @@ export default function UpdateEvt({
                 <div className="flex flex-col">
                     <label>이벤트 설명</label>
                     <textarea value={evtContent} onChange={(e) => setEvtContent(e.target.value)} className="border p-2" required />
+                </div>
+
+                <div className="flex flex-col">
+                    <label>클릭시 이동 url(ex: /recipe-detail/12)</label>
+                    <input value={returnUrl} onChange={(e) => setReturnUrl(e.target.value)} className="border p-2" required />
                 </div>
 
                 <div className="flex flex-col">

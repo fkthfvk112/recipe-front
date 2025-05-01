@@ -63,12 +63,13 @@ export default function CreateRecipePage() {
       .post("recipe/create", recipe)
       .then((res) => {
         if (res.status === 200) {
+          console.log("레시피", res);
           Swal.fire({
             title: "게시가 완료되었습니다!",
             icon: "success",
           }).then(() => {
             revalidateByTagName("reviews-find");
-            router.push(`/`);
+            router.replace(`/recipe-detail/${res.data}`);
           });
           //have to 리발리데이트 
         }

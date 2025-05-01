@@ -22,6 +22,7 @@ export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
     CookingMethod.삶기,
     CookingMethod.찌기,
     CookingMethod.튀기기,
+    CookingMethod.기타,
   ].map((method) => {
     const cookMethod: string =
       CookingMethod[method as keyof typeof CookingMethod];

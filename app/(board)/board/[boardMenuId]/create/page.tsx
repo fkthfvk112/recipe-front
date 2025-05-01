@@ -93,7 +93,7 @@ function CreateNewBoardPost({
                 title: "게시가 완료되었습니다!",
                 icon: "success",
               }).then(() => {
-                router.push(`/board/${params.boardMenuId}`);
+                router.replace(`/board/${params.boardMenuId}`);
               });
         })
     }

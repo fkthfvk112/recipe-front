@@ -81,7 +81,7 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
                         allowOutsideClick:false,
                     }).then((result) => {
                         if(result.isConfirmed){
-                            router.push("/signin")
+                            router.replace("/signin")
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
                             router.back();
                         }

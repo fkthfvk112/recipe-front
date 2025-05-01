@@ -16,6 +16,7 @@ export interface RegisterEvtDTO_IN {
     evtContent: string;
     evtBannerImg: string;
     contentImg: string;
+    returnUrl:string;
     startAt: string;
     endAt: string;
     isActive: boolean;
@@ -27,6 +28,7 @@ export default function RegisterEvt() {
     // 상태 정의
     const [eventName, setEventName] = useState<string>('');
     const [evtContent, setEvtContent] = useState<string>('');
+    const [returnUrl, setReturnUrl] = useState<string>("");
     const [evtBannerImg, setEvtBannerImg] = useState<string>(""); // 배너 이미지 상태
     const [contentImg, setContentImg] = useState<string>(""); // 콘텐츠 이미지 상태
     const [startAt, setStartAt] = useState<string>('');
@@ -109,6 +111,7 @@ export default function RegisterEvt() {
             evtContent,
             evtBannerImg, // base64 문자열
             contentImg,   // base64 문자열
+            returnUrl,
             startAt,
             endAt,
             isActive,
@@ -154,7 +157,16 @@ export default function RegisterEvt() {
                         required
                     />
                 </div>
-
+                <div className="flex flex-col">
+                    <label htmlFor="returnUrl">클릭시 이동 url(ex: /recipe-detail/12)</label>
+                    <textarea
+                        id="returnUrl"
+                        value={returnUrl}
+                        onChange={(e) => setReturnUrl(e.target.value)}
+                        className="border p-2"
+                        required
+                    />
+                </div>
                 {/* 배너 이미지 */}
                 <div className="flex flex-col">
                     <label htmlFor="evtBannerImg">배너 이미지 (*정사각 이미지)</label>

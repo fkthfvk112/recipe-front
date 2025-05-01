@@ -8,6 +8,7 @@ import InViewContainer from "./(commom)/Component/InViewContainer";
 import ImgModal from "./(commom)/Component/ImgModal";
 import FridgeDescription from "./FridgeDescription";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
+import BottomBanner from "./(commom)/Component/BottmomBanner";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -30,15 +31,10 @@ export default function Home() {
       <SiteDescription></SiteDescription>
       <FridgeDescription></FridgeDescription>
       <SeasonalFood></SeasonalFood>
-      <InViewContainer defaultHeight={500}>
-        <PopularRecipes/>
-      </InViewContainer>
-      <InViewContainer defaultHeight={500}>
-        <RecentRecipes/>
-      </InViewContainer>
-      <InViewContainer defaultHeight={500}>
-        <RealTimeLikeBoard/>
-      </InViewContainer>
+      <PopularRecipes/>
+      <RecentRecipes/>
+      <RealTimeLikeBoard/>
+      <BottomBanner/>
     </div>
   );
 }

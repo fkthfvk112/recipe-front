@@ -6,6 +6,7 @@ export enum RecipeSelection {
   후식 = "후식",
   건강식 = "건강식",
   분식 = "분식",
+  기타 = "기타",
 }
 
 export enum CookingMethod {
@@ -14,6 +15,7 @@ export enum CookingMethod {
   삶기 = "삶기",
   찌기 = "찌기",
   볶기 = "볶기",
+  기타 = "기타",
 }
 
 export interface CookingSteps_create {
