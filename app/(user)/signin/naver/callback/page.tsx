@@ -52,9 +52,7 @@ export default function NaverCallback(){
                     .finally(()=>{
                         setIsLoading(false);
                 })
-                
             }
-            console.log(res);
         })
     }
 

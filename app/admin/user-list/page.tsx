@@ -151,12 +151,6 @@ export default function UserListAdmin(){
             },
           ])
     }
-
-
-    console.log("차트 데이터", pieGenderChartData)
-
-
-
     useEffect(()=>{
         axiosAuthInstacne
             .get(`admin/user/list`, {

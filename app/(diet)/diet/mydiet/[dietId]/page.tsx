@@ -68,8 +68,6 @@ export default async function DietDetail({
       </div>
     );
 
-    console.log("이퍼 ", dietDay);
-
     return (
       dietDay&&
       <div className='w-full bg-[#1d3124]  flex flex-col justify-center items-center pt-14'>

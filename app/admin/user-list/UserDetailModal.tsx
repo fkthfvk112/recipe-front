@@ -42,7 +42,6 @@ export default function UserDetailModal({userId, open, setOpen}:{userId:string, 
         if(open && userId && userId.length >= 2){
             axiosAuthInstacne.get(`admin/user?userId=${userId}`)
                 .then((res)=>{
-                    console.log(res.data);
                     setUserDate(res.data);
                 })
         }

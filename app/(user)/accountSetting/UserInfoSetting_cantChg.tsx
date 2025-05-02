@@ -50,8 +50,6 @@ function UserInfoSetting_cantChg(){
             setUserData(res.data);
           })
       }, []);
-      console.log("그랜트 타입", userData);
-
 
     useEffect(() => {
         if (presentPw === "") {

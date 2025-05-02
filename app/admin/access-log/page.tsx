@@ -167,8 +167,6 @@ useEffect(() => {
     </div>
   ));
   
-  console.log(searchData);
-
   return (
     <div className="flex flex-col justify-start items-center w-full min-h-lvh p-5">
       <section className="w-full mb-20">

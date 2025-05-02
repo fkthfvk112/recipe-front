@@ -25,7 +25,6 @@ export const useUserFeedRecipeInxPagenation = ({userId, isMyFeed=false, paramOpt
 
     let requestUrl = isMyFeed?'recipe/get-my-recipe/inx-pagination' : 'recipe/get-user-recipe/inx-pagination';
 
-    console.log("파람", userId);
     useEffect(()=>{
         if(recipeCache.cachedData.isEnd) return;
         setIsLoading(true);

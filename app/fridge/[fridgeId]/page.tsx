@@ -65,7 +65,6 @@ export default function FridgeDetail({
 
     const handleSortingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
         setFridgeSort(Number(e.target.value));
-        console.log(fridgeSort);
     };
 
     return (

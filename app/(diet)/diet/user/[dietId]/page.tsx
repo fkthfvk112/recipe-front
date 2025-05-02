@@ -70,17 +70,12 @@ export default async function UserDietDetail({
       }
     })
     
-    
-    
-    console.log("뭔데 ", dietDay)
   
     const dietItems = dietDay?.dietItemRowList?.map((dietRow, inx) =>
       <div className="col-span-1 aspect-auto" key={inx}>
         <DietDayShowBox title={dietRow.title?dietRow.title:""} dietItemRow={dietRow}/>
       </div>
     );
-
-    console.log("히히", dietDay);
 
     return (
       dietDay&&

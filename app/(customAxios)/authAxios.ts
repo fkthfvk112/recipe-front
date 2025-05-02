@@ -10,6 +10,7 @@ import { siginInState } from "../(recoil)/recoilAtom";
 export const defaultAxios = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   withCredentials: true,
+  timeout:30000,
 });
 
 
@@ -27,6 +28,7 @@ defaultAxios.interceptors.response.use((res)=>{
 export const axiosAuthInstacne = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   withCredentials: true,
+  timeout:30000,
 });
 
 
@@ -80,6 +82,16 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       });
       
       return Promise.reject(err);
+    }
+    else if (err.code === "ECONNABORTED") {
+      Swal.fire({
+        title: "서버 응답 시간이 초과되었습니다.",
+        text: "잠시 후 다시 시도해 주세요.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey: false,
+      });
     }
     else if(err.response.data === "T002" || err.response.data === "T003" || err.response.data === "T004" || err.response.data === "T005"){//리프래시 토큰 만료
       deleteAuthToken();

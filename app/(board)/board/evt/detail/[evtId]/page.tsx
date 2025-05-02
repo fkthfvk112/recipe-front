@@ -19,8 +19,6 @@ export default async function EvtDetail({
         }
     })
 
-    console.log("히히", evtData);
-
     return (
         <section className="defaultInnerContainer" style={{ paddingLeft: '1rem', marginTop: '2.5rem', paddingRight: '1rem' }}>
         <div className="bottom-line">
