@@ -22,10 +22,12 @@ import Swal from "sweetalert2";
 import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
+import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
 export default function CreateRecipePage() {
+  const [recipeImgCnt, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
   const [recipe, setRecipe] = useState<RecipeCreate>({
     recipeName: "",
     repriPhotos: ["", "", ""],
@@ -105,10 +107,21 @@ export default function CreateRecipePage() {
       <button
         className="saveBtn"
         onClick={() => {
+          if(recipeImgCnt > 0) return;
           setIsModalOpen(true);
         }}
       >
-        레시피 발행
+        {
+          recipeImgCnt <= 0?
+          <span>
+            레시피 쓰기
+          </span>
+          :
+          <span>
+            <CircularProgress size={16} />
+          </span>
+        }
+        
       </button>
       <div className="fixed bottom-6 right-6">
         <ScrollToTopButton/>

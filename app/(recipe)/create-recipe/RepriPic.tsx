@@ -4,6 +4,10 @@ import React, { SetStateAction, useState } from "react";
 import { RecipeCreate } from "./page";
 import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
 import ClearIcon from '@mui/icons-material/Clear';
+import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
+import Swal from "sweetalert2";
+import { useRecoilState } from "recoil";
+import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
 
 interface RepriPhoto {
   urlString: string | null;
@@ -16,6 +20,7 @@ interface RepriProp {
 }
 
 function RepriPric({ recipe, setRecipe }: RepriProp) {
+  const [recipeImgCnt, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
   const [repriPhotos, setRepriPhotos] = useState<RepriPhoto[]>([
     {
       urlString: null,
@@ -31,6 +36,28 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
     },
   ]);
 
+
+  const tempSaveImg = (imgStr:string, inx:number)=>{
+    setRecipeImgCnt(prev=>prev+1);
+    axiosAuthInstacne.post("recipe/img", {img:imgStr}).then((res)=>{
+      const existRecipe = {...recipe};
+      existRecipe.repriPhotos[inx] = res.data;
+      setRecipe(existRecipe);
+    })
+    .catch(()=>{
+      Swal.fire({
+        title: "이미지를 다시 등록해주세요.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey:false
+      });    
+    })
+    .finally(()=>{
+      setRecipeImgCnt(prev => Math.max(prev - 1, 0));
+    })
+  }
+
   const handleFileChange = async(event: any, inx: number) => {
     const file = event.target.files[0];
     if (file) {
@@ -39,6 +66,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
         const existRecipe = {...recipe};
         existRecipe.repriPhotos[inx] = base64StrImg;
         setRecipe(existRecipe);
+        tempSaveImg(base64StrImg, inx)
       } catch (error) {
         alert("파일 변환 오류 발생 " + error);
       }
@@ -138,7 +166,7 @@ function RepriPric({ recipe, setRecipe }: RepriProp) {
                 </button>
               <Image
                 className="inner-img"
-                src={recipe.repriPhotos[1]}
+                src={recipe.repriPhotos[2]}
                 alt="no img"
                 fill
               />

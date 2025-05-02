@@ -9,6 +9,7 @@ import ReviewContainer from "../(review)/ReviewContainer";
 import serverFetch from "@/app/(commom)/serverFetch";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 import { Metadata, ResolvingMetadata } from "next";
+import Script from "next/script";
 
 type Props = {
   params: Promise<{ recipeId: string }>
@@ -58,6 +59,8 @@ interface RecipeDetail {
   ingredients: Ingredient[];
   steps: CookingSteps_show[];
   reviewAvg:number;
+  createdAt?:string;
+  reviewCnt?:number;
 }
 
 export interface RecipeOwnerInfo {
@@ -86,8 +89,8 @@ export default async function RecipeDetail({
 
   let recipeDetail: RecipeDetail = fetchData?.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData?.recipeOwnerInfo;
-
-
+  let reviewCnt:number = fetchData?.reviewCnt;
+  
   const recipeInfo: RecipeInfoProp = {
     recipeId: Number(params.recipeId),
     recipeName: recipeDetail?.recipeName,
@@ -101,7 +104,45 @@ export default async function RecipeDetail({
     }, 0),
   };
 
+  const googleRecipeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    "name": recipeDetail.recipeName,
+    "image": recipeDetail.repriPhotos,
+    "author": {
+      "@type": "Person",
+      "name": recipeOwner.userNickName,
+    },
+    "datePublished": recipeDetail.createdAt ? new Date(recipeDetail.createdAt).toISOString() : undefined,
+    "description": recipeDetail.description,
+    "recipeYield": `${recipeDetail.servings}인분`,
+    "recipeCategory": recipeDetail.categorie,
+    "prepTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
+    "cookTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
+    "totalTime": `PT${recipeInfo.timeSum}M`,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": recipeDetail.reviewAvg,
+      "reviewCount": reviewCnt || 0
+    },
+    recipeIngredient: recipeDetail.ingredients.map((i) => `${i.name} ${i.qqt}`),
+    recipeInstructions: recipeDetail.steps.map((step) => {
+      const stepObj: any = {
+        "@type": "HowToStep",
+        "text": step.description,
+      };
+      if (step.photo) stepObj.image = step.photo;
+      return stepObj;
+    }),
+  };
+
   return (
+    <>
+      <Script
+        id="recipe-ld-json"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(googleRecipeSchema) }}
+      />
     <div className='w-full bg-[#1c7c54]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>    
       <div className=" max-w-3xl w-dvw m-3 bg-white flex flex-col justify-center items-center rounded-lg">
         <div className="p-5 mb-3 w-full">
@@ -122,5 +163,6 @@ export default async function RecipeDetail({
         </div>
       </div>
     </div>
+    </>
   );
 }

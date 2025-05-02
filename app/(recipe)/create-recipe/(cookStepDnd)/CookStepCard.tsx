@@ -18,6 +18,10 @@ import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
 import { CookingSteps_create } from "../../types/recipeType";
 import { inView, motion, useAnimation } from 'framer-motion';
 import { RecipeDndCard } from "./ContainerDnd";
+import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
+import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
+import { useRecoilState } from "recoil";
+import Swal from "sweetalert2";
 
 export interface CardProps {
   id: any;
@@ -46,6 +50,7 @@ const CookStepCard: FC<CardProps> = ({
   card,
   cards,
 }) => {
+  const [recipeImgCnt, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
   const dragRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -158,6 +163,31 @@ const CookStepCard: FC<CardProps> = ({
     [moveCard, setCards, cards]
   );
 
+  const tempSaveImg = async (imgStr: string, index: number) => {
+    setRecipeImgCnt(prev => prev + 1);
+  
+    try {
+      const res = await axiosAuthInstacne.post("recipe/img", { img: imgStr });
+      const cloudinaryUrl = res.data;
+  
+      const newCards = cards.map(card =>
+        card.order === index ? { ...card, photo: cloudinaryUrl, photoString: cloudinaryUrl } : card
+      );
+      setCards(newCards);
+    } catch (err) {
+      Swal.fire({
+        title: "이미지를 다시 등록해주세요.",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: '#d33',
+        allowEnterKey: false
+      });
+    } finally {
+      setRecipeImgCnt(prev => Math.max(prev - 1, 0));
+    }
+  };
+  
+
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
     event
   ) => {
@@ -168,12 +198,14 @@ const CookStepCard: FC<CardProps> = ({
           const base64String = await resizeFileToBase64(file, 1200, 1200) as string;
           const newCards = cards.map((card) => {
             if (card.order === index) {
-              return { ...card, photo: base64String, photoSring: base64String };
+              return { ...card, photo: base64String, photoString: base64String };
             }
             return card;
           });
 
           setCards(newCards);
+
+          await tempSaveImg(base64String, index);
         } catch (error) {
           console.error("파일 변환 오류:", error);
         }

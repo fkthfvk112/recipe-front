@@ -46,7 +46,6 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                       setSelectedFridgeImg(img);
                     }
                   })
-                  console.log(res.data);
                 }
                 setFridgeImgs(res.data);
             })
