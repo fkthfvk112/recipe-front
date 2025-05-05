@@ -13,16 +13,21 @@ export default function Error({
   const [errMsg, setErrMsg] = useState<string>("");
   const router = useRouter();
 
+  console.log("에러 히히", error.message);
   useEffect(() => {
-    // Log the error to an error reporting service
-    setErrMsg("알 수 없는 오류가 발생했습니다.");
+    if(error?.message){
+      setErrMsg(error.message);
+    }else{
+      setErrMsg("알 수 없는 오류가 발생했습니다.");
+    }
   }, [error])
  
   
   return (
     <div className='defaultOuterContainer flex pt-20'>
       <div className='defaultInnerContainer flex justify-center items-center flex-col'>
-      <h2 className='mb-3 p-3'>{errMsg}</h2>
+      <h1>문제가 발생하였습니다.</h1>
+      <p className='mb-3 p-3'>{errMsg}</p>
       <div>
         <button
           className='greenBtn me-1'

@@ -31,7 +31,8 @@ export async function generateMetadata(
               tags: [`recipeDetail-${recipeId}`],
           }
       }
-  })
+  });
+
   let recipeDetail: RecipeDetail = fetchData.recipeDTO;
 
   return {
@@ -43,7 +44,7 @@ export async function generateMetadata(
     openGraph:{
       title: `${recipeDetail?.recipeName} - 머그인`,
       description: recipeDetail?.description || "맛있는 레시피",
-      images:recipeDetail?.repriPhotos
+      images:recipeDetail?.repriPhotos[0]
     }
   }
 }
@@ -104,11 +105,11 @@ export default async function RecipeDetail({
     }, 0),
   };
 
-  const googleRecipeSchema = {
+  const googleRecipeSchema: any = {
     "@context": "https://schema.org",
     "@type": "Recipe",
     "name": recipeDetail.recipeName,
-    "image": recipeDetail.repriPhotos,
+    "image": recipeDetail.repriPhotos[0],
     "author": {
       "@type": "Person",
       "name": recipeOwner.userNickName,
@@ -120,11 +121,6 @@ export default async function RecipeDetail({
     "prepTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
     "cookTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
     "totalTime": `PT${recipeInfo.timeSum}M`,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": recipeDetail.reviewAvg,
-      "reviewCount": reviewCnt || 0
-    },
     recipeIngredient: recipeDetail.ingredients.map((i) => `${i.name} ${i.qqt}`),
     recipeInstructions: recipeDetail.steps.map((step) => {
       const stepObj: any = {
@@ -135,6 +131,15 @@ export default async function RecipeDetail({
       return stepObj;
     }),
   };
+  
+  if (reviewCnt > 0) {
+    googleRecipeSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": recipeDetail.reviewAvg,
+      "reviewCount": reviewCnt,
+    };
+  }
+  
 
   return (
     <>
