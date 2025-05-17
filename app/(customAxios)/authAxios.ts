@@ -1,10 +1,9 @@
 "use client";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { errorCode } from "../(commom)/Error/ErrorCode";
 import { deleteAuthToken } from "../(user)/signin/utils/authUtil";
-import { useRecoilState } from "recoil";
-import { siginInState } from "../(recoil)/recoilAtom";
+import { errorCode } from "../(commom)/Error/ErrorCode";
+
 
 /** 기본 서버로 요청하는 axios */
 export const defaultAxios = axios.create({
