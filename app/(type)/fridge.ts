@@ -31,6 +31,7 @@ export interface FridgeItem{
     qqt?:string;
     description?:string;
     itemOrder?:number;
+    imgSort?:string;
     createdAt?:string;
 }
 

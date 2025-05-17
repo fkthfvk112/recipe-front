@@ -31,7 +31,7 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
         setImgItem(imgItem);
     }, [imgItem])
 
-    const setItemChg = (evt:React.ChangeEvent<HTMLInputElement>)=>{
+    const setItemChg = (evt:React.ChangeEvent<HTMLInputElement|HTMLSelectElement>)=>{
         if (item) {
             const target = evt.target as HTMLInputElement; 
             setImgItem({
@@ -58,9 +58,11 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
             }
             }
         }
-          };
+    };
 
     const saveImgItem = ()=>{
+        console.log("값 ",item);
+
         Swal.fire({
             title: "변경사항을 저장하시겠습니까?",
             icon: "question",
@@ -112,9 +114,25 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 w-full">
                     <h1>이미지명</h1>
                     <input name="imgName" type="text" value={item?.imgName || ""}  onChange={setItemChg} />
+                </div>
+                <div className="mt-3 w-full">
+                    <h1>분류</h1>
+                    <select onChange={(evt)=>setItemChg(evt)} name="imgSort" value={imgItem.imgSort}>
+                        <option value="채소">채소</option>
+                        <option value="과일">과일</option>
+                        <option value="육류">육류</option>
+                        <option value="수산물">수산물</option>
+                        <option value="달걀/유제품">달걀/유제품</option>
+                        <option value="곡류">곡류</option>
+                        <option value="빵/과자">빵/과자</option>
+                        <option value="냉동식품">냉동식품</option>
+                        <option value="조미료/소스">조미료/소스</option>
+                        <option value="음료">음료</option>
+                        <option value="">기타</option>
+                    </select>
                 </div>
                 <div className="mt-3">
                     {/* <h1>분류</h1> 구현하기 */}

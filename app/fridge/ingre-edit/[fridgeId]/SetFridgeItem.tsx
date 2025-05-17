@@ -11,7 +11,7 @@ import { FridgeItem_IN } from "./page";
 import Swal from "sweetalert2";
 import { useRecoilState } from "recoil";
 import { fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
-import { getNDayAfterDateKST } from "@/app/(utils)/DateUtil";
+import { getNDayAfterBaseDateKST, getNDayAfterDateKST } from "@/app/(utils)/DateUtil";
 import useWindowSize from "@/app/(commom)/Hook/useWindowSize";
 
 function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}){
@@ -28,6 +28,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
 
     const [scrollLock, setScrollLock] = useState<boolean>(false);
 
+    const [imgSort, setImgSort] = useState<string>("전체");
 
     const initializeAllData = ()=>{
       setTitle("");
@@ -93,7 +94,13 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
       })
     }
 
-    const imageComps = fridgeImgs.map((img, inx) => (
+    const imageComps = fridgeImgs.filter((img)=>{
+      if(imgSort === "전체"){
+        return true;
+      }else{
+        return imgSort === img.imgSort
+      }
+    }).map((img, inx) => (
         <div
           onMouseDown={()=>clickImgComp(img)}
           className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square p-3 rounded-md m-1 img-wrapper-square relative ${
@@ -113,8 +120,25 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
       ));
     
     const setDateAfterN=(n:number)=>{
-      setExDate(getNDayAfterDateKST(n));
+      setExDate(prev=>{
+        const baseDate = new Date(prev)
+        
+        return getNDayAfterBaseDateKST(baseDate, n)
+      });
     }
+
+
+    const sortBtns = ["전체" ,"채소", "과일", "육류", "수산물", "달걀/유제품", "곡류", "빵/과자", "냉동식품", "조미료/소스", "음료", "기타"].map((sort, inx)=>{
+      return (
+        <span key={inx}>
+          <button
+            onClick={()=>setImgSort(sort)}
+            className={`text-[#123123] w-[100px] p-1 m-1 border-0 border-b-2 ${imgSort === sort ?  " border-b-[#123123]" : "border-b-transparent"}`}>
+              {sort}
+          </button>
+        </span>
+      )
+    })
     
     return (
         <BottomFixedAccordion title="식재료 추가" setStaticComponent={(windowSize||0) >= 1024} scrollLock={scrollLock}>
@@ -146,19 +170,22 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                       </div>
                     </div>
                     <div>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(3)}>+3일</button>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(7)}>+7일</button>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(30)}>+30일</button>
+                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(1)}>+1일</button>
+                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(5)}>+5일</button>
+                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(10)}>+10일</button>
                     </div>
                     <div className="mt-6 ">
                       <h3 className="w-[100px]">설명</h3>
                       <textarea value={description} className="p-2 h-[80px]" onChange={(evt)=>setDescription(evt.target.value)} maxLength={250}></textarea>
                     </div>
                 </div>
-                <div className="w-full mt-1">
+                <div className="w-full mt-6">
                   <h3 className="w-[100px]">이미지 선택</h3>
                 </div>
-                <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] overflow-y-scroll overscroll-none "
+                <div>
+                  {sortBtns}
+                </div>
+                <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] min-h-[150px] overflow-y-scroll overscroll-none "
                   onMouseDown={(e)=>{
                     setScrollLock(true);
                     e.stopPropagation();
@@ -174,9 +201,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                   onTouchEnd={(e)=>{
                     setScrollLock(false)
                     e.stopPropagation();
-                  }}
-                  >
-                  
+                  }}>
                     {imageComps}
                 </section>
             </div>
