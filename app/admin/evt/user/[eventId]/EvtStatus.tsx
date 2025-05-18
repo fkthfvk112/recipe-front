@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import TitleDescription from "@/app/(commom)/Component/TitleDescription";
+import { useEmailForm } from "@/app/(commom)/Hook/useEmailForm";
+import EmailForm from "@/app/(commom)/Component/EmailForm";
+import Swal from "sweetalert2";
 
 interface EvtStatusDTO_OUT {
     evtStatusId:number;
@@ -21,6 +24,7 @@ export default function EvtStatus({eventId}:{eventId:string}) {
   const [userInfo, setUserInfo] = useState<EvtStatusDTO_OUT[]>([]);
   const [isEligible, setIsEligible] = useState<string | undefined>(""); // empty for all values
   const [isRewarded, setIsRewarded] = useState<string | undefined>(""); // empty for all values
+  const { isEmailFormOpen, emailTo, openEmailForm, closeEmailForm } = useEmailForm();//이메일 전송 EmailForm과 연동
 
   const fetchUserEvtStatuses = () => {
     axiosAuthInstacne
@@ -46,6 +50,23 @@ export default function EvtStatus({eventId}:{eventId:string}) {
         })
 
   }
+  
+  //이메일 보내기
+  const handleSendEmail = (emailData: { emailAddress: string; emailTitle: string; emailContent: string, base64Img:string }) => {
+    console.log('이메일 발송 데이터:', emailData);
+    axiosAuthInstacne.post("admin/email/send", {...emailData}).then((res)=>{
+      console.log("데이터ㅏ", res.data);
+      if(res.data === "메일 전송 완료"){
+        Swal.fire(`${emailData.emailAddress} 님에게 이메일을 보냈습니다.`, "", "success");
+
+      }else{
+        Swal.fire(`${ res.data}`, "", "success");
+      }
+    })
+    // TODO: 이메일 전송 API 호출 구현
+
+    closeEmailForm();
+  };
 
   return (
     <div className="flex flex-col justify-start items-center w-full min-h-screen p-5">
@@ -116,7 +137,7 @@ export default function EvtStatus({eventId}:{eventId:string}) {
                     <tr key={idx} className="border-b hover:bg-gray-50">
                         <td className="p-4 text-gray-700">{user.userId}</td>
                         <td className="p-4 text-gray-700">{user.nickName}</td>
-                        <td className="p-4 text-gray-700">{user.email}</td>
+                        <td onClick={()=>{openEmailForm(user.email)}} className="p-4 text-blue-700 cursor-pointer">{user.email}</td>
                         <td className="p-4 text-gray-700">
                         <span
                             className={`px-3 py-1 rounded-full text-white whitespace-nowrap ${
@@ -150,6 +171,13 @@ export default function EvtStatus({eventId}:{eventId:string}) {
           </div>
         </div>
       </section>
+      {isEmailFormOpen && (
+          <EmailForm
+            initialEmail={emailTo}
+            onClose={closeEmailForm}
+            onSend={handleSendEmail}
+            />
+      )}
     </div>
   );
 }

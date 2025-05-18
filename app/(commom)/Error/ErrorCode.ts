@@ -49,4 +49,14 @@ export const errorCode = [
 
     "BK001",
     "BK002",
+
+    "NA001",
+    "NA002",
+
+    "AES001",
+    "AES002",
+
+    "IM001",
+
+    "EM001",
 ];
