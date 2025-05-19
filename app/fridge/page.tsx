@@ -121,7 +121,7 @@ export default function Fridge(){
                             </select>
                         개 이상</p>
                     </div>
-                    <ul className="flex overflow-x-scroll h-[350px] no-scroll">
+                    <ul className="flex overflow-x-scroll h-[350px]">
                         {
                             isLoading?
                             <div className="w-full text-center">

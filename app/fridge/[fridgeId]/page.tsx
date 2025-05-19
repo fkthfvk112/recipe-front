@@ -60,7 +60,7 @@ export default function FridgeDetail({
 
     const additionalBtnInfo = [
         {name:"식재료 추가", url:`/fridge/ingre-edit/${params.fridgeId}`},
-        {name:"냉장고 수정", url:`/fridge/${params.fridgeId}/edit`}
+        {name:"냉장고 수정/삭제", url:`/fridge/${params.fridgeId}/edit`}
     ]
 
     const handleSortingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {

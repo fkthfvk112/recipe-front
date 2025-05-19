@@ -47,6 +47,32 @@ export default function EditFridge({
           });      
     }
 
+        const delFridge = ()=>{
+        Swal.fire({
+            title: "냉장고 삭제",
+            text: "삭제하면 되돌릴 수 없어요. 정말 삭제하시겠어요?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            confirmButtonColor: '#d33',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axiosAuthInstacne
+                .delete(`fridge/${params.fridgeId}`)
+                .then((res) => {
+                  Swal.fire({
+                    title: "삭제 완료",
+                    icon: "success",
+                  }).then(() => {
+
+                    router.push(`/fridge`);
+                  });
+                })
+            }
+          });      
+    }
+
     useEffect(()=>{
         axiosAuthInstacne.get(`fridge/my/name-desc/${params.fridgeId}`)
             .then((res)=>{
@@ -94,11 +120,19 @@ export default function EditFridge({
                 }
                 
             </div>
-            <button
-        className="saveBtn"
-        onClick={saveFridge}>
-        수정
-      </button>
+            <div className="w-full flex-center">
+                <button
+                    className="saveBtn me-1"
+                    onClick={saveFridge}>
+                    수정
+                </button>
+                <button
+                    className="grayBtn ms-1"
+                    onClick={delFridge}>
+                    삭제
+                </button>
+            </div>
+
         </div>
     )
 }
