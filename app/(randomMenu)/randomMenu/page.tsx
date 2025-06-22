@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import { randomMenuData } from "./menuData";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RandomMenuRoulette from "./RandomMenuRoulette";
+import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
+import { usePathname } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function RandomMenu(){
     const [secondMenuSelcet, setSecondSelect] = useState<string[]>([]); //중식, 일식, 양식
@@ -15,6 +18,8 @@ export default function RandomMenu(){
 
     const [startRotate, setStartRotate]       = useState<number>(0);
     const [nowRotating, setNowRotating]       = useState<boolean>(false);
+
+    const [immediateLoading, setImmediateLoading] = useState<boolean>(false);
 
     const firstClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
         setFirstSelected((e.currentTarget as HTMLDivElement).id);
@@ -112,12 +117,31 @@ export default function RandomMenu(){
             setMenuName(allMenuList[randomInx]);
         }
 
-        setNowRotating(true);
-        setStartRotate(prv=>prv+1)
-        setTimeout(()=>{
-            setNowRotating(false);
-        }, 2200)
+        if(!immediateLoading){//로딩 없이 바로 보기
+            setNowRotating(true);
+            setStartRotate(prv=>prv+1)
+            setTimeout(()=>{
+                setNowRotating(false);
+            }, 2200)
+        }
     }
+
+    // URL로 복사
+    const pathname = usePathname()
+    const fullUrl = `${window.location.origin}${pathname}`;
+
+    const copyToClip = ()=> {
+        navigator.clipboard.writeText(fullUrl)
+            .then(() => {
+                Swal.fire({
+                    title:"URL 복사 완료",
+                    text: "URL이 클립보드에 복사되었습니다.",
+                    showConfirmButton:false,
+                    timer:1500
+                });
+        })
+            .catch(err => {
+        })}
 
     return (
         <>
@@ -145,13 +169,12 @@ export default function RandomMenu(){
                         {secondSelection}
                     </div>
                 </div>
-                <div>
+                <div className="flex flex-center flex-col">
+                    <button className={`mb-3 w-[230px] saveBtn-outline-green border-2 rounded-full`} onClick={()=>{copyToClip()}}>URL 복사</button>
+                    <button className={`mb-3 w-[230px] ${!immediateLoading?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={()=>{setImmediateLoading((prev)=>!prev)}}>로딩 없이 바로 보기</button>
                     <button className={`mb-20 w-[230px] ${nowRotating?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
                 </div>
             </section>
         </>
     )
 }
-
-
-//fixed bottom-6 roundRreenBtn mb-20
