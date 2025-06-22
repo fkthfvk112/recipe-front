@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import Swal from "sweetalert2";
 
 export default function RandomMenu(){
+    const [fullUrl, setFullUrl] = useState(""); // 초기값은 빈 문자열
+
     const [secondMenuSelcet, setSecondSelect] = useState<string[]>([]); //중식, 일식, 양식
 
     const [firstSelected, setFirstSelected]   = useState<string>("전체");
@@ -128,7 +130,12 @@ export default function RandomMenu(){
 
     // URL로 복사
     const pathname = usePathname()
-    const fullUrl = `${window.location.origin}${pathname}`;
+
+    useEffect(() => {
+    if (typeof window !== "undefined") { // 안전하게 체크
+        setFullUrl(`${window.location.origin}${pathname}`);
+    }
+    }, [pathname]);
 
     const copyToClip = ()=> {
         navigator.clipboard.writeText(fullUrl)
