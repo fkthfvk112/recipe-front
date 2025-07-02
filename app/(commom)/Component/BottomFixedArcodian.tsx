@@ -81,7 +81,7 @@ export default function BottomFixedAccordion({ title, children, setStaticCompone
         const deltaY = clientY - startY; // 현재 Y 위치와 시작 Y 위치의 차이 계산
         const newBottomPosition = initialBottom - deltaY > 0? 0 : initialBottom - deltaY;
         setCurrentBottom(newBottomPosition); // bottom을 업데이트
-        if(newBottomPosition < -150){
+        if(newBottomPosition < -500){
             handleClose();
         }
     };
