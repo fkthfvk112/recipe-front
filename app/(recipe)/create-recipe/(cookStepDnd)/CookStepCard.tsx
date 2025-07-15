@@ -169,11 +169,13 @@ const CookStepCard: FC<CardProps> = ({
     try {
       const res = await axiosAuthInstacne.post("recipe/img", { img: imgStr });
       const cloudinaryUrl = res.data;
-  
-      const newCards = cards.map(card =>
-        card.order === index ? { ...card, photo: cloudinaryUrl, photoString: cloudinaryUrl } : card
+      
+      setCards(prevCards =>
+        prevCards.map(card =>
+          card.order === index ? { ...card, photo: cloudinaryUrl, photoString: cloudinaryUrl } : card
+        )
       );
-      setCards(newCards);
+
     } catch (err) {
       Swal.fire({
         title: "이미지를 다시 등록해주세요.",
