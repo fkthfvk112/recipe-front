@@ -8,7 +8,8 @@ import FridgeItemDetailModal from "../../[fridgeId]/(common)/FridgeItemDetailMod
 import { useRecoilState } from "recoil";
 import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import ExpBar from "../../[fridgeId]/(common)/ExpBar";
-
+import { useRouter } from "next/navigation";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export interface FridgeItem_IN extends FridgeItem{
     expiredAt?:string;
@@ -33,6 +34,8 @@ export default function FridgeDetail({
     const [modalItem, setModalItem] = useState<FridgeItem>();
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
     const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
+    const router = useRouter();
+
 
     useEffect(()=>{
         axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
@@ -71,47 +74,23 @@ export default function FridgeDetail({
             </li>)
     })
 
+    const goPrev = ()=>{
+        router.back();
+    }
+
     return (
         <>
         <div className="defaultInnerContainer mt-6 flex-center-col">
             <div className="w-[93%] flex-col justify-start items-center mb-3">
-                <h1 className="text-2xl mb-2">{fridgeData?.name}</h1>
-                {
-                fridgeData?.description&&
-                <div className="w-[93%] bg-stone-100 rounded-lg p-3">
-                    <div className="text-lg">{fridgeData?.description}</div>
-                </div>
-                }
-                <div className="w-[93%] mt-3 text-right">
-                    <select
-                        onChange={handleSortingChange}
-                        className="border border-slate-300 rounded-2xl mr-2 text-center w-[170px] h-10 bg-zinc-100"
-                        value={fridgeSort}
-                        name=""
-                        id=""
-                        >
-                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpMany}>
-                            유통기한 넉넉한순
-                        </option>
-                        <option className="p-2 m-3" value={FridgeSortingEnum.ExpFew}>
-                            유통기한 짧은순
-                        </option>
-                        <option className="p-2 m-3" value={FridgeSortingEnum.Latest}>
-                            등록 최신순
-                        </option>
-                        <option className="p-2 m-3" value={FridgeSortingEnum.Oldest}>
-                            등록 오래된순
-                        </option>
-                    </select>
-                </div>
+                <nav className="text-center w-full py-5 px-3 relative bottom-line">
+                    <div onClick={goPrev} className="absolute left-5 cursor-pointer">
+                        <ArrowBackIosIcon />
+                    </div>
+                    <h1 className="text-xl ms-5">{fridgeData?.name}</h1>
+                </nav>
             </div>
             <div className="flex-center w-full p-3">
-                <section className="fridge-container shadow-md ice-shadow-inner mt-6">
-                    <ul className="fridge">
-                        {fridgeItemProp}
-                    </ul>
-                </section>
-                    <SetFridgeItem fridgeId={params.fridgeId} lastOrder={fridgeData?fridgeData.fridgeItems.length:0} />
+                <SetFridgeItem fridgeId={params.fridgeId} lastOrder={fridgeData?fridgeData.fridgeItems.length:0} />
             </div>
         </div>
         {

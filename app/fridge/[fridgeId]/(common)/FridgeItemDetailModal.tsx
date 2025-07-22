@@ -124,7 +124,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
                     <section className="flex flex-col justify-start items-center">
                         <div className="w-full flex justify-between my-1">
                             <h2>위치</h2>
-                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[150px] border p-3" name="" id="">
+                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[300px] border p-3" name="" id="">
                                 {fridgeOptionList}
                             </select>
                         </div>

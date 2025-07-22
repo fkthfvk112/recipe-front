@@ -103,7 +103,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     }).map((img, inx) => (
         <div
           onMouseDown={()=>clickImgComp(img)}
-          className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square p-3 rounded-md m-1 img-wrapper-square relative ${
+          className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square rounded-md img-wrapper-square relative ${
             img.imgUrl === selectedFridgeImg?.imgUrl ? "outline outline-2 outline-slate-950" : ""
           }}`}
           key={inx}
@@ -141,8 +141,8 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     })
     
     return (
-        <BottomFixedAccordion title="식재료 추가" setStaticComponent={(windowSize||0) >= 1024} scrollLock={scrollLock}>
             <div className="flex flex-col justify-start items-center w-full ">
+              <h1 className="text-[20px]">식재료 추가</h1>
                 <div className="w-full">
                     <div className="mt-3">
                       <h3>식재료명 (필수)</h3>
@@ -185,7 +185,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                 <div>
                   {sortBtns}
                 </div>
-                <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[150px] min-h-[150px] overflow-y-scroll overscroll-none "
+                <section className="grid grid-cols-5 gap-1 w-full max-w-[512px] max-h-[300px] min-h-[300px] overflow-y-scroll overscroll-none"
                   onMouseDown={(e)=>{
                     setScrollLock(true);
                     e.stopPropagation();
@@ -205,7 +205,6 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                     {imageComps}
                 </section>
             </div>
-        </BottomFixedAccordion>
     )
 }
 
