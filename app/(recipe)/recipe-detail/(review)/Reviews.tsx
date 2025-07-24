@@ -9,7 +9,7 @@ import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRig
 import ReviewEtcBtn from "./ReviewEtcBtn";
 import Image from "next/image";
 import { domainId, domainName } from "./ReviewContainer";
-import { timeDifferenceString } from "@/app/(utils)/timeUtils";
+import TimeDiff from "./TimeDiff";
 
 const domainReviewUrl = {
   recipe:"review/recipe",
@@ -64,7 +64,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
               ) : (
                 <Link className="flex flex-wrap justify-start items-center" href={`/userfeed/${review.userInfo?.userId}`}>
                   <h3 className="ms-2">{review.userInfo?.userNickName}</h3>
-                  <span className="ms-2 text-[#a1a1a1]">· 약 {timeDifferenceString(new Date(review.createdAt as string))}</span>
+                  <TimeDiff time={review.createdAt as string}/>
                 </Link>
               )
             )
