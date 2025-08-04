@@ -103,7 +103,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     }).map((img, inx) => (
         <div
           onMouseDown={()=>clickImgComp(img)}
-          className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square rounded-md img-wrapper-square relative ${
+          className={`flex m-1 justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square rounded-md img-wrapper-square relative ${
             img.imgUrl === selectedFridgeImg?.imgUrl ? "outline outline-2 outline-slate-950" : ""
           }}`}
           key={inx}
@@ -185,25 +185,27 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                 <div>
                   {sortBtns}
                 </div>
-                <section className="grid grid-cols-5 gap-1 w-full max-w-[512px] max-h-[300px] min-h-[300px] overflow-y-scroll overscroll-none"
-                  onMouseDown={(e)=>{
-                    setScrollLock(true);
-                    e.stopPropagation();
-                  }}
-                  onTouchStart={(e)=>{
-                    setScrollLock(true);
-                    e.stopPropagation();
-                  }}
-                  onMouseUp={(e)=>{
-                    setScrollLock(false)
-                    e.stopPropagation();
-                  }}
-                  onTouchEnd={(e)=>{
-                    setScrollLock(false)
-                    e.stopPropagation();
-                  }}>
-                    {imageComps}
-                </section>
+                <div className="max-w-[512px] min-h-[300px]">
+                  <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[300px] overflow-y-scroll overscroll-none"
+                    onMouseDown={(e)=>{
+                      setScrollLock(true);
+                      e.stopPropagation();
+                    }}
+                    onTouchStart={(e)=>{
+                      setScrollLock(true);
+                      e.stopPropagation();
+                    }}
+                    onMouseUp={(e)=>{
+                      setScrollLock(false)
+                      e.stopPropagation();
+                    }}
+                    onTouchEnd={(e)=>{
+                      setScrollLock(false)
+                      e.stopPropagation();
+                    }}>
+                      {imageComps}
+                  </section>
+                </div>
             </div>
     )
 }
