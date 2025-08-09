@@ -106,11 +106,11 @@ export default function CreateRecipePage({
       .then((res) => {
         if (res.status === 200) {
           Swal.fire({
-            title: "게시가 완료되었습니다!",
+            title: "수정이 완료되었습니다!",
             icon: "success",
           }).then(() => {
             revalidateByTagName(`recipeDetail-${params.recipeId}`);
-            router.push(`/recipe-detail/${params.recipeId}`);
+            router.replace(`/recipe-detail/${params.recipeId}`);
           });
         }
       })

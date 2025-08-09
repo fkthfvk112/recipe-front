@@ -16,12 +16,12 @@ export default function ErrorText({
     let errCnt = 0;
     let errorText: React.ReactNode = <> </>;
 
-    if (recipe.recipeName.length < 1 || recipe.recipeName.length > 20) {
+    if (recipe.recipeName.length < 1 || recipe.recipeName.length > 60) {
       errCnt++;
       errorText = (
         <>
           <div className="text-base">
-            레시피 이름을 추가해주세요 (1글자 이상, 20글자 이하)
+            레시피 이름을 추가해주세요 (1글자 이상, 60글자 이하)
           </div>
         </>
       );
