@@ -117,13 +117,13 @@ export default function BottomBanner() {
                 <div className='w-full bg-white flex justify-between items-center relative'>
                     <div
                     onClick={handleCloseUntil}
-                    className="text-xs text-left m-2 border-none whitespace-nowrap text-[#a1a1a1] cursor-pointer" 
+                    className="text-xs text-left m-2 ms-3 border-none whitespace-nowrap text-[#a1a1a1] cursor-pointer" 
                     >
                     하루 동안 보지 않기
                     </div>
                     <div 
                     onClick={handleClose}
-                    className='text-sm m-2 text-right whitespace-nowrap text-[#3b3b3b] cursor-pointer'
+                    className='text-sm m-2 me-5 text-right whitespace-nowrap text-[#3b3b3b] cursor-pointer'
                     >
                         닫기
                     </div>
