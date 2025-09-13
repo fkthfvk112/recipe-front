@@ -13,7 +13,7 @@ export default function Error({
   const [errMsg, setErrMsg] = useState<string>("");
   const router = useRouter();
 
-  console.log("에러 히히", error.message);
+  console.log("에러", error.message);
   useEffect(() => {
     if(error?.message){
       setErrMsg(error.message);
