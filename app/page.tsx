@@ -33,7 +33,7 @@ export default function Home() {
       <SeasonalFood></SeasonalFood>
       <PopularRecipes/>
       <RecentRecipes/>
-      <RealTimeLikeBoard/>
+      {/* <RealTimeLikeBoard/> */}
       <BottomBanner/>
     </div>
   );

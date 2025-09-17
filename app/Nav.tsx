@@ -12,6 +12,8 @@ import { Avatar } from "@mui/material";
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import GoBoardBtn from "./GoBoardBtn";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import useSyncLogin from "./(commom)/Hook/useSyncLogin";
 const Navbar = () => {
   //const [localSignInState, setLocalSignInState] = useState<boolean>(false);
@@ -56,7 +58,15 @@ const Navbar = () => {
                 <HomeIcon sx={{width:'30px', height:'30px', fill:containInRoute("home")?"black":"gray"}}/>
                 <p>홈</p>
               </div>
-            </Link>
+            </Link>           
+            </li>
+            <li>
+              <Link href="/welcome">
+                <div className="flex flex-col justify-center items-center">
+                  <FavoriteIcon sx={{width:'30px', height:'30px', fill:containInRoute("welcome")?"black":"gray"}}/>
+                  <p>서비스 소개</p>
+                </div>
+              </Link> 
             </li>
               <li>
                 <Link href="/recipes/1/sortingCondition=POPULARITY">
@@ -74,9 +84,9 @@ const Navbar = () => {
                   </div>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <GoBoardBtn />
-              </li>
+              </li> */}
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
                 {isSignIn ? (
