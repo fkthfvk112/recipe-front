@@ -35,7 +35,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
   return res;
 },
 (err)=>{
-  if(err.response.data === "T001"){
+  if(err.response.data === "T001" || err.response.data.code === "T001" ){
 
     console.log("Access cookie expired set new cookie success");
     const originBaseUrl = err?.config?.baseURL;
@@ -92,8 +92,13 @@ axiosAuthInstacne.interceptors.response.use((res) => {
         allowEnterKey: false,
       });
     }
-    else if(err.response.data === "T002" || err.response.data === "T003" || err.response.data === "T004" || err.response.data === "T005"){//리프래시 토큰 만료
-      deleteAuthToken();
+    else if (
+      err.response.data === "T002" || err.response.data?.code === "T002" ||
+      err.response.data === "T003" || err.response.data?.code === "T003" ||
+      err.response.data === "T004" || err.response.data?.code === "T004" ||
+      err.response.data === "T005" || err.response.data?.code === "T005"
+    ) {      
+        deleteAuthToken();
       // Swal.fire({
       //   title: "로그인 유효시간 만료.",
       //   text:"로그인 유효시간이 만료되었습니다. 로그인 페이지로 이동하시겠습니까?.",
