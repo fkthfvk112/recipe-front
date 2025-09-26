@@ -5,7 +5,7 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
 import ExpBar from "./(common)/ExpBar";
 import Link from "next/link";
@@ -23,8 +23,9 @@ export default function FridgeDetail({
     // const [fridgeDate, setFridgeDate] = useState<Fridge>();
     const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
     const [modalItem, setModalItem] = useState<FridgeItem>();
-    const [itemDetailModalOpen, setItemDetailModalOpen] = useState<boolean>(false);
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
+    const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
+    
     useEffect(()=>{
         setIsLoading(true)
         axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
@@ -35,6 +36,7 @@ export default function FridgeDetail({
     }, [refetchCount, fridgeSort])
 
     useEffect(()=>{
+        setOpen(false)
         axiosAuthInstacne.get("fridge/my")
             .then((res)=>{
                 setFirdgeList(res.data);
@@ -46,7 +48,7 @@ export default function FridgeDetail({
         return (
             <li key={inx} onClick={()=>{
                 setModalItem(item);
-                setItemDetailModalOpen(true);
+                setOpen(true);
             }}  className="fridge-item relative cursor-pointer">
                 <div className="absolute -top-14 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
                     {item.expiredAt?<ExpBar expDateStr={item.expiredAt as string} k={2}/>:<div className="h-[30px]"></div>}
@@ -118,7 +120,7 @@ export default function FridgeDetail({
         </div>}
         {
         modalItem && !isLoading && 
-        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} open={itemDetailModalOpen} setOpen={setItemDetailModalOpen} />
+        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} />
         }
         </>
     )

@@ -2,11 +2,13 @@
 
 import Link from "next/link"
 import CreateIcon from '@mui/icons-material/Create';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import ScrollToTopButton from "./GoToTopBtx";
+import { useRecoilState } from "recoil";
+import { addtionalBtnOpenState } from "@/app/(recoil)/etcAtom";
 
 interface btn{
     name:string,
@@ -18,7 +20,10 @@ const additionalItemCss = "bg-white m-[4px] rounded-3xl p-2 px-5 text-center"
 
 export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
     const {layoutMargin} = useResponsiveDesignCss();
-    const [plusBtnClicked, setPlusBtnClicked] = useState<boolean>(false);
+    const [plusBtnClicked, setPlusBtnClicked] = useRecoilState<boolean>(addtionalBtnOpenState);
+    useEffect(()=>{
+        setPlusBtnClicked(false);
+    }, [])
 
     const clickPlusBtn = ()=>{
         setPlusBtnClicked((prev)=>!prev);

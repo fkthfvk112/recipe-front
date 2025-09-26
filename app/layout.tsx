@@ -4,6 +4,7 @@ import "./globals.css";
 import MainContainer from "./MainContainer";
 import NextTopLoader from 'nextjs-toploader';
 import Script from "next/script";
+import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

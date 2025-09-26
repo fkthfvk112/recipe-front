@@ -6,7 +6,7 @@ import SetFridgeItem from "./SetFridgeItem";
 import Image from "next/image";
 import FridgeItemDetailModal from "../../[fridgeId]/(common)/FridgeItemDetailModal";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import ExpBar from "../../[fridgeId]/(common)/ExpBar";
 import { useRouter } from "next/navigation";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -30,12 +30,12 @@ export default function FridgeDetail({
     //const [fridgeRefetch, fridgeRefetcher] = useReducer((state:boolean)=>!state, false);
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
 
-    const [itemDetailModalOpen, setItemDetailModalOpen] = useState<boolean>(false);
     const [modalItem, setModalItem] = useState<FridgeItem>();
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
     const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
     const router = useRouter();
 
+    const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
 
     useEffect(()=>{
         axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
@@ -47,6 +47,7 @@ export default function FridgeDetail({
 
 
     useEffect(()=>{
+        setOpen(false)
         axiosAuthInstacne.get("fridge/my")
             .then((res)=>{
                 setFirdgeList(res.data);
@@ -62,7 +63,7 @@ export default function FridgeDetail({
         return (
             <li key={inx} onClick={()=>{
                 setModalItem(item);
-                setItemDetailModalOpen(true);
+                setOpen(true);
             }}  className="fridge-item relative cursor-pointer">
                 <div className="absolute -top-14 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
                     {item.expiredAt?<ExpBar expDateStr={item.expiredAt as string} k={2}/>:<div className="h-[30px]"></div>}
@@ -95,7 +96,7 @@ export default function FridgeDetail({
         </div>
         {
         modalItem &&
-        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} open={itemDetailModalOpen} setOpen={setItemDetailModalOpen} />
+        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} />
         }
         </>
     )

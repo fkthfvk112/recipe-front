@@ -8,6 +8,7 @@ import { getCookie } from 'cookies-next';
 import { defaultAxios } from "./(customAxios)/authAxios";
 import ImgModal from "./(commom)/Component/ImgModal";
 import { sendVisitLog } from "./(utils)/siteAccess";
+import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 
 export default function MainContainer({
     children,
@@ -23,9 +24,10 @@ export default function MainContainer({
     return (
         <RecoilRoot>
           <Nav></Nav> 
-            <main className={`min-h-screen flex flex-col justify-start items-center ${layoutPadding} bg-[#f0f0f0]`}>
-                {children}
-            </main>
+          <main className={`min-h-screen flex flex-col justify-start items-center ${layoutPadding} bg-[#f0f0f0]`}>
+              {children}
+          </main>
+          <RNDefaultEmptyComp/>
         </RecoilRoot>
     )
 }

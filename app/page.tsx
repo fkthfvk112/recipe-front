@@ -9,6 +9,7 @@ import ImgModal from "./(commom)/Component/ImgModal";
 import FridgeDescription from "./FridgeDescription";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
 import BottomBanner from "./(commom)/Component/BottmomBanner";
+import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

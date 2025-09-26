@@ -33,3 +33,8 @@ export const fridgeSortingAtom = atom<FridgeSortingEnum>({
   default:FridgeSortingEnum.Latest,
   effects_UNSTABLE: [persistAtom],
 })
+
+export const fridgeModalOpenState = atom<boolean>({
+  key: "fridgeModalState",
+  default: false,
+});

@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Image from "next/image";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRecoilState } from "recoil";
-import { fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDataRefetcherSelector, fridgeModalOpenState } from "@/app/(recoil)/fridgeAtom";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
@@ -23,9 +23,11 @@ const style = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-  };
+};
 
-function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}:{fridgeItem:FridgeItem, fridgeList:FridgeIdNameDesc[], fridgeId:number, open:boolean, setOpen:(data:boolean)=>any}){
+function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:FridgeItem, fridgeList:FridgeIdNameDesc[], fridgeId:number}){
+    const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
+
     const [title, setTitle] = useState<string>(fridgeItem?.name || "");
     const [position, setPosition] = useState<number>(fridgeId);
     const [qqt, setQqt] = useState<string>(fridgeItem?.qqt || "");
@@ -122,17 +124,17 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, open, setOpen}
                         </div>
                     </section>
                     <section className="flex flex-col justify-start items-center">
-                        <div className="w-full flex justify-between my-1">
+                        <div className="w-full flex justify-between items-center my-1">
                             <h2>위치</h2>
-                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[300px] border p-3" name="" id="">
+                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[250px] border p-3" name="" id="">
                                 {fridgeOptionList}
                             </select>
                         </div>
-                        <div className="w-full flex justify-between my-1">
+                        <div className="w-full flex justify-between items-center my-1">
                             <h2>양</h2>
                             <input className="w-[150px]" onChange={(evt)=>{setQqt(evt.target.value)}} value={qqt} type="text" />
                         </div>
-                        <div className="w-full flex justify-between my-1">
+                        <div className="w-full flex justify-between items-center my-1">
                             <h2>소비기한</h2>
                             <input className="w-[150px]" value={exDate} onChange={(evt)=>{setExDate(evt.target.value)}} type="date" />
                         </div>
