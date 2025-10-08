@@ -10,9 +10,7 @@ export default function useRNMessage() {
     const [plusBtnClicked, setPlusBtnClicked] = useRecoilState<boolean>(addtionalBtnOpenState);
     
     const router = useRouter();
-    const listener = (evt:MessageEvent)=>{
-      console.log("리슨", evt);
-    
+    const listener = (evt:MessageEvent)=>{    
       try{
         const rnMessage:RNMessageInterface = JSON.parse(evt.data);
 

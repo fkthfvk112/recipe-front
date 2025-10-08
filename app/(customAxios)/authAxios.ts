@@ -97,7 +97,7 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       err.response.data === "T003" || err.response.data?.code === "T003" ||
       err.response.data === "T004" || err.response.data?.code === "T004" ||
       err.response.data === "T005" || err.response.data?.code === "T005"
-    ) {      
+    ) {
         deleteAuthToken();
       // Swal.fire({
       //   title: "로그인 유효시간 만료.",
