@@ -60,14 +60,14 @@ const Navbar = () => {
               </div>
             </Link>           
             </li>
-            <li>
+            {/* <li>
               <Link href="/welcome">
                 <div className="flex flex-col justify-center items-center">
                   <FavoriteIcon sx={{width:'30px', height:'30px', fill:containInRoute("welcome")?"black":"gray"}}/>
                   <p>서비스 소개</p>
                 </div>
               </Link> 
-            </li>
+            </li> */}
               <li>
                 <Link href="/recipes/1/sortingCondition=POPULARITY">
                   <div className="flex flex-col justify-center items-center">
@@ -84,9 +84,9 @@ const Navbar = () => {
                   </div>
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <GoBoardBtn />
-              </li> */}
+              </li>
               <li>
                 <div className="flex flex-col justify-center items-center pb-3">
                 {isSignIn ? (

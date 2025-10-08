@@ -183,9 +183,9 @@ export default function RandomMenu(){
                     </div>
                 </div>
                 <div className="flex flex-center flex-col">
+                    <button className={`mb-3 w-[300px] h-[50px] ${nowRotating?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
                     <button className={`mb-3 w-[230px] ${!immediateLoading?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={()=>{setImmediateLoading((prev)=>!prev)}}>로딩 없이 바로 보기</button>
-                    <button className={`mb-3 w-[230px] ${nowRotating?'grayBtn-noHover bg-[#e1e1e1] border-none ':'roundRreenBtn border-2'}  rounded-full`} onClick={getRandomMenu} disabled={nowRotating}>{!nowRotating?"무엇을 먹을까?":"메뉴 찾는 중..."}</button>
-                    <button className={`mb-3 w-[230px] saveBtn-outline-orange border-2 rounded-full`} onClick={()=>{goToWelcome()}}>뭐하는 사이트인지 보기</button>
+                    <button className={`mb-3 w-[230px] saveBtn-outline-orange border-2 rounded-full`} onClick={()=>{goToWelcome()}}>서비스 소개</button>
                     <button className={`mb-20 w-[230px] saveBtn-outline-green border-2 rounded-full`} onClick={()=>{copyToClip()}}>URL 복사</button>
                 </div>
             </section>

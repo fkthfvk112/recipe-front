@@ -21,6 +21,7 @@ import { userFeedRecipeCacheSelectorAtom } from "./(recoil)/userFeedRecipeCacheS
 import { cacheKey } from "./(recoil)/cacheKey";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import KitchenIcon from '@mui/icons-material/Kitchen';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -164,7 +165,15 @@ export default function AccountMenu() {
 
 
         <Divider />
-        
+          <MenuItem onClick={()=>{
+          handleClose();
+          router.push("/welcome");
+        }}>
+          <ListItemIcon>
+            <FavoriteIcon fontSize="small" />
+          </ListItemIcon>
+          서비스 소개
+        </MenuItem>      
         <MenuItem onClick={()=>{
           handleClose();
           router.push("/accountSetting");
