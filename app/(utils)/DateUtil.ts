@@ -47,7 +47,9 @@ export const extractDate =(dateTimeString:string)=>{
 };
 
   export const getNDayAfterBaseDateKST = (baseDate: Date, nDay: number) => {
-    
+    if (!(baseDate instanceof Date) || isNaN(baseDate.getTime())) {
+        return ""; // 유효하지 않으면 빈 문자열 반환
+    }
     // 현재 시간의 UTC 시간 값 구하기
     const utc = baseDate.getTime() + (baseDate.getTimezoneOffset() * 60000);
 
