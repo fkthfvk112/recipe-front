@@ -186,7 +186,7 @@ export default function EditBoardPost({
             <div>
                 {/* have to :: del ... 사용자가 픽하는 게시판을 목록으로 보여주도록 변경 */}
                 <input className='border-none outline-none p-3 text-xl font-bold' type="text" 
-                placeholder='제목을 입력해주세요.' maxLength={20} value={title} onChange={(evt)=>setTitle(evt.target.value)} />
+                placeholder='제목을 입력해주세요.' maxLength={60} value={title} onChange={(evt)=>setTitle(evt.target.value)} />
                 <div className='bottom-line'></div>
             </div>
             <div className='h-[668px]'>
