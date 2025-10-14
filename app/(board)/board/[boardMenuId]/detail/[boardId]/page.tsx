@@ -15,6 +15,7 @@ import BoardRecipeHolder from "./(recipe)/BoardRecipeHolder";
 import BoardDietHolder from "./(Diet)/BoardDietHolder";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 import { Metadata, ResolvingMetadata } from "next";
+import Script from "next/script";
 
 
 type Props = {
@@ -75,6 +76,36 @@ export default async function BoardDetail({
         }
     })
 
+    // 구글 노출용 스키마
+    const googleBoardSchema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting", // ✅ 게시판/커뮤니티 글에 더 적합
+        headline: boardData.title,
+        description: boardData.content?.slice(0, 120),
+        image:
+            boardData.photos && boardData.photos.length > 0
+            ? boardData.photos
+            : ["/common/favicon.png"],
+        author: {
+            "@type": "Person",
+            name: boardData.userNickName || "익명",
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "머그인",
+            logo: {
+            "@type": "ImageObject",
+            url: "https://mugin.com/common/favicon.png",
+            },
+        },
+        datePublished: boardData.createdAt,
+        dateModified: boardData.updatedAt || boardData.createdAt,
+        mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://mugin.com/board/${boardData.boardMenuId}/detail/${params.boardId}`,
+        },
+    };
+
     const anonymousUser = <div className="flex">
                             <AccountCircleIcon sx={{width:"50px", height:"50px"}}/>
                             {/* have to :: 수정: 사진 받을 수 있도록, 유저 닉네임 -> 유저 유니크 아이디로 로직 변경 */}
@@ -101,6 +132,12 @@ export default async function BoardDetail({
                             </div>
 
     return(
+        <>        
+        <Script
+        id="board-ld-json"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(googleBoardSchema) }}
+        />
         <section className="defaultInnerContainer" style={{paddingLeft:'1rem', marginTop:'2.5rem', paddingRight:'1rem'}}>
             {boardData.userNickName === "익명"? anonymousUser:identityUser}
             <div className="mt-5"/>
@@ -131,5 +168,6 @@ export default async function BoardDetail({
             </div>
             <ReviewContainer domainId={params.boardId} domainName="board"/>
         </section>
+        </>
     )
 }

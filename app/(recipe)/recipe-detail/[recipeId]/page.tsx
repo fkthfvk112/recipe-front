@@ -105,6 +105,7 @@ export default async function RecipeDetail({
     }, 0),
   };
 
+  // 구글 레시피 서칭용 데이터 구조
   const googleRecipeSchema: any = {
     "@context": "https://schema.org",
     "@type": "Recipe",
