@@ -97,7 +97,7 @@ export default function RecipeDraft({recipe, setRecipe, draftId, setDraftId}:Rec
 
     const draftComp = data?.map((ele)=>{
       return (
-        <div onClick={()=>fetchDraftData(ele.recipeId)}
+        <div key={ele.recipeId} onClick={()=>fetchDraftData(ele.recipeId)}
           className="w-full flex justify-between bottom-line-thin p-3 hover-pointer hover:bg-[#e1e1e1]">
           <div>
             <p>{ele.recipeName}</p>
