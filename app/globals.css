@@ -118,6 +118,15 @@ textarea{
   font-weight: 700;
 }
 
+
+.saveBtn-outline-gray{
+  border:2px solid #e1e1e1;
+  border-radius: 15em;
+  color:#727272;
+  background-color: white;
+  font-weight: 700;
+}
+
 .saveBtn-outline-orange:hover{
   border:2px solid #f3a30f;
   color: #f3a30f;
@@ -399,6 +408,16 @@ textarea{
 
 .bottom-line{
   border-bottom: 2px solid #e1e1e1;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-color: #e1e1e1;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.bottom-line-thin{
+  border-bottom: 1px solid #e1e1e1;
   border-left: 0;
   border-right: 0;
   border-top: 0;

@@ -54,3 +54,9 @@ export interface Recipe {
   likeCnt?:     number;
   reviewAvg?:     number;
 }
+
+export interface RecipeDraftInterface{
+  recipeId:number;
+  recipeName: string;
+  draftedAt: string
+}

@@ -32,7 +32,7 @@ export default function FridgeDescription() {
     if(isSignIn === false){
         Swal.fire({
             title: "로그인",
-            text:"로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?.",
+            text:"로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?",
             icon: "warning",
             showCancelButton:true,
             cancelButtonText:"취소",

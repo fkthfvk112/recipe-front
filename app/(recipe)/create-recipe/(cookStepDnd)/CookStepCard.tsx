@@ -19,7 +19,7 @@ import { CookingSteps_create } from "../../types/recipeType";
 import { inView, motion, useAnimation } from 'framer-motion';
 import { RecipeDndCard } from "./ContainerDnd";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
+import { createRecipeImgState, recipeStepInitialState } from "@/app/(recoil)/recipeAtom";
 import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 
@@ -51,6 +51,7 @@ const CookStepCard: FC<CardProps> = ({
   cards,
 }) => {
   const [recipeImgCnt, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
+  
   const dragRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();

@@ -23,6 +23,9 @@ import ScrollToTopButton from "@/app/(commom)/Component/GoToTopBtx";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
+import RecipeDraft from "./RecipeDraft";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -39,9 +42,21 @@ export default function CreateRecipePage() {
     steps: [],
     viewCnt:0,
   });
-  const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
+
+  const [isSignIn, setIsSignIn]       = useRecoilState(siginInState);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [errorCnt, setErrorCnt]       = useState<number>(0);
+  const {layoutBottomMargin}          = useResponsiveDesignCss(); 
+
+
+  //임시 저장된 아이디
+  //임시 저장 클릭 or 임시저장 불러오기 시 세팅
+  const [draftId, setDraftId] = useState<number>(-1);
+
   const router = useRouter();
   const isTokenValid = useChkLoginToken("refreshNeed");
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if(isTokenValid && !isSignIn){
@@ -50,9 +65,9 @@ export default function CreateRecipePage() {
 
   }, [isSignIn, router, isTokenValid]);
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [errorCnt, setErrorCnt] = useState<number>(0);
 
+
+  /** 저장 */ 
   const saveRecipeToDb = () => {
     withReactContent(Swal).fire({
       title:"레시피를 공개하는 중...",
@@ -65,6 +80,8 @@ export default function CreateRecipePage() {
       .post("recipe/create", recipe)
       .then((res) => {
         if (res.status === 200) {
+          //임시저장 리스트 초기화
+          queryClient.invalidateQueries({ queryKey: ['draftRecipe'] });
           Swal.fire({
             title: "게시가 완료되었습니다!",
             icon: "success",
@@ -76,6 +93,40 @@ export default function CreateRecipePage() {
         }
       })
   };
+
+  /** 임시 저장 */
+  const saveDraftRecipe = ()=>{
+    if(recipe.recipeName.length < 1){
+      Swal.fire({
+        toast: true,
+        position: 'center',
+        icon: 'warning',
+        title: '제목을 입력해주세요.',
+        showConfirmButton: false,
+        timer: 2000,
+      })
+      return;
+    }
+
+    axiosAuthInstacne
+    .post("recipe/draft", {...recipe, isDraft:true, recipeId:draftId})
+    .then((res) => {
+      if (res.status === 200) {
+        setDraftId(res.data);
+
+         //임시저장 리스트 초기화
+        queryClient.invalidateQueries({ queryKey: ['draftRecipe'] });
+        Swal.fire({
+          toast: true,
+          position: 'center',
+          icon: 'success',
+          title: '임시저장 완료',
+          showConfirmButton: false,
+          timer: 2000,
+        })
+      }
+    })  
+  }
 
   const style = {
     position: "absolute" as "absolute",
@@ -103,25 +154,6 @@ export default function CreateRecipePage() {
         recipe={recipe}
         setRecipe={setRecipe}
       ></CookStep>
-      <button
-        className="saveBtn"
-        onClick={() => {
-          if(recipeImgCnt > 0) return;
-          setIsModalOpen(true);
-        }}
-      >
-        {
-          recipeImgCnt <= 0?
-          <span>
-            레시피 쓰기
-          </span>
-          :
-          <span>
-            <CircularProgress size={16} />
-          </span>
-        }
-        
-      </button>
       <div className="fixed bottom-6 right-6">
         <ScrollToTopButton/>
       </div>
@@ -160,6 +192,29 @@ export default function CreateRecipePage() {
           </div>
         </Box>
       </Modal>
+      <div className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
+        <div className='flex justify-center items-center gap-2'>
+          <RecipeDraft recipe={recipe} setRecipe={setRecipe} draftId={draftId} setDraftId={setDraftId}/>
+          <button
+            className="saveBtn"
+            onClick={() => {
+              if(recipeImgCnt > 0) return;
+              setIsModalOpen(true);
+            }}
+          >
+            {
+              recipeImgCnt <= 0?
+              <span>
+                레시피 쓰기
+              </span>
+              :
+              <span>
+                <CircularProgress size={16} />
+              </span>
+            }
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

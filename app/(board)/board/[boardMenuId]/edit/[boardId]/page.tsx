@@ -207,6 +207,6 @@ export default function EditBoardPost({
                     <button className='greenBtn' onClick={postbtn}>수정 완료</button>
                 </div>
             </div>
-         </div>
+        </div>
     )
 }

@@ -4,6 +4,8 @@ import AddIcon from "@mui/icons-material/Add";
 import  CookStepCard from "./CookStepCard";
 import { CookStepProp } from "./CookStep";
 import { CookingSteps_create } from "../../types/recipeType";
+import { useRecoilState } from "recoil";
+import { recipeStepInitialState } from "@/app/(recoil)/recipeAtom";
 
 export interface Item {
   id: number;
@@ -18,50 +20,68 @@ export interface RecipeDndCard extends CookingSteps_create{
   id:number;
 }
 
-export const ContainerDnd = ({
-  recipe,
-  setRecipe,
-}: CookStepProp) => {
-  const [dndSectionHeight, setDndSectionHeight] = useState<number>(250);
 
-  const [cards, setCards] = useState<RecipeDndCard[]>(()=>{
-    if(recipe.steps && recipe.steps.length > 0){
-      const initialData:RecipeDndCard[] = recipe.steps.map((ele, inx)=>{
-        const existPhoto:string = !(ele.photo === null || ele.photo === undefined) && ele.photo.length > 10 ? ele.photo : "";    
+function getInitialCards(recipe: { steps?: CookingSteps_create[] }): RecipeDndCard[] {
+    if (recipe.steps && recipe.steps.length > 0) {
+      return recipe.steps.map((ele, inx) => {
+        const existPhoto =
+          ele.photo !== null && ele.photo !== undefined && ele.photo.length > 10
+            ? ele.photo
+            : "";
+
         return {
           ...ele,
           photo: existPhoto,
-          id:inx
-        }
-      })
-      return initialData;
-    }
-    else{
-      return[
+          order: inx, // 혹시 order 안 맞을 수 있으니 인덱스로 보정
+          id: inx,
+        } as RecipeDndCard;
+      });
+    } else {
+      return [
         {
           order: 0,
           photo: "",
           description: "",
           time: 0,
-          id:0
+          id: 0,
         },
         {
           order: 1,
           photo: "",
           description: "",
           time: 0,
-          id:1
+          id: 1,
         },
         {
           order: 2,
           photo: "",
           description: "",
           time: 0,
-          id:2
+          id: 2,
         },
-      ]
+      ] as RecipeDndCard[];
     }
-  })
+  };
+
+export const ContainerDnd = ({
+  recipe,
+  setRecipe,
+}: CookStepProp) => {
+  const [dndSectionHeight, setDndSectionHeight] = useState<number>(250);
+  const [resetStep, setResetStep] = useRecoilState<number>(recipeStepInitialState);
+  const [cards, setCards] = useState<RecipeDndCard[]>(() =>
+    getInitialCards(recipe)
+  );
+
+  //recipe 내용으로 카드 업데이트
+  useEffect(() => {
+    const resetCards = getInitialCards(recipe);
+    setCards(resetCards);
+
+    // 높이도 다시 계산해줌
+    setDndSectionHeight(resetCards.length * 250);
+  }, [resetStep]);
+
 
   useEffect(() => {
     const addCard: CookingSteps_create[] = cards
