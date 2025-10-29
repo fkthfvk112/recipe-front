@@ -34,7 +34,7 @@ export default function ExpBar({expDateStr, k}:{expDateStr:string, k:number}){
 
     const dateDiffString = dateDiff > 0?`${dateDiff}일 남음`:"만료"
     return (
-        <div className="mx-1 h-[30px]">
+        <div className="mx-1 h-[18px]">
             <p className="flex items-center text-[0.6rem] justify-start font-normal">
                 <AccessAlarmIcon sx={{width:"1rem", height:"1rem", marginRight:"0.1rem", marginBottom:"0.1rem"}}/>
                 {dateDiffString}

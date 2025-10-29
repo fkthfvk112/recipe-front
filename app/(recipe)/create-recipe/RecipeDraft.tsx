@@ -173,17 +173,17 @@ export default function RecipeDraft({recipe, setRecipe, draftId, setDraftId}:Rec
           </div>
         </Box>
       </Modal>
-      <button className="border-2 border-[#e1e1e1] rounded-[15em] text-[#727272] bg-white font-bold flex overflow-hidden w-[180px]">
+      <button className="border-1 border-[#e1e1e1] rounded-[15em] text-[#727272] bg-white font-bold flex overflow-hidden w-[100px] p-1">
         <span
           onClick={() => saveDraftRecipe()}
-          className="flex-1 pe-1 text-center cursor-pointer"
+          className="flex-1 text-center cursor-pointer text-sm"
         >
-          임시저장
+          저장
         </span>
-        <span className="w-[1.5px] bg-gray-400" />
+        <span className="w-[1px] bg-gray-300" />
         <span
           onClick={() => setOpenModal(true)}
-          className="flex-1 text-center cursor-pointer text-[#8ac926]"
+          className="flex-1 text-center cursor-pointer text-[#8ac926] text-sm"
         >
           {data?.length}
         </span>

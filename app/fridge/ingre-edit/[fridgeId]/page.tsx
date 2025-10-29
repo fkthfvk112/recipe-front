@@ -82,7 +82,7 @@ export default function FridgeDetail({
     return (
         <>
         <div className="defaultInnerContainer mt-6 flex-center-col">
-            <div className="w-[93%] flex-col justify-start items-center mb-3">
+            <div className="w-[100%] flex-col justify-start items-center mb-3">
                 <nav className="text-center w-full py-5 px-3 relative bottom-line">
                     <div onClick={goPrev} className="absolute left-5 cursor-pointer">
                         <ArrowBackIosIcon />

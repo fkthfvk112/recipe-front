@@ -154,7 +154,7 @@ export default function CreateRecipePage() {
         recipe={recipe}
         setRecipe={setRecipe}
       ></CookStep>
-      <div className="fixed bottom-6 right-6">
+      <div className="fixed bottom-20 right-6">
         <ScrollToTopButton/>
       </div>
       <Modal
@@ -196,7 +196,7 @@ export default function CreateRecipePage() {
         <div className='flex justify-center items-center gap-2'>
           <RecipeDraft recipe={recipe} setRecipe={setRecipe} draftId={draftId} setDraftId={setDraftId}/>
           <button
-            className="saveBtn"
+            className="saveBtn w-[70px] p-1"
             onClick={() => {
               if(recipeImgCnt > 0) return;
               setIsModalOpen(true);
@@ -204,8 +204,8 @@ export default function CreateRecipePage() {
           >
             {
               recipeImgCnt <= 0?
-              <span>
-                레시피 쓰기
+              <span className="text-sm">
+                완료
               </span>
               :
               <span>

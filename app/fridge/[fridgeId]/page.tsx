@@ -1,5 +1,5 @@
 "use client"
-import { FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
+import { Fridge, FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
 import { AdditionalBtn } from "../../(commom)/Component/AdditionalBtn";;
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
@@ -10,6 +10,8 @@ import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
 import ExpBar from "./(common)/ExpBar";
 import Link from "next/link";
 import AddIcon from '@mui/icons-material/Add';
+import { extractDate, extractDateTime } from "@/app/(utils)/DateUtil";
+import { truncateString } from "@/app/(utils)/StringUtil";
 
 export default function FridgeDetail({
     params
@@ -21,7 +23,7 @@ export default function FridgeDetail({
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     // const [fridgeDate, setFridgeDate] = useState<Fridge>();
-    const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
+    const [fridgeData, setFridgeData] = useRecoilState<Fridge|undefined>(fridgeDataAtom);
     const [modalItem, setModalItem] = useState<FridgeItem>();
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
     const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
@@ -42,22 +44,69 @@ export default function FridgeDetail({
                 setFirdgeList(res.data);
             })
     }, [])
-
-
+    
     const fridgeItemProp = fridgeData?.fridgeItems.map((item, inx)=>{
+        let dateDiff: number = -100_000;// 유효하지 않은 수
+        if(item?.expiredAt){
+            const now:Date = new Date();
+            const expDate:Date = new Date(item.expiredAt);
+            expDate.setHours(0, 0, 0, 0);
+            now.setHours(0, 0, 0, 0)
+
+            dateDiff = (expDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24); //남은 일수
+            
+            //더 큰 수로 세팅
+            dateDiff = Math.max(dateDiff, 0);
+        }
+
         return (
-            <li key={inx} onClick={()=>{
+            <li
+            key={inx}
+            onClick={() => {
                 setModalItem(item);
                 setOpen(true);
-            }}  className="fridge-item relative cursor-pointer">
-                <div className="absolute -top-14 z-10 w-full text-center overflow-hidden whitespace-nowrap text-ellipsis text-sm font-bold">
-                    {item.expiredAt?<ExpBar expDateStr={item.expiredAt as string} k={2}/>:<div className="h-[30px]"></div>}
+            }}
+            className="grid grid-cols-[1fr_3fr_1fr] cursor-pointer bg-white w-full p-3 gap-3 items-center rounded-lg shadow-sm"
+            >
+            {/* 왼쪽 이미지 (작게) */}
+            <div>
+                {item.expiredAt ? (
+                <ExpBar expDateStr={item.expiredAt as string} k={2} />
+                ) : (
+                <div className="h-[0px]" />
+                )}
+                <div className="relative w-full aspect-square max-w-[60px] mx-auto">
+                    <Image
+                    className="object-cover rounded-md"
+                    src={item.imgUrl}
+                    alt="ex"
+                    fill
+                    quality={100}
+                    />
+                </div>
+            </div>
+            {/* 오른쪽 설명 */}
+            <div className="flex flex-col justify-start text-left h-full w-full flex-wrap">
+                <h2 className="font-bold text-sm text-ellipsis overflow-hidden whitespace-nowrap mb-0.5 ms-1">
                     {item.name}
-                </div>
-                <div className="w-full h-full img-wrapper-square">
-                    <Image className="inner-img-whole" src={item.imgUrl}  alt="ex" fill={true}  quality={100}/>
-                </div>
-            </li>)
+                </h2>
+                <p className="min-h-[20px] break-all w-full p-2 text-start bg-[#f0f0f0] rounded-xl text-xs">
+                    {item?.description&&truncateString(item?.description+"Sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", 30)}
+                </p>
+                <p className="text-xs text-gray-700 leading-tight ms-1 mt-2">
+                    생성일: {extractDate(item?.createdAt as string)}
+                </p>
+            </div>
+            <div className="w-full flex justify-center text-xl font-bold text-[#f77f00]">
+                {
+                    dateDiff != -100_000 ?
+                    <span>D-{dateDiff}</span>
+                    :
+                    <span>-</span>
+                }
+            </div>
+            </li>
+            )
     })
 
     const additionalBtnInfo = [
@@ -77,11 +126,11 @@ export default function FridgeDetail({
                 <h1 className="text-2xl mb-2">{fridgeData?.name}</h1>
                 {
                 fridgeData?.description&&
-                <div className="w-[93%] bg-stone-100 rounded-lg p-3">
+                <div className="w-[100%] bg-stone-100 rounded-lg p-3">
                     <div className="text-lg">{fridgeData?.description}</div>
                 </div>
                 }
-                <div className="w-[93%] mt-3 text-right">
+                <div className="w-[100%] mt-3 text-right">
                     <select
                         onChange={handleSortingChange}
                         className="border border-slate-300 rounded-2xl mr-2 text-center w-[170px] h-10 bg-zinc-100"
@@ -104,8 +153,8 @@ export default function FridgeDetail({
                     </select>
                 </div>
             </div>
-            <section className="relative fridge-container shadow-md ice-shadow-inner mt-6">
-                <div className="fridge">
+            <section className="relative fridge-container">
+                <div className="fridge gap-2">
                     {fridgeItemProp}
                     {fridgeItemProp&&fridgeItemProp?.length < 50 &&
                         <li className="fridge-item relative cursor-pointer">
