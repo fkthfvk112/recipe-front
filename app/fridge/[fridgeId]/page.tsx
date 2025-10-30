@@ -91,7 +91,7 @@ export default function FridgeDetail({
                     {item.name}
                 </h2>
                 <p className="min-h-[20px] break-all w-full p-2 text-start bg-[#f0f0f0] rounded-xl text-xs">
-                    {item?.description&&truncateString(item?.description+"Sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss", 30)}
+                    {item?.description&&truncateString(item?.description, 30)}
                 </p>
                 <p className="text-xs text-gray-700 leading-tight ms-1 mt-2">
                     생성일: {extractDate(item?.createdAt as string)}
