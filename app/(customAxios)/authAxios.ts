@@ -113,10 +113,11 @@ axiosAuthInstacne.interceptors.response.use((res) => {
       //     }
       // })
     }
-    else if(err.response.data.code === "M003"){//DB에 유저 정보 없음
-      deleteAuthToken();
-    }
     else if(errorCode.includes(err.response.data.code)){
+      if(err.response.data.code === "M003"){
+        deleteAuthToken();
+      }
+
       Swal.fire({
         title: "에러가 발생하였습니다.",
         text: err.response.data.message,
