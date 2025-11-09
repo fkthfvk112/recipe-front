@@ -18,15 +18,14 @@ export default function FridgeDetail({
 }:{
     params:{fridgeId:number};
 }){
-    const [fridgeSort, setFridgeSort] = useRecoilState(fridgeSortingAtom);
-
-    const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [fridgeSort, setFridgeSort]       = useRecoilState(fridgeSortingAtom);
+    const [refetchCount, setRefetchCount]   = useRecoilState(fridgeDataRefetcherSelector);
+    const [isLoading, setIsLoading]         = useState<boolean>(true);
     // const [fridgeDate, setFridgeDate] = useState<Fridge>();
-    const [fridgeData, setFridgeData] = useRecoilState<Fridge|undefined>(fridgeDataAtom);
-    const [modalItem, setModalItem] = useState<FridgeItem>();
-    const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
-    const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
+    const [fridgeData, setFridgeData]       = useRecoilState<Fridge|undefined>(fridgeDataAtom);
+    const [modalItem, setModalItem]         = useState<FridgeItem>();
+    const [fridgeList, setFirdgeList]       = useState<FridgeIdNameDesc[]>([]);
+    const [open, setOpen]                   = useRecoilState<boolean>(fridgeModalOpenState);
     
     useEffect(()=>{
         setIsLoading(true)

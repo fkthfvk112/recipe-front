@@ -17,7 +17,7 @@ interface RecipeDraftModalInterface{
   setDraftId:Dispatch<SetStateAction<number>>
 }
 
-
+// 레시피 임시저장
 export default function RecipeDraft({recipe, setRecipe, draftId, setDraftId}:RecipeDraftModalInterface){
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [resetStep, setResetStep] = useRecoilState<number>(recipeStepInitialState);

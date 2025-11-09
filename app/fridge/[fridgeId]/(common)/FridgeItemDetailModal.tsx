@@ -9,7 +9,9 @@ import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRecoilState } from "recoil";
 import { fridgeDataRefetcherSelector, fridgeModalOpenState } from "@/app/(recoil)/fridgeAtom";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
+import FridgeItemImgPickerModal from "./FridgeItemImgPickerModal";
+import { useQueryClient } from "@tanstack/react-query";
+import { getImgUrlByIdRQ } from "@/app/(utils)/fridgeUtils";
 
 const style = {
     position: "absolute" as "absolute",
@@ -25,16 +27,22 @@ const style = {
     p: 4,
 };
 
-function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:FridgeItem, fridgeList:FridgeIdNameDesc[], fridgeId:number}){
+function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:FridgeItem, fridgeList:FridgeIdNameDesc[], fridgeId:number}){
     const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
+    const [imgModalOpen, setImgModalOpen] = useState<boolean>(false);
+
+    const [imgUrl, setImgUrl] = useState<string>(fridgeItem.imgUrl)
 
     const [title, setTitle] = useState<string>(fridgeItem?.name || "");
     const [position, setPosition] = useState<number>(fridgeId);
     const [qqt, setQqt] = useState<string>(fridgeItem?.qqt || "");
     const [exDate, setExDate] = useState<string>(fridgeItem?.expiredAt || "");
     const [description, setDescription] = useState<string>(fridgeItem?.description || "");
+    const [fridgeImgId, setFridgeImgId] = useState<number>(fridgeItem?.fridgeImgId || 0);
+
 
     const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
+    const qc = useQueryClient();
 
     const isChanged = ()=>{
         if(position != fridgeId) return true; 
@@ -42,6 +50,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:Fr
         if(fridgeItem.qqt !== qqt) return true;
         if((fridgeItem.expiredAt||"") !== exDate) return true;
         if(fridgeItem.description !== description) return true;
+        if(fridgeItem.fridgeImgId !== fridgeImgId) return true;
         return false;
     }
     
@@ -49,7 +58,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:Fr
         if(!isChanged()) return;
         axiosAuthInstacne.put("fridge/my/fridge-item", {
             fridgeId:position,
-            fridgeImgId:fridgeItem.fridgeImgId,
+            fridgeImgId:fridgeImgId,
             fridgeItemId:fridgeItem.fridgeItemId,
             expiredAt:exDate,
             name:title,
@@ -95,11 +104,24 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:Fr
           });      
     }
 
+    //모달 열릴 때마다 보이는 데이터 리셋
+    useEffect(() => {
+        if (!open) return; // 열릴 때만 리셋
+        setTitle(fridgeItem?.name ?? "");
+        setPosition(fridgeId);
+        setQqt(fridgeItem?.qqt ?? "");
+        setExDate(fridgeItem?.expiredAt ?? "");
+        setDescription(fridgeItem?.description ?? "");
+        setFridgeImgId(fridgeItem?.fridgeImgId ?? 0);
+        setImgUrl(fridgeItem?.imgUrl ?? "");
+    }, [open, fridgeItem, fridgeId]);
+
     const fridgeOptionList = fridgeList?.map((fridge, inx)=>{
         return <option key={inx} value={fridge.fridgeId}>{fridge.fridgeName}</option>
     })
 
     return(
+        <>
         <Modal
             open={open}
             onClose={() => {
@@ -118,8 +140,8 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:Fr
                                 <h2>식재료명</h2>
                                 <input className="w-[180px]" onChange={(evt)=>{setTitle(evt.target.value)}} value={title} type="text" />
                             </div>
-                            <div className="w-[100px] h-[100px] img-wrapper-square bg-[#e1e1e1] rounded-2xl">
-                                <Image className="inner-img-whole" src={fridgeItem.imgUrl}  alt="ex" fill={true} quality={100}/>
+                            <div onClick={()=>setImgModalOpen(true)} className="w-[100px] h-[100px] img-wrapper-square bg-[#e1e1e1] rounded-2xl">
+                                <Image className="inner-img-whole" src={imgUrl}  alt="ex" fill={true} quality={100}/>
                             </div>
                         </div>
                     </section>
@@ -149,6 +171,17 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId}:{fridgeItem:Fr
                 </div>
             </Box>
         </Modal>
+        <FridgeItemImgPickerModal
+            initialFridItem={fridgeItem}
+            open={imgModalOpen}
+            onClose={() => setImgModalOpen(false)}
+            onPick={async(img:FridgeItem) => {
+                setFridgeImgId(img.fridgeImgId??0)
+                const selectedImg = await getImgUrlByIdRQ(qc, img.fridgeImgId??0);
+                setImgUrl(selectedImg)
+            }}
+        />
+        </>
     )
 }
 
