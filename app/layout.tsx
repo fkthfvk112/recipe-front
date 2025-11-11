@@ -54,7 +54,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           src='https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js'
           strategy='beforeInteractive'
         />
-      <NextTopLoader color="#FB8500" showSpinner={false} zIndex={50000}/>
+        {/* Google AdSense*/}
+      <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4679279476061490"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"/>
+          {/* EndGoogle AdSense*/}
+           <NextTopLoader color="#FB8500" showSpinner={false} zIndex={50000}/>
         <MainContainer>
           {/* <IntervalConfig/> */}
           {children}
