@@ -94,6 +94,8 @@ export default function CreateRecipePage({
   const [errorCnt, setErrorCnt] = useState<number>(0);
 
   const saveRecipeToDb = () => {
+    setLoading(true);
+
     withReactContent(Swal).fire({
       title:"레시피를 공개하는 중...",
       showConfirmButton:false,
@@ -119,6 +121,9 @@ export default function CreateRecipePage({
           title: "에러가 발생하였습니다.",
           icon: "error",
         });
+      })
+      .finally(()=>{
+        setLoading(false);
       });
   };
 
@@ -191,7 +196,7 @@ export default function CreateRecipePage({
                 saveRecipeToDb();
               }}
               className={`me-1 ${errorCnt !== 0 ? "grayBtn" : "greenBtn"}`}
-              disabled={errorCnt === 0 ? false : true}
+              disabled={errorCnt === 0 || !isLoading? false : true}
             >
               수정하기
             </button>

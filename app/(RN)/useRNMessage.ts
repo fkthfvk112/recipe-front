@@ -47,14 +47,16 @@ export default function useRNMessage() {
     }
 
   useEffect(() => {
-    // 안드로이드 대응
-    document.addEventListener("message", listener as any);
-    // iOS 대응
-    window.addEventListener("message", listener as any);
+    if (typeof window !== "undefined" && window.ReactNativeWebView) {
+        // 안드로이드 대응
+        document.addEventListener("message", listener as any);
+        // iOS 대응
+        window.addEventListener("message", listener as any);
 
-    return () => {
-      document.removeEventListener("message", listener as any);
-      window.removeEventListener("message", listener as any);
-    };
+        return () => {
+          document.removeEventListener("message", listener as any);
+          window.removeEventListener("message", listener as any);
+        };
+    }
   }, [router, modalOpen, plusBtnClicked]);
 }

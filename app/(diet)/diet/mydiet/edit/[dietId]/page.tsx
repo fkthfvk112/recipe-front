@@ -5,9 +5,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Checkbox } from "@mui/material";
 import DietDayBox from "../../create/DietDayBox";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import UpdateModal from "@/app/(commom)/UpdateModal";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function MyDietEdit({
     params,
@@ -15,6 +16,8 @@ export default function MyDietEdit({
     params: { dietId: string };
   }){
     const isTokenValid = useChkLoginToken("refreshNeed");
+
+    const router = useRouter();
 
     const setInitialRecipeData = (fetchedData:DietDay)=>{
         if(fetchedData.memo!==undefined && fetchedData.memo.length > 0){
@@ -28,22 +31,22 @@ export default function MyDietEdit({
         }
         
         fetchedData.dietItemRowList.map((item)=>{
-            if(item.title === '아침' && item.dietItemList.length > 0){
+            if(item.title === '아침'){
                 setDietItemRowOne(prev=>{
                     return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
-            else if(item.title === '점심' && item.dietItemList.length > 0){
+            else if(item.title === '점심'){
                 setDietItemRowTwo(prev=>{
                     return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
-            else if(item.title === '저녁' && item.dietItemList.length > 0){
+            else if(item.title === '저녁'){
                 setDietItemRowThree(prev=>{
                     return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
             }
-            else if(item.title === '간식' && item.dietItemList.length > 0){
+            else if(item.title === '간식'){
                 setDietItemRowFour(prev=>{
                     return {...prev, dietItemList:item.dietItemList, photo:item.photo}
                  })
@@ -56,6 +59,7 @@ export default function MyDietEdit({
             axiosAuthInstacne
             .get(`diet/day/my-day?dietId=${params.dietId}`)
             .then((res) => {
+                console.log("데이터", res.data)
                 setInitialRecipeData(res.data);
             })
             .catch((err) => {
@@ -66,13 +70,13 @@ export default function MyDietEdit({
     }, [isTokenValid])
 
 
+    const [isLoading, setIsLoading]             = useState<boolean>(false);
     const [saveModalOpen, setSaveModalOpen]     = useState<boolean>(false);
 
     const [title, setTitle]                     = useState<string>("");
     const [dietDate, setDietDate]               = useState<string>("");
     const [memo, setMemo]                       = useState<string>("");
     const [isPublic, setIsPublic]               = useState<boolean>(true);
-    const [saveData, setSaveData]               = useState<DietDay>();
     const {layoutBottomMargin}                  = useResponsiveDesignCss(); 
 
     const [dietItemRowOne, setDietItemRowOne]  = useState<DietItemRow>({
@@ -124,7 +128,36 @@ export default function MyDietEdit({
         };
         if(params.dietId === undefined || params.dietId === null) return;
 
-        setSaveData(dietDay);
+        updateData(dietDay)
+    }
+
+    
+    const updateData = (dietDay:DietDay)=>{
+        Swal.fire({
+            title: "변경사항을 저장하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "저장하기",
+            cancelButtonText: "취소",
+            confirmButtonColor: '#38c54b',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setIsLoading(true)
+                axiosAuthInstacne
+                    .put(`${process.env.NEXT_PUBLIC_API_URL}diet/day/my-day/update`, dietDay)
+                    .then((res) => {
+                        Swal.fire({
+                            title: "수정이 완료되었습니다!",
+                            icon: "success",
+                        }).then(() => {
+                            router.replace(`/diet/mydiet/${params.dietId}`)
+                        });
+                    })
+                    .finally(()=>{
+                        setIsLoading(false)
+                    });
+            }
+        });  
     }
 
     const setTodayDateKST = () => {
@@ -156,6 +189,7 @@ export default function MyDietEdit({
 
         setDietDate(`${year}-${month}-${day}`);
     };
+
     
     if(!isTokenValid) return <></>
     return (
@@ -192,17 +226,13 @@ export default function MyDietEdit({
                         <DietDayBox title="간식" dietItemRow={dietItemRowFour} setDietItemRow={setDietItemRowFour}></DietDayBox>
                     </div>
                 </section>
-
-                <UpdateModal open={saveModalOpen} setOpen={setSaveModalOpen}
-                 content="수정하시겠습니까?" data={saveData}
-                 postUrl="diet/day/my-day/update" returnUrl={`/diet/mydiet/${params.dietId}`} ></UpdateModal>
             </section>
             <section className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
                 <div className='w-full flex justify-between max-w-[300px]'>
                     <div className='flex justify-center items-center mr-10'>
                         <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
                     </div>
-                    <button className='greenBtn' onClick={handleSubmit}>식단 수정</button>
+                    <button className='greenBtn' onClick={handleSubmit} disabled={isLoading}>식단 수정</button>
                 </div>
             </section>
         </main>

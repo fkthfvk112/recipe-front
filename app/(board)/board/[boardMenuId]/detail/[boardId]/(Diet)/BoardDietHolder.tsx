@@ -7,7 +7,7 @@ import Link from "next/link";
 export default async function BoardDietHolder({dietDays}:{dietDays:DietDay[]}){
 
     const dietDayItems = dietDays.map((dietDay, inx)=>
-        <Link className="w-[150px] h-[150px] m-1" key={inx} href={`/diet/mydiet/${dietDay.dietDayId}`}>
+        <Link className="w-[150px] h-[150px] m-1 shrink-0" key={inx} href={`/diet/mydiet/${dietDay.dietDayId}`}>
             <DietSquareItem key={inx} dietDay={dietDay}/>
         </Link>
         )

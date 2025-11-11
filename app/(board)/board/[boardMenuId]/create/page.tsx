@@ -26,6 +26,7 @@ function CreateNewBoardPost({
   }: {
     params:{boardMenuId:number};
   }){
+    const [isLoading, setIsLoading]           = useState<boolean>(false);
     const [checkAnonymous, setCheckAnonymous] = useRecoilState<boolean>(checkAnonymousAtom);
     const [title, setTitle]                   = useState<string>("");
     const [content, setContent]               = useState<string>("");
@@ -79,6 +80,8 @@ function CreateNewBoardPost({
         formData.append('boardContent', JSON.stringify(boardContent));
         formData.append('boardMenuId', `${params.boardMenuId}`);
 
+        setIsLoading(true);
+
         axiosAuthInstacne
         .post(`${process.env.NEXT_PUBLIC_API_URL}board/create`, formData, {
                 headers:{
@@ -95,6 +98,9 @@ function CreateNewBoardPost({
               }).then(() => {
                 router.replace(`/board/${params.boardMenuId}`);
               });
+        })
+        .finally(()=>{
+            setIsLoading(false);
         })
     }
 
@@ -165,14 +171,14 @@ function CreateNewBoardPost({
             <SetDiet dietDay={dietDay} setDietDay={setDietDay}/>
             <SetPhoto photos={photos} setPhotos={setPhotos}/>
             </section>
-            <div className={`z-[60] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 shadow-[0_-5px_15px_0px_rgba(0,0,0,0.3)] ${layoutBottomMargin}`}>
+            <section className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
                 <div className='w-full flex justify-between max-w-[300px]'>
-                    <div className='flex justify-center items-center'>
+                    <div className='flex justify-center items-center mr-10'>
                         <Checkbox onChange={()=>{setCheckAnonymous(!checkAnonymous)}} checked={checkAnonymous} className='mr-0' color="success" />익명
                     </div>
-                    <button className='greenBtn' onClick={postbtn}>게시글 작성</button>
+                    <button className='greenBtn' onClick={postbtn} disabled={isLoading}>게시글 작성</button>
                 </div>
-            </div>
+            </section>
          </div>
     )
 }

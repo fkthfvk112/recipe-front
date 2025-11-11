@@ -187,11 +187,13 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
 
     /**모달 내 선택한 레시피 */
     const selectedRecipeComps = recipes.map((ele, inx)=>
-        <span key={inx} className="flex justify-center items-center w-fit pe-8 bg-[#a1a1a1]  m-1 mt-2 text-white ps-1.5 rounded-md font-bold whitespace-nowrap relative">
+        <span key={inx} className="flex justify-center items-center w-fit pe-8 bg-[#a1a1a1] m-1 mt-2 text-white ps-1.5 rounded-md font-bold whitespace-nowrap relative max-w-full">
             <div onClick={()=>delFromSelectedRecipe(ele)} className="cursor-pointer absolute right-0">
                 <ClearIcon/>
             </div>
-            {ele.recipeName}
+            <span className="truncate pr-6 max-w-full">
+                {ele.recipeName}
+            </span>
         </span>
     )
 
@@ -213,7 +215,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                     <button onClick={(evt)=>{
                         deleteRecipe(inx);
                         evt.stopPropagation();
-                        }} className="border-none w-5 h-5 absolute -top-2 right-3 z-50">
+                        }} className="right-top-xboxBtn">
                         <ClearIcon className="bg-white"/>
                     </button>
                 </div> 
@@ -266,7 +268,7 @@ function RecipeFinderModal({recipes, setRecipes}:{recipes:Recipe[], setRecipes:(
                                         <button className="text-xs rounded-xl bg-[#38c54b] border-none font-semibold text-white mt-2 p-1" onClick={showMyRecipe}>내 레시피 보기</button>
                                     }
                                 </div>
-                                <div className="flex flex-wrap">
+                                <div className="flex flex-wrap max-w-full">
                                     {selectedRecipeComps}
                                 </div>
                             </section>

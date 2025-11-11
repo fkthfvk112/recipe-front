@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="09ae20eb-93d6-4511-b3f9-f019042f7a92" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/DietDayShowBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(diet)/diet/mydiet/[dietId]/DietDayShowBox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(type)/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/(type)/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(user)/signin/loginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(user)/signin/loginForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="09ae20eb-93d6-4511-b3f9-f019042f7a92" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
