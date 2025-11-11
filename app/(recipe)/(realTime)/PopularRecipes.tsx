@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Recipe } from "../types/recipeType";
 import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
-import { BestRecipeCard } from "./BestRecipeCard";
+import { BestRecipe, BestRecipeCard } from "./BestRecipeCard";
 
 export default async function PopularRecipes() {
   const fetchData: Recipe[] = await fetch(
@@ -33,7 +33,7 @@ export default async function PopularRecipes() {
 
   return (
     <div className="w-full max-w-5xl p-5 mt-10 mb-5">
-      {fetchData[0] && <BestRecipeCard recipe={fetchData[0] as Recipe}/>}
+      {fetchData[0] && <BestRecipeCard recipe={fetchData[0] as BestRecipe}/>}
       <h2 className="text-xl">인기 레시피</h2>
       {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
       <ul className="flex overflow-x-scroll h-[350px]">

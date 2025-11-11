@@ -6,7 +6,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import { useRouter } from "next/navigation";
 import { roundToNPlaces } from '@/app/(utils)/NumberUtil';
-type Recipe = {
+export type BestRecipe = {
   recipeId: number | string;
   recipeName: string;
   repriPhotos: string[];
@@ -16,7 +16,7 @@ type Recipe = {
   description?: string | null;
 };
 
-export function BestRecipeCard({ recipe }: { recipe: Recipe }) {
+export function BestRecipeCard({ recipe }: { recipe: BestRecipe }) {
   const router = useRouter();
 
   const goRecipe = () => {
