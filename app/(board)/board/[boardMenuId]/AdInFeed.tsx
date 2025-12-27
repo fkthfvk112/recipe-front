@@ -37,7 +37,7 @@ export default function AdInFeed() {
       data-ad-client="ca-pub-4679279476061490"
       data-ad-slot="6995220890"
       data-ad-format="fluid"
-      data-ad-layout-key="-h7-2+1k-33+1f"
+      data-ad-layout-key="-h9-4+1y-2e-1c"
     />
   );
 }
