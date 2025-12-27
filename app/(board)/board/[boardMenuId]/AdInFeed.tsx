@@ -33,7 +33,7 @@ export default function AdInFeed() {
     <ins
       ref={insRef}
       className="adsbygoogle"
-      style={{ display: "block" }}
+      style={{ display: "block", width: "100%", minHeight: 90 }}
       data-ad-client="ca-pub-4679279476061490"
       data-ad-slot="6995220890"
       data-ad-format="fluid"

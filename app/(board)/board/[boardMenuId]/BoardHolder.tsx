@@ -24,22 +24,27 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const AD_EVERY = 5;
 
     const boardPreviews = boardData.cachedData.data.flatMap((ele, idx) => {
-    const item = <BoardPreviewHoriItem key={`post-${ele.boardId ?? idx}`} boardPreview={ele} />;
+        const item = <BoardPreviewHoriItem key={`post-${ele.boardId ?? idx}`} boardPreview={ele} />;
 
-    const shouldInsertAd = (idx + 1) % AD_EVERY === 0;
+        const shouldInsertAd = (idx + 1) % AD_EVERY === 0;
 
-    if (!shouldInsertAd) return [item];
-
-    return [
+        if (!shouldInsertAd) return [item];
+        return [
         item,
         <li key={`ad-${boardMenuId}-${idx}`} className="w-full">
-        {/* 네 카드 스타일 그대로 */}
-        <div className="w-full flex flex-col mt-2 p-3 shadow-sm border bg-white border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
-            <div className="text-[11px] text-[#7a7a7a] mb-2">광고</div>
+            <div
+            className="
+                w-full mt-2
+                shadow-sm border border-[#e1e1e1]
+                bg-white rounded-xl
+                overflow-hidden
+            "
+            >
+            {/* padding 제거해서 광고가 최대한 크게 */}
             <AdInFeed />
-        </div>
-        </li>
-    ];
+            </div>
+        </li>,
+        ];
     });
         
 
