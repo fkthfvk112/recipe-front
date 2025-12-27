@@ -38,7 +38,7 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
                 shadow-sm border border-[#e1e1e1]
                 bg-white rounded-xl
                 overflow-hidden
-            "
+                "
             >
             {/* padding 제거해서 광고가 최대한 크게 */}
             <AdInFeed />
