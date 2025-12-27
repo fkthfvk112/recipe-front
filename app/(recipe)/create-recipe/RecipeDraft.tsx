@@ -44,7 +44,7 @@ export default function RecipeDraft({recipe, setRecipe, draftId, setDraftId}:Rec
             allowOutsideClick:false,
         }).then((result) => {
             if(result.isConfirmed){
-              axiosAuthInstacne.get(`recipe/detail-upd?recipeId=${recipeId}`)
+              axiosAuthInstacne.get(`recipe/draft/detail?recipeId=${recipeId}`)
                 .then((res)=>{
                   const resData:RecipeCreate = res.data.recipeDTO
 

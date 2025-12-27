@@ -11,6 +11,7 @@ import { scrollYCacheSelector } from "@/app/(recoil)/scrollYCacheSelector";
 import { cacheKey } from "@/app/(recoil)/cacheKey";
 import { BoardIdEnum } from "@/app/(type)/board";
 import Swal from "sweetalert2";
+import AdInFeed from "./AdInFeed";
 
 
 function BoardHolder({boardMenuId}:{boardMenuId:number}){
@@ -20,9 +21,27 @@ function BoardHolder({boardMenuId}:{boardMenuId:number}){
     const [viewRef, inview] = useInView();
     const {scrollY} = useScrollPosition();
 
-    const boardPreviews = boardData.cachedData.data.map((ele, inx)=>{
-        return <BoardPreviewHoriItem key={inx} boardPreview={ele}/>
+    const AD_EVERY = 5;
+
+    const boardPreviews = boardData.cachedData.data.flatMap((ele, idx) => {
+    const item = <BoardPreviewHoriItem key={`post-${ele.boardId ?? idx}`} boardPreview={ele} />;
+
+    const shouldInsertAd = (idx + 1) % AD_EVERY === 0;
+
+    if (!shouldInsertAd) return [item];
+
+    return [
+        item,
+        <li key={`ad-${boardMenuId}-${idx}`} className="w-full">
+        {/* 네 카드 스타일 그대로 */}
+        <div className="w-full flex flex-col mt-2 p-3 shadow-sm border bg-white border-[#e1e1e1] rounded-xl hover:bg-[#e1e1e1]">
+            <div className="text-[11px] text-[#7a7a7a] mb-2">광고</div>
+            <AdInFeed />
+        </div>
+        </li>
+    ];
     });
+        
 
     const noContent = <li className="w-full min-h-[150px] text-xl flex justify-center items-center">아직 게시글이 없어요😢 첫 게시글을 작성해보세요.</li>
 

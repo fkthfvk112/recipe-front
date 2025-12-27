@@ -3,6 +3,7 @@
 import { useState } from "react"
 import IngreItem from "./IngreItem";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
+import Swal from "sweetalert2";
 
 export default function IngredientAdmin(){
     const [ingreTerm, setIngreTerm] = useState<string>("");
@@ -20,6 +21,27 @@ export default function IngredientAdmin(){
         <IngreItem key={inx} ingreName={name} refetch={getIngreList}/>
     )
 
+    const saveAllRecipe = ()=>{
+        if (!ingreTerm.trim()) return;
+
+        // 1. 콤마 기준 분리
+        const ingreList: string[] = ingreTerm
+            .split(",")
+            .map(item => item.trim())   // 앞/뒤 공백 제거
+            .filter(item => item.length > 0); // 빈 문자열 제거
+
+        if (ingreList.length === 0) return;
+
+        axiosAuthInstacne.post("admin/ingre/save/list", ingreList).then((res)=>{
+            setIngreTerm("");
+            getIngreList(); // 필요하면 리프레시
+            Swal.fire({
+                title: "저장이 완료되었습니다!",
+                icon: "success",
+            })
+        })
+    }
+
     return (
         <div className="flex flex-col justify-start items-center w-full min-h-lvh p-5">
             <section className="w-full mb-20">
@@ -35,7 +57,10 @@ export default function IngredientAdmin(){
                     }}
                     value={ingreTerm}
                 />
+                <button onClick={saveAllRecipe} className="greenBtn ms-3 mt-10">한 번에 저장</button>
             </section>
+            
+
             <div className="top-line w-full"/>
             <section className="w-full mt-20">
                 <div>
