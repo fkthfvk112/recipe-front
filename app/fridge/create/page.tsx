@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 import Swal from "sweetalert2";
 import FridgePresetPicker from "../FridgePresetPicker";
+import TitleDescription from "@/app/(commom)/Component/TitleDescription";
 
 export default function CreateFridge(){
     const [fridgeName, setFridgeName] = useState<string>("");
@@ -78,7 +79,8 @@ export default function CreateFridge(){
                     id=""
                 ></textarea>
             </div>
-            <section className="mb-6 flex flex-wrap w-full">
+            <section className="mb-6 flex flex-wrap w-full p-5">
+              <TitleDescription title="식재료 등록" desc="미리 등록된 식재료를 선택해 냉장고와 함께 등록할 수 있어요."/>
               <FridgePresetPicker selectedPresetId={presetId} setSelectedPresetId={setPresetId}></FridgePresetPicker>
             </section>
             

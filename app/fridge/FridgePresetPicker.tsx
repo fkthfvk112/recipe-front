@@ -80,7 +80,7 @@ export default function FridgePresetPicker({selectedPresetId, setSelectedPresetI
                         },
                         }}
                     >
-                        <p className="font-semibold text-[#8a8a8a]">식재료 {preset.items.length}개 보기 </p>
+                        <p className="text-[#8a8a8a]">식재료 {preset.items.length}개 보기 </p>
                     </AccordionSummary>
                         <AccordionDetails
                         sx={{
@@ -129,7 +129,7 @@ export default function FridgePresetPicker({selectedPresetId, setSelectedPresetI
         </div>)
 
     return(
-        <div className="grid grid-cols-2 gap-3 p-6">
+        <div className="grid grid-cols-2 gap-3">
             {presetCompList}
         </div>
     )
