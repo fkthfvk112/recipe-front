@@ -55,7 +55,6 @@ export default function EvtStatus({eventId}:{eventId:string}) {
   const handleSendEmail = (emailData: { emailAddress: string; emailTitle: string; emailContent: string, base64Img:string }) => {
     console.log('이메일 발송 데이터:', emailData);
     axiosAuthInstacne.post("admin/email/send", {...emailData}).then((res)=>{
-      console.log("데이터ㅏ", res.data);
       if(res.data === "메일 전송 완료"){
         Swal.fire(`${emailData.emailAddress} 님에게 이메일을 보냈습니다.`, "", "success");
 

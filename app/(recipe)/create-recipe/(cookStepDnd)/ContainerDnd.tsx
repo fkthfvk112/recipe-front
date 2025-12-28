@@ -85,7 +85,7 @@ export const ContainerDnd = ({
 
   useEffect(() => {
     const addCard: CookingSteps_create[] = cards
-      .filter((card) => card.description.length >= 1)
+      //.filter((card) => card.description.length >= 1)
       .map((card, inx) => {
         return {
           ...card,
@@ -97,7 +97,6 @@ export const ContainerDnd = ({
       ...recipe,
       steps: addCard,
     });
-
     setDndSectionHeight(cards.length * 250);
   }, [cards]);
 
@@ -149,7 +148,7 @@ export const ContainerDnd = ({
     ) => {
       return (
         <CookStepCard
-          key={index}
+          key={card.id}
           id={card.id}
           index={index}
           card={card}

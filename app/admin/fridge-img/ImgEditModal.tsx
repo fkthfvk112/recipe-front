@@ -61,8 +61,6 @@ function ImgEditModal({imgItem, open, setOpen, refetcher}:{imgItem:FridgeImg, op
     };
 
     const saveImgItem = ()=>{
-        console.log("값 ",item);
-
         Swal.fire({
             title: "변경사항을 저장하시겠습니까?",
             icon: "question",

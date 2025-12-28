@@ -81,7 +81,6 @@ export default function PresetList() {
         `/fridge/preset/detail?presetId=${presetId}`
       );
       setSelectedPreset(res.data);
-      console.log("rrere", res.data)
     } finally {
       setLoadingDetail(false);
     }

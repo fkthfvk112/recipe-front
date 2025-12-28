@@ -24,7 +24,6 @@ export default function RecipeDraft({recipe, setRecipe, draftId, setDraftId}:Rec
 
     const queryClient = useQueryClient();
 
-
     const { data, isLoading, error } = useQuery<RecipeDraftInterface[]>({
         queryKey: ['draftRecipe'],
         queryFn: (): Promise<RecipeDraftInterface[]> =>  axiosAuthInstacne.get<RecipeDraftInterface[]>('/recipe/draft').then((res)=>res.data??[]),

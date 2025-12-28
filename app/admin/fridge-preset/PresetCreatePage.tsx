@@ -46,11 +46,7 @@ export default function PresetCreatePage() {
   const [items, setItems] = useState<PresetItemForm[]>([
     { key: makeKey(), sortOrder: 1 },
   ]);
-
-
-
-  console.log("프리셋", items);
-
+  
   const mutation = useMutation({
     mutationFn: (payload: PresetCreateRequest) => createFridgePreset(payload),
   });
