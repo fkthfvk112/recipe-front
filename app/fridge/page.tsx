@@ -64,7 +64,7 @@ export default function Fridge(){
             <h1 className="overflow-hidden text-ellipsis">{fridge.fridgeName}</h1>
                 <span className="text-xs bg-green-400 rounded-2xl text-white p-0.5 ps-2 pe-2 font-semibold">{fridge.normalIngreCnt}개</span>
                 {fridge.expIngreCnt >= 1 && <span className="ms-1 text-xs bg-red-400 rounded-2xl text-white p-0.5 ps-2 pe-2 font-semibold">{fridge.expIngreCnt}개</span>}
-            <p>{truncateString(fridge.description, 20)} </p>
+            <p className="w-full break-all">{truncateString(fridge.description, 20)} </p>
         </Link>
     )
 

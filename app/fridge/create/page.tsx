@@ -5,10 +5,13 @@ import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 import Swal from "sweetalert2";
+import FridgePresetPicker from "../FridgePresetPicker";
 
 export default function CreateFridge(){
     const [fridgeName, setFridgeName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [presetId, setPresetId] = useState<number>(-1);
+
     const isTokenValid = useChkLoginToken("refreshNeed");
     const router = useRouter();
 
@@ -31,7 +34,8 @@ export default function CreateFridge(){
               axiosAuthInstacne
                 .post("fridge", {
                     name:fridgeName,
-                    description:description
+                    description:description,
+                    fridgePresetId:presetId
                 })
                 .then((res) => {
                   Swal.fire({
@@ -39,7 +43,7 @@ export default function CreateFridge(){
                     icon: "success",
                   }).then(() => {
 
-                    router.push("/fridge");
+                    router.replace("/fridge");
                   });
                 })
             }
@@ -49,7 +53,7 @@ export default function CreateFridge(){
 
     return(
         <div className="p-5 max-w-xl w-dvw m-3 mt-12 mb-16 bg-[white] px-4 flex flex-col justify-center items-center shadow-xl border border-[#1e1e1]">
-            <div className="w-full mt-6 mb-6 p-5">
+            <div className="w-full mt-6 p-5">
                 <h3 className="text-lg">냉장고 이름</h3>
                 <input
                     className="min-w-32 border-slate-500 mt-2"
@@ -60,7 +64,7 @@ export default function CreateFridge(){
                     maxLength={20}
                 />
             </div>
-            <div className="flex flex-col justify-center items-center w-full mt-6 mb-6 p-5">
+            <div className="flex flex-col justify-center items-center w-full mt-3 mb-6 p-5">
                 <div className="text-start w-full">
                     <h3 className="text-lg">냉장고 설명</h3>
                 </div>
@@ -74,11 +78,15 @@ export default function CreateFridge(){
                     id=""
                 ></textarea>
             </div>
+            <section className="mb-6 flex flex-wrap w-full">
+              <FridgePresetPicker selectedPresetId={presetId} setSelectedPresetId={setPresetId}></FridgePresetPicker>
+            </section>
+            
             <button
-        className="saveBtn"
-        onClick={saveFridge}>
-        냉장고 생성
-      </button>
+              className="saveBtn"
+              onClick={saveFridge}>
+              냉장고 생성
+            </button>
         </div>
     )
 }

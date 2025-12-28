@@ -1,7 +1,20 @@
-import { defaultAxios } from "@/app/(customAxios)/authAxios";
+import { axiosAuthInstacne, defaultAxios } from "@/app/(customAxios)/authAxios";
 import type { FridgeItem } from "@/app/(type)/fridge";
+import { PresetCreateRequest } from "../admin/fridge-preset/PresetCreatePage";
+import { PresetUpdateRequest } from "../admin/fridge-preset/edit/[presetId]/PresetUpdatePage";
 
 export async function fetchFridgeImages(): Promise<FridgeItem[]> {
   const res = await defaultAxios.get<FridgeItem[]>("fridge/images");
   return Array.isArray(res.data) ? res.data : [];
+}
+
+
+export async function createFridgePreset(payload: PresetCreateRequest) {
+  const res = await axiosAuthInstacne.post("fridge/preset", payload);
+  return res.data;
+}
+
+export async function updateFridgePreset(payload: PresetUpdateRequest) {
+  const res = await axiosAuthInstacne.put(`/fridge/preset`, payload);
+  return res.data;
 }

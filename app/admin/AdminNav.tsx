@@ -10,7 +10,8 @@ export default function AdminNav(){
         {eng:"fridge-img", kor:"냉장고 식재료 등록"},
         {eng:"user-list", kor:"유저 목록"},
         {eng:"access-log", kor:"액세스 로그"},
-        {eng:"evt", kor:"이벤트"}
+        {eng:"evt", kor:"이벤트"},
+        {eng:"fridge-preset", kor:"냉장고 프리셋 등록"},
     ];
 
     const baseMenu = adminMenu.map((menu, inx)=>
