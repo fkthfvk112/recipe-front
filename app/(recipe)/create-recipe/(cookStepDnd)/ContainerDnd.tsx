@@ -148,7 +148,7 @@ export const ContainerDnd = ({
     ) => {
       return (
         <CookStepCard
-          key={card.id}
+          key={index}
           id={card.id}
           index={index}
           card={card}
