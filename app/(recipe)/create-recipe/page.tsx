@@ -37,7 +37,9 @@ export default function CreateRecipePage() {
     categorie: RecipeSelection.한식,
     servings: 1,
     cookMethod: CookingMethod.굽기,
-    ingredients: [],
+    ingredients: [        
+      { name: "", qqt: "", order: 0 },
+      { name: "", qqt: "", order: 1 }],
     description: "",
     steps: [],
     viewCnt:0,
@@ -64,6 +66,9 @@ export default function CreateRecipePage() {
     }
 
   }, [isSignIn, router, isTokenValid]);
+
+
+  console.log("레시피", recipe);
 
 
 
@@ -149,7 +154,7 @@ export default function CreateRecipePage() {
       <Serving recipe={recipe} setRecipe={setRecipe}></Serving>
       <CookMethod recipe={recipe} setRecipe={setRecipe}></CookMethod>
       <RepriPric recipe={recipe} setRecipe={setRecipe}></RepriPric>
-      <Ingredient recipe={recipe} setRecipe={setRecipe}></Ingredient>
+      <Ingredient key={draftId} recipe={recipe} setRecipe={setRecipe}></Ingredient>
       <CookStep
         recipe={recipe}
         setRecipe={setRecipe}
