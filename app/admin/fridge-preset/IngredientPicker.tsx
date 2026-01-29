@@ -2,9 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchFridgeImages } from "@/app/(api)/fridge";
 import { fetchIngredients, IngredientListItem } from "@/app/(api)/ingredient";
-import { FridgeItem } from "@/app/(type)/fridge";
 
 type Props = {
   initialIngreListId?: number;

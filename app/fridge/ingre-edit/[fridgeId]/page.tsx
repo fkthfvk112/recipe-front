@@ -1,20 +1,22 @@
 "use client"
-import { FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
+import { Fridge, FridgeIdNameDesc, FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import SetFridgeItem from "./SetFridgeItem";
 import Image from "next/image";
 import FridgeItemDetailModal from "../../[fridgeId]/(common)/FridgeItemDetailModal";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
+import { fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import ExpBar from "../../[fridgeId]/(common)/ExpBar";
 import { useRouter } from "next/navigation";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useQuery } from "@tanstack/react-query";
+import { fetchFridgeDetail } from "@/app/(api)/fridge";
 
 export interface FridgeItem_IN extends FridgeItem{
     expiredAt?:string;
     name:string;
-    qqt?:string;
+    qqt?:number;
     description?:string;
     itemOrder:number;
 }
@@ -25,26 +27,17 @@ export default function FridgeDetail({
     params:{fridgeId:number};
 }){
     const [fridgeSort, setFridgeSort] = useRecoilState(fridgeSortingAtom);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    //const [fridgeDate, setFridgeDate] = useState<Fridge>();
-    //const [fridgeRefetch, fridgeRefetcher] = useReducer((state:boolean)=>!state, false);
-    const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
-
     const [modalItem, setModalItem] = useState<FridgeItem>();
     const [fridgeList, setFirdgeList] = useState<FridgeIdNameDesc[]>([]);
-    const [fridgeData, setFridgeData] = useRecoilState(fridgeDataAtom);
     const router = useRouter();
 
     const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
 
-    useEffect(()=>{
-        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
-            .then((res)=>{
-                setIsLoading(false);
-                setFridgeData(res.data);
-            })
-    }, [refetchCount, fridgeSort])
-
+    const {data: fridgeData, isLoading} = useQuery<Fridge>({
+        queryKey: ["fridgeDetail", params.fridgeId, fridgeSort],
+        queryFn: () => fetchFridgeDetail(params.fridgeId, fridgeSort),
+        enabled: !!params.fridgeId,
+    });
 
     useEffect(()=>{
         setOpen(false)

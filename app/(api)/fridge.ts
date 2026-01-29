@@ -1,5 +1,5 @@
 import { axiosAuthInstacne, defaultAxios } from "@/app/(customAxios)/authAxios";
-import type { FridgeItem } from "@/app/(type)/fridge";
+import type { FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
 import { PresetCreateRequest } from "../admin/fridge-preset/PresetCreatePage";
 import { PresetUpdateRequest } from "../admin/fridge-preset/edit/[presetId]/PresetUpdatePage";
 
@@ -16,5 +16,12 @@ export async function createFridgePreset(payload: PresetCreateRequest) {
 
 export async function updateFridgePreset(payload: PresetUpdateRequest) {
   const res = await axiosAuthInstacne.put(`/fridge/preset`, payload);
+  return res.data;
+}
+
+export async function fetchFridgeDetail(fridgeId: number, fridgeSort: FridgeSortingEnum) {
+  const res = await axiosAuthInstacne.get(
+    `fridge/my/detail?fridgeId=${fridgeId}&sortingEnum=${fridgeSort}`
+  );
   return res.data;
 }

@@ -28,7 +28,8 @@ export interface FridgeItem{
     imgUrl:string;
     expiredAt?:string;
     name:string;
-    qqt?:string;
+    qqt?:number;
+    unit?:string;
     description?:string;
     itemOrder?:number;
     imgSort?:string;

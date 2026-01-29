@@ -14,19 +14,6 @@ export const fridgeDataRefetcher = atom<number>({
     key: "fridgeDataRefetcher",
     default: 0,
   });
-  
-
-/** fridgeData 리패쳐 업데이트 */
-export const fridgeDataRefetcherSelector = selector({
-    key: 'fridgeDataRefetcherSelector',
-    get: ({ get }) => {
-        return get(fridgeDataRefetcher);
-    },
-    set: ({ set }) => {
-        set(fridgeDataRefetcher, (prev) => prev + 1); // 기존 값에 1을 더함
-    },
-});
-
 
 export const fridgeSortingAtom = atom<FridgeSortingEnum>({
   key:"fridgeSorting",
@@ -36,5 +23,10 @@ export const fridgeSortingAtom = atom<FridgeSortingEnum>({
 
 export const fridgeModalOpenState = atom<boolean>({
   key: "fridgeModalState",
+  default: false,
+});
+
+export const fridgeDelModalOpenState = atom<boolean>({
+  key: "fridgeDelModalState",
   default: false,
 });

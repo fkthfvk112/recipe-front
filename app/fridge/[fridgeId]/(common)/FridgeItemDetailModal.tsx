@@ -7,11 +7,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Image from "next/image";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import { useRecoilState } from "recoil";
-import { fridgeDataRefetcherSelector, fridgeModalOpenState } from "@/app/(recoil)/fridgeAtom";
+import { fridgeDelModalOpenState, fridgeModalOpenState } from "@/app/(recoil)/fridgeAtom";
 import Swal from "sweetalert2";
 import FridgeItemImgPickerModal from "./FridgeItemImgPickerModal";
 import { useQueryClient } from "@tanstack/react-query";
 import { getImgUrlByIdRQ } from "@/app/(utils)/fridgeUtils";
+import FridgeItemDelModall from "./FridgeItemDelModall";
 
 const style = {
     position: "absolute" as "absolute",
@@ -29,25 +30,27 @@ const style = {
 
 function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:FridgeItem, fridgeList:FridgeIdNameDesc[], fridgeId:number}){
     const [open, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
+
     const [imgModalOpen, setImgModalOpen] = useState<boolean>(false);
+    const [delModalOpen, setDelModalOpen] = useRecoilState<boolean>(fridgeDelModalOpenState);
 
     const [imgUrl, setImgUrl] = useState<string>(fridgeItem.imgUrl)
 
     const [title, setTitle] = useState<string>(fridgeItem?.name || "");
     const [position, setPosition] = useState<number>(fridgeId);
-    const [qqt, setQqt] = useState<string>(fridgeItem?.qqt || "");
+    const [qqt, setQqt] = useState<number>(fridgeItem?.qqt || 0);
+    const [unit, setUnit] = useState<string>(fridgeItem?.unit || "");
     const [exDate, setExDate] = useState<string>(fridgeItem?.expiredAt || "");
     const [description, setDescription] = useState<string>(fridgeItem?.description || "");
     const [fridgeImgId, setFridgeImgId] = useState<number>(fridgeItem?.fridgeImgId || 0);
 
-
-    const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector);
     const qc = useQueryClient();
 
     const isChanged = ()=>{
         if(position != fridgeId) return true; 
         if(fridgeItem.name !== title) return true;
         if(fridgeItem.qqt !== qqt) return true;
+        if(fridgeItem.unit !== unit) return true;
         if((fridgeItem.expiredAt||"") !== exDate) return true;
         if(fridgeItem.description !== description) return true;
         if(fridgeItem.fridgeImgId !== fridgeImgId) return true;
@@ -63,6 +66,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
             expiredAt:exDate,
             name:title,
             qqt:qqt,
+            unit:unit,
             description:description,
             order:fridgeItem.itemOrder
           }).then((res)=>{
@@ -72,7 +76,9 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                     icon: "success",
                 })
                 setOpen(false);
-                setRefetchCount(refetchCount);
+                qc.invalidateQueries({
+                    queryKey: ["fridgeDetail", fridgeId],
+                });            
             }
           })
     }
@@ -92,12 +98,14 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                 .delete(`/fridge/item/${fridgeItem.fridgeItemId}`)
                 .then((res) => {
                     if(res.data === 'DELETE_SUCCESS'){
-                        setOpen(false);
-                        setRefetchCount(refetchCount);
                         Swal.fire({
                             title: "삭제 완료",
                             icon: "success",
-                          })
+                        })
+                        setOpen(false);
+                        qc.invalidateQueries({
+                            queryKey: ["fridgeDetail", fridgeId],
+                        });    
                     };
                 })
             }
@@ -109,7 +117,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
         if (!open) return; // 열릴 때만 리셋
         setTitle(fridgeItem?.name ?? "");
         setPosition(fridgeId);
-        setQqt(fridgeItem?.qqt ?? "");
+        setQqt(fridgeItem?.qqt ?? 0);
         setExDate(fridgeItem?.expiredAt ?? "");
         setDescription(fridgeItem?.description ?? "");
         setFridgeImgId(fridgeItem?.fridgeImgId ?? 0);
@@ -148,13 +156,16 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                     <section className="flex flex-col justify-start items-center">
                         <div className="w-full flex justify-between items-center my-1">
                             <h2>위치</h2>
-                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[250px] border p-3" name="" id="">
+                            <select value={position} onChange={(evt)=>{setPosition(Number(evt.target.value))}} className="w-[262px] border p-3" name="" id="">
                                 {fridgeOptionList}
                             </select>
                         </div>
-                        <div className="w-full flex justify-between items-center my-1">
-                            <h2>양</h2>
-                            <input className="w-[150px]" onChange={(evt)=>{setQqt(evt.target.value)}} value={qqt} type="text" />
+                        <div className="w-full flex justify-between items-center">
+                            <h2>수량/단위</h2>
+                            <div>
+                                <input className="w-[150px] me-3" onChange={(evt)=>{setQqt(Number(evt.target.value))}} value={qqt} type="number" placeholder="100" />
+                                <input className="w-[100px]" onChange={(evt)=>{setUnit(evt.target.value)}} value={unit} type="text" placeholder="개"/>
+                            </div>
                         </div>
                         <div className="w-full flex justify-between items-center my-1">
                             <h2>소비기한</h2>
@@ -166,6 +177,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                         <div className="w-full flex gap-1">
                             <button onClick={updateItem} className={`w-full ${!isChanged()?"deadBtn":"greenBtn"}`}>저장</button>
                             <button onClick={deleteItem} className={`w-full grayBtn`}>삭제</button>
+                            <button onClick={()=>{setDelModalOpen(true)}} className={`w-full grayBtn`}>폐기하기</button>
                         </div>
                     </section>
                 </div>
@@ -180,6 +192,10 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                 const selectedImg = await getImgUrlByIdRQ(qc, img.fridgeImgId??0);
                 setImgUrl(selectedImg)
             }}
+        />
+        <FridgeItemDelModall
+            fridgeId={fridgeId}
+            fridgeItem={fridgeItem}
         />
         </>
     )

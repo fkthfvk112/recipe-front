@@ -5,13 +5,15 @@ import { ChangeEventHandler, useEffect, useState } from "react";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { fridgeDataAtom, fridgeDataRefetcherSelector, fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
+import { fridgeModalOpenState, fridgeSortingAtom } from "@/app/(recoil)/fridgeAtom";
 import FridgeItemDetailModal from "./(common)/FridgeItemDetailModal";
 import ExpBar from "./(common)/ExpBar";
 import Link from "next/link";
 import AddIcon from '@mui/icons-material/Add';
 import { extractDate, extractDateTime } from "@/app/(utils)/DateUtil";
 import { truncateString } from "@/app/(utils)/StringUtil";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFridgeDetail } from "@/app/(api)/fridge";
 
 export default function FridgeDetail({
     params
@@ -19,22 +21,15 @@ export default function FridgeDetail({
     params:{fridgeId:number};
 }){
     const [fridgeSort, setFridgeSort]       = useRecoilState(fridgeSortingAtom);
-    const [refetchCount, setRefetchCount]   = useRecoilState(fridgeDataRefetcherSelector);
-    const [isLoading, setIsLoading]         = useState<boolean>(true);
-    // const [fridgeDate, setFridgeDate] = useState<Fridge>();
-    const [fridgeData, setFridgeData]       = useRecoilState<Fridge|undefined>(fridgeDataAtom);
     const [modalItem, setModalItem]         = useState<FridgeItem>();
     const [fridgeList, setFirdgeList]       = useState<FridgeIdNameDesc[]>([]);
     const [open, setOpen]                   = useRecoilState<boolean>(fridgeModalOpenState);
     
-    useEffect(()=>{
-        setIsLoading(true)
-        axiosAuthInstacne.get(`fridge/my/detail?fridgeId=${params.fridgeId}&sortingEnum=${fridgeSort}`)
-            .then((res)=>{
-                setIsLoading(false);
-                setFridgeData(res.data);
-            })
-    }, [refetchCount, fridgeSort])
+    const {data: fridgeData, isLoading} = useQuery<Fridge>({
+        queryKey: ["fridgeDetail", params.fridgeId, fridgeSort],
+        queryFn: () => fetchFridgeDetail(params.fridgeId, fridgeSort),
+        enabled: !!params.fridgeId,
+    });
 
     useEffect(()=>{
         setOpen(false)

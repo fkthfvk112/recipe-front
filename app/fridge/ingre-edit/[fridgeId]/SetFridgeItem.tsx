@@ -1,37 +1,32 @@
 "use client";
 
-import React, { Dispatch, DispatchWithoutAction, SetStateAction, useEffect, useState } from "react";
-import BottomFixedAccordion from "@/app/(commom)/Component/BottomFixedArcodian";
+import React, { useState } from "react";
 import { FridgeItem } from "@/app/(type)/fridge";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import Image from "next/image";
-import { axiosAuthInstacne, defaultAxios } from "@/app/(customAxios)/authAxios";
+import { axiosAuthInstacne, } from "@/app/(customAxios)/authAxios";
 import IngreRecommandInput from "@/app/admin/ingredient/IngreRecommandInput";
 import { FridgeItem_IN } from "./page";
 import Swal from "sweetalert2";
-import { useRecoilState } from "recoil";
-import { fridgeDataRefetcherSelector } from "@/app/(recoil)/fridgeAtom";
-import { getNDayAfterBaseDateKST, getNDayAfterDateKST } from "@/app/(utils)/DateUtil";
-import useWindowSize from "@/app/(commom)/Hook/useWindowSize";
+import { getNDayAfterBaseDateKST } from "@/app/(utils)/DateUtil";
 import FridgeItemImgList from "../../FridgeItemImgList";
+import Require from "@/app/(commom)/Component/Require";
+import { useQueryClient } from "@tanstack/react-query";
 
 function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}){
-    const [refetchCount, setRefetchCount] = useRecoilState(fridgeDataRefetcherSelector); //데이터 초기화 리패쳐
     const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
-
     const [titleVide, setTitleVide] = useState<number>(0);//넘버값 바뀌면 식재료명 ""로 초기화
     const [title, setTitle] = useState<string>("");
     const [exDate, setExDate] = useState<string>("");
-    const [qqt, setQqt] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const windowSize = useWindowSize();
+    const [qqt, setQqt] = useState<number>(0);
 
-    const [scrollLock, setScrollLock] = useState<boolean>(false);
+    const [unit, setUnit] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+
+    const qc = useQueryClient();
 
     const initializeAllData = ()=>{
       setTitle("");
       setExDate("");
-      setQqt("");
+      setQqt(0);
       setDescription("");
       setTitleVide(titleVide+1);
     }
@@ -41,7 +36,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     };
 
     const addItemToFridge = ()=>{
-      if(!selectedFridgeImg) return; //have to 디폴트 이미지 선택으로 변경
+
       if(!title || title.length < 1){
         Swal.fire({
           title: "식재료명을 입력해주세요.",
@@ -54,11 +49,12 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
       }
 
       const item:FridgeItem_IN = {
-        fridgeImgId:selectedFridgeImg.fridgeImgId,
-        imgUrl:selectedFridgeImg.imgUrl,
+        fridgeImgId:selectedFridgeImg?.fridgeImgId??1,
+        imgUrl:selectedFridgeImg?.imgUrl??"",
         expiredAt:exDate,
         name:title,
         qqt:qqt,
+        unit:unit,
         description:description,
         itemOrder:lastOrder + 1
       }
@@ -72,26 +68,30 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
             title: "식재료가 추가되었습니다",
             icon: "success",
         })
-          setRefetchCount(refetchCount);
+          qc.invalidateQueries({
+              queryKey: ["fridgeDetail", fridgeId],
+          });  
           initializeAllData();
         }
       })
     }
 
-    const setDateAfterN=(n:number)=>{
-      setExDate(prev=>{
-        const baseDate = new Date(prev)
-        
-        return getNDayAfterBaseDateKST(baseDate, n)
-      });
-    }
-    
+  const setDateAfterN = (n: number) => {
+    setExDate(prev => {
+      const baseDate = prev ? new Date(prev) : new Date();
+      return getNDayAfterBaseDateKST(baseDate, n);
+    });
+  };
+      
     return (
             <div className="flex flex-col justify-start items-center w-full ">
               <h1 className="text-[20px]">식재료 추가</h1>
                 <div className="w-full">
                     <div className="mt-3">
-                      <h3>식재료명 (필수)</h3>
+                      <div className="flex">
+                        <h3 className="me-1">식재료명</h3>
+                        <Require/>
+                      </div>
                       <div className="flex">
                           <IngreRecommandInput dataSettingCallback={(ingre:string)=>{
                             setTitle(ingre);
@@ -110,9 +110,12 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                         <input value={exDate} onChange={(evt)=>setExDate(evt.target.value)} type="date" />
 
                       </div>
-                      <div className="ms-0.5">
-                        <h3 className="w-[100px]">수량</h3>
-                        <input value={qqt} onChange={(evt)=>setQqt(evt.target.value)} type="text" />
+                      <div className="ms-6">
+                        <h3 className="w-[100px]">수량/단위</h3>
+                        <div className="flex">
+                          <input className="w-[150px]" value={qqt} onChange={(evt)=>setQqt(Number(evt.target.value))} type="number" placeholder="100" />
+                          <input className="w-[100px]" value={unit} onChange={(evt)=>setUnit(evt.target.value)} placeholder="개"/>
+                        </div>
                       </div>
                     </div>
                     <div>
