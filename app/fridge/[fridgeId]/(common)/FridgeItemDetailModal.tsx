@@ -177,7 +177,7 @@ function FridgeItemDetailModal({fridgeItem, fridgeList, fridgeId, }:{fridgeItem:
                         <div className="w-full flex gap-1">
                             <button onClick={updateItem} className={`w-full ${!isChanged()?"deadBtn":"greenBtn"}`}>저장</button>
                             <button onClick={deleteItem} className={`w-full grayBtn`}>삭제</button>
-                            <button onClick={()=>{setDelModalOpen(true)}} className={`w-full grayBtn`}>폐기하기</button>
+                            {/* <button onClick={()=>{setDelModalOpen(true)}} className={`w-full grayBtn`}>폐기하기</button> */}
                         </div>
                     </section>
                 </div>
