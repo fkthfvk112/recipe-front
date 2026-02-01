@@ -8,7 +8,6 @@ export async function fetchFridgeImages(): Promise<FridgeItem[]> {
   return Array.isArray(res.data) ? res.data : [];
 }
 
-
 export async function createFridgePreset(payload: PresetCreateRequest) {
   const res = await axiosAuthInstacne.post("fridge/preset", payload);
   return res.data;
@@ -23,5 +22,13 @@ export async function fetchFridgeDetail(fridgeId: number, fridgeSort: FridgeSort
   const res = await axiosAuthInstacne.get(
     `fridge/my/detail?fridgeId=${fridgeId}&sortingEnum=${fridgeSort}`
   );
+  return res.data;
+}
+
+export async function fetchFridgeItemDetail(fridgeItemId: number) {
+  const res = await axiosAuthInstacne.get(
+    `fridge/my/fridge-item/detail?fridgeItemId=${fridgeItemId}`
+  );
+
   return res.data;
 }

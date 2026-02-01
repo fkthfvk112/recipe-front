@@ -8,6 +8,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
@@ -66,6 +67,11 @@ export default function AccountMenu() {
   const goToMyRefridge = ()=>{
     router.push(`/fridge`)
   }
+
+  const goToMyFridgeItemTx = ()=>{
+    router.push(`/fridge/tx-history`)
+  }
+  
 
   useEffect(()=>{
     isAdmin().then((res)=>{
@@ -144,6 +150,13 @@ export default function AccountMenu() {
           goToMyRefridge();
         }}>
           <KitchenIcon className="me-3"/> 나의 냉장고
+        </MenuItem>
+
+        <MenuItem onClick={()=>{
+          handleClose();
+          goToMyFridgeItemTx();
+        }}>
+          <ReceiptLongIcon className="me-3"/> 식재료 소비 내역
         </MenuItem>
 
         <MenuItem onClick={()=>{

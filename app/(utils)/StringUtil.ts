@@ -39,3 +39,6 @@ export const containChosingJungsungJongsung = (string:string):boolean=>{
 
   return false;
 }
+
+/**천자리 컴마 */
+export const formatNumber = (value: number | string) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

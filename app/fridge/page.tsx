@@ -13,6 +13,7 @@ import { CircularProgress } from "@mui/material";
 import useChkLoginToken from "../(commom)/Hook/useChkLoginToken";
 import { useRecoilState } from "recoil";
 import { ingreNSelectAtom } from "../(recoil)/userFeedAtom";
+import { useRouter } from "next/navigation";
 
 export default function Fridge(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,6 +24,12 @@ export default function Fridge(){
     const [containIngre, setContainIngre] = useRecoilState<number>(ingreNSelectAtom);
     const [refetcher, setRefetcher] = useState<number>(0);
     const isTokenValid = useChkLoginToken("refreshNeed");
+
+    const router = useRouter();
+
+    const goToMyFridgeItemTx = ()=>{
+        router.push(`/fridge/tx-history`)
+    }
 
     useEffect(()=>{
         if(isTokenValid){
@@ -89,6 +96,22 @@ export default function Fridge(){
                     </h1>
                 </Link>
                 }
+            </section>
+            <section className="m-12 w-full">
+            <div className="w-full text-start p-3">
+                <TitleDescription
+                title="식재료 소비 내역"
+                desc="구매한 식재료, 제대로 사용하고 있을까요? 소비 내역을 통해 낭비된 식재료를 확인해보세요."
+                />
+                <div className="text-center">
+                    <button
+                        onClick={goToMyFridgeItemTx}
+                        className="inline-block w-64 mt-8 px-6 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+                    >
+                    내 소비 내역 확인하기
+                    </button>
+                </div>
+            </div>
             </section>
             <div className="bottom-line w-[80%]"/>
             <section className="m-12 w-full">

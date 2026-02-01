@@ -58,6 +58,11 @@ export default function MyAccountMenuList(){
         router.push(`/admin/ingredient`);
     }
 
+    const goToMyFridgeItemTx = ()=>{
+        router.push(`/fridge/tx-history`)
+    }
+  
+
     return(
         <nav className="flex justify-start items-center flex-col max-w-[1024px] w-full mt-10 bg-white p-3">
             <h3 className='m-6'>마이</h3>
@@ -76,6 +81,10 @@ export default function MyAccountMenuList(){
                 </li>
                 <li onClick={goToLikeRecipe} className={`${liClassName}`}>
                     <p>찜한 레시피</p>
+                    <NavigateNextIcon sx={{height:'30px', width:'30px', fill:'#a1a1a1'}}/>
+                </li>
+                <li onClick={goToMyFridgeItemTx} className={`${liClassName}`}>
+                    <p>식재료 소비 내역</p>
                     <NavigateNextIcon sx={{height:'30px', width:'30px', fill:'#a1a1a1'}}/>
                 </li>
                 {isAdminChk &&

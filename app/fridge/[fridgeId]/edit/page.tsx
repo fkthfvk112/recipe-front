@@ -101,7 +101,7 @@ export default function EditFridge({
                 />
                 }
             </div>
-            <div className="flex flex-col justify-center items-center w-full mt-6 mb-6 p-5">
+            <div className="flex flex-col justify-center items-center w-full mt-3 mb-6 p-5">
                 <div className="text-start w-full">
                     <h3 className="text-lg">냉장고 설명</h3>
                 </div>

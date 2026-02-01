@@ -10,6 +10,7 @@ import { getNDayAfterBaseDateKST } from "@/app/(utils)/DateUtil";
 import FridgeItemImgList from "../../FridgeItemImgList";
 import Require from "@/app/(commom)/Component/Require";
 import { useQueryClient } from "@tanstack/react-query";
+import TitleDescription from "@/app/(commom)/Component/TitleDescription";
 
 function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}){
     const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
@@ -19,6 +20,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
     const [qqt, setQqt] = useState<number>(0);
 
     const [unit, setUnit] = useState<string>("");
+    const [amt, setAmt]   = useState<number>(0);
     const [description, setDescription] = useState<string>("");
 
     const qc = useQueryClient();
@@ -27,6 +29,8 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
       setTitle("");
       setExDate("");
       setQqt(0);
+      setUnit("");
+      setAmt(0);
       setDescription("");
       setTitleVide(titleVide+1);
     }
@@ -55,6 +59,7 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
         name:title,
         qqt:qqt,
         unit:unit,
+        amt:amt,
         description:description,
         itemOrder:lastOrder + 1
       }
@@ -82,11 +87,19 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
       return getNDayAfterBaseDateKST(baseDate, n);
     });
   };
+
+  const MAX_AMT = 1_000_000_000;
+  const formatNumber = (value: number | string) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const parseNumber = (value: string) => Number(value.replace(/,/g, ""));
       
     return (
-            <div className="flex flex-col justify-start items-center w-full ">
-              <h1 className="text-[20px]">식재료 추가</h1>
-                <div className="w-full">
+            <div className="flex flex-col justify-start items-center w-full max-w-[600px]">
+              <TitleDescription
+                title="식재료 추가"
+                desc={`이름만 입력해도 바로 추가할 수 있어요.\n
+                      수량과 금액을 입력하면 소비/폐기 내역을 자동으로 관리해줘요.`}
+              />                
+              <div className="w-full">
                     <div className="mt-3">
                       <div className="flex">
                         <h3 className="me-1">식재료명</h3>
@@ -101,21 +114,37 @@ function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}
                           containerStyleStr="col-span-3"
                           titleVideCnt={titleVide}
                           />
-                            <button onClick={addItemToFridge} className="greenBtn ms-2">추가</button>
+                            <button onClick={addItemToFridge} className="greenBtn ms-2">추가하기</button>
                         </div>
                       </div>
+                    <div>
+                      <h3 className="w-[100px] mt-6">수량/단위</h3>
+                      <div className="flex gap-1">
+                        <input className="w-[150px]" value={qqt} onChange={(evt)=>setQqt(Number(evt.target.value))} type="number" placeholder="100" />
+                        <input className="w-[100px]" value={unit} onChange={(evt)=>setUnit(evt.target.value)} placeholder="개"/>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="w-[100px] mt-6">총 구매 금액</h3>
+                      <div className="flex gap-1 items-center">
+                        <input
+                          className="w-[250px]"
+                          type="text"
+                          value={amt ? formatNumber(amt) : ""}
+                          placeholder="1,000"
+                          onChange={(e) => {
+                            const raw = parseNumber(e.target.value);
+                            if (isNaN(raw)) return;
+                            if (raw > MAX_AMT) return;
+                            setAmt(raw);
+                          }}
+                        />
+                    </div>
+                    </div>
                     <div className="mt-6 flex w-[300px] flex-start items-start">
                       <div className="me-0.5">
-                        <h3 className="w-[100px]">유효기간</h3>
+                        <h3 className="w-[250px]">유효기간</h3>
                         <input value={exDate} onChange={(evt)=>setExDate(evt.target.value)} type="date" />
-
-                      </div>
-                      <div className="ms-6">
-                        <h3 className="w-[100px]">수량/단위</h3>
-                        <div className="flex">
-                          <input className="w-[150px]" value={qqt} onChange={(evt)=>setQqt(Number(evt.target.value))} type="number" placeholder="100" />
-                          <input className="w-[100px]" value={unit} onChange={(evt)=>setUnit(evt.target.value)} placeholder="개"/>
-                        </div>
                       </div>
                     </div>
                     <div>

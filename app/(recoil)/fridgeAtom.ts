@@ -26,7 +26,7 @@ export const fridgeModalOpenState = atom<boolean>({
   default: false,
 });
 
-export const fridgeDelModalOpenState = atom<boolean>({
-  key: "fridgeDelModalState",
+export const fridgeTxModalOpenState = atom<boolean>({
+  key: "fridgeTxModalState",
   default: false,
 });

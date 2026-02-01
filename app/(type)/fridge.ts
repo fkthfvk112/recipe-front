@@ -30,6 +30,7 @@ export interface FridgeItem{
     name:string;
     qqt?:number;
     unit?:string;
+    amt?:number;
     description?:string;
     itemOrder?:number;
     imgSort?:string;
@@ -58,4 +59,32 @@ export interface FridgeImg{
 export interface FridgeCntInfo{
     fridgeCnt:number;
     fridgeItemCnt:number;
+}
+
+export interface FridgeItemTxRow {
+  txId: number
+  fridgeItemId: number
+  name: string
+  txType: "CONSUME" | "DISCARD"
+  qqt: number
+  amt: number
+  reason?:string,
+  createdAt: string
+}
+
+export interface FetchTxHistoryParams {
+  txType?: string|null;
+  itemName?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page: number;
+  size: number;
+}
+
+export interface FridgeItemTxHistoryResponse {
+  list: FridgeItemTxRow[];
+  summary?: Record<string, { qqt: number; amt: number }>;
+  page: number;
+  size: number;
+  totalCnt?: number; // 있으면 받고, 없으면 무시
 }

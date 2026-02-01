@@ -89,7 +89,7 @@ export default function FridgeDetail({
         </div>
         {
         modalItem &&
-        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItem={modalItem} fridgeList={fridgeList} fridgeId={params.fridgeId} />
+        <FridgeItemDetailModal key={modalItem?.fridgeItemId} fridgeItemId={modalItem.fridgeItemId!!} fridgeList={fridgeList} fridgeId={params.fridgeId} />
         }
         </>
     )
