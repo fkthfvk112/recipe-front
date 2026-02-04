@@ -50,7 +50,7 @@ export default function EditFridge({
         const delFridge = ()=>{
         Swal.fire({
             title: "냉장고 삭제",
-            text: "삭제하면 되돌릴 수 없어요. 정말 삭제하시겠어요?",
+            text: "냉장고를 삭제하면 내부 식재료도 함께 삭제됩니다. 삭제하면 되돌릴 수 없습니다. 정말 삭제하시겠어요?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "삭제",

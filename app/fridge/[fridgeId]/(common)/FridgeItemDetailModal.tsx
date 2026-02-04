@@ -115,11 +115,12 @@ function FridgeItemDetailModal({fridgeItemId, fridgeList, fridgeId, callFrom }:{
         enabled: open && !!fridgeItemId,
         staleTime: 1000 * 60 * 5, // 5분
     });
+    const productInfo:Product = fridgeItemDetail?.product
 
     const fridgeItem = fridgeItemDetail?.fridgeItem;
-    const remainAmt = fridgeItemDetail?.remainAmt??0;
-    const remainQqt = fridgeItemDetail?.remainQqt??0;
-    const isActivate = fridgeItem?.status == "ACTIVE";
+    const remainAmt:number = fridgeItemDetail?.remainAmt??0;
+    const remainQqt:number = fridgeItemDetail?.remainQqt??0;
+    const isActivate:boolean = fridgeItem?.status == "ACTIVE";
 
     useEffect(() => {
         if (open) setEditMode(false);
@@ -433,6 +434,31 @@ function FridgeItemDetailModal({fridgeItemId, fridgeList, fridgeId, callFrom }:{
                             </>
                             )}
                         </div>
+                        {!editMode && productInfo?.landingUrl && (
+                        <div className={`w-full rounded-lg mt-6`}>
+                            <button
+                            onClick={() => {
+                                window.open(productInfo.landingUrl, "_blank", "noopener,noreferrer");
+                            }}
+                            className={`
+                                px-6 py-2
+                                w-[80%]
+                                max-w-64
+                                rounded-lg
+                                text-sm font-medium
+                                transition-all duration-200
+                                border-none
+                                ${
+                                remainQqt === 0
+                                    ? "bg-neutral-800 text-white shadow-md hover:shadow-lg active:scale-[0.97]"
+                                    : "bg-neutral-700/40 text-white/70 hover:bg-neutral-700/60 hover:text-white/90"
+                                }
+                            `}
+                            >
+                            {remainQqt === 0 ? "식재료 보충하기" : "미리 보충해두기"}
+                            </button>
+                        </div>
+                        )}
                     </section>
                 </div>
             </Box>
