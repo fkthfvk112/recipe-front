@@ -12,6 +12,8 @@ export default function AdminNav(){
         {eng:"access-log", kor:"액세스 로그"},
         {eng:"evt", kor:"이벤트"},
         {eng:"fridge-preset", kor:"냉장고 프리셋 등록"},
+        {eng:"post", kor:"포스팅"},
+
     ];
 
     const baseMenu = adminMenu.map((menu, inx)=>

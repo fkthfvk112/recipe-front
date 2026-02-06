@@ -8,8 +8,8 @@
   }
 }
 @font-face {
-  font-family: "JalnanGothic";
-  src: url("font/JalnanGothicTTF.ttf") format("truetype");
+  font-family: "PyeojinGothic";
+  src: url("font/PyeojinGothic-Bold.woff2") format("woff2");
 }
 
 body {
@@ -29,11 +29,10 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-
 h1,
 h2,
 h3 {
-  font-family: "JalnanGothic";
+  font-family: "PyeojinGothic";
 }
 
 option,
