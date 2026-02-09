@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@mui/material";
 import ReactMarkdown from "react-markdown";
+import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 
 type Props = {
   params: {
@@ -23,6 +24,7 @@ export default function EditPostPage({ params }: Props) {
   const [isDraft, setIsDraft] = useState(true);
 
   const [loading, setLoading] = useState(true);
+  const {layoutBottomMargin}  = useResponsiveDesignCss(); 
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -160,7 +162,7 @@ export default function EditPostPage({ params }: Props) {
         </article>
       </section>
       {/* 하단 버튼 */}
-      <div className="z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM">
+      <div className={`z-[10] flex justify-end fixed bottom-0 bg-white w-full p-3 pr-8 top-line-noM ${layoutBottomMargin}`}>
         <div className="w-full flex justify-between max-w-[260px]">
           <button className="grayBtn" onClick={onCancel}>
             취소
