@@ -14,8 +14,13 @@ export default function Welcom(){
     const features = [
         {
         title: "냉장고 관리",
-        description: "냉장고 속 재료의 유통기한을 한눈에 확인할 수 있어요",
+        description: "냉장고 속 재료를 한눈에 확인할 수 있어요",
         iconUrl: "/welcom/frigo_mgmt.png",
+        },
+        {
+        title: "식재료 소비 관리",
+        description: "식재료 소비 내역과 금액을 확인할 수 있어요",
+        iconUrl: "/welcom/settle.png",
         },
         {
         title: "레시피 추천",
