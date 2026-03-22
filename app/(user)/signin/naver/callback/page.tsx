@@ -13,6 +13,46 @@ export default function NaverCallback(){
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
 
+    const naverSignIn = ()=>{
+        setIsLoading(true);
+        //sign in
+        axiosAuthInstacne
+            .post('sns-sign-in/naver')
+            .then((res)=>{
+            setIsSignIn(true);
+                const storage = globalThis?.sessionStorage;
+                let pathToGo = "/";
+
+                const prePath = storage?.getItem("prePath");
+
+                if (typeof prePath === "string") {
+                    pathToGo = prePath;
+                    storage.removeItem("prePath");
+                }
+
+                router.replace(pathToGo);
+                router.refresh();
+            })
+            .catch((err)=>{
+                Swal.fire({
+                    title: "에러가 발생하였습니다.",
+                    text: err.response.data.message,
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#d33',
+                    allowEnterKey:false
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        router.replace("/signin")
+                    }
+                });
+            })
+            .finally(()=>{
+                setIsLoading(false);
+        })       
+    }
+
+
     const naverLogInOrSignUp = (code:string)=>{
         defaultAxios.get(`sns-sign-in/naver/auth-chk?code=${code}`).then((res)=>{
             if(res.data == 'ID_NOT_EXIST'){
@@ -21,39 +61,40 @@ export default function NaverCallback(){
 
             }else if(res.data == 'ID_EXIST'){
                 //sign in
-                axiosAuthInstacne
-                    .post('sns-sign-in/naver')
-                    .then((res)=>{
-                    setIsSignIn(true);
-                        const storage = globalThis?.sessionStorage;
-                        let pathToGo = "/";
+                naverSignIn();
+                // axiosAuthInstacne
+                //     .post('sns-sign-in/naver')
+                //     .then((res)=>{
+                //     setIsSignIn(true);
+                //         const storage = globalThis?.sessionStorage;
+                //         let pathToGo = "/";
 
-                        const prePath = storage?.getItem("prePath");
+                //         const prePath = storage?.getItem("prePath");
 
-                        if (typeof prePath === "string") {
-                            pathToGo = prePath;
-                            storage.removeItem("prePath");
-                        }
+                //         if (typeof prePath === "string") {
+                //             pathToGo = prePath;
+                //             storage.removeItem("prePath");
+                //         }
 
-                        router.replace(pathToGo);
-                    })
-                    .catch((err)=>{
-                        Swal.fire({
-                            title: "에러가 발생하였습니다.",
-                            text: err.response.data.message,
-                            icon: "warning",
-                            confirmButtonText: "확인",
-                            confirmButtonColor: '#d33',
-                            allowEnterKey:false
-                        }).then((result) => {
-                            if(result.isConfirmed){
-                                router.push("/signin")
-                            }
-                        });
-                    })
-                    .finally(()=>{
-                        setIsLoading(false);
-                })
+                //         router.replace(pathToGo);
+                //     })
+                //     .catch((err)=>{
+                //         Swal.fire({
+                //             title: "에러가 발생하였습니다.",
+                //             text: err.response.data.message,
+                //             icon: "warning",
+                //             confirmButtonText: "확인",
+                //             confirmButtonColor: '#d33',
+                //             allowEnterKey:false
+                //         }).then((result) => {
+                //             if(result.isConfirmed){
+                //                 router.push("/signin")
+                //             }
+                //         });
+                //     })
+                //     .finally(()=>{
+                //         setIsLoading(false);
+                // })
             }
         })
     }

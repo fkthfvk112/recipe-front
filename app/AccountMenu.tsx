@@ -203,6 +203,7 @@ export default function AccountMenu() {
             deleteAuthToken(); //server sid job
             setIsSignIn(false);
             router.push("/");
+            router.refresh();
           }}
         >
           <ListItemIcon>

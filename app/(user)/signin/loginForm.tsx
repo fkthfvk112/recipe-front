@@ -67,7 +67,8 @@ export default function LoginForm() {
           storage?.removeItem("firstSignUp");
         }
 
-        location.href = pathToGo;
+        router.replace(pathToGo);
+        router.refresh();
       })
       .catch((err)=>{
         Swal.fire({
@@ -155,7 +156,7 @@ export default function LoginForm() {
           <NaverLogin/>
         </div>
       </div>
-      <div className="mt-6 text-center">
+      <div className="mt-3 text-center">
         <Link
           href="/welcome"
           className="text-sm text-gray-500 hover:text-[#fb8500]"

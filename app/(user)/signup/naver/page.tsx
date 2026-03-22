@@ -19,7 +19,7 @@ export default function NaverSignUp(){
     const [userSex, setUserSex]                       = useState<SexEnum|String>("");
     const [policyChk1, setPolicyChk1]                 = useState<boolean>(false);
     const [policyChk2, setPolicyChk2]                 = useState<boolean>(false);
-    const route = useRouter();
+    const router = useRouter();
 
     const [nickNameValid, setNickNameValid] = useState<Validation>({
         isValid: false,
@@ -50,6 +50,40 @@ export default function NaverSignUp(){
         if (!nickNameValid.isValid) return false;
         if (!policyChk1 || !policyChk2) return false;
         return true;
+    }
+
+    const naverSignIn = ()=>{
+        //sign in
+        axiosAuthInstacne
+            .post('sns-sign-in/naver')
+            .then((res)=>{
+                const storage = globalThis?.sessionStorage;
+                let pathToGo = "/";
+
+                const prePath = storage?.getItem("prePath");
+
+                if (typeof prePath === "string") {
+                    pathToGo = prePath;
+                    storage.removeItem("prePath");
+                }
+
+                router.replace(pathToGo);
+                router.refresh();
+            })
+            .catch((err)=>{
+                Swal.fire({
+                    title: "에러가 발생하였습니다.",
+                    text: err.response.data.message,
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                    confirmButtonColor: '#d33',
+                    allowEnterKey:false
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        router.replace("/signin")
+                    }
+                });
+            })
     }
 
     const sendSignUpRequest = () => {
@@ -83,8 +117,8 @@ export default function NaverSignUp(){
                 icon: "success",
               }).then(() => {
                 const storage = globalThis?.sessionStorage;
-                storage.setItem("firstSignUp", "true");                
-                route.push("/signin");
+                storage.setItem("firstSignUp", "true");       
+                naverSignIn();         
               });
             
           })

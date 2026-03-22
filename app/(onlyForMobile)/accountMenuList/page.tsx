@@ -30,6 +30,7 @@ export default function MyAccountMenuList(){
         deleteAuthToken(); //server sid job
         setIsSignIn(false);
         router.push('/');
+        router.refresh();
     }
 
     
