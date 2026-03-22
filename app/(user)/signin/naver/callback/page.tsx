@@ -27,13 +27,15 @@ export default function NaverCallback(){
                     setIsSignIn(true);
                         const storage = globalThis?.sessionStorage;
                         let pathToGo = "/";
-                        const prePath = storage.getItem("prePath");
-                        if (storage && typeof prePath === "string") {
-                            pathToGo = storage.getItem("prePath") as string;
+
+                        const prePath = storage?.getItem("prePath");
+
+                        if (typeof prePath === "string") {
+                            pathToGo = prePath;
                             storage.removeItem("prePath");
                         }
-                        //location.href = pathToGo;
-                        router.replace("/")
+
+                        router.replace(pathToGo);
                     })
                     .catch((err)=>{
                         Swal.fire({

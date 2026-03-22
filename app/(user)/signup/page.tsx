@@ -20,6 +20,7 @@ import { formatTime_mmss } from "@/app/(utils)/timeUtils";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import TermOfUsage from "@/app/(recipe)/recipes/(common)/document/TermOfUsage";
 import PrivacyPolicy from "@/app/(recipe)/recipes/(common)/document/PrivacyPolicy";
+import { useSearchParams } from "next/navigation";
 
 export default function SignUp() {
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
@@ -35,6 +36,8 @@ export default function SignUp() {
   const [policyChk1, setPolicyChk1]                 = useState<boolean>(false);
   const [policyChk2, setPolicyChk2]                 = useState<boolean>(false);
 
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const [idValid, setIdValid] = useState<Validation>({
     isValid: false,
@@ -229,7 +232,11 @@ export default function SignUp() {
           }).then(() => {
             const storage = globalThis?.sessionStorage;
             storage.setItem("firstSignUp", "true");
-            route.push("/signin");
+            route.push(
+              redirect
+                ? `/signin?redirect=${encodeURIComponent(redirect)}`
+                : "/signin"
+            );
           });
         
       })

@@ -1,6 +1,16 @@
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 const NaverLogin = () => {
+    const searchParams = useSearchParams();
+
+    // 되돌아갈 redirect 파라미터
+    const redirect = searchParams.get("redirect");
+    if (redirect) {
+      // prePath로 설정
+      sessionStorage.setItem("prePath", redirect);
+    }
+    
     const naverLogin = ()=>{
       const csrfUUID = crypto.randomUUID();
       localStorage.setItem('naverCsrf', csrfUUID);

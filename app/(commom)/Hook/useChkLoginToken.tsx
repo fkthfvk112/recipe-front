@@ -52,7 +52,7 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
                     setValid();
                     Swal.fire({
                         title: "로그인 에러",
-                        text:"로그인 유효시간이 만료되었습니다. 로그인 페이지로 이동하시겠습니까?.",
+                        text:"로그인 유효시간이 만료되었습니다. 로그인 페이지로 이동하시겠습니까?",
                         icon: "warning",
                         confirmButtonText: "확인",
                         allowOutsideClick:false,
@@ -73,7 +73,7 @@ export default function useChkLoginToken(checkMode:checkMode):boolean{
                     //console.log("토큰 에러")
                     Swal.fire({
                         title: "로그인 에러",
-                        text:"로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?.",
+                        text:"로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?",
                         icon: "warning",
                         showCancelButton:true,
                         cancelButtonText:"취소",

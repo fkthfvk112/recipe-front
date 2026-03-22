@@ -5,9 +5,22 @@ import { decodedUserInfo, decodeUserJwt } from './app/(utils)/decodeJwt';
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const refreshCookie = request.cookies.get('mugin-refreshtoken');
-  
-  if(refreshCookie === undefined){
-    return NextResponse.redirect(new URL('/signin', request.url))
+  const { pathname, search } = request.nextUrl;
+
+
+  if(!refreshCookie){
+    const signinUrl = new URL('/signin', request.url);
+
+    // 원래 가려던 주소 저장
+    signinUrl.searchParams.set(
+      'redirect',
+      pathname + search
+    );
+
+    // 로그인 페이지로 보내진 이유
+    signinUrl.searchParams.set('reason', 'auth');
+
+    return NextResponse.redirect(signinUrl);
   }
 
   if(request.nextUrl.pathname.startsWith("/admin")){

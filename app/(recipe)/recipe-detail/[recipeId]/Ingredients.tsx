@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Ingredient } from "../../types/recipeType";
+import GoFridgeBtn from "@/app/(commom)/Component/GoFridgeBtn";
 
 export default function Ingredients({
   ingredients,
@@ -23,6 +24,7 @@ export default function Ingredients({
       <ul>
         {ingreItems}
       </ul>
+      <GoFridgeBtn></GoFridgeBtn>
     </div>
   );
 }

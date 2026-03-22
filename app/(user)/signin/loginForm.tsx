@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import NaverLogin from "./naver/NaverLogin";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,12 +20,13 @@ export default function LoginForm() {
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
   const isTokenValid = useChkLoginToken('refreshNoNeed');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   if(!isTokenValid) return <></>
-
-
   if (isSignIn) {
-    router.push("/");
+    const redirect = searchParams.get("redirect");
+    router.push(redirect ?? "/");
     return;
   }
 
@@ -42,17 +45,28 @@ export default function LoginForm() {
         setIsSignIn(true);
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
-        const firstSignin = storage.getItem("firstSignUp");
-        const prePath = storage.getItem("prePath");
-        if(storage){
-          if (typeof prePath === "string") {
-            pathToGo = storage.getItem("prePath") as string;
-            storage.removeItem("prePath");
-          }
-          if(typeof firstSignin === "string" && firstSignin == "true"){
-            pathToGo = "/board/3"//3 == 인사게시판
-          }
+
+        //1. 로그인 필요한 페이지에 바로 접근 시
+        const redirect = searchParams.get("redirect");
+
+        // 2. prePath 직접 설정해서 온 경우
+        const prePath = storage?.getItem("prePath");
+
+        // 3. 첫 로그인인 경우
+        const firstSignin = storage?.getItem("firstSignUp");
+
+        if (redirect) {
+          pathToGo = redirect;
         }
+        else if (prePath) {
+          pathToGo = prePath;
+          storage?.removeItem("prePath");
+        }
+        else if (firstSignin === "true") {
+          pathToGo = "/board/3";
+          storage?.removeItem("firstSignUp");
+        }
+
         location.href = pathToGo;
       })
       .catch((err)=>{
@@ -117,7 +131,17 @@ export default function LoginForm() {
         {isLoading ? "Loading..." : "로그인"}
       </button>
       <div className="w-full mt-3 text-center">
-        회원이 아니신가요? <Link className="text-blue-500" href="/signup">회원가입</Link>
+        회원이 아니신가요? 
+        <Link
+          className="text-blue-500 ms-1"
+          href={
+            redirect
+              ? `/signup?redirect=${encodeURIComponent(redirect)}`
+              : "/signup"
+          }
+        >
+          회원가입
+        </Link>
       </div>
       <div className="flex text-gray-500 text-sm">
         <Link href="/findid">아이디 찾기</Link>
@@ -130,6 +154,14 @@ export default function LoginForm() {
         <div className="flex justify-around">
           <NaverLogin/>
         </div>
+      </div>
+      <div className="mt-6 text-center">
+        <Link
+          href="/welcome"
+          className="text-sm text-gray-500 hover:text-[#fb8500]"
+        >
+          서비스 소개 보기
+        </Link>
       </div>
     </div>
   );
