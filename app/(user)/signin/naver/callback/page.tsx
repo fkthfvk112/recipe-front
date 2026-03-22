@@ -29,7 +29,7 @@ export default function NaverCallback(){
                     pathToGo = prePath;
                     storage.removeItem("prePath");
                 }
-
+                setIsSignIn(true);
                 router.replace(pathToGo);
                 router.refresh();
             })

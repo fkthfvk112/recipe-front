@@ -11,8 +11,11 @@ import Swal from "sweetalert2";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { siginInState } from "@/app/(recoil)/recoilAtom";
+import { useRecoilState } from "recoil";
 
 export default function NaverSignUp(){
+    const [isSignIn, setIsSignIn]                     = useRecoilState<boolean>(siginInState);
     const [userEmail, setUserEmail]                   = useState<string>("");
     const [userNickName, setUserNickName]             = useState<string>("");
     const [userBirthDate, setUserBirthDate]           = useState<string>("");
@@ -67,6 +70,7 @@ export default function NaverSignUp(){
                     storage.removeItem("prePath");
                 }
 
+                setIsSignIn(true);
                 router.replace(pathToGo);
                 router.refresh();
             })
