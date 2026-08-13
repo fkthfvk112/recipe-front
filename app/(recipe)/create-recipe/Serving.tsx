@@ -1,7 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, SetStateAction, useRef } from "react";
-import { Recipe } from "../types/recipeType";
+import { ChangeEventHandler, SetStateAction } from "react";
 import { RecipeCreate } from "./page";
 
 interface ServingProp {
@@ -20,25 +19,20 @@ export default function Serving({ recipe, setRecipe }: ServingProp) {
   };
 
   return (
-    <div className="flex flex-row justify-between items-center w-full mt-6 mb-6 p-5">
-      <div>
-        <h2 className="text-lg">음식양</h2>
-      </div>
-      <div>
+    <div className="w-full mb-6 flex items-center justify-between ">
+      <h3 className="text-sm font-black text-gray-900">요리 양 (인분)</h3>
+      <div className="flex items-center gap-2">
         <select
           onChange={handleServingChange}
-          className="border border-slate-300 rounded-2xl mr-2 text-center w-32 h-10 bg-zinc-100"
+          className="border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-800 bg-white focus:border-darkGreen outline-none shadow-xs cursor-pointer"
           value={recipe.servings}
-          name=""
-          id=""
         >
           {servingOptions.map((ele) => (
-            <option className="p-2 m-3" key={ele} value={ele}>
-              {ele}
+            <option key={ele} value={ele}>
+              {ele} 인분
             </option>
           ))}
         </select>
-        <span>인분</span>
       </div>
     </div>
   );

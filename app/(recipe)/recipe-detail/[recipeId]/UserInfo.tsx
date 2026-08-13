@@ -32,7 +32,7 @@ export default function UserInfo({
               {extractDeletedUser(recipeOwner.userNickName)}
             </h3>
             {recipeOwner?.userUrl && (
-              <div className="text-xs text-gray-400 group-hover:text-darkGreen transition-colors duration-200">
+              <div className="text-xs text-gray-400 group-hover:text-mugin-secondary transition-colors duration-200">
                 {recipeOwner.userUrl}
               </div>
             )}

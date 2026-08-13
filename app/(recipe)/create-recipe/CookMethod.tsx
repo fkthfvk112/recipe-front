@@ -1,5 +1,7 @@
+"use client";
+
 import { Dispatch, SetStateAction } from "react";
-import { CookingMethod, Recipe } from "../types/recipeType";
+import { CookingMethod } from "../types/recipeType";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { RecipeCreate } from "./page";
 
@@ -7,12 +9,12 @@ interface CookMethodProp {
   recipe: RecipeCreate;
   setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
+
 export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
-  
-  const methodClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+  const methodClick = (methodName: string) => {
     setRecipe({
       ...recipe,
-      cookMethod: e.currentTarget.id as CookingMethod,
+      cookMethod: methodName as CookingMethod,
     });
   };
 
@@ -23,35 +25,33 @@ export default function CookMethod({ recipe, setRecipe }: CookMethodProp) {
     CookingMethod.찌기,
     CookingMethod.튀기기,
     CookingMethod.기타,
-  ].map((method) => {
-    const cookMethod: string =
-      CookingMethod[method as keyof typeof CookingMethod];
-
-    return (
-      <div
-        className={`p-3 border border-[#a1a1a1] shadow-md rounded-md m-2 w-20 relative ${
-          recipe.cookMethod === cookMethod
-            ? "outline outline-2 outline-slate-950"
-            : ""
-        }`}
-        key={cookMethod}
-        id={cookMethod}
-        onMouseDown={methodClick}
-      >
-        {recipe.cookMethod === cookMethod ? (
-          <CheckCircleIcon className="absolute -right-2 -top-2.5 w-8 h-8"></CheckCircleIcon>
-        ) : (
-          <></>
-        )}
-        {cookMethod}
-      </div>
-    );
-  });
+  ];
 
   return (
-    <div className="flex flex-col justify-between items-center w-full mt-6 mb-6 p-5">
-      <h3 className="text-lg text-start w-full">요리법</h3>
-      <div className="flex flex-row flex-wrap">{cookMethods}</div>
+    <div className="w-full mb-6 text-left">
+      <h3 className="text-sm font-black text-gray-900 mb-3">조리 방법</h3>
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        {cookMethods.map((method) => {
+          const isSelected = recipe.cookMethod === method;
+          return (
+            <button
+              key={method}
+              type="button"
+              onClick={() => methodClick(method)}
+              className={`relative flex items-center gap-1.5 px-3.5 py-2 text-[12px] w-24 rounded-xl font-bold cursor-pointer transition-all outline-none ${
+                isSelected
+                  ? "bg-white border-2 border-emerald-500 text-emerald-600 shadow-sm"
+                  : "bg-white border-2 border-transparent bg-gray-50/50 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              {isSelected && 
+                <CheckCircleIcon sx={{ fontSize: 15 }} className="absolute -right-1 -top-1 text-emerald-500 bg-white rounded-full z-10" />
+              }
+              <span>{method}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

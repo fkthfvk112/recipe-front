@@ -116,7 +116,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
                   },
                 }}
               />
-              <span className="font-bold text-darkGreen text-xs ms-1">
+              <span className="font-bold text-mugin-secondary text-xs ms-1">
                 익명
               </span>
             </div>

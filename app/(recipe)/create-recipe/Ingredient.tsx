@@ -1,3 +1,5 @@
+"use client";
+
 import React, { SetStateAction } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddIcon from "@mui/icons-material/Add";
@@ -15,7 +17,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
 
   /** 업데이트 함수 */
   const updateIngredients = (next: Ingred[]) => {
-    setRecipe(prev => ({
+    setRecipe((prev) => ({
       ...prev,
       ingredients: next.map((i, idx) => ({ ...i, order: idx })),
     }));
@@ -46,54 +48,74 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
 
   const deleteThisIngre = (order: number) => {
     if (ingredients.length <= 1) return;
-    updateIngredients(ingredients.filter(i => i.order !== order));
+    updateIngredients(ingredients.filter((i) => i.order !== order));
   };
 
   return (
-    <div className="w-full flex flex-col mt-6 mb-6 p-5">
-      <h3 className="text-lg">재료</h3>
+    <div className="w-full mb-6 text-left">
+      <div className="mb-3">
+        <h3 className="text-sm font-black text-gray-900">재료 정보 등록</h3>
+        <p className="text-xs text-gray-500 font-medium mt-0.5">
+          요리에 필요한 주요 재료명과 정량(예: 300g, 1큰술)을 입력해주세요.
+        </p>
+      </div>
 
-      <div className="flex flex-col justify-center items-center mt-2">
+      {/* Flat List of Ingredients */}
+      <div className="flex flex-col gap-2.5">
         {ingredients.map((ingre, inx) => (
           <div
-            key={ingre.order}
-            className="relative grid grid-flow-col grid-cols-5 w-full mt-5 pe-4 gap-1"
+            key={ingre.order || inx}
+            className="flex items-center gap-2 w-full"
           >
-            <IngreRecommandInput
-              dataSettingCallback={(value: string) =>
-                handleNameChange(value, inx)
-              }
-              defaultVal={ingre.name}
-              placeholderStr={inx === 0 ? "예) 삼겹살" : "재료"}
-              inputStyleStr="col-span-3 rounded-none"
-              containerStyleStr="col-span-3"
-            />
+            {/* Ingredient Auto-recommend Input */}
+            <div className="flex-1 min-w-0">
+              <IngreRecommandInput
+                dataSettingCallback={(value: string) =>
+                  handleNameChange(value, inx)
+                }
+                defaultVal={ingre.name}
+                placeholderStr={inx === 0 ? "예) 삼겹살" : "재료명 입력"}
+                inputStyleStr="w-full h-11 px-4 text-xs font-medium text-gray-900 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 outline-none transition-all"
+                containerStyleStr="w-full"
+              />
+            </div>
 
-            <input
-              className="col-span-2 rounded-none"
-              name="qqt"
-              type="text"
-              placeholder={inx === 0 ? "예) 200g" : "양"}
-              maxLength={10}
-              value={ingre.qqt}
-              onChange={(evt) => handleInputChange(evt, inx)}
-            />
+            {/* Quantity Input */}
+            <div className="w-28 sm:w-36 shrink-0">
+              <input
+                className="w-full h-11 px-4 text-xs font-medium text-gray-900 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 outline-none transition-all placeholder-gray-400"
+                name="qqt"
+                type="text"
+                placeholder={inx === 0 ? "예) 300g" : "수량/양"}
+                maxLength={15}
+                value={ingre.qqt}
+                onChange={(evt) => handleInputChange(evt, inx)}
+              />
+            </div>
 
-            <ClearIcon
+            {/* Delete Row Button */}
+            <button
+              type="button"
               onClick={() => deleteThisIngre(ingre.order)}
-              className="absolute -right-1 -top-3 w-4 h-4 cursor-pointer"
-            />
+              disabled={ingredients.length <= 1}
+              className="w-11 h-11 shrink-0 rounded-xl bg-gray-50 hover:bg-red-50 text-gray-400 hover:text-red-500 flex items-center justify-center cursor-pointer transition-all border border-gray-200 border-none disabled:opacity-30 disabled:cursor-not-allowed outline-none"
+              title="재료 삭제"
+            >
+              <ClearIcon sx={{ fontSize: 16 }} />
+            </button>
           </div>
         ))}
       </div>
 
-      <div className="text-center mt-4">
-        <AddIcon
-          sx={{ width: "45px", height: "45px" }}
-          className="m-1 border border-slate-500 cursor-pointer"
-          onClick={addIngre}
-        />
-      </div>
+      {/* Add Ingredient Button */}
+      <button
+        type="button"
+        onClick={addIngre}
+        className="w-full py-3.5 mt-3 border-2 border-dashed border-gray-200 hover:border-emerald-500 bg-gray-50/40 hover:bg-emerald-50/20 text-emerald-600 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer outline-none shadow-xs"
+      >
+        <AddIcon sx={{ fontSize: 18 }} />
+        <span>재료 항목 추가하기</span>
+      </button>
     </div>
   );
 }

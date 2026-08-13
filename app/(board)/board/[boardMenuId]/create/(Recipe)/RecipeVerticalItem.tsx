@@ -30,13 +30,13 @@ function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
         
         {/* Category tag */}
         {recipe.categorie && (
-          <span className="text-[11px] font-black text-darkGreen uppercase tracking-wider block">
+          <span className="text-[11px] font-black text-mugin-secondary uppercase tracking-wider block">
             {recipe.categorie}
           </span>
         )}
 
         <div className="flex justify-between items-center w-full gap-2">
-          <h3 className="font-extrabold text-gray-800 text-[14px] sm:text-[15px] whitespace-nowrap overflow-hidden text-ellipsis flex-grow group-hover:text-darkGreen transition-colors duration-200">
+          <h3 className="font-extrabold text-gray-800 text-[14px] sm:text-[15px] whitespace-nowrap overflow-hidden text-ellipsis flex-grow group-hover:text-mugin-secondary transition-colors duration-200">
             {recipe.recipeName}
           </h3>
           <span className="flex items-center font-bold text-[11px] sm:text-[12px] text-mugin-accent shrink-0">

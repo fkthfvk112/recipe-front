@@ -5,21 +5,19 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState,
 } from "react";
 import type { Identifier, XYCoord } from "dnd-core";
-import { useDrag, useDragLayer, useDrop } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
 import ClearIcon from "@mui/icons-material/Clear";
 import Image from "next/image";
 import { resizeFileToBase64 } from "@/app/(commom)/ImgResizer";
-import { CookingSteps_create } from "../../types/recipeType";
-import { inView, motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { RecipeDndCard } from "./ContainerDnd";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
-import { createRecipeImgState, recipeStepInitialState } from "@/app/(recoil)/recipeAtom";
+import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
 import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 
@@ -50,7 +48,7 @@ const CookStepCard: FC<CardProps> = ({
   card,
   cards,
 }) => {
-  const [recipeImgCnt, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
+  const [, setRecipeImgCnt] = useRecoilState<number>(createRecipeImgState);
   
   const dragRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
@@ -74,58 +72,35 @@ const CookStepCard: FC<CardProps> = ({
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
         return;
       }
 
-      // Determine rectangle on screen
       const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
-
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Determine mouse position
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-
-      // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY-50) {
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY - 50) {
         return;
       }
 
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY+50) {
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY + 50) {
         return;
       }
 
-      // Time to actually perform the action
-
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
       controls.start({
-        y: [hoverIndex * 250, dragIndex* 250], // 애니메이션 위치를 업데이트
+        y: [hoverIndex * 250, dragIndex * 250],
         transition: { duration: 0.1, ease: "easeOut" },
       });
 
       setTimeout(() => {
         moveCard(dragIndex, hoverIndex, card.order);
-
-      }, 150)
+      }, 150);
 
       item.index = hoverIndex;
     },
   });
-
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CARD,
@@ -146,68 +121,59 @@ const CookStepCard: FC<CardProps> = ({
     }
   }, [isDragging]);
 
-  const opacity = isDragging ? 0.5 : 1;
   drag(dragRef);
   drop(dropRef);
 
   const handleTextChange = useCallback(
-    (e:any) => {
-      const newCards = cards.map((card) => {
-        if (card.order === index) {
-          card.description = e.target.value;
+    (e: any) => {
+      const newCards = cards.map((c) => {
+        if (c.order === index) {
+          c.description = e.target.value;
         }
-        return card;
+        return c;
       });
-  
       setCards(newCards);
     },
-    [moveCard, setCards, cards]
+    [index, setCards, cards]
   );
 
-  const tempSaveImg = async (imgStr: string, index: number) => {
+  const tempSaveImg = async (imgStr: string, stepIdx: number) => {
     setRecipeImgCnt(prev => prev + 1);
-  
     try {
       const res = await axiosAuthInstacne.post("recipe/img", { img: imgStr });
       const cloudinaryUrl = res.data;
       
       setCards(prevCards =>
-        prevCards.map(card =>
-          card.order === index ? { ...card, photo: cloudinaryUrl, photoString: cloudinaryUrl } : card
+        prevCards.map(c =>
+          c.order === stepIdx ? { ...c, photo: cloudinaryUrl, photoString: cloudinaryUrl } : c
         )
       );
-
     } catch (err) {
       Swal.fire({
         title: "이미지를 다시 등록해주세요.",
         icon: "warning",
         confirmButtonText: "확인",
-        confirmButtonColor: '#d33',
+        confirmButtonColor: '#10b981',
         allowEnterKey: false
       });
     } finally {
       setRecipeImgCnt(prev => Math.max(prev - 1, 0));
     }
   };
-  
 
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
-  ) => {
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
         try {
           const base64String = await resizeFileToBase64(file, 1200, 1200) as string;
-          const newCards = cards.map((card) => {
-            if (card.order === index) {
-              return { ...card, photo: base64String, photoString: base64String };
+          const newCards = cards.map((c) => {
+            if (c.order === index) {
+              return { ...c, photo: base64String, photoString: base64String };
             }
-            return card;
+            return c;
           });
-
           setCards(newCards);
-
           await tempSaveImg(base64String, index);
         } catch (error) {
           console.error("파일 변환 오류:", error);
@@ -216,110 +182,136 @@ const CookStepCard: FC<CardProps> = ({
     }
   };
 
-    const handleTimeChange = useCallback(
-      (e:any) => {
-        const newCards = cards.map((card) => {
-          if (card.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
-            card.time = Number(e.target.value);
-          }
-          return card;
-        });
-    
-        setCards(newCards);
-      },
-      [moveCard, setCards, cards]
-    );
+  const handleTimeChange = useCallback(
+    (e: any) => {
+      const newCards = cards.map((c) => {
+        if (c.order === index && !isNaN(Number(e.target.value)) && Number(e.target.value) <= 10000) {
+          c.time = Number(e.target.value);
+        }
+        return c;
+      });
+      setCards(newCards);
+    },
+    [index, setCards, cards]
+  );
 
   const deleteStep = () => {
-    if(cards.length <= 1) return;
+    if (cards.length <= 1) return;
     const newCards = cards
-      .filter((card) => card.order !== index)
-      .map((card, inx) => {
-        return { ...card, order: inx, id:inx };
+      .filter((c) => c.order !== index)
+      .map((c, inx) => {
+        return { ...c, order: inx, id: inx };
       });
-
     setCards(newCards as RecipeDndCard[]);
   };
 
-
-  const deletePhoto = ()=>{
-    const newCards = cards.map((card) => {
-      if (card.order === index) {
-        card.photo = "";
+  const deletePhoto = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newCards = cards.map((c) => {
+      if (c.order === index) {
+        c.photo = "";
       }
-      return card;
+      return c;
     });
-
     setCards(newCards);
-  }
+  };
+
+  const fileInputId = `fileInputStep_${card.order}`;
 
   return (
     <motion.div
-      className={"mt-3 w-full flex flex-col bg-zinc-100 rounded-2xl p-2 absolute"}
+      className="mt-3 w-full flex flex-col bg-gray-50/70 border border-gray-200/80 rounded-2xl p-3.5 absolute text-left shadow-xs"
       ref={dropRef}
       initial={{ y: index * 250 }}
-      animate={controls} 
+      animate={controls}
       data-handler-id={handlerId}
       key={id}
     >
-      <ClearIcon
-        className="w-6 h-6 hover:cursor-pointer absolute right-2 top-2"
-        onClick={deleteStep}
-      ></ClearIcon>
-      <div className="flex flex-row justify-between items-center row-span-1 col-span-1 row-start-1">
-        <div className="bg-[#52cf63] text-white font-bold rounded-xl h-8 w-8 flex justify-center items-center ms-2">
-          {card.order + 1}
+      {/* Card Header Bar */}
+      <div className="flex justify-between items-center mb-3">
+        <div className="flex items-center gap-2">
+          <div className="bg-emerald-500 text-white font-extrabold rounded-xl h-7 w-7 flex justify-center items-center text-xs shadow-xs">
+            {card.order + 1}
+          </div>
         </div>
-        <div className="mr-10">
-          <AccessTimeIcon></AccessTimeIcon>
-          <input
-            inputMode="numeric"
-            onChange={handleTimeChange}
-            value={card.time}
-            className="w-20 m-1 border border-slate-500"
-            type="text"
-          />
-          분
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-white border border-gray-200 px-2.5 py-1 rounded-xl shadow-xs">
+            <AccessTimeIcon sx={{ fontSize: 16 }} className="text-gray-400" />
+            <input
+              inputMode="numeric"
+              onChange={handleTimeChange}
+              value={card.time}
+              className="w-12 text-center text-xs font-medium text-gray-800 focus:outline-none border-none bg-transparent"
+              type="text"
+            />
+            <span className="text-[11px] font-bold text-gray-500">분</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={deleteStep}
+            disabled={cards.length <= 1}
+            className="w-7 h-7 rounded-xl bg-white hover:bg-red-50 text-gray-400 hover:text-red-500 flex items-center justify-center transition-all border border-gray-200 border-none disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            title="단계 삭제"
+          >
+            <ClearIcon sx={{ fontSize: 15 }} />
+          </button>
         </div>
       </div>
-      <div className="flex flex-row justify-center items-start w-full">
-        <div className="bg-slate-50 border border-slate-400 m-2 w-20 h-20 ">
-            <input
-              className="border border-slate-500"
-              onChange={handleFileChange}
-              id={`fileInput${card.order.toString()}`}
-              type="file"
-              accept=".jpg, .jpeg, .png, .gif, .webp"
-              hidden
-            />
-            {card.photo ? (
-              <div className="w-20 h-20 img-wrapper-square">
-                <button onClick={()=>deletePhoto()} className="border-none w-5 h-5 absolute -top-3 right-3 z-10">
-                  <ClearIcon className="bg-white"/>
-                </button>
-                <Image
-                  className="w-full h-full"
-                  style={{ objectFit: "cover" }}
-                  src={card.photo}
-                  alt="no img"
-                  fill
-                />
-              </div>
-            ) : (
-              <label className="w-20 h-20 flex justify-center items-center hover:cursor-pointer" htmlFor={`fileInput${card.order.toString()}`}>
-                <FileUploadIcon className="text-gray-500 w-6 h-6" />
-              </label>
-            )}
+
+      {/* Card Content: Image Upload + Text Description */}
+      <div className="flex gap-2.5 items-start">
+        {/* Step Image Upload Slot */}
+        <div className="w-24 h-24 shrink-0 relative rounded-2xl overflow-hidden border border-gray-200 bg-white">
+          <input
+            onChange={handleFileChange}
+            id={fileInputId}
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif, .webp"
+            hidden
+          />
+          {card.photo ? (
+            <div className="relative w-full h-full group">
+              <Image
+                src={card.photo}
+                alt={`조리단계 ${card.order + 1}`}
+                fill
+                sizes="96px"
+                className="object-cover rounded-2xl"
+              />
+              <button
+                type="button"
+                onClick={deletePhoto}
+                className="w-5 h-5 rounded-full bg-black/60 hover:bg-red-500 text-white flex items-center justify-center transition-all absolute top-1 right-1 z-20 cursor-pointer border-none"
+                title="사진 삭제"
+              >
+                <ClearIcon sx={{ fontSize: 12 }} />
+              </button>
+            </div>
+          ) : (
+            <label
+              htmlFor={fileInputId}
+              className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-emerald-50/20 transition-colors group p-1"
+            >
+              <FileUploadIcon sx={{ fontSize: 22 }} className="text-gray-400 group-hover:text-emerald-500 transition-colors" />
+              <span className="text-[10px] font-bold text-gray-400 group-hover:text-emerald-600 transition-colors mt-0.5">사진 등록</span>
+            </label>
+          )}
         </div>
+
+        {/* Step Description Input */}
         <textarea
-          placeholder="3자 이상 200자 이하"
-          className="ml-2 flex-grow rounded-2xl w-auto h-[150px] p-3 border border-slate-500 border-solid resize-none"
+          placeholder="이 조리 단계에 대한 설명을 적어주세요. (예: 삼겹살을 중불에서 노릇하게 구워줍니다)"
+          className="flex-1 h-24 p-3 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-2xl placeholder-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 outline-none resize-none transition-all"
           onChange={handleTextChange}
           value={card.description}
           maxLength={200}
-        ></textarea>
-        <div ref={dragRef}>
-          <ImportExportIcon className="hover:cursor-pointer h-8 w-8 mt-12"></ImportExportIcon>
+        />
+
+        {/* Drag Handle */}
+        <div ref={dragRef} className="h-24 flex items-center justify-center px-1 cursor-grab active:cursor-grabbing text-gray-400 hover:text-emerald-600 transition-colors">
+          <ImportExportIcon sx={{ fontSize: 22 }} />
         </div>
       </div>
     </motion.div>

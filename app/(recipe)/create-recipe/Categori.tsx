@@ -1,17 +1,17 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { Recipe, RecipeSelection } from "../types/recipeType";
+"use client";
+
+import { Dispatch, SetStateAction } from "react";
+import { RecipeSelection } from "../types/recipeType";
 import Image from "next/image";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { RecipeCreate } from "./page";
+
 interface CategoriProp {
   recipe: RecipeCreate;
   setRecipe: Dispatch<SetStateAction<RecipeCreate>>;
 }
 
 export default function Categori({ recipe, setRecipe }: CategoriProp) {
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startX, setStartX] = useState<number | null>(null);
-  const categoriSliderRef = useRef<HTMLDivElement | null>(null);
   const recipeCategories: string[] = [
     RecipeSelection.한식,
     RecipeSelection.중식,
@@ -25,73 +25,54 @@ export default function Categori({ recipe, setRecipe }: CategoriProp) {
     (category) => RecipeSelection[category as keyof typeof RecipeSelection]
   );
 
-  const onDragStart: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault();
-    if (categoriSliderRef?.current !== null) {
-      const scrollLeftValue = categoriSliderRef.current.scrollLeft;
-    }
-    setIsDragging(true);
-    setStartX(e.clientX);
-  };
-
-  const onDragEnd: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    setIsDragging(false);
-  };
-
-  const onDragMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (isDragging && startX !== null && categoriSliderRef.current) {
-      const offsetX = e.clientX - startX;
-      categoriSliderRef.current.scrollLeft -= offsetX;
-      setStartX(e.clientX);
-    }
-  };
-
-  const clickCategoryItem: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    const clickedCategoryString = e.currentTarget.id;
+  const clickCategoryItem = (item: string) => {
     const clickedCategory: RecipeSelection =
-      RecipeSelection[clickedCategoryString as keyof typeof RecipeSelection] ||
+      RecipeSelection[item as keyof typeof RecipeSelection] ||
       RecipeSelection.한식;
     setRecipe({ ...recipe, categorie: clickedCategory });
   };
 
-  const categoriComp = recipeCategories.map((item) => (
-    <div
-      onMouseDown={clickCategoryItem}
-      className={`flex justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white p-3 rounded-md m-2 min-w-[100px] h-[120px] relative ${
-        recipe.categorie === item ? "outline outline-2 outline-slate-950" : ""
-      }}`}
-      key={item}
-      id={item}
-    >
-      {recipe.categorie === item ? (
-        <CheckCircleIcon className="absolute right-0 top-0 w-8 h-8"></CheckCircleIcon>
-      ) : (
-        <></>
-      )}
-      <div className="w-[60px] h-[60px]">
-        {item!=RecipeSelection.기타 &&
-        <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" />
-        }
-      </div>
-      <div className="bottom-line w-full"/>
-      {/* <Image src={`/createRecipe/${item}.png`} width={500} height={500} alt="ex" /> */}
-      <div className="text-sm mt-1 font-bold">{item}</div>
-    </div>
-  ));
   return (
-    <div className="w-full flex flex-col justify-between items-center mt-6 mb-6 p-5">
-      <div className="w-full text-left">
-        <h3 className="text-lg">카테고리</h3>
-      </div>
-      <div
-        ref={categoriSliderRef}
-        className="flex flex-row justify-between items-center w-full h-[200px] m-3 overflow-x-scroll"
-        onMouseDown={onDragStart}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
-      >
-        {categoriComp}
+    <div className="w-full mb-6 text-left">
+      <h3 className="text-sm font-black text-gray-900 mb-3">요리 카테고리</h3>
+      
+      {/* 간격을 좁히고 버튼들을 컴팩트하게 배치 */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        {recipeCategories.map((item) => {
+          const isSelected = recipe.categorie === item;
+          return (
+            <button
+              key={item}
+              type="button"
+              onClick={() => clickCategoryItem(item)}
+              className={`relative flex items-center justify-start gap-2 px-3 py-2 text-[12px] rounded-xl font-bold cursor-pointer transition-all outline-none min-h-[42px] w-24 ${
+                isSelected
+                  ? "bg-white border-2 border-emerald-500 text-emerald-600 shadow-sm"
+                  : "bg-white border-2 border-transparent bg-gray-50/50 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              {isSelected ? (
+                <CheckCircleIcon sx={{ fontSize: 15 }} className="absolute -right-1 -top-1 text-emerald-500 bg-white rounded-full z-10" />
+              ) : null}
+              
+              <div className="w-5 h-5 shrink-0 relative flex items-center justify-center">
+                {item !== RecipeSelection.기타 ? (
+                  <Image 
+                    src={`/createRecipe/${item}.png`} 
+                    fill 
+                    alt={item} 
+                    sizes="20px"
+                    className="object-contain"
+                  />
+                ) : (
+                  <span className="text-xs">🍽️</span>
+                )}
+              </div>
+              
+              <span className="truncate text-left flex-1">{item}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

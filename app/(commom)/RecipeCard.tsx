@@ -32,13 +32,13 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         
         {/* Category tag - Olive tone */}
         {recipe.categorie && (
-          <span className="text-[11px] font-black text-darkGreen uppercase tracking-wider">
+          <span className="text-[11px] font-black text-mugin-secondary uppercase tracking-wider">
             {recipe.categorie}
           </span>
         )}
 
         {/* Title */}
-        <h3 className="font-extrabold text-gray-800 text-[14px] sm:text-[15px] leading-snug group-hover:text-darkGreen transition-colors duration-200 line-clamp-1">
+        <h3 className="font-extrabold text-gray-800 text-[14px] sm:text-[15px] leading-snug group-hover:text-mugin-secondary transition-colors duration-200 line-clamp-1">
           {recipe.recipeName}
         </h3>
 

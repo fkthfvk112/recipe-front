@@ -116,7 +116,7 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                               },
                             }}
                           />
-                          <span className="font-bold text-darkGreen text-xs ms-1 me-1 whitespace-nowrap">
+                          <span className="font-bold text-mugin-secondary text-xs ms-1 me-1 whitespace-nowrap">
                             익명
                           </span>
                         </div>
