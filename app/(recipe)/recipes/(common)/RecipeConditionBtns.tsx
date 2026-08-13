@@ -97,10 +97,20 @@ function RecipeConditionBtns() {
                     const queryString = queryMap.get(query.name);
                     return queryString?.map((value, inx) => (
                         <span key={`${value}${inx}`} onClick={() => { delCondition(query.name, value) }}  
-                            className="flex justify-center items-center whitespace-nowrap bg-[#e1e1e1] text-sm p-1 ps-2 pe-2 ms-1 me-1 rounded-xl">
-                            <span className="">{queryConvert[query.name]}</span>:
-                            <span className="ms-1">{decodeURIComponent(value)}</span>
-                            <ClearIcon sx={{ width: "20px", height: "20px" }} />    
+                            className="inline-flex items-center gap-1 px-3 py-1.5 bg-orange-50 text-mugin-primary border border-orange-100 rounded-full text-xs font-semibold hover:bg-orange-100 hover:border-orange-200 transition-all cursor-pointer shadow-sm select-none mx-1 my-0.5">
+                            <span className="opacity-80">{queryConvert[query.name]}</span>:
+                            <span className="font-bold">{decodeURIComponent(value)}</span>
+                            <ClearIcon sx={{ 
+                              width: "14px", 
+                              height: "14px", 
+                              marginLeft: "2px", 
+                              opacity: 0.7,
+                              transition: "all 0.2s",
+                              '&:hover': {
+                                color: "#ef4444 !important",
+                                transform: "scale(1.2)"
+                              }
+                            }} />    
                         </span>
                     ));
                 }
@@ -108,21 +118,21 @@ function RecipeConditionBtns() {
     }, [queryMap, queryConvert]);
 
     return (
-        <div className="flex justify-between w-full max-w-[1024px]">
+        <div className="flex justify-between items-center w-full max-w-[1024px] px-4 sm:px-2">
             {
             !isLoading?
             <>
-            <section className="flex flex-row overflow-x-scroll no-scroll">
+            <section className="flex flex-row flex-wrap overflow-x-auto no-scroll flex-grow items-center">
                 {queryBtns}
             </section>
-            <section className="w-[150px] px-2">
+            <section className="shrink-0 pl-2">
                 <select
                     name="sorting"
                     value={getSortingCon()}
                     onChange={(evt) => {
                         setSortingCon(evt.target.value);
                     }}
-                    className="rounded p-2"
+                    className="mugin-select py-1.5 px-3 rounded-full text-xs font-bold text-gray-700 bg-white border border-gray-200 shadow-sm focus:border-mugin-primary focus:ring-1 focus:ring-orange-100"
                     >
                     <option value="POPULARITY">인기순</option>
                     <option value="LATEST">최신순</option>
@@ -132,7 +142,7 @@ function RecipeConditionBtns() {
                     <option value="VIEW_FEW">조회수 적은순</option>
                 </select>
             </section>
-            </>:<div className="flex justify-center w-full"><CircularProgress /></div>
+            </>:<div className="flex justify-center w-full py-1"><CircularProgress size={24} sx={{ color: "#FF7043" }} /></div>
             }
         </div>
     )

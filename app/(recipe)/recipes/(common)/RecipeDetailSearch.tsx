@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { RecipeSearchingCondition, sortingCondition } from "@/app/(type)/search";
 import { searchingConToQueryString } from "@/app/(commom)/DetailSearch";
 import IngreBadgeSetter from "@/app/(recipe-search)/search/recipe-detail/IngreBadgeSetter";
+import Button from "@/app/(commom)/Component/Button";
 
 const style = {
     position: "absolute" as "absolute",
@@ -23,9 +24,11 @@ const style = {
     maxWidth:450,
     minWidth:280,
     bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
+    borderRadius: "1.25rem",
+    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
     p: 4,
+    border: "none",
+    outline: "none"
 };
 
 export default function RecipeDetailSearch({modalOpen, setModalOpen}:{modalOpen:boolean, setModalOpen:(data:any)=>any}) {
@@ -124,14 +127,9 @@ export default function RecipeDetailSearch({modalOpen, setModalOpen}:{modalOpen:
 
     let queryStr: string = searchingConToQueryString(searchData, sortingCon);
     //have to edit 구현 완료
-    //and or 조건 추가
 
     router.push(`/recipes/1/${queryStr}`);
   };
-
-//   const goPrev = ()=>{
-//     router.back();
-//   }
 
   return (
     <Modal
@@ -142,93 +140,115 @@ export default function RecipeDetailSearch({modalOpen, setModalOpen}:{modalOpen:
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style}>
-            <main className={"w-full flex-col justify-center items-end max-w-4xl bg-white"}>
-                <nav className="text-center w-full pt-5 pb-2 px-3 relative">
-                    <div onClick={()=>setModalOpen(false)} className="absolute left-5 cursor-pointer">
-                        <ArrowBackIosIcon />
+            <main className={"w-full flex flex-col justify-center items-end max-w-4xl bg-white"}>
+                <nav className="text-center w-full pt-2 pb-2 relative flex items-center justify-center">
+                    <div onClick={()=>setModalOpen(false)} className="absolute left-1 cursor-pointer text-gray-400 hover:text-mugin-primary hover:scale-110 transition-all duration-200">
+                        <ArrowBackIosIcon sx={{ fontSize: 20, color: "currentColor" }} />
                     </div>
-                    <h1 className="text-xl ms-5">레시피 상세 검색</h1>
+                    <h1 className="text-lg font-bold text-gray-800">레시피 상세 검색</h1>
                 </nav>
-                <div className="bottom-line"/>
-                <div className="w-full ps-4 pe-4">
-                    <section>
-                    <h3 className="w-full mt-10 text-start">
-                    레시피 이름
-                    </h3>
-                    <input
-                        name="recipeName"
-                        type="text"
-                        value={recipeSearchingData.recipeName || ""}
-                        onChange={(evt) => handleChangeSearchInput(evt)}
-                    />
+                <div className="w-full border-b border-gray-100 my-3"/>
+                <div className="w-full">
+                    <section className="mb-4">
+                      <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">
+                        레시피 이름
+                      </h3>
+                      <input
+                          name="recipeName"
+                          type="text"
+                          className="mugin-input"
+                          placeholder="레시피 이름 입력..."
+                          value={recipeSearchingData.recipeName || ""}
+                          onChange={(evt) => handleChangeSearchInput(evt)}
+                      />
                     </section>
-                    <IngreBadgeSetter recipeSearchingData={recipeSearchingData} setRecipeSearchingData={setRecipeSearchingData} />
-                    <section>
-                    <h3 className="w-full mt-8 text-start">
-                    생성일 (입력 일자 이후)
-                    </h3>
-                    <input
-                        name="createdDate"
-                        type="date"
-                        value={
-                        recipeSearchingData.createdDate === null
-                            ? ""
-                            : recipeSearchingData.createdDate.toString()
-                        }
-                        onChange={handleChangeSearchInput}
-                    />
-                    </section>
-                    <section className="flex justify-around items-center mt-12 flex-wrap">
-                    <div className="flex-1">
-                        <div className="w-full text-start">
-                        <h3>요리 방법</h3>
-                        </div>
-                        <FormControl sx={{ width:"100%", marginRight:"0.5rem" }}>
-                        <Select
-                            name="cookMethod"
-                            value={recipeSearchingData.cookMethod}
-                            onChange={handleChangeSearchInput}
-                        >
-                            <MenuItem value="default">선택없음</MenuItem>
-                            <MenuItem value="굽기">굽기</MenuItem>
-                            <MenuItem value="볶기">볶기</MenuItem>
-                            <MenuItem value="삶기">삶기</MenuItem>
-                            <MenuItem value="찌기">찌기</MenuItem>
-                            <MenuItem value="튀기기">튀기기</MenuItem>
-                        </Select>
-                        </FormControl>
+                    
+                    <div className="mb-4">
+                      <IngreBadgeSetter recipeSearchingData={recipeSearchingData} setRecipeSearchingData={setRecipeSearchingData} />
                     </div>
-                    <div className="flex-1">
-                        <div className="w-full text-start">
-                        <h3>카테고리</h3>
-                        </div>
-                        <FormControl sx={{ width:"100%", marginLeft:"0.5rem" }}>
-                        <Select
-                            labelId="categoryLabel"
-                            name="cookCategory"
-                            value={recipeSearchingData.cookCategory}
-                            onChange={handleChangeSearchInput}
-                        >
-                            <MenuItem value="default">선택없음</MenuItem>
-                            <MenuItem value="한식">한식</MenuItem>
-                            <MenuItem value="중식">중식</MenuItem>
-                            <MenuItem value="양식">양식</MenuItem>
-                            <MenuItem value="일식">일식</MenuItem>
-                            <MenuItem value="분식">분식</MenuItem>
-                            <MenuItem value="후식">후식</MenuItem>
-                            <MenuItem value="건강식">건강식</MenuItem>
-                        </Select>
-                        </FormControl>
-                    </div>
+
+                    <section className="mb-4">
+                      <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">
+                        생성일 (입력 일자 이후)
+                      </h3>
+                      <input
+                          name="createdDate"
+                          type="date"
+                          className="mugin-input"
+                          value={
+                          recipeSearchingData.createdDate === null
+                              ? ""
+                              : recipeSearchingData.createdDate.toString()
+                          }
+                          onChange={handleChangeSearchInput}
+                      />
                     </section>
-                    <section className="flex items-center justify-around flex-wrap w-full mt-8">
-                        <div className="w-full flex-1">
-                            <h3>요리양(인분)</h3>
-                            <div className="w-full ps-1 pe-4 min-w-[125px]">
+                    
+                    <section className="flex justify-between items-center gap-4 mt-6 mb-4">
+                      <div className="flex-1">
+                          <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">요리 방법</h3>
+                          <FormControl sx={{ width:"100%" }}>
+                          <Select
+                              name="cookMethod"
+                              value={recipeSearchingData.cookMethod}
+                              onChange={handleChangeSearchInput}
+                              sx={{ 
+                                borderRadius: "0.75rem", 
+                                fontSize: "0.875rem",
+                                height: "42px",
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: '#FF7043',
+                                }
+                              }}
+                          >
+                              <MenuItem value="default">선택없음</MenuItem>
+                              <MenuItem value="굽기">굽기</MenuItem>
+                              <MenuItem value="볶기">볶기</MenuItem>
+                              <MenuItem value="삶기">삶기</MenuItem>
+                              <MenuItem value="찌기">찌기</MenuItem>
+                              <MenuItem value="튀기기">튀기기</MenuItem>
+                          </Select>
+                          </FormControl>
+                      </div>
+                      <div className="flex-1">
+                          <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">카테고리</h3>
+                          <FormControl sx={{ width:"100%" }}>
+                          <Select
+                              labelId="categoryLabel"
+                              name="cookCategory"
+                              value={recipeSearchingData.cookCategory}
+                              onChange={handleChangeSearchInput}
+                              sx={{ 
+                                borderRadius: "0.75rem", 
+                                fontSize: "0.875rem",
+                                height: "42px",
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: '#FF7043',
+                                }
+                              }}
+                          >
+                              <MenuItem value="default">선택없음</MenuItem>
+                              <MenuItem value="한식">한식</MenuItem>
+                              <MenuItem value="중식">중식</MenuItem>
+                              <MenuItem value="양식">양식</MenuItem>
+                              <MenuItem value="일식">일식</MenuItem>
+                              <MenuItem value="분식">분식</MenuItem>
+                              <MenuItem value="후식">후식</MenuItem>
+                              <MenuItem value="건강식">건강식</MenuItem>
+                          </Select>
+                          </FormControl>
+                      </div>
+                    </section>
+
+                    <section className="flex items-center justify-between gap-4 mt-6 w-full">
+                        <div className="flex-1">
+                            <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">요리양(인분)</h3>
+                            <div className="w-full px-2">
                                 <Slider
                                     name="serving"
                                     min={1}
                                     max={20}
+                                    sx={{ color: '#FF7043' }}
                                     getAriaLabel={() => "Minimum distance shift"}
                                     onChange={handleSlideChange}
                                     value={[
@@ -243,16 +263,24 @@ export default function RecipeDetailSearch({modalOpen, setModalOpen}:{modalOpen:
                                     disableSwap/>
                             </div>
                         </div>
-                        <div className="w-full flex-1">
-                            <h3>정렬기준</h3>
-                            <FormControl sx={{ minWidth: 120, width:"100%" }}>
+                        <div className="flex-1">
+                            <h3 className="w-full text-start text-sm font-bold text-gray-700 mb-2">정렬기준</h3>
+                            <FormControl sx={{ width:"100%" }}>
                                 <Select
-                                labelId="sortingLabel"
-                                name="sorting"
-                                value={sortingCon}
-                                onChange={(evt) => {
-                                    setSortingCon(evt.target.value as sortingCondition);
-                                }}
+                                  labelId="sortingLabel"
+                                  name="sorting"
+                                  value={sortingCon}
+                                  onChange={(evt) => {
+                                      setSortingCon(evt.target.value as sortingCondition);
+                                  }}
+                                  sx={{ 
+                                    borderRadius: "0.75rem", 
+                                    fontSize: "0.875rem",
+                                    height: "42px",
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                      borderColor: '#FF7043',
+                                    }
+                                  }}
                                 >
                                 <MenuItem value="POPULARITY">인기순</MenuItem>
                                 <MenuItem value="LATEST">최신순</MenuItem>
@@ -265,9 +293,9 @@ export default function RecipeDetailSearch({modalOpen, setModalOpen}:{modalOpen:
                         </div>
                     </section>
                 </div>
-                <div className="w-full flex justify-center mt-[100px] mb-[20px]">
-                    <button className="saveBtn me-2" onClick={()=>{submitCondition(); setModalOpen(false)}}>검색</button>
-                    <button className="darkgrayBtn ms-2" onClick={clearSearchingDate}>조건 초기화</button>
+                <div className="w-full flex justify-center mt-10 mb-2 gap-3">
+                    <Button variant="primary" className="flex-1 max-w-[160px]" onClick={()=>{submitCondition(); setModalOpen(false)}}>검색</Button>
+                    <Button variant="outline-neutral" className="flex-1 max-w-[160px]" onClick={clearSearchingDate}>초기화</Button>
                 </div>
             </main>
         </Box> 

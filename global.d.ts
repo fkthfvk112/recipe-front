@@ -4,7 +4,7 @@ declare global {
       ReactNativeWebView?: {
         postMessage: (message: string) => void;
       };
+      gtag: (command: string, action: string, params?: any) => void;
     }
   }
-  
   export {};

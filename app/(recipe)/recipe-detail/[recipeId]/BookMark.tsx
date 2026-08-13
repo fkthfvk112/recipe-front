@@ -40,14 +40,22 @@ export default function BookMark({ recipeId }: { recipeId: number }) {
   };
 
   const bookMark = isOn ? (
-    <BookmarkAddedIcon sx={{width:"35px", height:"35px"}} />
+    <BookmarkAddedIcon sx={{ fontSize: 30, color: '#FF7043', transition: 'all 0.2s' }} />
   ) : (
-    <BookmarkBorderOutlinedIcon sx={{width:"35px", height:"35px"}} />
+    <BookmarkBorderOutlinedIcon sx={{ 
+      fontSize: 30, 
+      color: '#9CA3AF', 
+      transition: 'all 0.2s', 
+      '&:hover': { 
+        color: '#FF7043',
+        transform: 'scale(1.1)'
+      } 
+    }} />
   );
   return (
     <button
       onClick={handleBookMarkClick}
-      className="w-10 h-10 flex justify-center items-center border-none"
+      className="w-10 h-10 flex justify-center items-center border-none bg-transparent p-0 cursor-pointer focus:outline-none hover:scale-105 transition-transform"
     >
       {bookMark}
     </button>

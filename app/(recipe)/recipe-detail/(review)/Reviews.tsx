@@ -40,30 +40,32 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
   }
 
   const review = fetchData.map((review, inx) => (
-    <div key={inx} className={`m-5 mb-10 ${review.parentReviewId != null&&"ms-16"}`}>
-      <div className="flex justify-start items-center">
-        {review.parentReviewId && <SubdirectoryArrowRightIcon/>}
+    <div key={inx} className={`py-5 border-b border-gray-100 last:border-b-0 ${review.parentReviewId != null ? "ml-8 sm:ml-12 bg-gray-50/40 p-4 rounded-2xl mt-3 border border-gray-100/50" : "mt-2"}`}>
+      <div className="flex justify-start items-center mb-2.5">
+        {review.parentReviewId && <SubdirectoryArrowRightIcon sx={{ color: '#9CA3AF', marginRight: '4px' }} />}
         {
           !(review?.userInfo?.userPhoto) || review.isDel ? 
-          <Avatar />
+          <Avatar sx={{ width: 36, height: 36 }} />
           :
-          <div className="img-wrapper-round w-10 h-10 min-w-10 min-h-10"><Image className="rounded-full" src={review.userInfo.userPhoto} alt ="no img" fill/></div>
+          <div className="relative w-9 h-9 min-w-9 min-h-9 rounded-full overflow-hidden border border-gray-100 shadow-sm">
+            <Image className="object-cover" src={review.userInfo.userPhoto} alt="user photo" fill />
+          </div>
         }
         <div className="flex justify-between items-center w-full">
           <div className="flex flex-col">
           {
             review.isDel ? (
               <div>
-                <h3 className="ms-2 me-2">삭제</h3>
+                <h3 className="ms-2 text-sm font-bold text-gray-400">삭제된 댓글</h3>
               </div>
             ) : (
               review?.checkAnonymous === true ? (
                 <div>
-                  <h3 className="ms-2 whitespace-nowrap">익명</h3>
+                  <h3 className="ms-2 text-sm font-bold text-gray-600">익명</h3>
                 </div>
               ) : (
-                <Link className="flex flex-wrap justify-start items-center" href={`/userfeed/${review.userInfo?.userId}`}>
-                  <h3 className="ms-2">{review.userInfo?.userNickName}</h3>
+                <Link className="flex flex-wrap justify-start items-center group/name" href={`/userfeed/${review.userInfo?.userId}`}>
+                  <h3 className="ms-2 text-sm font-bold text-gray-700 group-hover/name:text-mugin-primary transition-colors duration-200">{review.userInfo?.userNickName}</h3>
                   <TimeDiff time={review.createdAt as string}/>
                 </Link>
               )
@@ -75,11 +77,12 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
             review?.score !== undefined && 
             review.score !== 0 &&
             <Rating
-              className="ms-1.5"
+              className="ms-1.5 mt-0.5"
               size="small"
               name="half-rating-read"
               value={review.score}
               readOnly
+              sx={{ color: '#FFB703' }}
             />
           }
           </div>
@@ -89,7 +92,7 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
         </div>
         <ReviewEtcBtn reviewId={review.reviewId} reviewOwnerId={review.userInfo.userId} domainId={domainId} domainName={domainName} isDel={review.isDel}/>
       </div>
-      <div className="ms-12 break-words break-keep whitespace-pre-wrap">
+      <div className="ms-11 text-[14px] text-gray-600 leading-relaxed break-words break-keep whitespace-pre-wrap">
         {
           review.isDel?"삭제된 댓글입니다."
           :
@@ -100,8 +103,13 @@ export default async function Reviews({ domainId, domainName }: { domainId: doma
   ));
 
   return (
-    <div>
-      <div className="font-bold mt-5">댓글 <span className="text-orange-400">{fetchData.length}</span></div>
-      {review}
-    </div>);
+    <div className="w-full">
+      <div className="text-[17px] font-black text-gray-800 mb-6">
+        댓글 <span className="text-mugin-primary font-black">{fetchData.length}</span>
+      </div>
+      <div className="divide-y divide-gray-100">
+        {review}
+      </div>
+    </div>
+  );
 }

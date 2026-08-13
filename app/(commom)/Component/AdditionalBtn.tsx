@@ -54,8 +54,8 @@ export function AdditionalBtn({additionalBtns}:{additionalBtns:btn[]}){
                 {additionalBtnComps}
             </div>
             }
-            <button onClick={clickPlusBtn} className={`${plusBtnClicked?"bg-white":"bg-[#38c54b]"} border-none rounded-full w-[60px] h-[60px]`}>
-                {plusBtnClicked ?<ClearIcon sx={{width:"25px", height:"25px"}}/>:<AddIcon sx={{width:"25px", height:"25px"}}/>}
+            <button onClick={clickPlusBtn} className={`${plusBtnClicked?"bg-white":"bg-darkGreen"} border-none rounded-full w-[60px] h-[60px]`}>
+                {plusBtnClicked ?<ClearIcon sx={{width:"25px", height:"25px"}}/>:<AddIcon sx={{width:"25px", height:"25px", fill:"white"}}/>}
             </button>
         </div>
         </>

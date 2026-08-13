@@ -18,23 +18,33 @@ export default function RecipeStepInfo({
     if(!imgStr) return;
     setModalImg(imgStr);
     openImgModal(true);
-}
+  }
 
   const stepItems = steps.map((step, inx) => {
     return (
-      <div key={inx} className="mt-6 mb-3">
-        <div className="flex justify-between font-bold border-gray-200 mb-1">
-          <span>Step {step.order+1}</span>
-          <span><AccessAlarmsIcon/> {step.time}분</span>
+      <div key={inx} className="py-4 border-b border-gray-100 last:border-b-0">
+        <div className="flex justify-between items-center mb-2.5 text-sm sm:text-base font-bold">
+          <span className="text-gray-800 font-black text-[15px] sm:text-[16px]">Step {step.order+1}</span>
+          <span className="inline-flex items-center text-xs font-semibold text-gray-400">
+            <AccessAlarmsIcon sx={{ fontSize: 16, marginRight: "3px", color: "#9CA3AF" }} />
+            {step.time}분
+          </span>
         </div>
-        <div className="bottom-line-noM mb-3 w-full"/>
 
-        <div className="grid grid-cols-3 ">
-          <div className={`${step.photo?'col-span-2':'col-span-3'} p-3 break-words break-keep whitespace-pre-wrap`}>{step.description}</div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className={`${step.photo?'col-span-2':'col-span-3'} py-1 text-[14px] text-gray-600 leading-relaxed break-words break-keep whitespace-pre-wrap`}>
+            {step.description}
+          </div>
           {step.photo &&
-            <div className="img-wrapper-square aspect-square w-full pb-[100%]">
-              <Image className="inner-img" src={step.photo} fill alt="noimg" 
-                onClick={()=>clickImgModalOpen(step.photo)}/>
+            <div className="relative w-full aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer hover:opacity-90 transition-opacity">
+              <Image 
+                className="object-cover" 
+                src={step.photo} 
+                fill 
+                sizes="(max-width: 768px) 100vw, 200px"
+                alt={`Step ${step.order+1} image`} 
+                onClick={()=>clickImgModalOpen(step.photo)}
+              />
             </div>
           }
         </div>
@@ -44,9 +54,13 @@ export default function RecipeStepInfo({
 
   return (
     <>    
-    <div className="w-full mt-6">
-      <h2 className="border-b-2  border-yellow-900 m-2 mt-6 mb-6">요리 순서</h2>
-      {stepItems}
+    <div className="w-full mt-10">
+      <div className="flex justify-start border-b border-gray-100 pb-3 mb-4 px-2">
+        <h2 className="text-lg font-black text-gray-800 tracking-tight">요리 순서</h2>
+      </div>
+      <div className="space-y-2">
+        {stepItems}
+      </div>
     </div>
     <ImgModal modalOpen={modalOpen} setModalOpen={openImgModal} modalImg={modalImg}/>
     </>

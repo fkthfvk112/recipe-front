@@ -1,31 +1,14 @@
-import { useEffect, useState } from "react";
-
-const useResponsiveDesignCss = (): {navCss:string, layoutPadding:string,layoutMargin:string, layoutBottomMargin:string, layoutTop:string}=>{
-    const [navCss, setNavCss] = useState<string>("hidden");
-    const [layoutPadding, setLayoutPadding] = useState<string>("pt-20")
-    const [layoutMargin, setLayoutMargin]   = useState<string>("mt-20");
-    const [layoutTop, setLayoutTop]   = useState<string>("top-[5rem]");//모바일 아닐때 5rem, 모바일에선 0
-    const [layoutBottomMargin, setLayoutBottomMargin]   = useState<string>("");
-
-
-    useEffect(()=>{
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if(!isMobile){
-          setNavCss("w-full h-20 bg-white fixed top-0 z-50 shadow-md")
-          setLayoutPadding("pt-20");
-          setLayoutMargin("mt-20");
-          setLayoutBottomMargin("")
-          setLayoutTop("top-[5rem]")
-        }else{
-          setNavCss("w-full h-20 bg-white fixed bottom-0 z-50 shadow-md")
-          setLayoutPadding("pb-20");
-          setLayoutMargin("mb-20");
-          setLayoutBottomMargin("mb-20")
-          setLayoutTop("top-0")
-        }
-      }, []);
-
-    return {navCss, layoutPadding, layoutMargin, layoutBottomMargin, layoutTop};
+const useResponsiveDesignCss = (): { navCss: string, layoutPadding: string, layoutMargin: string, layoutBottomMargin: string, layoutTop: string } => {
+  return {
+    // 모바일: bottom-0 고정 / 데스크탑(md): top-0 고정
+    navCss: "w-full h-[70px] bg-white fixed z-50 shadow-md bottom-0 md:bottom-auto md:top-0",
+    
+    // 모바일: 하단 여백 / 데스크탑(md): 상단 여백
+    layoutPadding: "pb-[70px] md:pb-0 md:pt-[70px]",
+    layoutMargin: "mb-[70px] md:mb-0 md:mt-[70px]",
+    layoutBottomMargin: "mb-[70px] md:mb-0",
+    layoutTop: "top-0 md:top-[70px]",
+  };
 }
 
 export default useResponsiveDesignCss;

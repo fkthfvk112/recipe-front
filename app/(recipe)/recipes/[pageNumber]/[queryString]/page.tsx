@@ -75,8 +75,8 @@ export default async function SearchingByCondition({
 
 
   return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
-      <div className="grid media-gridcol-3-to-2 w-full gap-3">
+    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10 px-4 sm:px-0">
+      <div className="grid media-gridcol-3-to-2 w-full gap-4 sm:gap-6 py-4">
         {recentRecipes}
       </div>
       {

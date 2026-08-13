@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { siginInState } from "./(recoil)/recoilAtom";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Button from "./(commom)/Component/Button";
 
 export default function SiteDescription() {
   const [isSignIn, setIsSignIn] = useRecoilState(siginInState);
@@ -26,16 +27,16 @@ export default function SiteDescription() {
 
   return (
     !isSignIn ? (
-      <section className="flex flex-col justify-center items-center w-full text-center bg-white">
-        <div className="w-full text-start max-w-[1000px] flex-center text-center-when-600 flex-wrap-when-600 bg-[#f1f1f1] p-10">
+      <section className="flex flex-col justify-center items-center w-full text-center bg-white px-5 py-6">
+        <div className="w-full text-start max-w-5xl bg-gray-50 border border-gray-100 rounded-2xl p-10 shadow-sm flex-center text-center-when-600 flex-wrap-when-600">
           <div>
-            <h3 className="text-2xl mb-2">우리는 먹기 위해 살아간다.</h3>
-            <p className="me-6 mb-6">
+            <h3 className="text-2xl font-black text-gray-800 tracking-tight mb-3">우리는 먹기 위해 살아간다.</h3>
+            <p className="me-6 mb-6 text-gray-500 font-medium leading-relaxed">
               머그인은 레시피 공유, 게시글, 냉장고 관리 기능을 제공합니다.
               머그인과 함께 낭비되지 않는 삶을 살아가고 그 경험을 공유해 보세요.
             </p>
-            <div className="w-full flex-center">
-              <button onClick={goToSiginInPage} className="greenBtn w-48">회원가입/로그인</button>
+            <div className="w-full flex justify-start justify-start-when-600">
+              <Button type="button" onClick={goToSiginInPage} variant="primary" size="md" className="w-48 font-extrabold">회원가입/로그인</Button>
             </div>
           </div>
           <div>
@@ -51,13 +52,6 @@ export default function SiteDescription() {
       </section>
     ) : (
       <section className="flex flex-col justify-center items-center w-full text-center bg-white p-3">
-        {/* <ul className="grid grid-cols-5 w-full gap-1 p-2  max-w-[1000px]">
-          <li className="aspect-square bg-red-300">하하</li>
-          <li className="aspect-square bg-red-300">하하</li>
-          <li className="aspect-square bg-red-300">하하</li>
-          <li className="aspect-square bg-red-300">하하</li>
-          <li className="aspect-square bg-red-300">하하</li>
-        </ul> */}
       </section>
     )
   );

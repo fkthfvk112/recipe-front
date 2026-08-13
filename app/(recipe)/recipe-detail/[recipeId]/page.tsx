@@ -149,22 +149,24 @@ export default async function RecipeDetail({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(googleRecipeSchema) }}
       />
-    <div className='w-full bg-[#1c7c54]  flex flex-col justify-start items-center pt-14 pb-14 min-h-dvh'>    
-      <div className=" max-w-3xl w-dvw m-3 bg-white flex flex-col justify-center items-center rounded-lg">
-        <div className="p-5 mb-3 w-full">
+    <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh px-4 sm:px-0">    
+      <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="p-6 sm:p-8 w-full">
           <UserInfo recipeOwner={recipeOwner}></UserInfo>
           <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
           <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
           <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
         </div>
-        <div className="w-full p-3 text-left flex">
+        <div className="w-full px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
             <CopyUrl></CopyUrl>
-            <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
-              delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
-              revalidateTagNames={[`recipeDetail-${params.recipeId}`]}/>
-            <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
+            <div className="flex items-center gap-2">
+              <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
+                delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
+                revalidateTagNames={[`recipeDetail-${params.recipeId}`]}/>
+              <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
+            </div>
         </div>
-        <div className="bg-white p-5 mb-3 w-full">
+        <div className="bg-white p-6 sm:p-8 w-full border-t border-gray-100">
           <ReviewContainer domainId={params.recipeId} domainName={"recipe"}></ReviewContainer>
         </div>
       </div>

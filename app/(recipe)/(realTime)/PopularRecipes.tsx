@@ -1,7 +1,6 @@
-
 import Link from "next/link";
 import { Recipe } from "../types/recipeType";
-import RecipeVerticalItem from "@/app/(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
+import RecipeCard from "@/app/(commom)/RecipeCard";
 import { BestRecipe, BestRecipeCard } from "./BestRecipeCard";
 
 export default async function PopularRecipes() {
@@ -11,8 +10,6 @@ export default async function PopularRecipes() {
       next: { revalidate: 300 },
     }
   ).then((res) => {
-
-
     if (!res.ok) {
       console.log("RecipeDetail fetch error!!", res.status);
     } else {
@@ -24,20 +21,18 @@ export default async function PopularRecipes() {
     return [];
   })
 
-  const recentRecipes = fetchData?.slice(1).map((recipe, inx) => (
-    <Link className="inline-block" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
-      <RecipeVerticalItem recipe={recipe}></RecipeVerticalItem>
+  const popularRecipes = fetchData?.slice(1).map((recipe, inx) => (
+    <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+      <RecipeCard recipe={recipe}></RecipeCard>
     </Link>
   ));
-
 
   return (
     <div className="w-full max-w-5xl p-5 mt-10 mb-5">
       {fetchData[0] && <BestRecipeCard recipe={fetchData[0] as BestRecipe}/>}
-      <h2 className="text-xl">인기 레시피</h2>
-      {/* <EmblaCarousel_comp slides={recentRecipes}/> */}
-      <ul className="flex overflow-x-scroll h-[350px]">
-        {recentRecipes}
+      <h2 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight mb-4">인기 레시피</h2>
+      <ul className="flex gap-4 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
+        {popularRecipes}
       </ul>
     </div>
   );

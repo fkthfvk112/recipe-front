@@ -1,23 +1,33 @@
-import AspectRatio from "@mui/joy/AspectRatio";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import CardOverflow from "@mui/joy/CardOverflow";
 
-export default function RecipeCardSkeletion(){
-    return (
-        <Card variant="outlined" sx={{ aspectRatio:"1 / 1", minWidth:"140px", marginBottom:"1rem" }}>
-        <CardOverflow>
-          <AspectRatio sx={{ overflow:"hidden"}} ratio="1/1">
-            <div className="w-[300] h-[300] bg-[#e1e1e1]"/>
-          </AspectRatio>
-        </CardOverflow>
-        <CardContent>
-            <div className="w-full bg-[#e1e1e1] h-6"/>
-            <section className="w-full bg-[#e1e1e1] h-6 mt-1"/>
-        </CardContent>
-        <CardOverflow variant="soft" sx={{ bgcolor: "background.leve1" }}>
-          <div className="pt-2 pb-2 text-[#3b3b3b] h-10"/>
-        </CardOverflow>
-      </Card>
-    )
+
+export default function RecipeCardSkeletion() {
+  return (
+    <div className="flex flex-col overflow-hidden bg-white border border-gray-100 rounded-2xl shadow-sm w-full aspect-square min-w-[140px] mb-4 animate-pulse">
+      {/* Thumbnail Area */}
+      <div className="w-full h-[55%] bg-gray-200 border-b border-gray-100" />
+
+      {/* Content Area */}
+      <div className="flex flex-col justify-between h-[45%] p-3">
+        <div>
+          {/* Title & Star Rating */}
+          <div className="flex justify-between items-center w-full gap-2 mb-2">
+            <div className="h-4 bg-gray-200 rounded-full w-2/3" />
+            <div className="h-3.5 bg-gray-200 rounded-full w-8" />
+          </div>
+
+          {/* Description */}
+          <div className="h-3 bg-gray-200 rounded-full w-5/6 mb-1.5" />
+        </div>
+
+        {/* Footer info */}
+        <div className="pt-2 border-t border-gray-100 flex justify-between items-center mt-auto">
+          <div className="flex gap-2">
+            <div className="h-3.5 bg-gray-200 rounded-full w-8" />
+            <div className="h-3.5 bg-gray-200 rounded-full w-8" />
+          </div>
+          <div className="h-3 bg-gray-200 rounded-full w-12" />
+        </div>
+      </div>
+    </div>
+  );
 }

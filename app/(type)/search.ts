@@ -21,6 +21,7 @@ export interface RecipeSearchingCondition {
 }
 
 export type sortingCondition =
+  | "LATEST"
   | "POPULARITY"
   | "LIKE_MANY"
   | "LIKE_FEW"

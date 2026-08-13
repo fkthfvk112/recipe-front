@@ -64,7 +64,7 @@ export default async function RecipesByIngre({
 
   const recentRecipes = fetchData && 
     fetchData.map((recipe, inx) => (
-        <div key={inx} className="m-3">
+        <div key={inx}>
           <Link href={`/recipe-detail/${recipe.recipeId}`}>
             <RecipeCard recipe={recipe} />
           </Link>
@@ -73,8 +73,8 @@ export default async function RecipesByIngre({
                         
 
    return (
-    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10">
-      <div className="grid media-gridcol-3-to-2 w-full gap-3">
+    <div className="flex flex-col flex-wrap justify-center items-center w-full min-h-[300px] mb-10 px-4 sm:px-0">
+      <div className="grid media-gridcol-3-to-2 w-full gap-4 sm:gap-6 py-4">
         {recentRecipes}
       </div>
       {

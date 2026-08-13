@@ -1,7 +1,6 @@
 "use client"
 
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
-import Divider from "@mui/joy/Divider";
 import Image from "next/image";
 import CommentIcon from '@mui/icons-material/Comment';
 import { timeDifferenceString } from "@/app/(utils)/timeUtils";
@@ -13,43 +12,60 @@ import { roundToNPlaces } from "@/app/(utils)/NumberUtil";
 function RecipeVerticalItem({ recipe }: { recipe: Recipe }) {
 
   return (
-    <li className="flex flex-col justify-between hover:bg-[#e1e1e1] cursor-pointer w-[200px] m-1 border border-[#e1e1e1] rounded-md">
-      <div className="aspect-square w-full img-wrapper-square overflow-hidden">
+    <li className="flex flex-col justify-between cursor-pointer w-[180px] sm:w-[200px] shrink-0 m-1 bg-transparent border-none group">
+      {/* Thumbnail */}
+      <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gray-50 border border-gray-100/30">
         <Image
-          className="inner-img hover:scale-105 transition-transform duration-300"
-            src={recipe.repriPhotos[0]}
-            width={300}
-            height={300}
-            loading="lazy"
-            alt=""
-          />
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          src={recipe.repriPhotos[0] || "/common/no-image.png"}
+          fill
+          sizes="200px"
+          loading="lazy"
+          alt={recipe.recipeName || ""}
+        />
       </div>
-      <section className="W-full p-2">
-        <div className="flex justify-start items-center w-full">
-          <h1 className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.recipeName}</h1>
-          <span className="flex-center font-bold text-[0.8rem] mr-2 text-[#3b3b3b]">
-            <StarIcon className="mb-1 fill-[#FFB701]"/>{recipe.reviewAvg?roundToNPlaces(recipe.reviewAvg, 2):"-"}
+
+      {/* Description Info */}
+      <section className="w-full pt-3.5 px-0.5 flex flex-col gap-1">
+        
+        {/* Category tag */}
+        {recipe.categorie && (
+          <span className="text-[11px] font-black text-darkGreen uppercase tracking-wider block">
+            {recipe.categorie}
+          </span>
+        )}
+
+        <div className="flex justify-between items-center w-full gap-2">
+          <h3 className="font-extrabold text-gray-800 text-[14px] sm:text-[15px] whitespace-nowrap overflow-hidden text-ellipsis flex-grow group-hover:text-darkGreen transition-colors duration-200">
+            {recipe.recipeName}
+          </h3>
+          <span className="flex items-center font-bold text-[11px] sm:text-[12px] text-mugin-accent shrink-0">
+            <StarIcon sx={{ fontSize: 14, marginRight: "1.5px" }} />
+            {recipe.reviewAvg ? roundToNPlaces(recipe.reviewAvg, 2) : "-"}
           </span>
         </div>
-        <div className="whitespace-nowrap overflow-hidden text-ellipsis">{recipe.description}</div>
-      </section>
-      <div className="w-full ps-2 pe-2">
-        <Divider inset="context" />
-        <div className="flex justify-between text-sm pt-2 pb-2 text-[#3b3b3b]">
-            <div className="flex justify-center items-center">
-              <div className="ms-2 flex justify-center items-center">
-                <BookmarkAddedIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.likeCnt}</span>
-              </div>
-              <div className="ms-2 flex justify-center items-center">
-                <CommentIcon className="w-[20px] h-[20px]"/><span className="ms-1 text-[12px]">{recipe?.reviewCnt}</span>
-              </div>
+        
+        <p className="text-[11px] sm:text-[12px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+          {recipe.description || "설명이 없는 레시피입니다."}
+        </p>
+
+        {/* Footer info (Bookmarks, Comments, Date) */}
+        <div className="pt-2 mt-1 border-t border-gray-50 flex justify-between items-center text-gray-400 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center">
+              <BookmarkAddedIcon sx={{ fontSize: 13, color: "#9CA3AF" }} />
+              <span className="ms-0.5 text-[10px] sm:text-[11px] font-semibold">{recipe?.likeCnt || 0}</span>
             </div>
-            <div className="text-[10px] flex justify-center items-center">
-                {recipe.createdAt &&
-                timeDifferenceString(new Date(recipe.createdAt))}
+            <div className="flex items-center">
+              <CommentIcon sx={{ fontSize: 12, color: "#9CA3AF" }} />
+              <span className="ms-0.5 text-[10px] sm:text-[11px] font-semibold">{recipe?.reviewCnt || 0}</span>
             </div>
+          </div>
+          <div className="text-[9px] sm:text-[10px] text-gray-400 font-medium">
+            {recipe.createdAt && timeDifferenceString(new Date(recipe.createdAt))}
+          </div>
         </div>
-      </div>
+      </section>
     </li>
   );
 }

@@ -9,6 +9,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { domainId, domainName } from "./ReviewContainer";
 import { checkAnonymousAtom } from "@/app/(recoil)/userFeedAtom";
+import Button from "@/app/(commom)/Component/Button";
 
 const domainReviewUrl = {
   recipe: "review/recipe/create",
@@ -74,7 +75,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
   const reviewInput =
     isClient && isSignIn ? (
       <div className="flex justify-center flex-col items-center">
-        <div className="text-start w-full">
+        <div className="text-start w-full mb-2">
           {
             domainName === "recipe"&&
           <Rating
@@ -88,41 +89,47 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
             name="half-rating"
             value={review.score}
             precision={1}
+            sx={{ color: '#FFB703' }}
           />
           }
         </div>
-        {/* have to ...textarea와 그 바로 밑 div의 height조절해서 부모 div에 꽉 차도록 설정 익명 토글 버튼 설정 */}
-        <div className="w-full border border-slate-400">
+        <div className="w-full border border-gray-200 rounded-2xl overflow-hidden focus-within:border-mugin-primary focus-within:ring-2 focus-within:ring-orange-100 transition-all shadow-sm bg-white">
           <textarea
-            className="w-full h-30 p-3 border-none bottom-line-noM"
-            placeholder="댓글을 작성해주세요."
+            className="w-full h-24 p-3 border-none resize-none focus:outline-none text-sm text-gray-700 placeholder-gray-400"
+            placeholder="따뜻한 격려의 댓글을 작성해주세요."
             value={review.message}
             onChange={(e) => {
               handleChangeData(e);
             }}
           />
-          <div className="flex justify-between items-center p-2">
-            <div className="felx justify-center items-center">
+          <div className="flex justify-between items-center p-3 bg-gray-50/50 border-t border-gray-50">
+            <div className="flex justify-center items-center">
               <Checkbox 
                 checked={checkAnonymous} 
                 value={checkAnonymous} 
                 onClick={()=>{setCheckAnonymous(!checkAnonymous)}}
-                className="p-0 mb-1"
-                color="success" />
-              <span className="font-bold text-[#31853c] ms-1">
+                className="p-0 mb-0.5"
+                sx={{
+                  color: "#9CA3AF",
+                  '&.Mui-checked': {
+                    color: "#588B8B",
+                  },
+                }}
+              />
+              <span className="font-bold text-darkGreen text-xs ms-1">
                 익명
               </span>
             </div>
-            <div className="flex justify-center items-center">
-              <div className="me-5">{review.message.length}/200</div>
+            <div className="flex justify-center items-center gap-3">
+              <div className="text-xs text-gray-400">{review.message.length}/200</div>
               {
                 review.message.length >= 2 && review.message.length <= 200?
-                <button className="greenBtn" onClick={() => saveReview()}>
+                <Button type="button" variant="secondary" size="sm" onClick={() => saveReview()}>
                   댓글 쓰기
-                </button>:
-                <button className="grayBtn cursor-default">
+                </Button>:
+                <Button type="button" variant="neutral" size="sm" disabled>
                   댓글 쓰기
-                </button>
+                </Button>
               }
             </div>
           </div>
@@ -130,7 +137,7 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
       </div>
     ) : (
       <Link href={"/signin"}>
-        <div  className="w-full p-2 border rounded-md text-gray-500">댓글을 남기려면 로그인을 해주세요</div>
+        <div className="w-full p-4 border border-dashed border-gray-200 rounded-2xl text-center text-sm font-bold text-gray-400 bg-gray-50 hover:bg-gray-100 hover:text-mugin-primary hover:border-mugin-primary transition-all cursor-pointer">댓글을 남기려면 로그인을 해주세요</div>
       </Link>
     );
   return <>{reviewInput}</>;

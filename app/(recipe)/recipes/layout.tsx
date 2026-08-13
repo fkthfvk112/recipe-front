@@ -14,7 +14,7 @@ export default function RecipeLayout({
   return (
     <div className="defaultOuterContainer bg-white">
       <RecipeSearchBar></RecipeSearchBar>
-      <div className="flex justify-center w-full h-full max-w-[1024px] p-2 mt-10">
+      <div className="flex justify-center w-full h-full max-w-[1024px] px-4 sm:px-6 py-6 mt-4">
         {children}
         <AdditionalBtn additionalBtns={[{name:"레시피 작성", url:"/create-recipe"}]}/>
       </div>
