@@ -109,7 +109,7 @@ export default function CreateRecipePage() {
       
       {/* Page Title Header */}
       <div className="mb-8 border-b border-gray-100 pb-4">
-        <h1 className="text-2xl font-black text-gray-900 tracking-tight">새 레시피 작성 🍳</h1>
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight">새 레시피 작성</h1>
         <p className="text-xs text-gray-500 font-medium mt-1">나만의 특별한 요리 노하우와 레시피를 공유해보세요.</p>
       </div>
 
@@ -156,7 +156,7 @@ export default function CreateRecipePage() {
             <ErrorText recipe={recipe} setErrorCnt={setErrorCnt} />
             {errorCnt === 0 && (
               <div className="text-center">
-                <h3 className="text-base font-black text-gray-900">레시피 게시</h3>
+                <h2 className="text-base font-black text-gray-900">레시피 게시</h2>
                 <p className="text-xs text-gray-500 font-medium mt-1">작성하신 레시피를 세상에 내놓으시겠습니까?</p>
               </div>
             )}

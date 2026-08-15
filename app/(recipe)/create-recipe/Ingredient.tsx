@@ -67,7 +67,7 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
             key={ingre.order || inx}
             className="flex items-center gap-2 w-full"
           >
-            {/* Ingredient Auto-recommend Input */}
+            {/* Ingredient Auto-recommend Input (flex-1 유지하여 넓은 공간 확보) */}
             <div className="flex-1 min-w-0">
               <IngreRecommandInput
                 dataSettingCallback={(value: string) =>
@@ -80,8 +80,8 @@ export default function Ingredient({ recipe, setRecipe }: IngredientProp) {
               />
             </div>
 
-            {/* Quantity Input */}
-            <div className="w-28 sm:w-36 shrink-0">
+            {/* Quantity Input (너비를 w-24 sm:w-28로 축소하여 식재료명 입력창을 더 넓게 보장) */}
+            <div className="w-24 sm:w-28 shrink-0">
               <input
                 className="w-full h-11 px-4 text-xs font-medium text-gray-900 bg-gray-50/50 border border-gray-200 rounded-xl focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 outline-none transition-all placeholder-gray-400"
                 name="qqt"
