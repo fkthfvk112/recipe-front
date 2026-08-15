@@ -184,7 +184,7 @@ export default function IngredientSearchModal({
                 onClick={() => setIsFridgeExpanded(!isFridgeExpanded)}
               >
                 <h4 className="text-[13px] font-extrabold text-gray-800 flex items-center gap-1.5">
-                  내 냉장고 속 재료 불러오기 🧊
+                  내 냉장고 속 재료 불러오기
                 </h4>
                 <KeyboardArrowDownIcon 
                   sx={{ fontSize: 20 }} 

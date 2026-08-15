@@ -1,48 +1,33 @@
-"use client"
-import { Box, Modal } from "@mui/material";
+"use client";
+
 import Image from "next/image";
-import { useEffect } from "react";
+import CommonModal from "./CommonModal";
 
-const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: '95%',
-    height: 'auto',
-    maxWidth: '800px',
-    aspectRatio: 1 / 1,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 1,
-};
-export default function ImgModal({modalOpen, setModalOpen,modalImg}:{modalOpen:boolean, setModalOpen:(data:any)=>any, modalImg:string}){
-
-    useEffect(()=>{
-    }, [modalImg, modalOpen])
-    return (
-        modalOpen && (
-          <Modal
-            open={modalOpen}
-            onClose={() => {
-              setModalOpen(false);
-            }}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Image
-                className="inner-img"
-                fill
-                src={modalImg}
-                alt="modal image"
-                quality={95}
-                priority
-                onClick={() => setModalOpen(false)}
-              />
-            </Box>
-          </Modal>
-        )
-      );
+export default function ImgModal({
+  modalOpen,
+  setModalOpen,
+  modalImg,
+}: {
+  modalOpen: boolean;
+  setModalOpen: (data: any) => any;
+  modalImg: string;
+}) {
+  return (
+    <CommonModal
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+      maxWidthClass="max-w-2xl"
+    >
+      <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-gray-50">
+        <Image
+          className="object-contain"
+          fill
+          src={modalImg}
+          alt="modal image"
+          quality={95}
+          priority
+        />
+      </div>
+    </CommonModal>
+  );
 }

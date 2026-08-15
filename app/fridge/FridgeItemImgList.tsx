@@ -60,10 +60,10 @@ export default function FridgeItemImgList({
         key={inx}
         type="button"
         onClick={() => setImgSort(sort)}
-        className={`px-2.5 py-1 text-xs font-bold rounded-xl transition-all cursor-pointer outline-none border ${
+        className={`px-3 py-1.5 text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none border shadow-xs ${
           isSelected
-            ? "bg-emerald-50 text-emerald-700 border-emerald-300 shadow-xs"
-            : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+            ? "bg-gray-900 text-white border-gray-900 shadow-sm"
+            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-100/80 hover:text-gray-900"
         }`}
       >
         {sort}

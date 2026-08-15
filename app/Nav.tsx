@@ -10,7 +10,8 @@ import AccountMenu from "./AccountMenu";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlined';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'; // 상반신 사람 아이콘 추가
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import GoBoardBtn from "./GoBoardBtn";
 import useSyncLogin from "./(commom)/Hook/useSyncLogin";
@@ -68,7 +69,9 @@ const Navbar = () => {
                     className="object-contain" 
                   />
                 </div>
-                <span className="text-[20px] font-extrabold tracking-tight">머그인 레시피</span>
+                <span className="text-[19px] font-extrabold text-gray-900 tracking-tighter font-sans">
+                  머그인 레시피
+                </span>
               </div>
             </Link>
 
@@ -92,6 +95,13 @@ const Navbar = () => {
                 <Link href="/randomMenu">
                   <span className={`text-[15px] transition-colors cursor-pointer hover:text-gray-900 ${containInRoute("randomMenu") ? "text-gray-900 font-extrabold" : "text-gray-600 font-bold"}`}>
                     뭐먹지?
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/post">
+                  <span className={`text-[15px] transition-colors cursor-pointer hover:text-gray-900 ${containInRoute("post") ? "text-gray-900 font-extrabold" : "text-gray-600 font-bold"}`}>
+                    식재료 백과
                   </span>
                 </Link>
               </li>
@@ -177,6 +187,27 @@ const Navbar = () => {
                     : "text-gray-400 font-medium group-hover:text-gray-600"
                 }`}>
                   뭐먹지?
+                </p>
+              </div>
+            </Link>
+
+            {/* 식재료 백과 Tab */}
+            <Link href="/post" className="flex-1">
+              <div className="flex flex-col justify-center items-center cursor-pointer transition-colors group">
+                <MenuBookOutlinedIcon 
+                  sx={{ 
+                    width: '26px', 
+                    height: '26px', 
+                    color: containInRoute("post") ? activeColor : inactiveColor 
+                  }}
+                  className="transition-colors group-hover:text-[#1c7c54]"
+                />
+                <p className={`text-[11px] mt-1 transition-colors ${
+                  containInRoute("post") 
+                    ? "text-[#1c7c54] font-extrabold" 
+                    : "text-gray-400 font-medium group-hover:text-gray-600"
+                }`}>
+                  식재료
                 </p>
               </div>
             </Link>

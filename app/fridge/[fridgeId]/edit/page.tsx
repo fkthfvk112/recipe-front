@@ -112,7 +112,7 @@ export default function EditFridge({
             <ArrowBackIcon sx={{ fontSize: 18 }} />
           </button>
           <div>
-            <h1 className="text-xl font-black text-gray-900 tracking-tight">냉장고 정보 수정 🧊</h1>
+            <h1 className="text-xl font-black text-gray-900 tracking-tight">냉장고 정보 수정</h1>
             <p className="text-xs text-gray-500 font-medium mt-0.5">
               식재료를 보관하는 냉장고의 이름과 설명을 변경합니다.
             </p>

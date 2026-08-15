@@ -18,6 +18,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import SortIcon from "@mui/icons-material/Sort";
 import { CircularProgress } from "@mui/material";
 import { FridgeSortingEnum } from "@/app/(type)/fridge";
+import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
 
 interface Props {
   fridgeId: number;
@@ -131,7 +132,6 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
             </div>
           ) : (fridgeData?.fridgeItems?.length ?? 0) === 0 ? (
             <div className="flex flex-col items-center justify-center py-14 text-center gap-2">
-              <span className="text-4xl">🧊</span>
               <p className="text-sm font-extrabold text-gray-800 mt-1">아직 식재료가 없어요</p>
               <p className="text-xs font-medium text-gray-400">아래 버튼을 눌러 첫 식재료를 등록해보세요.</p>
             </div>
@@ -209,19 +209,17 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
 
         {/* Footer Action Buttons */}
         <div className="px-4 py-4 border-t border-gray-100 flex gap-2 shrink-0">
-          <Link
-            href={`/fridge/ingre-edit/${fridgeId}`}
-            className="flex-[1.5] py-3 text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl flex items-center justify-center gap-1.5 transition-all shadow-md border-none"
-          >
-            <AddIcon sx={{ fontSize: 16 }} />
-            <span>식재료 추가</span>
+          <Link href={`/fridge/ingre-edit/${fridgeId}`} className="flex-[1.5]">
+            <PrimaryButton fullWidth size="md">
+              <AddIcon sx={{ fontSize: 16 }} />
+              <span>식재료 추가</span>
+            </PrimaryButton>
           </Link>
-          <Link
-            href={`/fridge/${fridgeId}/edit`}
-            className="flex-1 py-3 text-xs font-bold text-gray-600 bg-white hover:bg-gray-50 border border-gray-200 rounded-2xl flex items-center justify-center gap-1.5 transition-all"
-          >
-            <EditOutlinedIcon sx={{ fontSize: 16 }} />
-            <span>냉장고 수정</span>
+          <Link href={`/fridge/${fridgeId}/edit`} className="flex-1">
+            <CancelButton fullWidth size="md">
+              <EditOutlinedIcon sx={{ fontSize: 16 }} />
+              <span>냉장고 수정</span>
+            </CancelButton>
           </Link>
         </div>
       </div>

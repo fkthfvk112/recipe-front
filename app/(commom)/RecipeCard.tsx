@@ -8,6 +8,8 @@ import StarIcon from '@mui/icons-material/Star';
 import { roundToNPlaces } from "../(utils)/NumberUtil";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 
+import Badge from "./Component/Badge";
+
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   const imageUrl = recipe.repriPhotos && recipe.repriPhotos.length > 0 
     ? recipe.repriPhotos[0] 
@@ -30,11 +32,13 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
       {/* Content Area - Clean text layout without cards */}
       <div className="flex flex-col pt-3.5 px-0.5 gap-1">
         
-        {/* Category tag - Olive tone */}
+        {/* Category Badge - Shared Badge */}
         {recipe.categorie && (
-          <span className="text-[11px] font-black text-mugin-secondary uppercase tracking-wider">
-            {recipe.categorie}
-          </span>
+          <div className="flex items-center mb-0.5">
+            <Badge variant="emerald" size="md">
+              {recipe.categorie}
+            </Badge>
+          </div>
         )}
 
         {/* Title */}

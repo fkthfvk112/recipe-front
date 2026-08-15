@@ -10,6 +10,7 @@ import serverFetch from "@/app/(commom)/serverFetch";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 import { Metadata, ResolvingMetadata } from "next";
 import Script from "next/script";
+import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 
 type Props = {
   params: Promise<{ recipeId: string }>
@@ -90,7 +91,18 @@ export default async function RecipeDetail({
 
   let recipeDetail: RecipeDetail = fetchData?.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData?.recipeOwnerInfo;
-  let reviewCnt:number = fetchData?.reviewCnt;
+  let reviewCnt: number = fetchData?.reviewCnt ?? 0;
+
+  if (!recipeDetail) {
+    return (
+      <FallbackPage
+        icon="🍳"
+        title="레시피가 존재하지 않습니다."
+        description="요청하신 레시피가 존재하지 않거나 삭제되었습니다."
+        primaryAction={{ label: "레시피 목록으로", href: "/recipes/1/sortingCondition=POPULARITY" }}
+      />
+    );
+  }
   
   const recipeInfo: RecipeInfoProp = {
     recipeId: Number(params.recipeId),

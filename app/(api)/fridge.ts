@@ -19,8 +19,9 @@ export async function updateFridgePreset(payload: PresetUpdateRequest) {
 }
 
 export async function fetchFridgeDetail(fridgeId: number, fridgeSort: FridgeSortingEnum) {
+  const sortVal = typeof fridgeSort === "number" ? fridgeSort : Number(fridgeSort ?? 0);
   const res = await axiosAuthInstacne.get(
-    `fridge/my/detail?fridgeId=${fridgeId}&sortingEnum=${fridgeSort}`
+    `fridge/my/detail?fridgeId=${fridgeId}&sortingEnum=${sortVal}`
   );
   return res.data;
 }

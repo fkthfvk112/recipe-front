@@ -24,6 +24,8 @@ interface SelectedFridge {
   name: string;
 }
 
+import Badge from "../(commom)/Component/Badge";
+
 export default function Fridge() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [initialSetted, setInitialSetted] = useState<boolean>(false);
@@ -86,14 +88,14 @@ export default function Fridge() {
           <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
             <KitchenIcon sx={{ fontSize: 20 }} />
           </div>
-          <div className="flex items-center gap-1 shrink-0">
-            <span className="text-[11px] font-extrabold bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200/60">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Badge variant="emerald" size="sm">
               {fridge.normalIngreCnt}개 보유
-            </span>
+            </Badge>
             {fridge.expIngreCnt >= 1 && (
-              <span className="text-[11px] font-extrabold bg-red-50 text-red-600 px-2.5 py-0.5 rounded-full border border-red-200/60">
+              <Badge variant="rose" size="sm">
                 {fridge.expIngreCnt}개 임박
-              </span>
+              </Badge>
             )}
           </div>
         </div>
@@ -116,7 +118,7 @@ export default function Fridge() {
         {/* ── Header ─────────────────────────────────────────────────── */}
         <div className="mb-7 border-b border-gray-100 pb-4 flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-black text-gray-900 tracking-tight">나의 냉장고 🧊</h1>
+            <h1 className="text-2xl font-black text-gray-900 tracking-tight">나의 냉장고</h1>
             <p className="text-xs text-gray-500 font-medium mt-1">
               식재료를 보관하고 유통기한을 체계적으로 관리해보세요.
             </p>

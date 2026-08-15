@@ -3,7 +3,7 @@
 import React from "react";
 import { CircularProgress } from "@mui/material";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   loading?: boolean;
   fullWidth?: boolean;
@@ -12,13 +12,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeClasses = {
-  sm: "px-3.5 py-2 text-xs rounded-xl",
-  md: "px-4 py-3 text-xs rounded-2xl",
-  lg: "px-6 py-3.5 text-sm rounded-2xl",
+  sm: "px-3 py-2 text-xs rounded-xl",
+  md: "px-5 py-3 text-xs sm:text-sm rounded-2xl",
+  lg: "px-6 py-3.5 text-sm sm:text-base rounded-2xl",
 };
 
 /**
- * Emerald Primary Button - 주요 저장 / 게시 / 완료 액션 (Solid Emerald)
+ * Emerald Primary Button - 주요 저장 / 게시 / 소비하기 / 완료 액션 (Solid Emerald)
  */
 export function PrimaryButton({
   children,
@@ -27,14 +27,15 @@ export function PrimaryButton({
   size = "md",
   className = "",
   disabled,
+  type = "button",
   ...props
 }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled || loading}
-      className={`font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5 ${
-        fullWidth ? "w-full" : ""
+      className={`font-black text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 ${
+        fullWidth ? "w-full" : "w-auto"
       } ${sizeClasses[size]} ${className}`}
       {...props}
     >
@@ -53,11 +54,12 @@ export function CancelButton({
   size = "md",
   className = "",
   disabled,
+  type = "button",
   ...props
 }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled || loading}
       className={`font-bold text-gray-600 bg-white hover:bg-gray-50 border border-gray-200 shadow-xs transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 ${
         fullWidth ? "w-full" : ""
@@ -70,7 +72,7 @@ export function CancelButton({
 }
 
 /**
- * Danger / Destructive Button - 삭제 / 파괴적 액션 (Light Red)
+ * Danger / Destructive Button - 삭제 / 파괴적 액션 (Light Red / Solid Red)
  */
 export function DangerButton({
   children,
@@ -79,18 +81,73 @@ export function DangerButton({
   size = "md",
   className = "",
   disabled,
+  type = "button",
   ...props
 }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled || loading}
-      className={`font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200/60 transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 ${
+      className={`font-black text-white bg-rose-500 hover:bg-rose-600 active:scale-[0.99] shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5 ${
+        fullWidth ? "w-full" : ""
+      } ${sizeClasses[size]} ${className}`}
+      {...props}
+    >
+      {loading ? <CircularProgress size={16} sx={{ color: "white" }} /> : children}
+    </button>
+  );
+}
+
+/**
+ * Soft Rose / Discard Button - 폐기하기 / 보조 경고 액션 (Pastel Rose)
+ */
+export function RoseButton({
+  children,
+  loading = false,
+  fullWidth = false,
+  size = "md",
+  className = "",
+  disabled,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      disabled={disabled || loading}
+      className={`font-black text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 ${
         fullWidth ? "w-full" : ""
       } ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {loading ? <CircularProgress size={16} sx={{ color: "#ef4444" }} /> : children}
+    </button>
+  );
+}
+
+/**
+ * Dark Button - 차분한 중립 블랙 액션 (식재료 보충하기 등)
+ */
+export function DarkButton({
+  children,
+  loading = false,
+  fullWidth = false,
+  size = "md",
+  className = "",
+  disabled,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      disabled={disabled || loading}
+      className={`font-extrabold text-white bg-neutral-800 hover:bg-neutral-900 shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 ${
+        fullWidth ? "w-full" : ""
+      } ${sizeClasses[size]} ${className}`}
+      {...props}
+    >
+      {loading ? <CircularProgress size={16} sx={{ color: "white" }} /> : children}
     </button>
   );
 }
@@ -105,11 +162,12 @@ export function OutlineButton({
   size = "md",
   className = "",
   disabled,
+  type = "button",
   ...props
 }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type}
       disabled={disabled || loading}
       className={`font-bold text-emerald-600 bg-white hover:bg-emerald-50 border border-emerald-500 transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 ${
         fullWidth ? "w-full" : ""

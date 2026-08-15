@@ -1,52 +1,34 @@
-'use client' // Error components must be Client Components
- 
-import { useEffect, useState } from 'react'
+"use client";
+
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   const [errMsg, setErrMsg] = useState<string>("");
   const router = useRouter();
 
-  console.log("에러", error.message);
   useEffect(() => {
-    if(error?.message){
+    if (error?.message) {
       setErrMsg(error.message);
-    }else{
-      setErrMsg("알 수 없는 오류가 발생했습니다.");
+    } else {
+      setErrMsg("요청을 처리하는 중 예기치 못한 오류가 발생하였습니다.");
     }
-  }, [error])
- 
-  
+  }, [error]);
+
   return (
-    <div className='defaultOuterContainer flex pt-20'>
-      <div className='defaultInnerContainer flex justify-center items-center flex-col'>
-      <h1>문제가 발생하였습니다.</h1>
-      <p className='mb-3 p-3'>{errMsg}</p>
-      <div>
-        <button
-          className='greenBtn me-1'
-          onClick={
-            () => reset()
-          }
-        >
-          재시도
-        </button>
-        <button
-          className='greenBtn ms-1'
-          onClick={
-            () => router.back()
-          }
-        >
-          이전으로
-        </button>       
-      </div>
-      </div>
-    </div>
-  )
+    <FallbackPage
+      icon="⚠️"
+      title="문제가 발생하였습니다."
+      description={errMsg}
+      primaryAction={{ label: "다시 시도", onClick: () => reset() }}
+      secondaryAction={{ label: "이전으로", onClick: () => router.back() }}
+    />
+  );
 }
