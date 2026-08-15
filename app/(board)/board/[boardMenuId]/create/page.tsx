@@ -20,6 +20,7 @@ import { boardCacheSelectorAtom } from '@/app/(recoil)/boardCacheSelector';
 import { cacheKey } from '@/app/(recoil)/cacheKey';
 import useChkLoginToken from '@/app/(commom)/Hook/useChkLoginToken';
 import { checkAnonymousAtom } from '@/app/(recoil)/userFeedAtom';
+import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 function CreateNewBoardPost({
   params
@@ -195,13 +196,9 @@ function CreateNewBoardPost({
             <span>익명으로 게시</span>
           </label>
 
-          <button
-            className="px-6 py-2.5 text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl cursor-pointer transition-all shadow-md border-none disabled:opacity-50"
-            onClick={postbtn}
-            disabled={isLoading}
-          >
+          <PrimaryButton onClick={postbtn} loading={isLoading}>
             게시글 작성
-          </button>
+          </PrimaryButton>
         </div>
       </section>
     </div>

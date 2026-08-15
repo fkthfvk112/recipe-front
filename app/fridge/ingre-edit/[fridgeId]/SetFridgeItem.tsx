@@ -2,164 +2,299 @@
 
 import React, { useState } from "react";
 import { FridgeItem } from "@/app/(type)/fridge";
-import { axiosAuthInstacne, } from "@/app/(customAxios)/authAxios";
+import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import IngreRecommandInput from "@/app/admin/ingredient/IngreRecommandInput";
 import { FridgeItem_IN } from "./page";
 import Swal from "sweetalert2";
 import { getNDayAfterBaseDateKST } from "@/app/(utils)/DateUtil";
 import FridgeItemImgList from "../../FridgeItemImgList";
-import Require from "@/app/(commom)/Component/Require";
 import { useQueryClient } from "@tanstack/react-query";
-import TitleDescription from "@/app/(commom)/Component/TitleDescription";
+import AddIcon from "@mui/icons-material/Add";
+import TuneIcon from "@mui/icons-material/Tune";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import NumbersIcon from "@mui/icons-material/Numbers";
 
-function SetFridgeItem({fridgeId, lastOrder}:{fridgeId:number, lastOrder:number}){
-    const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
-    const [titleVide, setTitleVide] = useState<number>(0);//넘버값 바뀌면 식재료명 ""로 초기화
-    const [title, setTitle] = useState<string>("");
-    const [exDate, setExDate] = useState<string>("");
-    const [qqt, setQqt] = useState<number>(0);
+function SetFridgeItem({
+  fridgeId,
+  lastOrder,
+}: {
+  fridgeId: number;
+  lastOrder: number;
+}) {
+  const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
+  const [titleVide, setTitleVide] = useState<number>(0);
+  const [title, setTitle] = useState<string>("");
+  const [exDate, setExDate] = useState<string>("");
+  const [qqt, setQqt] = useState<number>(0);
 
-    const [unit, setUnit] = useState<string>("");
-    const [amt, setAmt]   = useState<number>(0);
-    const [description, setDescription] = useState<string>("");
+  const [unit, setUnit] = useState<string>("");
+  const [amt, setAmt] = useState<number>(0);
+  const [description, setDescription] = useState<string>("");
 
-    const qc = useQueryClient();
+  // Collapsible toggle for optional advanced details
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
-    const initializeAllData = ()=>{
-      setTitle("");
-      setExDate("");
-      setQqt(0);
-      setUnit("");
-      setAmt(0);
-      setDescription("");
-      setTitleVide(titleVide+1);
+  const qc = useQueryClient();
+
+  const initializeAllData = () => {
+    setTitle("");
+    setExDate("");
+    setQqt(0);
+    setUnit("");
+    setAmt(0);
+    setDescription("");
+    setTitleVide((prev) => prev + 1);
+  };
+
+  const clickImgCallBack = (imgItem: FridgeItem) => {
+    setSelectedFridgeImg(imgItem);
+  };
+
+  const addItemToFridge = () => {
+    if (!title || title.trim().length < 1) {
+      Swal.fire({
+        title: "식재료명을 입력해주세요.",
+        text: "예: 사과, 대파, 삼겹살",
+        icon: "warning",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#ef4444",
+      });
+      return;
     }
-    
-    const clickImgCallBack = (imgItem:FridgeItem)=>{      
-      setSelectedFridgeImg(imgItem);
+
+    const item: FridgeItem_IN = {
+      fridgeImgId: selectedFridgeImg?.fridgeImgId ?? 1,
+      imgUrl: selectedFridgeImg?.imgUrl ?? "",
+      expiredAt: exDate,
+      name: title.trim(),
+      qqt: qqt,
+      unit: unit,
+      amt: amt,
+      description: description,
+      itemOrder: lastOrder + 1,
     };
 
-    const addItemToFridge = ()=>{
-
-      if(!title || title.length < 1){
-        Swal.fire({
-          title: "식재료명을 입력해주세요.",
-          icon: "warning",
-          confirmButtonText: "확인",
-          confirmButtonColor: '#d33',
-          allowEnterKey:false
-        });
-        return;      
-      }
-
-      const item:FridgeItem_IN = {
-        fridgeImgId:selectedFridgeImg?.fridgeImgId??1,
-        imgUrl:selectedFridgeImg?.imgUrl??"",
-        expiredAt:exDate,
-        name:title,
-        qqt:qqt,
-        unit:unit,
-        amt:amt,
-        description:description,
-        itemOrder:lastOrder + 1
-      }
-
-      axiosAuthInstacne.post("fridge/my/fridge-item", {
-        fridgeId:fridgeId,
-        fridgeItemDTO:item
-      }).then((res)=>{
-        if(res.data === 'CREATE_SUCCESS'){
+    axiosAuthInstacne
+      .post("fridge/my/fridge-item", {
+        fridgeId: fridgeId,
+        fridgeItemDTO: item,
+      })
+      .then((res) => {
+        if (res.data === "CREATE_SUCCESS") {
           Swal.fire({
-            title: "식재료가 추가되었습니다",
+            title: "식재료 추가 완료! 🥦",
+            text: `'${title.trim()}'이(가) 냉장고에 추가되었습니다.`,
             icon: "success",
-        })
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+          });
           qc.invalidateQueries({
-              queryKey: ["fridgeDetail", fridgeId],
-          });  
+            queryKey: ["fridgeDetail", fridgeId],
+          });
           initializeAllData();
         }
-      })
-    }
+      });
+  };
 
+  // Quick Date Presets
   const setDateAfterN = (n: number) => {
-    setExDate(prev => {
-      const baseDate = prev ? new Date(prev) : new Date();
-      return getNDayAfterBaseDateKST(baseDate, n);
-    });
+    const baseDate = new Date();
+    setExDate(getNDayAfterBaseDateKST(baseDate, n));
   };
 
   const MAX_AMT = 1_000_000_000;
-  const formatNumber = (value: number | string) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatNumber = (value: number | string) =>
+    value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const parseNumber = (value: string) => Number(value.replace(/,/g, ""));
-      
-    return (
-            <div className="flex flex-col justify-start items-center w-full max-w-[600px]">
-              <TitleDescription
-                title="식재료 추가"
-                desc={`이름만 입력해도 바로 추가할 수 있어요.\n
-                      수량과 금액을 입력하면 소비/폐기 내역을 자동으로 관리해줘요.`}
-              />                
-              <div className="w-full">
-                    <div className="mt-3">
-                      <div className="flex">
-                        <h3 className="me-1">식재료명</h3>
-                        <Require/>
-                      </div>
-                      <div className="flex">
-                          <IngreRecommandInput dataSettingCallback={(ingre:string)=>{
-                            setTitle(ingre);
-                          }}
-                          placeholderStr="냉장고에 넣을 식재료 입력"
-                          inputStyleStr="col-span-3 rounded-none"
-                          containerStyleStr="col-span-3"
-                          titleVideCnt={titleVide}
-                          />
-                            <button onClick={addItemToFridge} className="greenBtn ms-2">추가하기</button>
-                        </div>
-                      </div>
-                    <div>
-                      <h3 className="w-[100px] mt-6">수량/단위</h3>
-                      <div className="flex gap-1">
-                        <input className="w-[150px]" value={qqt} onChange={(evt)=>setQqt(Number(evt.target.value))} type="number" placeholder="100" />
-                        <input className="w-[100px]" value={unit} onChange={(evt)=>setUnit(evt.target.value)} placeholder="개"/>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="w-[100px] mt-6">총 구매 금액</h3>
-                      <div className="flex gap-1 items-center">
-                        <input
-                          className="w-[250px]"
-                          type="text"
-                          value={amt ? formatNumber(amt) : ""}
-                          placeholder="1,000"
-                          onChange={(e) => {
-                            const raw = parseNumber(e.target.value);
-                            if (isNaN(raw)) return;
-                            if (raw > MAX_AMT) return;
-                            setAmt(raw);
-                          }}
-                        />
-                    </div>
-                    </div>
-                    <div className="mt-6 flex w-[300px] flex-start items-start">
-                      <div className="me-0.5">
-                        <h3 className="w-[250px]">유효기간</h3>
-                        <input value={exDate} onChange={(evt)=>setExDate(evt.target.value)} type="date" />
-                      </div>
-                    </div>
-                    <div>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(1)}>+1일</button>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(5)}>+5일</button>
-                        <button className="saveBtn-outline-orange w-[80px] p-0 m-0.5 mt-2" onClick={()=>setDateAfterN(10)}>+10일</button>
-                    </div>
-                    <div className="mt-6 ">
-                      <h3 className="w-[100px]">설명</h3>
-                      <textarea value={description} className="p-2 h-[80px]" onChange={(evt)=>setDescription(evt.target.value)} maxLength={250}></textarea>
-                    </div>
-                </div>
-                <FridgeItemImgList imgClickCallback={clickImgCallBack}></FridgeItemImgList>
+
+  return (
+    <div className="w-full bg-white border border-gray-200/90 rounded-3xl p-5 shadow-xs flex flex-col gap-4">
+
+      {/* ── Title Banner ───────────────────────────────────────────── */}
+      <div>
+        <h2 className="text-sm font-black text-gray-900 tracking-tight">새 식재료 빠르게 추가</h2>
+        <p className="text-xs text-gray-400 font-medium mt-0.5">
+          이름만 입력하고 엔터를 누르면 1초 만에 등록돼요!
+        </p>
+      </div>
+
+      {/* ── 1-Step Ultra-Fast Add Bar ──────────────────────────────── */}
+      <div className="flex gap-2 items-center">
+        <div className="flex-1">
+          <IngreRecommandInput
+            dataSettingCallback={(ingre: string) => {
+              setTitle(ingre);
+            }}
+            onEnterSubmit={addItemToFridge}
+            placeholderStr="식재료 이름 입력 (예: 사과, 계란, 삼겹살)"
+            inputStyleStr="w-full px-4 py-3 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-2xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/10 outline-none transition-all"
+            containerStyleStr="w-full"
+            titleVideCnt={titleVide}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={addItemToFridge}
+          className="px-5 py-3 text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] rounded-2xl shadow-md transition-all cursor-pointer border-none shrink-0 flex items-center gap-1 outline-none"
+        >
+          <AddIcon sx={{ fontSize: 17 }} />
+          <span>추가</span>
+        </button>
+      </div>
+
+      {/* ── Progressive Disclosure Collapsible Toggle ─────────────── */}
+      <button
+        type="button"
+        onClick={() => setShowAdvanced((prev) => !prev)}
+        className={`w-full py-2.5 px-4 rounded-2xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between outline-none ${
+          showAdvanced
+            ? "border-emerald-500 bg-emerald-50/60 text-emerald-700"
+            : "border-gray-200 bg-gray-50/50 hover:bg-gray-100 text-gray-600"
+        }`}
+      >
+        <div className="flex items-center gap-1.5">
+          <TuneIcon sx={{ fontSize: 15 }} />
+          <span>유통기한, 수량, 금액도 입력할래요 (선택)</span>
+        </div>
+        <span className="text-xs">{showAdvanced ? "▲" : "▼"}</span>
+      </button>
+
+      {/* ── Collapsible Optional Details Panel ─────────────────────── */}
+      {showAdvanced && (
+        <div className="p-4 bg-gray-50/70 border border-gray-200/80 rounded-2xl flex flex-col gap-4">
+
+          {/* Quick Date Presets & Expiry Date */}
+          <div>
+            <label className="text-[11px] font-black text-gray-700 flex items-center gap-1 mb-2">
+              <CalendarTodayIcon sx={{ fontSize: 14 }} className="text-emerald-500" />
+              <span>유통기한 (소비기한)</span>
+            </label>
+
+            {/* Quick Date Chips */}
+            <div className="flex flex-wrap gap-1.5 mb-2.5">
+              <button
+                type="button"
+                onClick={() => setDateAfterN(0)}
+                className="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 hover:border-emerald-500 hover:text-emerald-600 text-gray-600 rounded-xl transition-all cursor-pointer"
+              >
+                오늘까지
+              </button>
+              <button
+                type="button"
+                onClick={() => setDateAfterN(3)}
+                className="px-2.5 py-1 text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60 rounded-xl hover:bg-emerald-100 transition-all cursor-pointer"
+              >
+                +3일 (신선식품)
+              </button>
+              <button
+                type="button"
+                onClick={() => setDateAfterN(7)}
+                className="px-2.5 py-1 text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60 rounded-xl hover:bg-emerald-100 transition-all cursor-pointer"
+              >
+                +7일 (일주일)
+              </button>
+              <button
+                type="button"
+                onClick={() => setDateAfterN(14)}
+                className="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 hover:border-emerald-500 hover:text-emerald-600 text-gray-600 rounded-xl transition-all cursor-pointer"
+              >
+                +14일 (2주)
+              </button>
+              <button
+                type="button"
+                onClick={() => setDateAfterN(30)}
+                className="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 hover:border-emerald-500 hover:text-emerald-600 text-gray-600 rounded-xl transition-all cursor-pointer"
+              >
+                +30일 (한달)
+              </button>
             </div>
-    )
+
+            <input
+              type="date"
+              value={exDate}
+              onChange={(evt) => setExDate(evt.target.value)}
+              className="w-full px-3 py-2 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 outline-none"
+            />
+          </div>
+
+          {/* Quantity & Unit */}
+          <div>
+            <label className="text-[11px] font-black text-gray-700 flex items-center gap-1 mb-2">
+              <NumbersIcon sx={{ fontSize: 14 }} className="text-emerald-500" />
+              <span>수량 및 단위</span>
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={qqt || ""}
+                onChange={(evt) => setQqt(Number(evt.target.value))}
+                placeholder="수량 (예: 2)"
+                className="flex-1 px-3 py-2 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 outline-none"
+              />
+              <input
+                type="text"
+                value={unit}
+                onChange={(evt) => setUnit(evt.target.value)}
+                placeholder="단위 (예: 개,팩,g)"
+                className="w-28 px-3 py-2 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Total Purchase Amount */}
+          <div>
+            <label className="text-[11px] font-black text-gray-700 flex items-center gap-1 mb-2">
+              <AttachMoneyIcon sx={{ fontSize: 14 }} className="text-emerald-500" />
+              <span>총 구매 금액 (소비 내역용)</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={amt ? formatNumber(amt) : ""}
+                placeholder="금액 입력 (예: 5,000)"
+                onChange={(e) => {
+                  const raw = parseNumber(e.target.value);
+                  if (isNaN(raw)) return;
+                  if (raw > MAX_AMT) return;
+                  setAmt(raw);
+                }}
+                className="w-full px-3 py-2 pr-8 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 outline-none"
+              />
+              <span className="absolute right-3 top-2.5 text-xs font-bold text-gray-400">원</span>
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="text-[11px] font-black text-gray-700 flex items-center gap-1 mb-2">
+              <DescriptionOutlinedIcon sx={{ fontSize: 14 }} className="text-emerald-500" />
+              <span>메모 / 설명</span>
+            </label>
+            <textarea
+              value={description}
+              onChange={(evt) => setDescription(evt.target.value)}
+              placeholder="식재료 보관 장소나 세부 사항을 적어보세요."
+              maxLength={250}
+              rows={2}
+              className="w-full px-3 py-2 text-xs font-medium text-gray-800 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 outline-none resize-none leading-relaxed"
+            />
+          </div>
+
+          {/* Fridge Image Picker */}
+          <div>
+            <FridgeItemImgList imgClickCallback={clickImgCallBack} />
+          </div>
+
+        </div>
+      )}
+
+    </div>
+  );
 }
 
 export default React.memo(SetFridgeItem);

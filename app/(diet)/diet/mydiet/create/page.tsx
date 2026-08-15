@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import { useUserFeedDietInxPagenation } from "@/app/(commom)/Hook/useUserFeedDietInxPagenation";
+import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 export default function MyDiet(){
     const [dietData, dietRefetcher, isLoading] = useUserFeedDietInxPagenation({userId:"myFeedDeit", isMyFeed:true});
@@ -189,7 +190,7 @@ export default function MyDiet(){
                     <div className='flex justify-center items-center mr-10'>
                         <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
                     </div>
-                    <button className='greenBtn' onClick={handleSubmit}>식단 작성</button>
+                    <PrimaryButton onClick={handleSubmit}>식단 작성</PrimaryButton>
                 </div>
             </section>
         </main>

@@ -9,6 +9,7 @@ import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 export default function MyDietEdit({
     params,
@@ -232,7 +233,9 @@ export default function MyDietEdit({
                     <div className='flex justify-center items-center mr-10'>
                         <Checkbox onChange={()=>{setIsPublic(!isPublic)}}  checked={isPublic} className='mr-0' color="success" />공개
                     </div>
-                    <button className='greenBtn' onClick={handleSubmit} disabled={isLoading}>식단 수정</button>
+                    <PrimaryButton onClick={handleSubmit} loading={isLoading}>
+                      식단 수정
+                    </PrimaryButton>
                 </div>
             </section>
         </main>

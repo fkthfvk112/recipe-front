@@ -1,107 +1,125 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { FridgeItem } from "../(type)/fridge";
-import { defaultAxios } from "../(customAxios)/authAxios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchFridgeImages } from "../(api)/fridge";
 
-interface FridgeItemImgListInterface{
-    initialImgId?:number; //초기값
-    imgClickCallback:(prop?:any)=>any; //이미지 선택 시 실행할 함수
+interface FridgeItemImgListInterface {
+  initialImgId?: number;
+  imgClickCallback: (prop?: any) => any;
 }
 
+export default function FridgeItemImgList({
+  initialImgId,
+  imgClickCallback,
+}: FridgeItemImgListInterface) {
+  const [imgSort, setImgSort] = useState<string>("전체");
+  const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
 
-export default function FridgeItemImgList({initialImgId, imgClickCallback}:FridgeItemImgListInterface){
-    const [imgSort, setImgSort] = useState<string>("전체");
-    const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
+  const { data: fridgeImgs = [] } = useQuery({
+    queryKey: ["fridgeImages"],
+    queryFn: fetchFridgeImages,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 
-    // 같은 queryKey면 캐시 자동 재사용
-    const { data: fridgeImgs = [], isLoading, isError } = useQuery({
-      queryKey: ["fridgeImages"],
-      queryFn: fetchFridgeImages,
-      staleTime: 5 * 60 * 1000,     // 5분 동안 fresh
-      gcTime: 30 * 60 * 1000,       // 30분 캐시 유지
-      refetchOnWindowFocus: false,
-      retry: 1,
-    });
+  useEffect(() => {
+    if (fridgeImgs.length === 0) return;
+    const picked =
+      (typeof initialImgId === "number" &&
+        fridgeImgs.find((x) => x.fridgeImgId === initialImgId)) ||
+      fridgeImgs.find((x) => x.fridgeImgId === 0) ||
+      fridgeImgs[0];
+    setSelectedFridgeImg(picked);
+  }, [fridgeImgs, initialImgId]);
 
-    // 초기 선택 로직: initialImgId > id=1 > 첫 항목
-    useEffect(() => {
-      if (fridgeImgs.length === 0) return;
-      const picked =
-        (typeof initialImgId === "number" &&
-          fridgeImgs.find((x) => x.fridgeImgId === initialImgId)) ||
-          fridgeImgs.find((x) => x.fridgeImgId === 0) ||
-          fridgeImgs[0];
-      setSelectedFridgeImg(picked);
-    }, [fridgeImgs, initialImgId]);
-      
-    const sortBtns = ["전체" ,"채소", "과일", "육류", "수산물", "달걀/유제품", "곡류", "빵/과자", "냉동식품", "조미료/소스", "음료", "기타"].map((sort, inx)=>{
-      return (
-        <span key={inx}>
-          <button
-            onClick={()=>setImgSort(sort)}
-            className={`text-[#123123] w-[100px] p-1 m-1 border-0 border-b-2 ${imgSort === sort ?  " border-b-[#123123]" : "border-b-transparent"}`}>
-              {sort}
-          </button>
-        </span>
-      )
+  const categories = [
+    "전체",
+    "채소",
+    "과일",
+    "육류",
+    "수산물",
+    "달걀/유제품",
+    "곡류",
+    "빵/과자",
+    "냉동식품",
+    "조미료/소스",
+    "음료",
+    "기타",
+  ];
+
+  const sortBtns = categories.map((sort, inx) => {
+    const isSelected = imgSort === sort;
+    return (
+      <button
+        key={inx}
+        type="button"
+        onClick={() => setImgSort(sort)}
+        className={`px-2.5 py-1 text-xs font-bold rounded-xl transition-all cursor-pointer outline-none border ${
+          isSelected
+            ? "bg-emerald-50 text-emerald-700 border-emerald-300 shadow-xs"
+            : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+        }`}
+      >
+        {sort}
+      </button>
+    );
+  });
+
+  const imageComps = fridgeImgs
+    .filter((img) => {
+      if (imgSort === "전체") return true;
+      return imgSort === img.imgSort;
     })
-
-    const imageComps = fridgeImgs.filter((img)=>{
-      if(imgSort === "전체"){
-        return true;
-      }else{
-        return imgSort === img.imgSort
-      }
-    }).map((img, inx) => (
+    .map((img, inx) => {
+      const isSelected = img.imgUrl === selectedFridgeImg?.imgUrl;
+      return (
         <div
-          onMouseDown={()=>{
+          key={inx}
+          onMouseDown={() => {
             setSelectedFridgeImg(img);
             imgClickCallback(img);
-        }}
-          className={`flex m-1 justify-start items-center flex-col border border-[#a1a1a1] shadow-md bg-white aspect-square rounded-md img-wrapper-square relative ${
-            img.imgUrl === selectedFridgeImg?.imgUrl ? "outline outline-2 outline-slate-950" : ""
-          }}`}
-          key={inx}
+          }}
+          className={`relative aspect-square rounded-2xl bg-white border cursor-pointer flex items-center justify-center p-1.5 transition-all overflow-hidden group ${
+            isSelected
+              ? "border-emerald-500 ring-2 ring-emerald-500/80 shadow-md bg-emerald-50/20"
+              : "border-gray-200 hover:border-emerald-300 hover:shadow-xs"
+          }`}
         >
-          {img.imgUrl === selectedFridgeImg?.imgUrl ? (
-            <CheckCircleIcon className="absolute right-0 top-0 w-8 h-8 z-10"></CheckCircleIcon>
-          ) : (
-            <></>
+          {isSelected && (
+            <div className="absolute top-1 right-1 z-10 text-emerald-500">
+              <CheckCircleIcon sx={{ fontSize: 18 }} />
+            </div>
           )}
-          <div className="w-[60px] h-[60px] ">
-            <Image className="inner-img-whole" src={img.imgUrl}  alt="ex" fill={true} quality={100} />
+          <div className="relative w-10 h-10">
+            <Image
+              src={img.imgUrl}
+              alt={img.imgName || "icon"}
+              fill
+              sizes="40px"
+              className="object-contain group-hover:scale-105 transition-transform"
+            />
           </div>
         </div>
-      ));
+      );
+    });
 
-    return(
-        <>
-        <div className="w-full mt-6">
-            <h3 className="w-[100px]">이미지 선택</h3>
-        </div>
-        <div className="w-full flex-center flex-wrap">
-            {sortBtns}
-        </div>
-        <div className="max-w-[512px] min-h-[300px]">
-            <section className="grid grid-cols-5 w-full max-w-[512px] max-h-[300px] overflow-y-scroll overscroll-none"
-            onMouseDown={(e)=>{
-                e.stopPropagation();
-            }}
-            onTouchStart={(e)=>{
-                e.stopPropagation();
-            }}
-            onMouseUp={(e)=>{
-                e.stopPropagation();
-            }}
-            onTouchEnd={(e)=>{
-                e.stopPropagation();
-            }}>
-                {imageComps}
-            </section>
-        </div>
-        </>
-    )
+  return (
+    <div className="w-full flex flex-col gap-3">
+      <span className="text-[11px] font-black text-gray-700">아이콘 이미지 선택</span>
+
+      {/* Category Chips Horizontal Scroll / Wrap */}
+      <div className="flex flex-wrap gap-1.5">{sortBtns}</div>
+
+      {/* Grid of Icon Cards */}
+      <div className="grid grid-cols-5 sm:grid-cols-6 gap-2 max-h-[220px] overflow-y-auto no-scrollbar p-1 bg-white border border-gray-200/80 rounded-2xl">
+        {imageComps}
+      </div>
+    </div>
+  );
 }
