@@ -6,18 +6,23 @@ import NextTopLoader from 'nextjs-toploader';
 import Script from "next/script";
 import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 
+import RegisterSW from "./RegisterSW";
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "머그인",
-    description:"재료를 공유하고 관리하고 소비해요. 낭비없는 삶 머그인",
-    icons:{
-      icon:"/common/favicon.png"
+    title: "머그인 - 레시피 & 스마트 냉장고",
+    description: "재료를 공유하고 관리하고 소비해요. 낭비없는 삶 머그인",
+    manifest: "/manifest.json",
+    themeColor: "#10b981",
+    icons: {
+      icon: "/common/favicon.png",
+      apple: "/common/favicon.png",
     },
-    openGraph:{
-      title: "머그인",
-      description:"재료를 공유하고 관리하고 소비해요. 낭비없는 삶 머그인",
-    }
-  }
+    openGraph: {
+      title: "머그인 - 레시피 & 스마트 냉장고",
+      description: "재료를 공유하고 관리하고 소비해요. 낭비없는 삶 머그인",
+    },
+  };
 }
  
 export default function RootLayout({
@@ -29,6 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
         {/* Google AdSense */}
         <meta name="google-adsense-account" content="ca-pub-4679279476061490"/>
         <Script
@@ -52,6 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Google Tag Manager */}
       </head>
       <body>
+        <RegisterSW />
         {/* Google Tag Manager (noscript) */}
         <noscript
           dangerouslySetInnerHTML={{
