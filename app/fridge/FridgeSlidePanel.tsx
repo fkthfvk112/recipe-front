@@ -188,7 +188,7 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
                       )}
                       {dateDiff !== -100_000 ? (
                         <span
-                          className={`text-[11px] font-black px-2 py-0.5 rounded-full border ${
+                          className={`text-[11px] font-black px-2 py-0.5 rounded-full border mt-1 ${
                             dateDiff <= 3
                               ? "bg-red-50 text-red-600 border-red-200/60"
                               : "bg-emerald-50 text-emerald-700 border-emerald-200/60"
@@ -197,7 +197,7 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
                           D-{dateDiff}
                         </span>
                       ) : (
-                        <span className="text-[11px] font-bold text-gray-300">-</span>
+                        <span className="text-[11px] font-bold text-gray-300 mt-1">-</span>
                       )}
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
           <Link href={`/fridge/${fridgeId}/edit`} className="flex-1">
             <CancelButton fullWidth size="md">
               <EditOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>냉장고 수정</span>
+              <span>수정</span>
             </CancelButton>
           </Link>
         </div>

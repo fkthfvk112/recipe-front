@@ -79,7 +79,7 @@ function SaveModal<T>({
           if (successCallback) {
             successCallback();
           }
-          router.push(returnUrl);
+          router.replace(returnUrl);
         });
       })
       .catch(() => {

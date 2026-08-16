@@ -12,6 +12,10 @@
   src: url("font/PyeojinGothic-Bold.woff2") format("woff2");
 }
 
+.font-pyeojin {
+  font-family: "PyeojinGothic", sans-serif;
+}
+
 body {
   /*font-family: "JalnanGothic"; */
   color:#121212;

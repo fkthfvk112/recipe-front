@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { FridgeItem } from "@/app/(type)/fridge";
+import { FridgeItem, FridgeItem_IN } from "@/app/(type)/fridge";
 import { axiosAuthInstacne } from "@/app/(customAxios)/authAxios";
 import IngreRecommandInput from "@/app/admin/ingredient/IngreRecommandInput";
-import { FridgeItem_IN } from "./page";
 import Swal from "sweetalert2";
 import { getNDayAfterBaseDateKST } from "@/app/(utils)/DateUtil";
 import FridgeItemImgList from "../../FridgeItemImgList";
@@ -15,6 +14,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import NumbersIcon from "@mui/icons-material/Numbers";
+import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 function SetFridgeItem({
   fridgeId,
@@ -137,14 +137,14 @@ function SetFridgeItem({
             titleVideCnt={titleVide}
           />
         </div>
-        <button
-          type="button"
+        <PrimaryButton
           onClick={addItemToFridge}
-          className="px-5 py-3 text-xs font-extrabold text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] rounded-2xl shadow-md transition-all cursor-pointer border-none shrink-0 flex items-center gap-1 outline-none"
+          size="md"
+          className="shrink-0 font-extrabold shadow-md flex items-center gap-1 py-3 px-5"
         >
           <AddIcon sx={{ fontSize: 17 }} />
           <span>추가</span>
-        </button>
+        </PrimaryButton>
       </div>
 
       {/* ── Progressive Disclosure Collapsible Toggle ─────────────── */}

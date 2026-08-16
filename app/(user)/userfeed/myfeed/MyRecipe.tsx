@@ -44,7 +44,7 @@ export default function MyRecipe() {
 
   return (
     <div className="min-h-screen w-full">
-      <ul className="grid grid-cols-3 w-full gap-1 p-2">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 w-full gap-3 p-1 sm:gap-4">
         {feedPhotos}
       </ul>
       <div className="h-10 w-full text-center mt-10" ref={viewRef}>

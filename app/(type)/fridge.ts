@@ -22,19 +22,32 @@ export interface MyFridge extends FridgeIdNameDesc{
     normalIngreCnt:number;
 }
 
-export interface FridgeItem{
-    fridgeItemId?:number;
-    fridgeImgId?:number;
-    imgUrl:string;
-    expiredAt?:string;
-    name:string;
-    qqt?:number;
-    unit?:string;
-    amt?:number;
-    description?:string;
-    itemOrder?:number;
-    imgSort?:string;
-    createdAt?:string;
+export interface FridgeItem_IN {
+  fridgeImgId?: number;
+  imgUrl?: string;
+  expiredAt?: string;
+  name: string;
+  qqt?: number;
+  unit?: string;
+  amt?: number;
+  description?: string;
+  itemOrder?: number;
+}
+
+export interface FridgeItem {
+  fridgeItemId?: number;
+  fridgeImgId?: number;
+  imgUrl: string;
+  expiredAt?: string;
+  name: string;
+  qqt?: number;
+  unit?: string;
+  amt?: number;
+  description?: string;
+  itemOrder?: number;
+  imgSort?: string;
+  createdAt?: string;
+  status?:string;
 }
 
 

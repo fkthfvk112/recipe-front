@@ -9,6 +9,9 @@ import Swal from "sweetalert2";
 import CasinoIcon from '@mui/icons-material/Casino';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import BoltIcon from '@mui/icons-material/Bolt';
+import ClearIcon from "@mui/icons-material/Clear";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { OrangeButton } from "@/app/(commom)/Component/Buttons";
 
 export default function RandomMenu() {
   const [fullUrl, setFullUrl] = useState("");
@@ -19,6 +22,10 @@ export default function RandomMenu() {
   const [startRotate, setStartRotate] = useState<number>(0);
   const [nowRotating, setNowRotating] = useState<boolean>(false);
   const [immediateLoading, setImmediateLoading] = useState<boolean>(false);
+  
+  // 5번 클릭 트리거 미니 토스트 State
+  const [clickCount, setClickCount] = useState<number>(0);
+  const [showWelcomeToast, setShowWelcomeToast] = useState<boolean>(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -43,6 +50,15 @@ export default function RandomMenu() {
   }, [firstSelected]);
 
   const getRandomMenu = () => {
+    // 클릭 카운터 1 증가
+    setClickCount((prev) => {
+      const nextCount = prev + 1;
+      if (nextCount > 0 && nextCount % 5 === 0) {
+        setShowWelcomeToast(true);
+      }
+      return nextCount;
+    });
+
     if (firstSelected !== "전체") {
       const menuKeyList = randomMenuData[firstSelected];
       if (secondSelected === "전체") {
@@ -178,19 +194,17 @@ export default function RandomMenu() {
         {/* Action Buttons Group */}
         <div className="w-full flex flex-col gap-3 items-center">
           
-          {/* Main Action Button (보더 및 아웃라인 완벽 제거) */}
-          <button
+          {/* Main Action Button (공용 주황색 OrangeButton 사용) */}
+          <OrangeButton
+            fullWidth
+            size="lg"
             onClick={getRandomMenu}
             disabled={nowRotating}
-            className={`w-full py-4 text-sm font-extrabold rounded-2xl shadow-md cursor-pointer transition-all flex items-center justify-center gap-2 border-none outline-none focus:outline-none ${
-              nowRotating
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
-                : "bg-emerald-500 hover:bg-emerald-700 text-white active:scale-[0.99]"
-            }`}
+            className="py-4 text-sm font-extrabold shadow-md"
           >
             <CasinoIcon sx={{ fontSize: 20 }} />
             <span>{!nowRotating ? "무엇을 먹을까?" : "메뉴 뽑는 중..."}</span>
-          </button>
+          </OrangeButton>
 
           {/* Sub Option: Immediate view toggle */}
           <button
@@ -226,6 +240,38 @@ export default function RandomMenu() {
 
         </div>
       </section>
+
+      {/* 우측 구석 방해 없는 미니 팝업 토스트 (5번 클릭 시마다 팝업) */}
+      {showWelcomeToast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-white/95 backdrop-blur-md border border-emerald-200/80 shadow-[0_12px_32px_rgba(0,0,0,0.12)] rounded-2xl p-4 max-w-[280px] w-full text-left transition-all animate-fade-in-up flex flex-col gap-2.5">
+          <div className="flex items-center justify-between">
+            <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/50">
+              <InfoOutlinedIcon sx={{ fontSize: 13 }} />
+              <span>머그인 안내</span>
+            </div>
+            <button
+              onClick={() => setShowWelcomeToast(false)}
+              className="w-5 h-5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 flex items-center justify-center border-none bg-transparent cursor-pointer"
+            >
+              <ClearIcon sx={{ fontSize: 14 }} />
+            </button>
+          </div>
+
+          <p className="text-xs text-gray-700 font-medium leading-snug">
+            이 사이트가 무슨 서비스를 제공하는 지 알고 계신가요?
+          </p>
+
+          <button
+            onClick={() => {
+              setShowWelcomeToast(false);
+              goToWelcome();
+            }}
+            className="w-full py-2 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200/60 transition-colors cursor-pointer outline-none text-center"
+          >
+            서비스 소개 구경하기 &rarr;
+          </button>
+        </div>
+      )}
     </div>
   );
 }

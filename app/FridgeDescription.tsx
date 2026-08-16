@@ -62,16 +62,9 @@ export default function FridgeDescription() {
           
           {/* Left Column: Value Proposition & CTA */}
           <div className="md:col-span-7 flex flex-col items-start text-left">
-            <span className="text-xs sm:text-sm font-black text-emerald-300 uppercase tracking-widest mb-2.5">
-              MY SMART FRIDGE
-            </span>
             <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-4 leading-tight">
               식재료 낭비 없는 편리한<br className="hidden sm:inline" /> 스마트 냉장고 관리
             </h3>
-            <p className="text-emerald-100 text-sm sm:text-base font-medium leading-relaxed mb-6">
-              머그인 냉장고 관리 도구로 보관 중인 식재료들의 신선함을 지키고, 남은 식재료를 최대로 활용하는 최적의 레시피 제안을 받아보세요.
-            </p>
-
             {/* Benefit List (No Emoji, styled for dark background) */}
             <ul className="space-y-3.5 text-[13px] sm:text-[14px] text-emerald-50 font-semibold mb-8 w-full">
               <li className="flex items-center gap-3">
@@ -80,7 +73,7 @@ export default function FridgeDescription() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <span>스마트 유통기한 디데이 알림으로 선입선출 소비</span>
+                <span>유통기한 디데이 알림으로 낭비 없는 소비</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-5 h-5 rounded-full bg-emerald-800/40 border border-emerald-500/20 flex items-center justify-center shrink-0">
@@ -90,13 +83,21 @@ export default function FridgeDescription() {
                 </div>
                 <span>보관 중인 식재료 기반의 맞춤형 자동 요리 매칭</span>
               </li>
+              <li className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-emerald-800/40 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                  <svg className="w-3.5 h-3.5 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span>식재료 소비/폐기 관리로 낭비된 금액 관리</span>
+              </li>
             </ul>
 
             <button
               onClick={goToFridgePage}
               className="bg-deepDarkGreen hover:bg-emerald-950 text-white font-extrabold transition-colors duration-200 border-none rounded-full w-full sm:w-52 h-11 flex items-center justify-center cursor-pointer shadow-sm text-sm"
             >
-              {isEmpty ? "첫 냉장고 채우기" : "내 냉장고 관리하기"}
+              {isEmpty ? "바로 시작하기" : "내 냉장고 관리하기"}
             </button>
           </div>
 

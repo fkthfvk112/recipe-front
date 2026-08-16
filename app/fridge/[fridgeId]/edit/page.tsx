@@ -65,7 +65,7 @@ export default function EditFridge({
               icon: "success",
               confirmButtonColor: "#10b981",
             }).then(() => {
-              router.push(`/fridge`);
+              router.replace(`/fridge`);
             });
           });
       }
@@ -91,7 +91,7 @@ export default function EditFridge({
             icon: "success",
             confirmButtonColor: "#10b981",
           }).then(() => {
-            router.push(`/fridge`);
+            router.replace(`/fridge`);
           });
         });
       }
@@ -106,7 +106,7 @@ export default function EditFridge({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={() => router.replace(`/fridge`)}
             className="w-9 h-9 rounded-2xl bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-600 transition-colors cursor-pointer border border-gray-200/80 outline-none"
           >
             <ArrowBackIcon sx={{ fontSize: 18 }} />
@@ -176,7 +176,7 @@ export default function EditFridge({
         <div className="flex items-center gap-2.5 pt-2">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={() => router.replace(`/fridge`)}
             className="flex-1 py-3.5 text-xs font-bold text-gray-600 bg-white hover:bg-gray-50 border border-gray-200 rounded-2xl transition-all cursor-pointer outline-none"
           >
             취소

@@ -4,7 +4,9 @@ import React from "react";
 import { Slider } from "@mui/material";
 import Image from "next/image";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import { RecipeSearchingCondition, sortingCondition } from "@/app/(type)/search";
+import { formatDateYYYYMMDD } from "@/app/(utils)/DateUtil";
 
 interface RecipeFilterPopoversProps {
   activePopover: "filter" | "category" | "sort" | "tag" | null;
@@ -37,7 +39,7 @@ export default function RecipeFilterPopovers({
     <>
       {/* 1. Detailed Filter Popover */}
       {activePopover === "filter" && (
-        <div className="absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[300px] sm:w-[340px] text-left text-gray-800">
+        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[300px] sm:w-[340px] text-left text-gray-800">
           <h3 className="text-[14px] font-black text-gray-900 mb-4">상세</h3>
           
           <div className="mb-4">
@@ -56,7 +58,7 @@ export default function RecipeFilterPopovers({
             <input
               type="date"
               className="w-full h-10 px-3 text-[13px] bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-darkGreen focus:ring-2 focus:ring-darkGreen/10 transition-all shadow-sm"
-              value={recipeSearchingData.createdDate ? String(recipeSearchingData.createdDate) : ""}
+              value={formatDateYYYYMMDD(recipeSearchingData.createdDate)}
               onChange={(e) => setRecipeSearchingData(prev => ({ ...prev, createdDate: e.target.value as any }))}
             />
           </div>
@@ -87,7 +89,7 @@ export default function RecipeFilterPopovers({
 
       {/* 2. Category Popover - 3 Grid Layout for Perfect Spacing */}
       {activePopover === "category" && (
-        <div className="absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[320px] sm:w-[340px] text-left text-gray-800">
+        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[320px] sm:w-[340px] text-left text-gray-800">
           <h3 className="text-[14px] font-black text-gray-900 mb-1">요리 카테고리 선택</h3>
           <p className="text-[12px] text-gray-400 font-medium mb-4">원하는 레시피 카테고리를 선택하세요.</p>
           
@@ -124,9 +126,9 @@ export default function RecipeFilterPopovers({
                     <CheckCircleIcon className="absolute right-1 top-1 text-darkGreen w-4 h-4 z-10 bg-white rounded-full" />
                   )}
                   
-                  <div className="relative w-10 h-10 mb-2 flex items-center justify-center">
+                  <div className="relative w-10 h-10 mb-2 flex items-center justify-center text-gray-500">
                     {item.id === "default" || item.id === "기타" ? (
-                      <span className="text-2xl">🍽️</span>
+                      <RestaurantOutlinedIcon sx={{ fontSize: 24 }} />
                     ) : (
                       <Image 
                         src={`/createRecipe/${item.id}.png`} 
@@ -149,7 +151,7 @@ export default function RecipeFilterPopovers({
 
       {/* 3. Sorting Popover */}
       {activePopover === "sort" && (
-        <div className="absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-64 text-left text-gray-800">
+        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-64 text-left text-gray-800">
           <h3 className="text-[14px] font-black text-gray-900 mb-4">정렬 방식 선택</h3>
           
           <div className="flex flex-col gap-4 mb-6">
@@ -190,7 +192,7 @@ export default function RecipeFilterPopovers({
 
       {/* 4. Cooking Method Tag Popover */}
       {activePopover === "tag" && (
-        <div className="absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[200px] text-left text-gray-800">
+        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[200px] text-left text-gray-800">
           <h3 className="text-[14px] font-black text-gray-900 mb-3">조리 방법 태그</h3>
           <div className="flex flex-wrap gap-2">
             {[

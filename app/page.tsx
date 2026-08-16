@@ -28,7 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function Home() {
   return (
     <div className="bg-white w-full flex flex-col justify-center items-center">
-      <SearchBar></SearchBar>
       <SiteDescription></SiteDescription>
       <FridgeDescription></FridgeDescription>
       <SeasonalFood></SeasonalFood>

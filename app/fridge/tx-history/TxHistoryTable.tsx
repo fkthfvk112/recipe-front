@@ -62,7 +62,7 @@ export default function TxHistoryTable({ list }: { list: FridgeItemTxRow[] }) {
                 {/* 구분 뱃지 */}
                 <td className="py-3 px-2 whitespace-nowrap">
                   <Badge variant={isDiscard ? "rose" : "emerald"} size="sm">
-                    {isDiscard ? "폐기 손실" : "소비 아낌"}
+                    {isDiscard ? "폐기" : "소비"}
                   </Badge>
                 </td>
 

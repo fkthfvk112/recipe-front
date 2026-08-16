@@ -42,7 +42,7 @@ export default function FridgeDetail({
   }, [setOpen]);
 
   const goPrev = () => {
-    router.back();
+    router.replace(`/fridge`);
   };
 
   return (
@@ -62,7 +62,7 @@ export default function FridgeDetail({
             <div>
               <h1 className="text-xl font-black text-gray-900 tracking-tight flex items-center gap-1.5">
                 <KitchenIcon sx={{ fontSize: 20 }} className="text-emerald-500" />
-                <span>{fridgeData?.name || "냉장고"} 식재료 관리 🧊</span>
+                <span>{fridgeData?.name || "냉장고"} 식재료 관리</span>
               </h1>
               <p className="text-xs text-gray-500 font-medium mt-0.5">
                 이름만 입력해서 1초 만에 추가하고, 보유한 식재료를 관리해보세요.

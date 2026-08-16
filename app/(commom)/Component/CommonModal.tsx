@@ -41,7 +41,10 @@ export default function CommonModal({
       sx={{ zIndex }}
       aria-labelledby="common-modal-title"
     >
-      <div className="fixed inset-0 z-[1300] flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs select-none">
+      <div
+        className="fixed inset-0 z-[1300] flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs select-none"
+        onClick={onClose}
+      >
         <div
           className={`bg-white rounded-3xl w-full ${maxWidthClass} p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] relative overflow-hidden border border-gray-100/80 transition-all`}
           onClick={(e) => e.stopPropagation()}
@@ -50,9 +53,9 @@ export default function CommonModal({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 min-w-0 flex-1 pr-2">
               {title && (
-                <div className="text-sm font-black text-gray-900 tracking-tight truncate">
+                <h3 className="text-lg font-black text-gray-900 tracking-tight truncate">
                   {title}
-                </div>
+                </h3>
               )}
             </div>
 

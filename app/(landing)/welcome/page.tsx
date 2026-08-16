@@ -32,16 +32,16 @@ export default function Welcom(){
         description: "나만의 요리를 기록하고 공유해요",
         iconUrl: "/welcom/food.png",
         },
-        {
-        title: "게시글",
-        description: "다른 사람들과 경험을 나누고 소통해요",
-        iconUrl: "/welcom/write_post.png",
-        },
-        {
-        title: "식단 기록",
-        description: "매일의 식단을 기록하고 건강한 습관을 만들어요",
-        iconUrl: "/welcom/write_diet.png",
-        },
+        // {
+        // title: "게시글",
+        // description: "다른 사람들과 경험을 나누고 소통해요",
+        // iconUrl: "/welcom/write_post.png",
+        // },
+        // {
+        // title: "식단 기록",
+        // description: "매일의 식단을 기록하고 건강한 습관을 만들어요",
+        // iconUrl: "/welcom/write_diet.png",
+        // },
     ];
 
     return(

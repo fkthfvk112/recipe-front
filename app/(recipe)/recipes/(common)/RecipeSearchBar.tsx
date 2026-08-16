@@ -17,6 +17,7 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import RecipeFilterPopovers from "./RecipeFilterPopovers";
 import IngredientSearchModal from "./IngredientSearchModal";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
+import { formatDateYYYYMMDD } from "@/app/(utils)/DateUtil";
 
 // Helper for Sorting condition label
 const getSortingLabel = (sort: sortingCondition) => {
@@ -92,7 +93,7 @@ export default function RecipeSearchBar() {
     const recName = map.get("recipeName")?.[0] ? decodeURIComponent(map.get("recipeName")[0]) : null;
     
     const crDateString = map.get("createdDate")?.[0] ? decodeURIComponent(map.get("createdDate")[0]) : null;
-    const crDate = crDateString ? new Date(crDateString) : null; 
+    const crDate = crDateString || null;
 
     const cMethod = (map.get("cookMethod")?.[0] ? decodeURIComponent(map.get("cookMethod")[0]) : "default") as RecipeSearchingCondition["cookMethod"];
     const cCategory = (map.get("cookCategory")?.[0] ? decodeURIComponent(map.get("cookCategory")[0]) : "default") as RecipeSearchingCondition["cookCategory"];
@@ -104,7 +105,7 @@ export default function RecipeSearchBar() {
 
     setRecipeSearchingData({
       recipeName: recName,
-      createdDate: crDate, 
+      createdDate: crDate as any, 
       cookMethod: cMethod,
       ingredientNames: ingNames,
       ingredientAndCon: null,
@@ -145,18 +146,21 @@ export default function RecipeSearchBar() {
     }
   }, [isSignIn]);
 
-  // Detect outside clicks to close small popovers
+  // Detect clicks outside of popover box (including search bar itself)
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (barWrapperRef.current && !barWrapperRef.current.contains(event.target as Node)) {
-        setActivePopover(null);
+      if (!activePopover) return;
+      const target = event.target as HTMLElement;
+      if (target.closest('.recipe-popover-box') || target.closest('.recipe-popover-btn')) {
+        return;
       }
+      setActivePopover(null);
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [activePopover]);
 
   const togglePopover = (popover: "filter" | "category" | "sort" | "tag") => {
     setActivePopover(prev => (prev === popover ? null : popover));
@@ -220,6 +224,14 @@ export default function RecipeSearchBar() {
       applyQuery({ ...recipeSearchingData, cookCategory: "default" as RecipeSearchingCondition["cookCategory"] });
     } else if (key === "cookMethod") {
       applyQuery({ ...recipeSearchingData, cookMethod: "default" as RecipeSearchingCondition["cookMethod"] });
+    } else if (key === "recipeName") {
+      setSearchingData("");
+      applyQuery({ ...recipeSearchingData, recipeName: null });
+    } else if (key === "createdDate") {
+      applyQuery({ ...recipeSearchingData, createdDate: null });
+    } else if (key === "servingCon") {
+      setServingsRange([1, 20]);
+      applyQuery({ ...recipeSearchingData, servingCon: { min: 1, max: 20 } });
     }
   }, [recipeSearchingData, applyQuery]);
 
@@ -250,10 +262,27 @@ export default function RecipeSearchBar() {
     );
   }, [recipeSearchingData]);
 
-  // 선택된 조건 뱃지: 재료 모달의 디자인을 완벽히 복제 (bg-green/20, text-darkGreen, border-none)
+  // 선택된 조건 뱃지: 재료, 레시피명, 생성일, 요리양, 카테고리, 조리방법
   const activeConditionBadges = useMemo(() => {
     const badges: React.ReactNode[] = [];
     
+    // 1. 레시피 이름 뱃지
+    if (recipeSearchingData.recipeName) {
+      badges.push(
+        <span 
+          key="recName-badge" 
+          className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-bold transition-all"
+        >
+          <span className="opacity-80">레시피:</span> <span>{recipeSearchingData.recipeName}</span>
+          <ClearIcon 
+            onClick={() => removeAppliedFilter("recipeName", "")} 
+            sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
+          />
+        </span>
+      );
+    }
+
+    // 2. 재료 뱃지들
     if (recipeSearchingData.ingredientNames) {
       recipeSearchingData.ingredientNames.forEach((val) => {
         badges.push(
@@ -271,6 +300,40 @@ export default function RecipeSearchBar() {
       });
     }
 
+    // 3. 생성일 뱃지
+    if (recipeSearchingData.createdDate) {
+      const dateStr = formatDateYYYYMMDD(recipeSearchingData.createdDate);
+      badges.push(
+        <span 
+          key="date-badge" 
+          className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-bold transition-all"
+        >
+          <span className="opacity-80">생성일:</span> <span>{dateStr} 이후</span>
+          <ClearIcon 
+            onClick={() => removeAppliedFilter("createdDate", "")} 
+            sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
+          />
+        </span>
+      );
+    }
+
+    // 4. 요리양 (인분) 뱃지
+    if (recipeSearchingData.servingCon && (recipeSearchingData.servingCon.min !== 1 || recipeSearchingData.servingCon.max !== 20)) {
+      badges.push(
+        <span 
+          key="serving-badge" 
+          className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-bold transition-all"
+        >
+          <span className="opacity-80">요리양:</span> <span>{recipeSearchingData.servingCon.min}~{recipeSearchingData.servingCon.max}인분</span>
+          <ClearIcon 
+            onClick={() => removeAppliedFilter("servingCon", "")} 
+            sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
+          />
+        </span>
+      );
+    }
+
+    // 5. 카테고리 뱃지
     if (recipeSearchingData.cookCategory && recipeSearchingData.cookCategory !== "default") {
       badges.push(
         <span 
@@ -286,6 +349,7 @@ export default function RecipeSearchBar() {
       );
     }
 
+    // 6. 조리방법 뱃지
     if (recipeSearchingData.cookMethod && recipeSearchingData.cookMethod !== "default") {
       badges.push(
         <span 
@@ -339,7 +403,7 @@ export default function RecipeSearchBar() {
           <button 
             type="button" 
             onClick={() => togglePopover("filter")}
-            className={`flex w-fit whitespace-nowrap items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
+            className={`recipe-popover-btn flex w-fit whitespace-nowrap items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
               activePopover === "filter" || isDetailedFilterApplied
                 ? "border-deepDarkGreen bg-deepDarkGreen text-white shadow-md" 
                 : "border-deepDarkGreen bg-white text-deepDarkGreen hover:bg-deepDarkGreen hover:text-white shadow-sm"
@@ -388,7 +452,7 @@ export default function RecipeSearchBar() {
           <button 
             type="button" 
             onClick={() => togglePopover("category")}
-            className={`flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
+            className={`recipe-popover-btn flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
               activePopover === "category" || (recipeSearchingData.cookCategory && recipeSearchingData.cookCategory !== "default")
                 ? "border-gray-800 bg-gray-800 text-white shadow-sm" 
                 : "border-gray-200 text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300"
@@ -419,7 +483,7 @@ export default function RecipeSearchBar() {
           <button 
             type="button" 
             onClick={() => togglePopover("tag")}
-            className={`flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
+            className={`recipe-popover-btn flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
               activePopover === "tag" || (recipeSearchingData.cookMethod && recipeSearchingData.cookMethod !== "default")
                 ? "border-gray-800 bg-gray-800 text-white shadow-sm" 
                 : "border-gray-200 text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300"
@@ -450,7 +514,7 @@ export default function RecipeSearchBar() {
           <button 
             type="button" 
             onClick={() => togglePopover("sort")}
-            className={`flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
+            className={`recipe-popover-btn flex w-fit whitespace-nowrap items-center gap-0.5 px-3 py-1.5 text-xs font-bold rounded-full cursor-pointer transition-all border shrink-0 outline-none ${
               activePopover === "sort" || sortingCon !== "POPULARITY"
                 ? "border-gray-800 bg-gray-800 text-white shadow-sm" 
                 : "border-gray-200 text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300"
@@ -476,6 +540,21 @@ export default function RecipeSearchBar() {
           )}
         </div>
       </div>
+
+      {/* 3. Selected Condition Badges Chips Row (선택된 재료 및 필터 뱃지 칩스) */}
+      {activeConditionBadges.length > 0 && (
+        <div className="w-full max-w-[800px] px-5 pb-3 flex items-center gap-1.5 flex-wrap">
+          {activeConditionBadges}
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="inline-flex items-center gap-1 text-[11px] font-bold text-gray-400 hover:text-gray-600 transition-colors ml-1 border-none bg-transparent cursor-pointer"
+          >
+            <RefreshIcon sx={{ fontSize: 13 }} />
+            <span>전체 초기화</span>
+          </button>
+        </div>
+      )}
 
       {/* Separated Ingredient Search Modal Component */}
       <IngredientSearchModal

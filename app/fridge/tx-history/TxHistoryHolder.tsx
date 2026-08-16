@@ -115,9 +115,9 @@ export default function TxHistoryHolder() {
           <div className="space-y-0.5 min-w-0 flex-1">
             <div className="flex items-center gap-1 flex-wrap">
               <Badge variant="amber" size="sm">
-                이력 대비 폐기율
+                소비 대비 폐기율
               </Badge>
-              <span className="text-[10px] sm:text-xs text-gray-400 font-medium">이력 금액 대비</span>
+              <span className="text-[10px] sm:text-xs text-gray-400 font-medium">낭비된 금액%</span>
             </div>
             <p className="text-base sm:text-2xl font-bold text-gray-900 tracking-tight truncate">
               {wasteRate}<span className="text-[10px] sm:text-xs text-gray-500 font-normal ml-0.5">%</span>

@@ -112,7 +112,7 @@ export default function DraftPost() {
           timer: 1000,
           showConfirmButton: false,
         }).then(() => {
-          router.push(`/admin/post/${newPost.postId}`);
+          router.replace(`/admin/post/${newPost.postId}`);
         });
       }
     } catch (e) {

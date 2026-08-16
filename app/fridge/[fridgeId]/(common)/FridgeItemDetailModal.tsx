@@ -17,7 +17,8 @@ import FridgeItemTxHistoryPreview from "./FridgeItemTxHistoryPreview";
 import { formatNumber } from "@/app/(utils)/StringUtil";
 import Badge from "@/app/(commom)/Component/Badge";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
-import { PrimaryButton, RoseButton, DarkButton, CancelButton } from "@/app/(commom)/Component/Buttons";
+import { PrimaryButton, RoseButton, DarkButton, CancelButton, SubtleButton } from "@/app/(commom)/Component/Buttons";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 export type TxType = "DISCARD" | "CONSUME";
 export type CallFrom = "hist";
@@ -167,7 +168,7 @@ export default function FridgeItemDetailModal({
   const currentFridgeName = fridgeList?.find((f) => f.fridgeId === position)?.fridgeName || "냉장고";
 
   const modalTitleHeader = (
-    <div className="flex items-center justify-between w-full pr-2">
+    <div className="flex items-center justify-between w-full pr-1">
       <div className="flex items-center gap-2">
         <Badge variant="emerald" size="sm">
           {currentFridgeName}
@@ -178,17 +179,41 @@ export default function FridgeItemDetailModal({
           </Badge>
         )}
       </div>
-      {!editMode && isActivate && (
-        <button
-          type="button"
-          onClick={() => setEditMode(true)}
-          className="px-2.5 py-1 text-xs font-extrabold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors border-0 cursor-pointer outline-none"
+      <div className="ms-3">
+      {editMode ? (
+        <SubtleButton
+          size="sm"
+          onClick={() => setEditMode(false)}
         >
-          수정
-        </button>
-      )}
+          <EditOutlinedIcon sx={{ fontSize: 14 }} />
+          <span>수정 취소</span>
+        </SubtleButton>
+      ) : isActivate ? (
+        <SubtleButton
+          size="sm"
+          onClick={() => setEditMode(true)}
+        >
+          <EditOutlinedIcon sx={{ fontSize: 14 }} />
+          <span>수정</span>
+        </SubtleButton>
+      ) : null}
+      </div>
     </div>
   );
+
+  const resetEditForm = () => {
+    if (!fridgeItem) return;
+    setTitle(fridgeItem?.name ?? "");
+    setPosition(fridgeId ?? 0);
+    setQqt(fridgeItem?.qqt ?? 0);
+    setUnit(fridgeItem?.unit ?? "개");
+    setAmt(fridgeItem?.amt ?? 0);
+    setExDate(fridgeItem?.expiredAt ?? "");
+    setDescription(fridgeItem?.description ?? "");
+    setFridgeImgId(fridgeItem?.fridgeImgId ?? 0);
+    setImgUrl(fridgeItem?.imgUrl ?? "");
+    setEditMode(false);
+  };
 
   return (
     <>
@@ -202,8 +227,8 @@ export default function FridgeItemDetailModal({
         <div className="flex items-center gap-4 mb-5 pb-4 border-b border-gray-100">
           <div
             onClick={() => editMode && setImgModalOpen(true)}
-            className={`relative w-20 h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0 ${
-              editMode ? "cursor-pointer ring-2 ring-emerald-400" : ""
+            className={`relative w-20 h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0 transition-all ${
+              editMode ? "cursor-pointer ring-2 ring-emerald-400 hover:opacity-90" : ""
             }`}
           >
             {imgUrl ? (
@@ -211,15 +236,24 @@ export default function FridgeItemDetailModal({
             ) : (
               <div className="flex items-center justify-center h-full text-xs text-gray-400 font-medium">이미지 없음</div>
             )}
+            {editMode && (
+              <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-[10px] font-bold">
+                변경
+              </div>
+            )}
           </div>
 
           <div className="flex-1 min-w-0">
             {editMode ? (
-              <input
-                className="text-base font-black text-gray-900 border border-gray-200 rounded-xl px-2.5 py-1 w-full outline-none focus:border-emerald-500"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <div className="flex flex-col gap-1">
+                <label className="text-[11px] font-bold text-gray-500">식재료명</label>
+                <input
+                  className="text-sm font-bold text-gray-900 border border-gray-200 rounded-xl px-3 py-1.5 w-full outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="식재료명 입력"
+                />
+              </div>
             ) : (
               <h2 className="text-lg font-black text-gray-900 tracking-tight leading-snug line-clamp-1">{title}</h2>
             )}
@@ -247,57 +281,71 @@ export default function FridgeItemDetailModal({
         {/* Field Details */}
         <div className="space-y-2.5 mb-5 text-xs">
           {editMode ? (
-            <div className="bg-gray-50 p-3.5 rounded-2xl space-y-3 border border-gray-100">
+            <div className="bg-gray-50/80 p-4 rounded-2xl space-y-3.5 border border-gray-200/70">
               <div className="flex items-center justify-between">
-                <span className="font-extrabold text-gray-600">위치</span>
+                <span className="font-bold text-gray-700 text-xs">위치 (냉장고)</span>
                 <select
                   value={position}
                   onChange={(e) => setPosition(Number(e.target.value))}
-                  className="border border-gray-200 rounded-lg px-2 py-1 bg-white text-xs"
+                  className="border border-gray-200 rounded-xl px-3 py-1.5 bg-white text-xs font-bold text-gray-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all cursor-pointer"
                 >
                   {fridgeOptionList}
                 </select>
               </div>
+
               <div className="flex items-center justify-between">
-                <span className="font-extrabold text-gray-600">총 수량 / 단위</span>
-                <div className="flex items-center gap-1">
+                <span className="font-bold text-gray-700 text-xs">총 수량 / 단위</span>
+                <div className="flex items-center gap-1.5">
                   <input
                     type="number"
-                    className="w-16 border border-gray-200 rounded-lg px-2 py-1 text-xs"
+                    className="w-20 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium bg-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
                     value={qqt}
                     onChange={(e) => setQqt(Number(e.target.value))}
+                    placeholder="수량"
                   />
                   <input
-                    className="w-12 border border-gray-200 rounded-lg px-2 py-1 text-xs"
+                    className="w-16 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium bg-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
                     value={unit}
                     onChange={(e) => setUnit(e.target.value)}
+                    placeholder="단위"
                   />
                 </div>
               </div>
+
               <div className="flex items-center justify-between">
-                <span className="font-extrabold text-gray-600">총 구매 금액</span>
-                <input
-                  className="w-24 border border-gray-200 rounded-lg px-2 py-1 text-xs text-right"
-                  value={amt ? formatNumber(amt) : ""}
-                  onChange={(e) => setAmt(Number(e.target.value.replace(/,/g, "")))}
-                />
+                <span className="font-bold text-gray-700 text-xs">총 구매 금액</span>
+                <div className="flex items-center gap-1">
+                  <input
+                    className="w-32 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium text-right bg-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    value={amt ? formatNumber(amt) : ""}
+                    onChange={(e) => setAmt(Number(e.target.value.replace(/,/g, "")))}
+                    placeholder="0"
+                  />
+                  <span className="text-xs font-bold text-gray-500">원</span>
+                </div>
               </div>
+
               <div className="flex items-center justify-between">
-                <span className="font-extrabold text-gray-600">소비기한</span>
-                <input
-                  type="date"
-                  className="border border-gray-200 rounded-lg px-2 py-1 text-xs"
-                  value={exDate}
-                  onChange={(e) => setExDate(e.target.value)}
-                />
+                <span className="font-bold text-gray-700 text-xs">소비기한</span>
+                <div className="flex items-center gap-1">
+                  <input
+                    type="date"
+                    className="border w-28 border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium bg-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
+                    value={exDate}
+                    onChange={(e) => setExDate(e.target.value)}
+                  />
+                  <span className="text-xs font-bold text-gray-500">까지</span>
+                </div>
               </div>
-              <div>
-                <span className="font-extrabold text-gray-600 block mb-1">메모</span>
+
+              <div className="flex flex-col gap-1 pt-1">
+                <span className="font-bold text-gray-700 text-xs">메모</span>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl p-2 text-xs resize-none"
+                  className="w-full border border-gray-200 rounded-xl p-3 text-xs font-medium bg-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all resize-none"
                   rows={2}
+                  placeholder="식재료 관련 메모 작성 (선택)"
                 />
               </div>
             </div>
@@ -344,26 +392,33 @@ export default function FridgeItemDetailModal({
           </div>
         )}
 
-        {/* Primary Actions - 공용 PrimaryButton & RoseButton 적용 */}
+        {/* Primary Actions - 공용 PrimaryButton, CancelButton & RoseButton 적용 */}
         <div className="flex items-center gap-2 pt-1">
           {editMode ? (
-            <>
-              <PrimaryButton
-                fullWidth
+            <div className="grid grid-cols-3 gap-2 w-full">
+              <CancelButton
                 size="md"
+                className="w-full justify-center py-2.5 font-bold"
+                onClick={resetEditForm}
+              >
+                취소
+              </CancelButton>
+              <PrimaryButton
+                size="md"
+                className="w-full justify-center py-2.5 font-bold"
                 onClick={updateItem}
                 disabled={!isChanged()}
               >
                 수정 완료
               </PrimaryButton>
               <RoseButton
-                fullWidth
                 size="md"
+                className="w-full justify-center py-2.5 font-bold"
                 onClick={deleteItem}
               >
-                식재료 삭제
+                삭제
               </RoseButton>
-            </>
+            </div>
           ) : isActivate ? (
             <>
               <PrimaryButton

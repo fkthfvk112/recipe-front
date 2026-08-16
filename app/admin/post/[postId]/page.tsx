@@ -261,9 +261,9 @@ export default function EditPostPage({ params }: Props) {
       Swal.fire({ title: isDraft ? "임시 저장 완료!" : "발행 완료!", icon: "success", timer: 1200, showConfirmButton: false }).then(() => {
         router.refresh();
         if (!isDraft) {
-          router.push(`/post/${slug}`);
+          router.replace(`/post/${slug}`);
         } else {
-          router.push(`/admin/post/${params.postId}`);
+          router.replace(`/admin/post`);
         }
       });
     } catch {

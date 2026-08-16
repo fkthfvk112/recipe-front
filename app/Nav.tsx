@@ -50,7 +50,7 @@ const Navbar = () => {
     <>
       {!isLoading && (
         <nav 
-          className={`${navCss} md:fixed md:top-0 md:bottom-auto w-full md:h-[70px] bg-white/90 md:bg-white backdrop-blur-md border-t border-gray-200/60 md:border-t-0 md:border-b shadow-sm z-50 transition-all`}
+          className={`${navCss} font-pyeojin md:fixed md:top-0 md:bottom-auto w-full md:h-[70px] bg-white/90 md:bg-white backdrop-blur-md border-t border-gray-200/60 md:border-t-0 md:border-b shadow-sm z-50 transition-all`}
         >
           {/* ================================================================= */}
           {/* 1. 데스크탑 뷰 */}
@@ -69,7 +69,7 @@ const Navbar = () => {
                     className="object-contain" 
                   />
                 </div>
-                <span className="text-[19px] font-extrabold text-gray-900 tracking-tighter font-sans">
+                <span className="text-[19px] font-black text-gray-900 tracking-tight">
                   머그인 레시피
                 </span>
               </div>

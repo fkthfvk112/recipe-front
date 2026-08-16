@@ -93,8 +93,14 @@ export default function IngredientSearchModal({
   });
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-3xl w-full max-w-[620px] shadow-2xl overflow-hidden relative flex flex-col max-h-[90vh] text-left text-gray-800">
+    <div 
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-3xl w-full max-w-[620px] shadow-2xl overflow-hidden relative flex flex-col max-h-[90vh] text-left text-gray-800 cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Modal Header */}
         <div className="px-6 pt-6 pb-4 flex justify-between items-start border-b border-gray-100">
