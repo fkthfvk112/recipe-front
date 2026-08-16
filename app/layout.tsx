@@ -7,6 +7,7 @@ import Script from "next/script";
 import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 
 import RegisterSW from "./RegisterSW";
+import PWAInstallBanner from "./PWAInstallBanner";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -62,6 +63,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </head>
       <body>
         <RegisterSW />
+        <PWAInstallBanner />
         {/* Google Tag Manager (noscript) */}
         <noscript
           dangerouslySetInnerHTML={{
