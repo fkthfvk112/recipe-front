@@ -2,17 +2,49 @@
 
 import { useEffect, useRef } from "react";
 import { useSetRecoilState } from "recoil";
+import { usePathname } from "next/navigation";
 import { isPwaAtom } from "@/app/(recoil)/pwaAtom";
+import {
+  activePwaModalCount,
+  isClosingPwaModalHistory,
+  resetClosingPwaModalFlag,
+} from "@/app/(commom)/Hook/usePwaBackHandler";
 import Swal from "sweetalert2";
 
 /**
  * PWAProvider
- * - 마운트 시 standalone 모드(PWA)인지 감지하여 recoil atom에 저장
- * - PWA 모드일 때 history 스택이 바닥나면 "앱을 종료하시겠습니까?" 가드 표시
+ * - standalone 모드 감지 → recoil atom 저장
+ * - usePathname으로 페이지 이동 깊이(pageDepth) 추적
+ *   - forward 이동: pageDepth++
+ *   - back 이동: popstate에서 pageDepth--, usePathname 변경은 isHandlingBack 플래그로 스킵
+ * - pageDepth = 0 + activePwaModalCount = 0 → 종료 가드 표시
  */
 export default function PWAProvider() {
   const setIsPwa = useSetRecoilState(isPwaAtom);
+  const pathname = usePathname();
+
+  const isPwaRef = useRef(false);
+  const pageDepth = useRef(0);
+  const isFirstRender = useRef(true);
+  const isHandlingBack = useRef(false);
   const isExitGuardActive = useRef(false);
+
+  // pathname 변경 감지 → forward 이동만 pageDepth 증가
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (!isPwaRef.current) return;
+
+    // 뒤로가기로 인한 pathname 변경은 스킵 (popstate에서 이미 pageDepth 감소 처리)
+    if (isHandlingBack.current) {
+      isHandlingBack.current = false;
+      return;
+    }
+
+    pageDepth.current++;
+  }, [pathname]);
 
   useEffect(() => {
     const pwa =
@@ -20,22 +52,37 @@ export default function PWAProvider() {
       (window.navigator as any).standalone === true;
 
     setIsPwa(pwa);
+    isPwaRef.current = pwa;
 
     if (!pwa) return;
 
-    // PWA일 때: 최초 history 스택에 sentinel state 하나 push
-    // → 이 sentinel이 pop되는 순간이 "더 이상 뒤로 갈 페이지 없음" 신호
+    // 루트 기준점 sentinel push
     window.history.pushState({ pwaSentinel: true }, "");
 
-    const handlePopState = async (e: PopStateEvent) => {
-      // pwaModal state가 pop된 경우는 모달/슬라이드 닫기 훅이 처리하므로 무시
-      if (e.state?.pwaModal) return;
+    const handlePopState = async () => {
+      // 1. 모달이 UI(X버튼/배경)로 닫히면서 발생한 history.back()이면 스킵
+      if (isClosingPwaModalHistory) {
+        resetClosingPwaModalFlag();
+        return;
+      }
 
-      // 중복 방지 (Swal이 이미 열려있으면 스킵)
+      // 2. 현재 열려있는 모달/패널이 있으면 그쪽 훅이 처리하므로 스킵
+      if (activePwaModalCount > 0) {
+        return;
+      }
+
+      // 3. 페이지 히스토리가 남아있으면 → 이전 페이지로 이동
+      if (pageDepth.current > 0) {
+        pageDepth.current--;
+        isHandlingBack.current = true; // usePathname 증가 방지 플래그
+        return; // Next.js 라우터가 자연스럽게 이전 페이지 렌더링
+      }
+
+      // 4. pageDepth = 0 → 루트에서 뒤로가기 시도 → 종료 가드 표시
       if (isExitGuardActive.current) return;
       isExitGuardActive.current = true;
 
-      // sentinel 재push (뒤로가기 방어)
+      // 취소 시 복귀용 sentinel 재push
       window.history.pushState({ pwaSentinel: true }, "");
 
       const result = await Swal.fire({
@@ -56,10 +103,8 @@ export default function PWAProvider() {
       });
 
       if (result.isConfirmed) {
-        // 사용자가 "종료" 누름 → sentinel 제거 후 앱 닫기
         window.history.back();
         window.close();
-        // window.close()가 PWA에서 안 될 경우 대비 (홈으로 이동)
         setTimeout(() => {
           window.location.href = "about:blank";
         }, 200);
