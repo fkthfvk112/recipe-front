@@ -47,7 +47,9 @@ export default function PWAInstallBanner() {
     // iOS Safari: beforeinstallprompt 미지원 → 별도 수동 안내 배너
     if (isIOS()) {
       // Safari에서 접속 중일 때만 iOS 배너 표시
-      const isSafari = /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent);
+      const isSafari =
+        /Safari/i.test(navigator.userAgent) &&
+        !/Chrome/i.test(navigator.userAgent);
       if (isSafari) {
         // 약간 딜레이 후 표시 (페이지 로드 UX)
         setTimeout(() => {
@@ -71,7 +73,10 @@ export default function PWAInstallBanner() {
     window.addEventListener("beforeinstallprompt", handler as EventListener);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handler as EventListener);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handler as EventListener
+      );
     };
   }, []);
 
@@ -102,47 +107,46 @@ export default function PWAInstallBanner() {
         visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
       }`}
     >
-      <div className="bg-white border-b border-emerald-100 shadow-lg px-4 py-3 flex items-center justify-between gap-3 max-w-full">
-        
+      <div className="bg-white border-b border-emerald-100 shadow-md px-3.5 py-2.5 flex items-center justify-between gap-2 max-w-full">
         {/* 왼쪽: 앱 아이콘 + 안내 텍스트 */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-gray-200 shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
+          <div className="relative w-9 h-9 rounded-lg overflow-hidden border border-gray-200 shrink-0">
             <Image
               src="/common/favicon.png"
               alt="머그인 앱 아이콘"
               fill
-              sizes="40px"
+              sizes="36px"
               className="object-contain"
             />
           </div>
-          <div className="min-w-0">
-            <p className="text-xs font-extrabold text-gray-900 truncate">
+          <div className="min-w-0 flex-1">
+            <p className="text-[12px] font-bold text-gray-900 truncate leading-snug">
               머그인 앱으로 더 편리하게!
             </p>
             {bannerMode === "android" ? (
-              <p className="text-[11px] text-gray-500 font-medium truncate">
+              <p className="text-[11px] text-gray-500 font-normal truncate leading-snug">
                 홈 화면에 추가하여 앱처럼 사용해 보세요.
               </p>
             ) : (
-              <p className="text-[11px] text-gray-500 font-medium flex items-center gap-0.5">
-                <IosShareIcon sx={{ fontSize: 11 }} />
-                <span>공유 버튼 ➔ [홈 화면에 추가]</span>
+              <p className="text-[11px] text-gray-500 font-normal flex items-center gap-0.5 truncate leading-snug">
+                <IosShareIcon sx={{ fontSize: 12 }} className="shrink-0" />
+                <span className="truncate">공유 버튼 ➔ [홈 화면에 추가]</span>
               </p>
             )}
           </div>
         </div>
 
-        {/* 오른쪽: 버튼 영역 */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Android: 직접 설치 버튼 */}
+        {/* 오른쪽: 버튼 영역 (슬림화 및 핏 조절) */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {/* Android: 텍스트에 딱 맞춘 콤팩트 설치 버튼 */}
           {bannerMode === "android" && (
             <button
               type="button"
               onClick={handleInstall}
-              className="flex items-center gap-1 px-3.5 py-2 text-[12px] font-extrabold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] rounded-xl border-none cursor-pointer transition-all outline-none shadow-sm whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-0.5 px-2.5 py-1 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 rounded-lg border-none cursor-pointer transition-all outline-none whitespace-nowrap shadow-xs"
             >
-              <GetAppOutlinedIcon sx={{ fontSize: 14 }} />
-              앱 설치
+              <GetAppOutlinedIcon sx={{ fontSize: 13 }} />
+              설치
             </button>
           )}
 
@@ -151,9 +155,9 @@ export default function PWAInstallBanner() {
             type="button"
             onClick={handleDismiss}
             aria-label="배너 닫기"
-            className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full border-none cursor-pointer transition-all outline-none bg-transparent"
+            className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full border-none cursor-pointer transition-all outline-none bg-transparent"
           >
-            <CloseIcon sx={{ fontSize: 16 }} />
+            <CloseIcon sx={{ fontSize: 15 }} />
           </button>
         </div>
       </div>
