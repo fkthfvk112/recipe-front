@@ -99,7 +99,7 @@ export default function FridgeItemImgList({
           <div className="relative w-10 h-10">
             <Image
               src={img.imgUrl}
-              alt={img.imgName || "icon"}
+              alt={img.name || "icon"}
               fill
               sizes="40px"
               className="object-contain group-hover:scale-105 transition-transform"

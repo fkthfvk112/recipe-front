@@ -64,14 +64,15 @@ export default function BoardEdit({
         `${process.env.NEXT_PUBLIC_API_URL}board/detail?boardId=${params.boardId}`
       )
       .then((res) => {
-        const board: Board = res.data;
+        const board: any = res.data;
         setBoardData(board);
-        setTitle(board.title);
-        setContent(board.content);
-        setPhotos(board.photos);
-        setRecipes(board.recipes);
-        setDietDay(board.dietDay ? [board.dietDay] : []);
-        setCheckAnonymous(board.checkAnonymous ? board.checkAnonymous : false);
+        setTitle(board.title || "");
+        setContent(board.content || "");
+        setPhotos(board.photos || []);
+        setRecipes(board.recipes || []);
+        const targetDiet = board.dietDays || board.dietDay;
+        setDietDay(targetDiet ? (Array.isArray(targetDiet) ? targetDiet : [targetDiet]) : []);
+        setCheckAnonymous(Boolean(board.checkAnonymous));
       });
   }, [params.boardId, setCheckAnonymous]);
 

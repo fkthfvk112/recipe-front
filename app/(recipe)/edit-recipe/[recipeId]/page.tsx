@@ -37,14 +37,15 @@ export default function EditRecipePage({
     recipeId: params.recipeId,
     recipeName: "",
     repriPhotos: ["", "", ""],
-    categorie: "",
+    categorie: "default" as any,
     servings: 1,
-    cookMethod: "",
+    cookMethod: "default" as any,
     ingredients: [],
     description: "",
     steps: [],
     viewCnt: 0,
-  });
+    createdAt: "",
+  } as any);
 
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -171,28 +172,28 @@ export default function EditRecipePage({
       </div>
 
       {/* Form Sections */}
-      <RecipeName recipe={recipe} setRecipe={setRecipe} />
-      <Description recipe={recipe} setRecipe={setRecipe} />
+      <RecipeName recipe={recipe} setRecipe={setRecipe as any} />
+      <Description recipe={recipe} setRecipe={setRecipe as any} />
 
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
-      <Categori recipe={recipe} setRecipe={setRecipe} />
+      <Categori recipe={recipe} setRecipe={setRecipe as any} />
       <div className="w-full h-[1px] bg-gray-100 my-6" />
-      <Serving recipe={recipe} setRecipe={setRecipe} />
+      <Serving recipe={recipe} setRecipe={setRecipe as any} />
       <div className="w-full h-[1px] bg-gray-100 my-6" />
-      <CookMethod recipe={recipe} setRecipe={setRecipe} />
-
-      <div className="w-full h-[1px] bg-gray-100 my-6" />
-
-      <RepriPic recipe={recipe} setRecipe={setRecipe} />
+      <CookMethod recipe={recipe} setRecipe={setRecipe as any} />
 
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
-      <Ingredient recipe={recipe} setRecipe={setRecipe} />
+      <RepriPic recipe={recipe} setRecipe={setRecipe as any} />
 
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
-      <CookStep recipe={recipe} setRecipe={setRecipe} />
+      <Ingredient recipe={recipe} setRecipe={setRecipe as any} />
+
+      <div className="w-full h-[1px] bg-gray-100 my-6" />
+
+      <CookStep recipe={recipe} setRecipe={setRecipe as any} />
 
       {/* Floating Scroll Top Button */}
       <div className="fixed bottom-24 right-6 z-40">

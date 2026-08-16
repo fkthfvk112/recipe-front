@@ -6,7 +6,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import PhotoHolder from "./PhotoHolderChk";
 import PhotoHolderChk from "./PhotoHolderChk";
 
-function SetDietWithChk({photos, setPhotos, setPhotoChangeChk}:{photos:File[], setPhotos:(files:File[])=>void, setPhotoChangeChk:(chk:boolean)=>void}){
+function SetDietWithChk({photos, setPhotos, setPhotoChangeChk}:{photos: (string | File)[], setPhotos: (files: any) => void, setPhotoChangeChk: (chk: boolean) => void}){
     return (
         <Accordion>
             <AccordionSummary
@@ -17,7 +17,7 @@ function SetDietWithChk({photos, setPhotos, setPhotoChangeChk}:{photos:File[], s
             <h3>사진 등록(최대 3장)</h3>
             </AccordionSummary>
             <AccordionDetails>
-                <PhotoHolderChk photos={photos} setPhotos={setPhotos} setPhotoChangeChk={setPhotoChangeChk}/>
+                <PhotoHolderChk photos={photos as any} setPhotos={setPhotos} setPhotoChangeChk={setPhotoChangeChk}/>
             </AccordionDetails>
       </Accordion>
     )
