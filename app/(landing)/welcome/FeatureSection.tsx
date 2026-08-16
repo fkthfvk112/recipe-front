@@ -22,30 +22,35 @@ export default function FeatureSection({
         <p className="text-gray-600">{subheading}</p>
       </div>
 
-        <div
-          className="
-            grid gap-3
-            grid-cols-3
-            [@media(max-width:600px)]:grid-cols-2
-            [@media(max-width:300px)]:grid-cols-1
-          "
-        >   
+      <div
+        className="
+          grid gap-3
+          grid-cols-3
+          [@media(max-width:600px)]:grid-cols-2
+          [@media(max-width:300px)]:grid-cols-1
+        "
+      > 
         {features.map((feature, index) => (
           <div
             key={index}
-            className="p-6 bg-gray-50 flex flex-col justify-center items-center transition aspect-square rounded-xl"
+            className="
+              h-full w-full
+              p-6 bg-gray-50 
+              flex flex-col justify-center items-center 
+              rounded-xl transition
+            "
           >
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-4 shrink-0">
               <img
                 src={feature.iconUrl}
                 alt={feature.title}
-                className="w-12 h-12"
+                className="w-12 h-12 object-contain"
               />
             </div>
-            <h3 className="text-xl mb-2 text-gray-800">
+            <h3 className="text-xl mb-2 text-gray-800 break-keep text-center">
               {feature.title}
             </h3>
-            <p className="text-gray-600 text-sm leading-relaxed text-center">
+            <p className="text-gray-600 text-sm leading-relaxed text-center break-keep">
               {feature.description}
             </p>
           </div>

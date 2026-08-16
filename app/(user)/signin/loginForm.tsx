@@ -93,14 +93,6 @@ export default function LoginForm() {
         
         {/* 상단 브랜딩 & 로고 헤더 */}
         <div className="flex flex-col items-center gap-2 text-center">
-          <Image
-            src="/common/logo.png"
-            alt="머그인 로고"
-            width={160}
-            height={50}
-            className="h-auto object-contain"
-            priority
-          />
           <p className="text-xs sm:text-sm text-gray-500 font-medium mt-1">
             낭비 없는 삶, 머그인에 오신 것을 환영합니다.
           </p>
@@ -114,7 +106,7 @@ export default function LoginForm() {
             </div>
             <input
               name="userId"
-              placeholder="아이디 입력"
+              placeholder="아이디"
               type="text"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
@@ -131,7 +123,7 @@ export default function LoginForm() {
             </div>
             <input
               name="userPw"
-              placeholder="비밀번호 입력"
+              placeholder="비밀번호"
               type="password"
               value={userPw}
               onChange={(e) => setUserPw(e.target.value)}

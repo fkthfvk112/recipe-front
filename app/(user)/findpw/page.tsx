@@ -177,14 +177,6 @@ export default function FindPw() {
             <LockResetOutlinedIcon sx={{ fontSize: 16 }} />
             <span>비밀번호 찾기</span>
           </div>
-          <Image
-            src="/common/logo.png"
-            alt="머그인 로고"
-            width={150}
-            height={48}
-            className="h-auto object-contain my-1"
-            priority
-          />
           <p className="text-xs sm:text-sm text-gray-500 font-medium">
             가입하신 계정 및 이메일 인증을 통해 임시 비밀번호를 발급해 드립니다.
           </p>

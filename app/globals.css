@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-gutter: stable;
+}
+
 @layer components {
   input {
     @apply w-full p-2 border rounded-md;
@@ -17,8 +27,11 @@
 }
 
 body {
-  /*font-family: "JalnanGothic"; */
-  color:#121212;
+  color: #121212;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Chrome, Safari, Edge, Opera */

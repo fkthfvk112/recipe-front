@@ -69,15 +69,8 @@ export default function DelAccount() {
         {/* 상단 뱃지 & 로고 */}
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-50 text-rose-600 text-xs font-bold rounded-full border border-rose-200/60">
-            💔 회원 탈퇴
+            회원 탈퇴
           </div>
-          <Image
-            width={160}
-            height={50}
-            src={"/common/logo.png"}
-            alt="머그인 로고"
-            className="h-auto object-contain my-1"
-          />
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             정말로 탈퇴하시겠습니까?
           </h1>

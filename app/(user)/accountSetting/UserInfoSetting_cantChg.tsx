@@ -201,7 +201,7 @@ function UserInfoSetting_cantChg() {
               </div>
             </div>
 
-            <OutlineButton size="sm" onClick={handleOpen} className="flex items-center gap-1.5 font-bold px-3.5 py-2">
+            <OutlineButton size="sm" onClick={handleOpen} className="flex items-center gap-1.5 font-bold px-3.5 py-2 w-16">
               <span>변경</span>
             </OutlineButton>
           </div>

@@ -18,7 +18,7 @@ export default function Welcom(){
         iconUrl: "/welcom/frigo_mgmt.png",
         },
         {
-        title: "식재료 소비 관리",
+        title: "소비 관리",
         description: "식재료 소비 내역과 금액을 확인할 수 있어요",
         iconUrl: "/welcom/settle.png",
         },

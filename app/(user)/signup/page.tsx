@@ -275,14 +275,6 @@ export default function SignUp() {
             <PersonAddOutlinedIcon sx={{ fontSize: 16 }} />
             <span>신규 회원가입</span>
           </div>
-          <Image
-            src="/common/logo.png"
-            alt="머그인 로고"
-            width={160}
-            height={50}
-            className="h-auto object-contain my-1"
-            priority
-          />
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             머그인 계정 만들기
           </h1>

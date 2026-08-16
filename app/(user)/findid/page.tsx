@@ -116,14 +116,6 @@ export default function FindId() {
             <BadgeOutlinedIcon sx={{ fontSize: 16 }} />
             <span>아이디 찾기</span>
           </div>
-          <Image
-            src="/common/logo.png"
-            alt="머그인 로고"
-            width={150}
-            height={48}
-            className="h-auto object-contain my-1"
-            priority
-          />
           <p className="text-xs sm:text-sm text-gray-500 font-medium">
             가입 시 등록하신 이메일 인증을 통해 아이디를 찾을 수 있습니다.
           </p>
