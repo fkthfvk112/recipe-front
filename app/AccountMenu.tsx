@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import Settings from "@mui/icons-material/Settings";
@@ -30,6 +31,7 @@ export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [, setIsSignIn] = useRecoilState(siginInState);
   const [isAdminChk, setIsAdmin] = useState<boolean>(false);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const likeRecipeReset = useResetRecoilState(
     userFeedRecipeCacheSelectorAtom(cacheKey.user_feed_like_recipe_key + "myFeedRecipe")
@@ -39,12 +41,7 @@ export default function AccountMenu() {
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      router.push("/accountMenuList");
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
@@ -125,7 +122,8 @@ export default function AccountMenu() {
             borderRadius: "20px",
             boxShadow: "0 12px 32px rgba(0, 0, 0, 0.08)",
             border: "1px solid rgba(229, 231, 235, 0.8)",
-            mt: 1.5,
+            mt: isMobile ? 0 : 1.5,
+            mb: isMobile ? 1.5 : 0,
             p: 1,
             minWidth: 200,
             "& .MuiMenuItem-root": {
@@ -142,24 +140,45 @@ export default function AccountMenu() {
                 color: "#059669",
               },
             },
-            "&::before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 18,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-              borderTop: "1px solid rgba(229, 231, 235, 0.8)",
-              borderLeft: "1px solid rgba(229, 231, 235, 0.8)",
-            },
+            "&::before": isMobile
+              ? {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  bottom: 0,
+                  right: 18,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(50%) rotate(45deg)",
+                  zIndex: 0,
+                  borderBottom: "1px solid rgba(229, 231, 235, 0.8)",
+                  borderRight: "1px solid rgba(229, 231, 235, 0.8)",
+                }
+              : {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 18,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                  borderTop: "1px solid rgba(229, 231, 235, 0.8)",
+                  borderLeft: "1px solid rgba(229, 231, 235, 0.8)",
+                },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{
+          horizontal: "right",
+          vertical: isMobile ? "bottom" : "top",
+        }}
+        anchorOrigin={{
+          horizontal: "right",
+          vertical: isMobile ? "top" : "bottom",
+        }}
       >
         <MenuItem
           onClick={() => {

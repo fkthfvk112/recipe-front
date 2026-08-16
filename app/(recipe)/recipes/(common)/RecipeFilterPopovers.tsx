@@ -35,11 +35,18 @@ export default function RecipeFilterPopovers({
 }: RecipeFilterPopoversProps) {
   if (!activePopover) return null;
 
+  // 모바일 (max-sm): 화면 중앙 고정 (fixed centered modal)
+  // 데스크탑 (sm 이상): 뱃지 버튼 바로 아래 (absolute top-full left-0)
+  const popoverBaseClass =
+    "recipe-popover-box z-[100] bg-white border border-gray-200 shadow-2xl rounded-3xl p-5 text-left text-gray-800 " +
+    "max-sm:fixed max-sm:top-1/2 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:-translate-y-1/2 " +
+    "sm:absolute sm:top-full sm:left-0 sm:mt-2";
+
   return (
     <>
       {/* 1. Detailed Filter Popover */}
       {activePopover === "filter" && (
-        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[300px] sm:w-[340px] text-left text-gray-800">
+        <div className={`${popoverBaseClass} max-sm:w-[90vw] max-sm:max-w-[340px] sm:w-[340px]`}>
           <h3 className="text-[14px] font-black text-gray-900 mb-4">상세</h3>
           
           <div className="mb-4">
@@ -87,13 +94,12 @@ export default function RecipeFilterPopovers({
         </div>
       )}
 
-      {/* 2. Category Popover - 3 Grid Layout for Perfect Spacing */}
+      {/* 2. Category Popover */}
       {activePopover === "category" && (
-        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[320px] sm:w-[340px] text-left text-gray-800">
+        <div className={`${popoverBaseClass} max-sm:w-[90vw] max-sm:max-w-[340px] sm:w-[340px]`}>
           <h3 className="text-[14px] font-black text-gray-900 mb-1">요리 카테고리 선택</h3>
           <p className="text-[12px] text-gray-400 font-medium mb-4">원하는 레시피 카테고리를 선택하세요.</p>
           
-          {/* 겹침 방지: grid-cols-3 로 변경하여 공간 확보, overflow-x-hidden 으로 가로 스크롤 차단 */}
           <div className="grid grid-cols-3 gap-3 max-h-[300px] overflow-y-auto overflow-x-hidden pr-1 custom-scrollbar">
             {[
               { id: "default", label: "전체" },
@@ -151,7 +157,7 @@ export default function RecipeFilterPopovers({
 
       {/* 3. Sorting Popover */}
       {activePopover === "sort" && (
-        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-64 text-left text-gray-800">
+        <div className={`${popoverBaseClass} max-sm:w-[85vw] max-sm:max-w-[280px] sm:w-64`}>
           <h3 className="text-[14px] font-black text-gray-900 mb-4">정렬 방식 선택</h3>
           
           <div className="flex flex-col gap-4 mb-6">
@@ -192,9 +198,9 @@ export default function RecipeFilterPopovers({
 
       {/* 4. Cooking Method Tag Popover */}
       {activePopover === "tag" && (
-        <div className="recipe-popover-box absolute top-full left-0 mt-2 z-[100] bg-background border border-gray-200 shadow-2xl rounded-3xl p-5 w-[200px] text-left text-gray-800">
+        <div className={`${popoverBaseClass} max-sm:w-[85vw] max-sm:max-w-[260px] sm:w-[180px]`}>
           <h3 className="text-[14px] font-black text-gray-900 mb-3">조리 방법 태그</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex justify-center flex-wrap gap-2">
             {[
               { id: "default", label: "전체" },
               { id: "굽기", label: "굽기" },
@@ -203,8 +209,6 @@ export default function RecipeFilterPopovers({
               { id: "찌기", label: "찌기" },
               { id: "튀기기", label: "튀기기" }
             ].map((method) => {
-              const isSelected = recipeSearchingData.cookMethod === method.id;
-              
               return (
                 <button
                   key={method.id}
@@ -213,7 +217,7 @@ export default function RecipeFilterPopovers({
                     setRecipeSearchingData(updated);
                     applyQuery(updated);
                   }}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-xl border cursor-pointer transition-colors ${
+                  className={`px-3.5 py-2 text-xs font-bold rounded-xl border cursor-pointer transition-colors ${
                     recipeSearchingData.cookMethod === method.id
                       ? "border-[#8FBC8F] bg-emerald-50 text-[#8FBC8F]"
                       : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"

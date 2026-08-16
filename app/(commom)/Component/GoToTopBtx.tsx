@@ -10,7 +10,6 @@ function ScrollToTopButton({marginBottom}:{marginBottom?:number}){
   };
   
   const [isVisible, setIsVisible] = useState(false);
-  const {layoutBottomMargin} = useResponsiveDesignCss();
 
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
@@ -35,7 +34,7 @@ function ScrollToTopButton({marginBottom}:{marginBottom?:number}){
   }, []);
 
   return (
-    <div className={`relative mb-${marginBottom} ${layoutBottomMargin}`}>
+    <div className={`relative mb-${marginBottom}`}>
       {isVisible && (
         <button onClick={scrollToTop} className="rounded-full w-[60px] h-[60px] flex-center-col border-none bg-[#a1a1a1] opacity-55">
           <KeyboardArrowUpIcon sx={{width:"50px", height:"50px", fill:"white"}}/>

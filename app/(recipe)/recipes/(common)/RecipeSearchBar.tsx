@@ -396,7 +396,7 @@ export default function RecipeSearchBar() {
       </div>
             
     {/* 2. horizontal Badge filter list */}
-      <div className={`w-full max-w-[800px] px-5 pb-3.5 flex items-center gap-2 relative ${activePopover ? "overflow-visible" : "overflow-x-auto no-scrollbar scroll-smooth"}`}>
+      <div className={`w-full max-w-[800px] px-5 pb-3.5 flex items-center gap-2 relative no-scrollbar scroll-smooth ${activePopover ? "overflow-visible" : "overflow-x-auto"}`}>
         
         {/* Filter Badge */}
         <div className="relative">

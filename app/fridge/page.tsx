@@ -164,7 +164,7 @@ export default function Fridge() {
           {/* Section Header + Filter Toggle */}
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="text-sm font-black text-gray-900 tracking-tight">맞춤 레시피 추천 🍳</h3>
+              <h3 className="text-sm font-black text-gray-900 tracking-tight">맞춤 레시피 추천</h3>
               <p className="text-xs text-gray-500 font-medium mt-0.5">
                 내 냉장고 식재료로 바로 만들 수 있는 요리예요.
               </p>

@@ -63,7 +63,7 @@ export default function FridgeDescription() {
           {/* Left Column: Value Proposition & CTA */}
           <div className="md:col-span-7 flex flex-col items-start text-left">
             <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-4 leading-tight">
-              식재료 낭비 없는 편리한<br className="hidden sm:inline" /> 스마트 냉장고 관리
+              더 산뜻한 내일을 위해
             </h3>
             {/* Benefit List (No Emoji, styled for dark background) */}
             <ul className="space-y-3.5 text-[13px] sm:text-[14px] text-emerald-50 font-semibold mb-8 w-full">
@@ -103,18 +103,6 @@ export default function FridgeDescription() {
 
           {/* Right Column: Fridge graphic & mini dashboard cards */}
           <div className="md:col-span-5 flex flex-col items-center justify-center gap-6 w-full">
-            <div className="relative flex items-center justify-center w-full">
-              {/* Soft decorative background glow ring (dark mode friendly) */}
-              <div className="absolute w-48 h-48 sm:w-56 sm:h-56 bg-emerald-950/50 rounded-full filter blur-xl -z-10" />
-              <Image
-                className="drop-shadow-xl hover:scale-105 transition-transform duration-300"
-                src="/common/fridge.png"
-                width={190}
-                height={190}
-                alt="smart fridge illustration"
-              />
-            </div>
-
             {isEmpty ? (
               /* Empty State Action Card */
               <div 

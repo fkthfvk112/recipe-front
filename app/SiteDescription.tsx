@@ -53,7 +53,7 @@ export default function SiteDescription() {
         
         {/* 상단 파스텔 뱃지 */}
         <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-emerald-100/80 text-emerald-800 text-xs font-black rounded-full border border-emerald-200/60 mb-4 shadow-2xs">
-          더 건강한 내일을 위해
+          더 산뜻한 내일을 위해
         </div>
 
         {/* 메인 타이틀 & 서브 설명 */}
