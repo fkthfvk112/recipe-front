@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import Script from "next/script";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import Link from "next/link";
 import { Components } from "react-markdown";
 import Badge from "@/app/(commom)/Component/Badge";
@@ -87,22 +88,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ─── 무채색 모노톤 정제 마크다운 커스텀 렌더러 ─────────────────────────────────────────
 const markdownComponents: Components = {
-  img: ({ src, alt }) => (
-    <span className="block my-8">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt ?? ""}
-        className="w-full rounded-2xl shadow-sm object-cover border border-gray-100 block"
-        loading="lazy"
-      />
-      {alt && (
-        <span className="block text-center text-xs text-gray-400 mt-2 font-medium">
-          {alt}
-        </span>
-      )}
-    </span>
-  ),
+  img: ({ src, alt, width, style }) => {
+    let customWidth: string | undefined = typeof width === "string" || typeof width === "number" ? String(width) : undefined;
+    
+    // URL 해시 파라미터 파싱 (예: #w=300, #width=50%, #width=400px)
+    if (src && src.includes("#")) {
+      const hashPart = src.split("#")[1];
+      const match = hashPart?.match(/(?:width|w)=([0-9]+%?|[0-9]+px)/i);
+      if (match && match[1]) {
+        customWidth = match[1].endsWith("%") || match[1].endsWith("px") ? match[1] : `${match[1]}px`;
+      }
+    }
+
+    const imgStyle = {
+      ...(style || {}),
+      width: customWidth || (style?.width ? String(style.width) : "100%"),
+      maxWidth: "100%",
+    };
+
+    return (
+      <span className="block my-8 flex flex-col items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt ?? ""}
+          style={imgStyle}
+          className="rounded-2xl shadow-xs object-cover border border-gray-100/80 block mx-auto transition-all"
+          loading="lazy"
+        />
+      </span>
+    );
+  },
   h1: ({ children }) => (
     <h2 className="text-2xl font-black text-gray-900 mt-10 mb-4 tracking-tight leading-snug">{children}</h2>
   ),
@@ -113,10 +129,20 @@ const markdownComponents: Components = {
     <h4 className="text-base font-extrabold text-gray-800 mt-6 mb-2">{children}</h4>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="border-l-4 border-gray-400 pl-4 py-2 my-5 bg-gray-50/80 rounded-r-xl text-gray-700 font-medium leading-relaxed">
+    <blockquote className="bg-[#f3f4f6] border border-gray-200/60 rounded-[22px] p-6 my-6 text-gray-800 leading-relaxed font-normal shadow-2xs">
       {children}
     </blockquote>
   ),
+  div: ({ children, className }) => {
+    if (className === "callout-box" || className === "gray-box") {
+      return (
+        <div className="bg-[#f3f4f6] border border-gray-200/60 rounded-[22px] p-6 my-6 text-gray-800 leading-relaxed font-normal shadow-2xs">
+          {children}
+        </div>
+      );
+    }
+    return <div>{children}</div>;
+  },
   code: ({ children, className }) => {
     const isBlock = className?.startsWith("language-");
     return isBlock ? (
@@ -254,6 +280,7 @@ export default async function PostLanding({ params }: Props) {
           <article className="prose max-w-none w-full text-gray-800 prose-p:leading-relaxed prose-p:font-medium prose-p:text-gray-700 mb-10">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
               components={markdownComponents}
             >
               {post.content}

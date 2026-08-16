@@ -178,3 +178,5 @@ export function OutlineButton({
     </button>
   );
 }
+
+export const SecondaryButton = OutlineButton;

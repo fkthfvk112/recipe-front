@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
@@ -27,6 +28,7 @@ const TOOLBAR_ITEMS = [
   { label: "인용", action: "quote", title: "인용문" },
   { label: "코드", action: "code", title: "인라인 코드" },
   { label: "구분선", action: "hr", title: "수평선" },
+  { label: "회색 박스", action: "callout", title: "회색 배경 강조 상자" },
 ];
 
 export default function EditPostPage({ params }: Props) {
@@ -119,6 +121,11 @@ export default function EditPostPage({ params }: Props) {
       case "quote": insertAtCursor("> ", "", "인용 내용"); break;
       case "code": insertAtCursor("`", "`", "코드"); break;
       case "hr": insertAtCursor("\n---\n", "", ""); break;
+      case "callout":
+        insertAtCursor(
+          ">"
+        );
+        break;
       default: break;
     }
   }, [insertAtCursor]);
@@ -141,8 +148,14 @@ export default function EditPostPage({ params }: Props) {
     try {
       const url = await uploadPostImage(file);
       const alt = file.name.replace(/\.[^.]+$/, "");
-      insertAtCursor(`\n![${alt}](${url})\n`, "", "");
-      Swal.fire({ title: "이미지 업로드 완료!", icon: "success", timer: 1200, showConfirmButton: false });
+      insertAtCursor(`\n![${alt}](${url}#w=100%)\n`, "", "");
+      Swal.fire({
+        title: "이미지 업로드 완료!",
+        text: "Tip: URL 뒤의 #w=100%를 #w=300px 또는 #w=50%로 변경하여 크기를 조절할 수 있습니다.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } catch {
       Swal.fire("이미지 업로드에 실패했습니다.", "잠시 후 다시 시도해주세요.", "error");
     } finally {
@@ -453,7 +466,54 @@ export default function EditPostPage({ params }: Props) {
             <h2 className="text-xs font-bold text-gray-400 mb-4 uppercase tracking-widest">📄 실시간 미리보기</h2>
             <article className="prose prose-emerald max-w-none prose-headings:font-black prose-p:text-gray-700 prose-img:rounded-2xl prose-img:shadow-md prose-a:text-emerald-600">
               {content ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    img: ({ src, alt, width, style }) => {
+                      let customWidth: string | undefined = typeof width === "string" || typeof width === "number" ? String(width) : undefined;
+                      if (src && src.includes("#")) {
+                        const hashPart = src.split("#")[1];
+                        const match = hashPart?.match(/(?:width|w)=([0-9]+%?|[0-9]+px)/i);
+                        if (match && match[1]) {
+                          customWidth = match[1].endsWith("%") || match[1].endsWith("px") ? match[1] : `${match[1]}px`;
+                        }
+                      }
+                      const imgStyle = {
+                        ...(style || {}),
+                        width: customWidth || (style?.width ? String(style.width) : "100%"),
+                        maxWidth: "100%",
+                      };
+                      return (
+                        <span className="block my-6 flex flex-col items-center justify-center">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={src}
+                            alt={alt ?? ""}
+                            style={imgStyle}
+                            className="rounded-2xl shadow-xs object-cover border border-gray-100 block mx-auto transition-all"
+                            loading="lazy"
+                          />
+                        </span>
+                      );
+                    },
+                    blockquote: ({ children }) => (
+                      <blockquote className="bg-[#f3f4f6] border border-gray-200/60 rounded-[22px] p-6 my-6 text-gray-800 leading-relaxed font-normal shadow-2xs not-italic">
+                        {children}
+                      </blockquote>
+                    ),
+                    div: ({ children, className }) => {
+                      if (className === "callout-box" || className === "gray-box") {
+                        return (
+                          <div className="bg-[#f3f4f6] border border-gray-200/60 rounded-[22px] p-6 my-6 text-gray-800 leading-relaxed font-normal shadow-2xs">
+                            {children}
+                          </div>
+                        );
+                      }
+                      return <div>{children}</div>;
+                    },
+                  }}
+                >
                   {content}
                 </ReactMarkdown>
               ) : (

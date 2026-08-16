@@ -33,7 +33,6 @@ export default function Home() {
       <FridgeDescription></FridgeDescription>
       <SeasonalFood></SeasonalFood>
       <PopularRecipes/>
-      <RecentRecipes/>
       {/* <RealTimeLikeBoard/> */}
       <BottomBanner/>
     </div>

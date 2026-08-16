@@ -72,6 +72,14 @@ export async function generatePostByAI(ingredient: string) {
 }
 
 /**
+ * 직접 게시글 작성 초안 생성 (ADMIN)
+ */
+export async function createDirectPost(payload?: { title?: string; content?: string; slug?: string; tags?: string[] }) {
+  const res = await axiosAuthInstacne.post("post/create", payload ?? {});
+  return res.data; // PostDTO
+}
+
+/**
  * 게시글 이미지 업로드 (ADMIN)
  * 백엔드가 준비되기 전까지는 공통 이미지 업로드 API 활용
  */
