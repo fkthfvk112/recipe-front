@@ -120,16 +120,12 @@ export default function EditDelClient({
       >
         <Box sx={modalStyle}>
           <div className="bg-white rounded-3xl p-4 shadow-2xl flex flex-col gap-2.5 border border-gray-100">
-            <div className="text-center py-1">
-              <span className="text-xs font-bold text-gray-400">관리 메뉴</span>
-            </div>
-
             <DangerButton fullWidth onClick={deleteData}>
-              🗑️ 삭제하기
+              삭제하기
             </DangerButton>
 
             <OutlineButton fullWidth onClick={sendToEditPage}>
-              ✏️ 수정하기
+              수정하기
             </OutlineButton>
 
             <CancelButton fullWidth onClick={handleClose}>

@@ -19,6 +19,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import { CircularProgress } from "@mui/material";
 import { FridgeSortingEnum } from "@/app/(type)/fridge";
 import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
+import { usePwaBackHandler } from "@/app/(commom)/Hook/usePwaBackHandler";
 
 interface Props {
   fridgeId: number;
@@ -37,6 +38,9 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
     const t = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(t);
   }, []);
+
+  // PWA 뒤로가기 → 슬라이드 패널 닫기
+  usePwaBackHandler(mounted, onClose);
 
   const { data: fridgeData, isLoading } = useQuery<Fridge>({
     queryKey: ["fridgeDetail", fridgeId, fridgeSort],

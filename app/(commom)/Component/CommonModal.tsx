@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { Modal } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import { usePwaBackHandler } from "@/app/(commom)/Hook/usePwaBackHandler";
 
 export interface CommonModalProps {
   open: boolean;
@@ -21,6 +22,9 @@ export default function CommonModal({
   maxWidthClass = "max-w-md",
   zIndex = 1300,
 }: CommonModalProps) {
+  // PWA 뒤로가기 → 모달 닫기
+  usePwaBackHandler(open, onClose);
+
   // ESC 키 클릭 지원
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

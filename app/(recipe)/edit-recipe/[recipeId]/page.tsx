@@ -197,7 +197,7 @@ export default function EditRecipePage({
 
       {/* Floating Scroll Top Button */}
       <div className="fixed bottom-24 right-6 z-40">
-        <ScrollToTopButton />
+        <ScrollToTopButton marginBottom={12} />
       </div>
 
       {/* Confirmation Modal */}
