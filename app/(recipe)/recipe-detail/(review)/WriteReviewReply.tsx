@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { ChangeEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 import Button from "@/app/(commom)/Component/Button";
+import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 
 const modalstyle = {
@@ -124,12 +125,12 @@ function WriteReviewReply({domainName, domainId, parentReviewId}:{domainName:str
                           <div className="text-xs text-gray-400">{reply.message.length}/200</div>
                           {
                             reply.message.length >= 2 && reply.message.length <= 200?
-                            <Button type="button" variant="secondary" size="sm" onClick={() => { handleSaveReply(); setOpen(false); }}>
+                            <PrimaryButton size="sm" onClick={() => { handleSaveReply(); setOpen(false); }}>
                               댓글 쓰기
-                            </Button>:
-                            <Button type="button" variant="neutral" size="sm" disabled>
+                            </PrimaryButton>:
+                            <PrimaryButton size="sm" disabled>
                               댓글 쓰기
-                            </Button>
+                            </PrimaryButton>
                           }
                         </div>
                     </div>

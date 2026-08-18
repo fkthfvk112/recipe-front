@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 import { domainId, domainName } from "./ReviewContainer";
 import { checkAnonymousAtom } from "@/app/(recoil)/userFeedAtom";
 import Button from "@/app/(commom)/Component/Button";
+import { DarkButton, PrimaryButton } from "@/app/(commom)/Component/Buttons";
 
 const domainReviewUrl = {
   recipe: "review/recipe/create",
@@ -124,12 +125,12 @@ export default function WriteReview({ domainId, domainName }: { domainId: domain
               <div className="text-xs text-gray-400">{review.message.length}/200</div>
               {
                 review.message.length >= 2 && review.message.length <= 200?
-                <Button type="button" variant="secondary" size="sm" onClick={() => saveReview()}>
+                <PrimaryButton size="sm" onClick={() => saveReview()}>
                   댓글 쓰기
-                </Button>:
-                <Button type="button" variant="neutral" size="sm" disabled>
+                </PrimaryButton>:
+                <PrimaryButton size="sm" disabled>
                   댓글 쓰기
-                </Button>
+                </PrimaryButton>
               }
             </div>
           </div>

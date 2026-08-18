@@ -9,6 +9,7 @@ import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import RestaurantMenuOutlinedIcon from "@mui/icons-material/RestaurantMenuOutlined";
 import KitchenOutlinedIcon from "@mui/icons-material/KitchenOutlined";
 import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
+import { authEvents } from "./(commom)/ga4/ga4Events";
 
 export default function SiteDescription() {
   const [isSignIn] = useRecoilState(siginInState);
@@ -101,11 +102,14 @@ export default function SiteDescription() {
         {/* 회원가입 / 로그인 CTA 버튼 */}
         <PrimaryButton
           type="button"
-          onClick={goToSiginInPage}
+          onClick={()=>{
+            goToSiginInPage()
+            authEvents.goToSignIn("home");
+          }}
           size="lg"
           className="w-full sm:w-auto px-9 py-4 flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
         >
-          <span>회원가입 / 로그인하기</span>
+          <span>회원가입 / 로그인</span>
           <ArrowForwardOutlinedIcon sx={{ fontSize: 20 }} />
         </PrimaryButton>
 

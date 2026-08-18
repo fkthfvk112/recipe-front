@@ -94,7 +94,7 @@ const Navbar = () => {
               <li>
                 <Link href="/randomMenu">
                   <span className={`text-[15px] transition-colors cursor-pointer hover:text-gray-900 ${containInRoute("randomMenu") ? "text-gray-900 font-extrabold" : "text-gray-600 font-bold"}`}>
-                    뭐먹지?
+                    랜덤 메뉴
                   </span>
                 </Link>
               </li>
@@ -186,7 +186,7 @@ const Navbar = () => {
                     ? "text-[#1c7c54] font-extrabold" 
                     : "text-gray-400 font-medium group-hover:text-gray-600"
                 }`}>
-                  뭐먹지?
+                  랜덤 메뉴
                 </p>
               </div>
             </Link>

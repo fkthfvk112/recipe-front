@@ -5,6 +5,7 @@ import WelcomeHead from "./WelcomHead";
 import WelcomTrouble from "./WelcomTrouble";
 import ClosingSection from "./ClosingSection";
 import { useRouter } from "next/navigation";
+import { authEvents } from "@/app/(commom)/ga4/ga4Events";
 
 export default function Welcom(){
     const router = useRouter();
@@ -52,7 +53,10 @@ export default function Welcom(){
                     description="식재료 유통기한을 관리하고 레시피를 추천받아 효율적으로 소비해요."
                     imgUrl="/welcom/eat.png"
                     ctaText="3초 만에 시작하기"
-                    onCtaClick={goToLogin}
+                    onCtaClick={()=>{
+                        goToLogin()
+                        authEvents.goToSignIn("welcome/bottom_3sec_btn");
+                    }}
                 />
                 <FeatureSection
                     features={features}
@@ -84,7 +88,10 @@ export default function Welcom(){
                 <ClosingSection
                     message="지금 함께해요"
                     ctaText="같이 건강해지기"
-                    onCtaClick={goToLogin}
+                    onCtaClick={()=>{
+                        goToLogin()
+                        authEvents.goToSignIn("welcome/btn_below");
+                    }}
                 />
                 {/* <WelcomFooter/> */}
             </div> 

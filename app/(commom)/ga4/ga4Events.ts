@@ -8,8 +8,17 @@ type EventParams = {
 };
 
 export const sendGA4Event = (eventName: string, params?: EventParams) => {
-  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-    window.gtag('event', eventName, params);
+  if (typeof window !== 'undefined') {
+    // 1. gtag가 있으면 gtag로 전송
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', eventName, params);
+    }
+    // 2. GTM dataLayer가 있으면 dataLayer로도 push
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    (window as any).dataLayer.push({
+      event: eventName,
+      ...params,
+    });
   }
 };
 
@@ -183,6 +192,116 @@ export const fridgeEvents = {
       event_label: '냉장고 관리 페이지 이동',
       recipe_id: recipeId,
       source: source, // 'recipe_detail', 'recipe_list', etc.
+      timestamp: new Date().toISOString(),
+    });
+  },
+};
+
+/**
+ * 웰컴 페이지 관련 이벤트
+ */
+export const welcomeEvents = {
+  // 웰컴 페이지로 이동
+  goToWelcome: (source: string = "direct") => {
+    sendGA4Event('go_to_welcome', {
+      event_category: 'onboarding_conversion',
+      event_label: '웰컴 페이지 이동',
+      source: source,
+      timestamp: new Date().toISOString(),
+    });
+  },
+};
+
+/**
+ * 로그인 및 인증/계정 관련 이벤트
+ */
+export const authEvents = {
+  // 로그인 페이지 이동 (어느 경로에서 유입되었는지 추적)
+  goToSignIn: (source: string = "direct") => {
+    sendGA4Event('go_to_signin', {
+      event_category: 'auth_funnel',
+      event_label: '로그인 페이지 이동',
+      source: source, // 'nav_header', 'fridge_guard', 'recipe_detail', 'welcome', etc.
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 로그인 페이지 조회
+  viewSignInPage: (source?: string) => {
+    sendGA4Event('view_signin_page', {
+      event_category: 'auth_funnel',
+      event_label: '로그인 페이지 조회',
+      source: source || 'direct',
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 로그인 시도
+  submitSignIn: (method: 'normal' | 'naver' | 'kakao' = 'normal') => {
+    sendGA4Event('submit_signin', {
+      event_category: 'auth_funnel',
+      event_label: `로그인 시도 (${method})`,
+      login_method: method,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 로그인 성공
+  signInSuccess: (method: 'normal' | 'naver' | 'kakao' = 'normal') => {
+    sendGA4Event('signin_success', {
+      event_category: 'auth_conversion',
+      event_label: `로그인 성공 (${method})`,
+      login_method: method,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 로그인 실패
+  signInFailure: (reason: string, method: 'normal' | 'naver' = 'normal') => {
+    sendGA4Event('signin_failure', {
+      event_category: 'auth_funnel',
+      event_label: `로그인 실패 (${reason})`,
+      login_method: method,
+      fail_reason: reason,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 소셜 로그인 버튼 클릭
+  clickSocialLogin: (provider: 'naver' | 'kakao' | 'google') => {
+    sendGA4Event('click_social_login', {
+      event_category: 'auth_funnel',
+      event_label: `${provider} 간편 로그인 클릭`,
+      provider: provider,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 회원가입 링크/버튼 클릭
+  clickSignUpLink: (source: string = 'signin_page') => {
+    sendGA4Event('click_signup_link', {
+      event_category: 'auth_funnel',
+      event_label: '회원가입 링크 클릭',
+      source: source,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 회원가입 완료
+  signUpSuccess: (method: 'normal' | 'naver' = 'normal') => {
+    sendGA4Event('signup_success', {
+      event_category: 'auth_conversion',
+      event_label: `회원가입 완료 (${method})`,
+      signup_method: method,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 로그아웃
+  signOut: () => {
+    sendGA4Event('sign_out', {
+      event_category: 'auth_funnel',
+      event_label: '로그아웃',
       timestamp: new Date().toISOString(),
     });
   },

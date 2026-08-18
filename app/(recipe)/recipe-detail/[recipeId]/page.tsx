@@ -161,7 +161,7 @@ export default async function RecipeDetail({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(googleRecipeSchema) }}
       />
-    <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh px-4 sm:px-0">    
+    <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh sm:px-0">    
       <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="p-6 sm:p-8 w-full">
           <UserInfo recipeOwner={recipeOwner}></UserInfo>

@@ -12,6 +12,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import ClearIcon from "@mui/icons-material/Clear";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { OrangeButton } from "@/app/(commom)/Component/Buttons";
+import { welcomeEvents } from "@/app/(commom)/ga4/ga4Events";
 
 export default function RandomMenu() {
   const [fullUrl, setFullUrl] = useState("");
@@ -232,7 +233,11 @@ export default function RandomMenu() {
 
           {/* Welcome link */}
           <button
-            onClick={goToWelcome}
+            onClick={()=>{
+                goToWelcome();
+                welcomeEvents.goToWelcome("하단 버튼");
+              }
+            }
             className="mt-3 text-xs text-gray-400 font-medium hover:text-emerald-600 transition-colors underline underline-offset-4 border-none bg-transparent cursor-pointer"
           >
             서비스 소개
@@ -265,6 +270,7 @@ export default function RandomMenu() {
             onClick={() => {
               setShowWelcomeToast(false);
               goToWelcome();
+              welcomeEvents.goToWelcome("하단 팝업");
             }}
             className="w-full py-2 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200/60 transition-colors cursor-pointer outline-none text-center"
           >
