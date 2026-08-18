@@ -7,6 +7,7 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import { useRouter } from "next/navigation";
 import { roundToNPlaces } from '@/app/(utils)/NumberUtil';
 import Button from "@/app/(commom)/Component/Button";
+import { PrimaryButton } from '@/app/(commom)/Component/Buttons';
 
 export type BestRecipe = {
   recipeId: number | string;
@@ -98,15 +99,14 @@ export function BestRecipeCard({ recipe }: { recipe: BestRecipe }) {
             </p>
 
             <div className="mt-6 flex">
-              <Button
-                variant="secondary"
+              <PrimaryButton
                 size="md"
                 onClick={goRecipe}
                 aria-label="레시피 상세 보러가기"
                 className="w-full md:w-auto font-extrabold"
               >
                 레시피 보러가기
-              </Button>
+              </PrimaryButton>
             </div>
           </div>
         </div>
