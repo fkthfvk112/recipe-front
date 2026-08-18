@@ -12,6 +12,7 @@ interface Props {
   titleVideCnt?: number;
   defaultVal?: string;
   onEnterSubmit?: () => void;
+  onConfirm?: (data: string) => void;
 }
 
 export default function IngreRecommandInput({
@@ -22,6 +23,7 @@ export default function IngreRecommandInput({
   titleVideCnt,
   defaultVal,
   onEnterSubmit,
+  onConfirm,
 }: Props) {
   const [ingre, setIngre] = useState<string>(defaultVal || "");
   const [recommendTermList, setRecommendTermList] = useState<string[]>([]);
@@ -100,13 +102,21 @@ export default function IngreRecommandInput({
     if (dataSettingCallback) {
       dataSettingCallback(term);
     }
+    if (onConfirm) {
+      onConfirm(term);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isFocused || filteredList.length === 0) {
-      if (e.key === "Enter" && onEnterSubmit) {
-        e.preventDefault();
-        onEnterSubmit();
+      if (e.key === "Enter") {
+        if (onConfirm) {
+          onConfirm(ingre);
+        }
+        if (onEnterSubmit) {
+          e.preventDefault();
+          onEnterSubmit();
+        }
       }
       return;
     }
@@ -121,9 +131,14 @@ export default function IngreRecommandInput({
       if (selectedIndex >= 0 && selectedIndex < filteredList.length) {
         e.preventDefault();
         handleSelectTerm(filteredList[selectedIndex]);
-      } else if (onEnterSubmit) {
-        e.preventDefault();
-        onEnterSubmit();
+      } else {
+        if (onConfirm) {
+          onConfirm(ingre);
+        }
+        if (onEnterSubmit) {
+          e.preventDefault();
+          onEnterSubmit();
+        }
       }
     } else if (e.key === "Escape") {
       setIsFocused(false);
@@ -183,7 +198,12 @@ export default function IngreRecommandInput({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          if (onConfirm) {
+            onConfirm(ingre);
+          }
+        }}
       />
       {isFocused && filteredList.length > 0 && (
         <div

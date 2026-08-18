@@ -10,11 +10,13 @@ import { fetchFridgeImages } from "../(api)/fridge";
 interface FridgeItemImgListInterface {
   initialImgId?: number;
   imgClickCallback: (prop?: any) => any;
+  autoMatchName?: string;
 }
 
 export default function FridgeItemImgList({
   initialImgId,
   imgClickCallback,
+  autoMatchName,
 }: FridgeItemImgListInterface) {
   const [imgSort, setImgSort] = useState<string>("전체");
   const [selectedFridgeImg, setSelectedFridgeImg] = useState<FridgeItem>();
@@ -38,6 +40,24 @@ export default function FridgeItemImgList({
     setSelectedFridgeImg(picked);
   }, [fridgeImgs, initialImgId]);
 
+  // 사용자가 식재료 이름을 입력/확정했을 때(autoMatchName), 동일한 name을 가진 아이콘 자동 선택
+  useEffect(() => {
+    if (!autoMatchName || autoMatchName.trim().length === 0 || fridgeImgs.length === 0) return;
+    const query = autoMatchName.trim().toLowerCase();
+    const matched = fridgeImgs.find((img) => {
+      const imgName = (img.name || (img as any).imgName || "").trim().toLowerCase();
+      return imgName.length > 0 && imgName === query;
+    });
+
+    if (matched) {
+      setSelectedFridgeImg(matched);
+      imgClickCallback(matched);
+      if (matched.imgSort) {
+        setImgSort(matched.imgSort);
+      }
+    }
+  }, [autoMatchName, fridgeImgs, imgClickCallback]);
+
   const categories = [
     "전체",
     "채소",
@@ -60,7 +80,7 @@ export default function FridgeItemImgList({
         key={inx}
         type="button"
         onClick={() => setImgSort(sort)}
-        className={`px-3 py-1.5 text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none border shadow-xs ${
+        className={`px-3 py-1.5 w-24 text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none border shadow-xs ${
           isSelected
             ? "bg-gray-900 text-white border-gray-900 shadow-sm"
             : "bg-white text-gray-600 border-gray-200 hover:bg-gray-100/80 hover:text-gray-900"
