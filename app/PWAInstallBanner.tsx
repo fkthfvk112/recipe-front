@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import GetAppOutlinedIcon from "@mui/icons-material/GetAppOutlined";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,10 +12,13 @@ const DISMISS_DAYS = 7; // 닫으면 7일간 다시 안 뜸
 type BannerMode = "android" | "ios" | null;
 
 function isDismissed(): boolean {
+  if (typeof window === "undefined") return false;
   try {
-    const val = localStorage.getItem(DISMISS_KEY);
+    const val =
+      localStorage.getItem(DISMISS_KEY) || sessionStorage.getItem(DISMISS_KEY);
     if (!val) return false;
     const dismissedAt = Number(val);
+    if (isNaN(dismissedAt)) return false;
     const diff = Date.now() - dismissedAt;
     return diff < DISMISS_DAYS * 24 * 60 * 60 * 1000;
   } catch {
@@ -23,11 +26,24 @@ function isDismissed(): boolean {
   }
 }
 
+function setDismissedRecord(): void {
+  if (typeof window === "undefined") return;
+  const now = String(Date.now());
+  try {
+    localStorage.setItem(DISMISS_KEY, now);
+  } catch {}
+  try {
+    sessionStorage.setItem(DISMISS_KEY, now);
+  } catch {}
+}
+
 function isIOS(): boolean {
+  if (typeof window === "undefined") return false;
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
 function isInStandaloneMode(): boolean {
+  if (typeof window === "undefined") return false;
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
     (window.navigator as any).standalone === true
@@ -38,21 +54,31 @@ export default function PWAInstallBanner() {
   const [bannerMode, setBannerMode] = useState<BannerMode>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [visible, setVisible] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const clearPendingTimer = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
 
   useEffect(() => {
     // 이미 앱으로 실행 중이거나 사용자가 최근에 닫은 경우 → 배너 표시 안 함
-    if (isInStandaloneMode()) return;
-    if (isDismissed()) return;
+    if (isInStandaloneMode() || isDismissed()) {
+      return;
+    }
 
-    // iOS Safari: beforeinstallprompt 미지원 → 별도 수동 안내 배너
+    // iOS Safari
     if (isIOS()) {
-      // Safari에서 접속 중일 때만 iOS 배너 표시
       const isSafari =
         /Safari/i.test(navigator.userAgent) &&
-        !/Chrome/i.test(navigator.userAgent);
+        !/Chrome|CriOS|FxiOS|KAIOS|NAVER|KAKAOTALK/i.test(navigator.userAgent);
+
       if (isSafari) {
-        // 약간 딜레이 후 표시 (페이지 로드 UX)
-        setTimeout(() => {
+        clearPendingTimer();
+        timerRef.current = setTimeout(() => {
+          if (isDismissed() || isInStandaloneMode()) return;
           setBannerMode("ios");
           setVisible(true);
         }, 2500);
@@ -62,9 +88,13 @@ export default function PWAInstallBanner() {
 
     // Android/Chrome: beforeinstallprompt 이벤트 캡처
     const handler = (e: Event) => {
+      if (isDismissed() || isInStandaloneMode()) return;
       e.preventDefault(); // 브라우저 기본 미니 인포바 차단
       setDeferredPrompt(e);
-      setTimeout(() => {
+
+      clearPendingTimer();
+      timerRef.current = setTimeout(() => {
+        if (isDismissed() || isInStandaloneMode()) return;
         setBannerMode("android");
         setVisible(true);
       }, 2500);
@@ -73,12 +103,23 @@ export default function PWAInstallBanner() {
     window.addEventListener("beforeinstallprompt", handler as EventListener);
 
     return () => {
+      clearPendingTimer();
       window.removeEventListener(
         "beforeinstallprompt",
         handler as EventListener
       );
     };
   }, []);
+
+  const handleDismiss = () => {
+    clearPendingTimer();
+    setDismissedRecord();
+    setVisible(false);
+    setDeferredPrompt(null);
+    setTimeout(() => {
+      setBannerMode(null);
+    }, 400);
+  };
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
@@ -90,18 +131,9 @@ export default function PWAInstallBanner() {
     setDeferredPrompt(null);
   };
 
-  const handleDismiss = () => {
-    setVisible(false);
-    try {
-      localStorage.setItem(DISMISS_KEY, String(Date.now()));
-    } catch {}
-    setTimeout(() => setBannerMode(null), 400);
-  };
-
   if (!bannerMode || !visible) return null;
 
   return (
-    // 상단 고정 배너 (sticky top bar)
     <div
       className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
         visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
@@ -136,9 +168,8 @@ export default function PWAInstallBanner() {
           </div>
         </div>
 
-        {/* 오른쪽: 버튼 영역 (슬림화 및 핏 조절) */}
+        {/* 오른쪽: 버튼 영역 */}
         <div className="flex items-center gap-1.5 shrink-0">
-          {/* Android: 텍스트에 딱 맞춘 콤팩트 설치 버튼 */}
           {bannerMode === "android" && (
             <button
               type="button"
