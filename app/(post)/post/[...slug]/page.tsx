@@ -12,6 +12,8 @@ import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 
 type Props = { params: { slug: string[] } };
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
+
 function extractPlainText(markdown: string): string {
   return markdown
     ?.replace(/!\[.*?\]\(.*?\)/g, "")
@@ -24,7 +26,13 @@ function extractPlainText(markdown: string): string {
 
 function extractCoverImage(markdown: string): string | null {
   const match = markdown?.match(/!\[.*?\]\((.*?)\)/);
-  return match?.[1] ?? null;
+  if (!match?.[1]) return null;
+  const rawUrl = match[1].split("#")[0].trim();
+  if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
+    return encodeURI(decodeURI(rawUrl));
+  }
+  const fullUrl = rawUrl.startsWith("/") ? `${SITE_URL}${rawUrl}` : `${SITE_URL}/${rawUrl}`;
+  return encodeURI(decodeURI(fullUrl));
 }
 
 
@@ -69,19 +77,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slugPath = Array.isArray(params?.slug) ? params.slug.join("/") : String(params?.slug ?? "");
   const post = await fetchPostBySlug(slugPath);
   const plainText = extractPlainText(post?.content ?? "");
-  const coverImg = extractCoverImage(post?.content ?? "");
+  const rawCoverImg = extractCoverImage(post?.content ?? "");
+  const coverImg = rawCoverImg || `${SITE_URL}/common/favicon.png`;
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: post?.title ? `${post.title} - 머그인 식재료 백과` : "식재료 백과 - 머그인",
     description: plainText,
-    openGraph: {
-      title: post?.title || "",
-      description: plainText,
-      images: coverImg || "/common/favicon.png",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-    icons: { icon: "/common/favicon.png" },
+    openGraph: {
+      title: post?.title || "식재료 백과 - 머그인",
+      description: plainText,
+      url: `${SITE_URL}/post/${slugPath}`,
+      siteName: "머그인",
+      images: [
+        {
+          url: coverImg,
+          width: 1200,
+          height: 630,
+          alt: post?.title || "머그인 식재료 아티클",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post?.title || "식재료 백과 - 머그인",
+      description: plainText,
+      images: [coverImg],
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/common/favicon.png", type: "image/png", sizes: "192x192" },
+      ],
+      shortcut: "/common/favicon.png",
+      apple: "/common/favicon.png",
+    },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/post/${slugPath}`,
+      canonical: `${SITE_URL}/post/${slugPath}`,
     },
   };
 }
@@ -211,18 +253,32 @@ export default async function PostLanding({ params }: Props) {
     : `/recipes/1/sortingCondition=POPULARITY`;
   const fridgeLink = `/fridge`;
 
+  const absoluteCoverImg = coverImg || `${SITE_URL}/common/favicon.png`;
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    articleBody: extractPlainText(post.content ?? ""),
-    image: coverImg,
+    description: extractPlainText(post.content ?? ""),
+    image: [absoluteCoverImg],
     datePublished: post.publishedAt,
     dateModified: post.updatedAt ?? post.publishedAt,
-    author: { "@type": "Organization", name: "머그인" },
+    author: {
+      "@type": "Organization",
+      name: "머그인",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "머그인",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/common/favicon.png`,
+      },
+    },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_SITE_URL}/post/${slugPath}`,
+      "@id": `${SITE_URL}/post/${slugPath}`,
     },
   };
 

@@ -17,37 +17,86 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
+
+function getAbsoluteImageUrl(src?: string): string {
+  if (!src) return `${SITE_URL}/common/favicon.png`;
+  const cleanSrc = src.split("#")[0].trim();
+  if (cleanSrc.startsWith("http://") || cleanSrc.startsWith("https://")) {
+    return encodeURI(decodeURI(cleanSrc));
+  }
+  const fullUrl = cleanSrc.startsWith("/") ? `${SITE_URL}${cleanSrc}` : `${SITE_URL}/${cleanSrc}`;
+  return encodeURI(decodeURI(fullUrl));
+}
+
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
-  const recipeId = (await params).recipeId
-  
+  const recipeId = (await params).recipeId;
+
   const fetchData = await serverFetch({
-    url:`recipe/detail?recipeId=${recipeId}`,
-    option:{
-        cache: "default",
-        next:{
-              tags: [`recipeDetail-${recipeId}`],
-          }
-      }
+    url: `recipe/detail?recipeId=${recipeId}`,
+    option: {
+      cache: "default",
+      next: {
+        tags: [`recipeDetail-${recipeId}`],
+      },
+    },
   });
 
-  let recipeDetail: RecipeDetail = fetchData.recipeDTO;
+  const recipeDetail: RecipeDetail = fetchData?.recipeDTO;
+  const rawPhoto = recipeDetail?.repriPhotos?.[0];
+  const photoUrl = getAbsoluteImageUrl(rawPhoto);
+  const title = recipeDetail?.recipeName ? `${recipeDetail.recipeName} - 머그인 레시피` : "머그인 레시피";
+  const description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
 
   return {
-    title: `${recipeDetail?.recipeName} - 머그인`,
-    description: recipeDetail?.description || "맛있는 레시피",
-    icons:{
-      icon:"/common/favicon.png"
+    metadataBase: new URL(SITE_URL),
+    title: title,
+    description: description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-    openGraph:{
-      title: `${recipeDetail?.recipeName} - 머그인`,
-      description: recipeDetail?.description || "맛있는 레시피",
-      images:recipeDetail?.repriPhotos[0]
-    }
-  }
+    openGraph: {
+      title: title,
+      description: description,
+      url: `${SITE_URL}/recipe-detail/${recipeId}`,
+      siteName: "머그인",
+      images: [
+        {
+          url: photoUrl,
+          width: 1200,
+          height: 630,
+          alt: recipeDetail?.recipeName || "레시피 대표 이미지",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: [photoUrl],
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/common/favicon.png", type: "image/png", sizes: "192x192" },
+      ],
+      shortcut: "/common/favicon.png",
+      apple: "/common/favicon.png",
+    },
+    alternates: {
+      canonical: `${SITE_URL}/recipe-detail/${recipeId}`,
+    },
+  };
 }
 
 
@@ -118,11 +167,12 @@ export default async function RecipeDetail({
   };
 
   // 구글 레시피 서칭용 데이터 구조
+  const mainPhotoUrl = getAbsoluteImageUrl(recipeDetail?.repriPhotos?.[0]);
   const googleRecipeSchema: any = {
     "@context": "https://schema.org",
     "@type": "Recipe",
     "name": recipeDetail.recipeName,
-    "image": recipeDetail.repriPhotos[0],
+    "image": [mainPhotoUrl],
     "author": {
       "@type": "Person",
       "name": recipeOwner.userNickName,
