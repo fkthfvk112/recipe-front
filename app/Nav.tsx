@@ -60,7 +60,7 @@ const Navbar = () => {
             {/* Left: Logo */}
             <Link href="/">
               <div className="flex items-center gap-2.5 cursor-pointer">
-                <div className="relative w-20 h-20">
+                <div className="relative w-10 h-10 p-5">
                   <Image 
                     src="/common/logo.png" 
                     alt="mugin logo" 
