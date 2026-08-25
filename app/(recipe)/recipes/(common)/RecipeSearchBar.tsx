@@ -184,6 +184,19 @@ export default function RecipeSearchBar() {
     router.push(finalPath);
   }, [recipeSearchingData, sortingCon, searchingData, pathname, router]);
 
+  // 이중 인코딩되어 있어도 한글로 복원하는 안전한 함수
+  const safeDecode = (str:string) => {
+    try {
+      return decodeURIComponent(decodeURIComponent(str));
+    } catch (e) {
+      try {
+        return decodeURIComponent(str);
+      } catch (e) {
+        return str;
+      }
+    }
+  };
+
   const searchTerm = () => {
     if (searchingData.length <= 0) {
       Swal.fire({ title: "검색어를 입력해주세요.", icon: "warning", confirmButtonText: "확인", confirmButtonColor: '#1c7c54' });
@@ -290,7 +303,7 @@ export default function RecipeSearchBar() {
             key={`ingre-${val}`} 
             className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-bold transition-all"
           >
-            <span className="opacity-80">재료:</span> <span>{val}</span>
+            <span className="opacity-80">재료:</span> <span>{safeDecode(val)}</span>
             <ClearIcon 
               onClick={() => removeAppliedFilter("ingredientNames", val)} 
               sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
