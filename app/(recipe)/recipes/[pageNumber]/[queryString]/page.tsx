@@ -8,19 +8,21 @@ import NoContent_Recipe from "../../(common)/NoContent_Recipe";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-
-  //let recipeDetail: RecipeDetail = fetchData.recipeDTO;
   return {
     title: "레시피 검색 - 머그인",
-    description:"입맛에 맞는 다양한 레시피를 검색해보세요.",
-    icons:{
-      icon:"/common/favicon.png"
+    description: "입맛에 맞는 다양한 레시피를 검색해보세요.",
+    robots: {
+      index: false,
+      follow: true,
     },
-    openGraph:{
+    icons: {
+      icon: "/common/favicon.png",
+    },
+    openGraph: {
       title: "레시피 검색 - 머그인",
-      description:"입맛에 맞는 다양한 레시피를 검색해보세요.",
-    }
-  }
+      description: "입맛에 맞는 다양한 레시피를 검색해보세요.",
+    },
+  };
 }
 
 export default async function SearchingByCondition({
