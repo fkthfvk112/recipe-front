@@ -32,6 +32,18 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
+  const url = new URL(event.request.url);
+
+  // Next.js 내부 RSC 통신(_rsc), 동적 API 통신 등은 서비스 워커 오버헤드 없이 직접 네트워크로 통과
+  if (
+    url.searchParams.has("_rsc") ||
+    url.pathname.startsWith("/_next/") ||
+    url.pathname.startsWith("/api/") ||
+    url.port === "8080"
+  ) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {

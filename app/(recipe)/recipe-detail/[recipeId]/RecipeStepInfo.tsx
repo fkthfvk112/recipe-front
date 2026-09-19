@@ -22,7 +22,7 @@ export default function RecipeStepInfo({
 
   const stepItems = steps.map((step, inx) => {
     return (
-      <div key={inx} className="py-4 border-b border-gray-100 last:border-b-0">
+      <div key={inx} id={`step-${inx + 1}`} className="py-4 border-b border-gray-100 last:border-b-0 scroll-mt-24">
         <div className="flex justify-between items-center mb-2.5 text-sm sm:text-base font-bold">
           <span className="text-gray-800 font-black text-[15px] sm:text-[16px]">Step {step.order+1}</span>
           <span className="inline-flex items-center text-xs font-semibold text-gray-400">

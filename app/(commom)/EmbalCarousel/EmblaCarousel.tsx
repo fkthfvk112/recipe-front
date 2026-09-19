@@ -16,6 +16,7 @@ type PropType = {
   imgUrls: string[];
   slides: number[];
   options?: EmblaOptionsType;
+  recipeTitle?: string;
 };
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
@@ -79,8 +80,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               <Image
                 className="inner-img"
                 src={imageByIndex(index)}
-                alt="no img"
+                alt={props.recipeTitle ? `${props.recipeTitle} 대표 사진 ${index + 1}` : "레시피 대표 사진"}
                 fill
+                priority={index === 0}
+                sizes="(max-width: 768px) 100vw, 768px"
                 onClick={()=>clickImgModalOpen(imageByIndex(index))}
               />
             </div>

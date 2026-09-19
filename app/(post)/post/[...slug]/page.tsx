@@ -9,6 +9,7 @@ import { Components } from "react-markdown";
 import Badge from "@/app/(commom)/Component/Badge";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
+import { cache } from "react";
 
 type Props = { params: { slug: string[] } };
 
@@ -35,24 +36,35 @@ function extractCoverImage(markdown: string): string | null {
   return encodeURI(decodeURI(fullUrl));
 }
 
-
-
-async function getRelatedPosts(currentSlug: string): Promise<Post[]> {
+const getRelatedPosts = cache(async (currentSlug: string): Promise<Post[]> => {
   try {
-    const data = await serverFetch({ url: "post/published", option: { cache: "no-store" } });
+    const data = await serverFetch({
+      url: "post/published",
+      option: {
+        next: {
+          revalidate: 3600,
+          tags: ["posts-published"],
+        },
+      },
+    });
     if (!Array.isArray(data)) return [];
     return data.filter((p: Post) => p.slug !== currentSlug).slice(0, 3);
   } catch {
     return [];
   }
-}
+});
 
-async function fetchPostBySlug(slugPath: string): Promise<Post | null> {
+const fetchPostBySlug = cache(async (slugPath: string): Promise<Post | null> => {
   try {
     const res = await serverFetch({
       url: "post/any/slug",
       queryParams: { slug: slugPath },
-      option: { cache: "no-store" },
+      option: {
+        next: {
+          revalidate: 3600,
+          tags: [`post-${slugPath}`],
+        },
+      },
     });
     const post = res?.data ?? res;
     if (post && (post.title || post.postId)) return post;
@@ -63,7 +75,12 @@ async function fetchPostBySlug(slugPath: string): Promise<Post | null> {
     const res = await serverFetch({
       url: "post/slug",
       queryParams: { slug: slugPath },
-      option: { cache: "no-store" },
+      option: {
+        next: {
+          revalidate: 3600,
+          tags: [`post-${slugPath}`],
+        },
+      },
     });
     const post = res?.data ?? res;
     if (post && (post.title || post.postId)) return post;
@@ -71,7 +88,7 @@ async function fetchPostBySlug(slugPath: string): Promise<Post | null> {
     // fallback
   }
   return null;
-}
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slugPath = Array.isArray(params?.slug) ? params.slug.join("/") : String(params?.slug ?? "");
@@ -205,6 +222,7 @@ function RelatedPostCard({ post }: { post: Post }) {
   const coverImg = extractCoverImage(post.content ?? "");
   return (
     <Link
+      prefetch={false}
       href={`/post/${post.slug}`}
       className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200/70 hover:border-gray-400 hover:shadow-md transition-all"
     >

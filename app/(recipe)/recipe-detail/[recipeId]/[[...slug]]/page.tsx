@@ -13,6 +13,7 @@ import Script from "next/script";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import { permanentRedirect } from "next/navigation";
 import { generateSlug } from "@/app/(utils)/slugUtil";
+import { cache } from "react";
 
 type Props = {
   params: Promise<{ recipeId: string; slug?: string[] }>;
@@ -31,13 +32,9 @@ function getAbsoluteImageUrl(src?: string): string {
   return encodeURI(decodeURI(fullUrl));
 }
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { recipeId } = await params;
-
-  const fetchData = await serverFetch({
+// React cache를 적용하여 동일 렌더 주기 내 generateMetadata와 RecipeDetail 간 중복 백엔드 호출 1회로 통합
+const getRecipeDetail = cache(async (recipeId: string) => {
+  return await serverFetch({
     url: `recipe/detail?recipeId=${recipeId}`,
     option: {
       cache: "default",
@@ -46,6 +43,15 @@ export async function generateMetadata(
       },
     },
   });
+});
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { recipeId } = await params;
+
+  const fetchData = await getRecipeDetail(recipeId);
 
   const recipeDetail: RecipeDetail = fetchData?.recipeDTO;
   const rawPhoto = recipeDetail?.repriPhotos?.[0];
@@ -132,15 +138,7 @@ export default async function RecipeDetail({
 }) {
   const recipeId = params.recipeId;
 
-  const fetchData = await serverFetch({
-    url: `recipe/detail?recipeId=${recipeId}`,
-    option: {
-      cache: "default",
-      next: {
-        tags: [`recipeDetail-${recipeId}`],
-      },
-    },
-  });
+  const fetchData = await getRecipeDetail(recipeId);
 
   let recipeDetail: RecipeDetail = fetchData?.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData?.recipeOwnerInfo;
@@ -227,6 +225,7 @@ export default async function RecipeDetail({
         "@type": "HowToStep",
         name: `Step ${index + 1}`,
         text: step.description,
+        url: `${canonicalUrl}#step-${index + 1}`,
       };
       if (step.photo) stepObj.image = getAbsoluteImageUrl(step.photo);
       return stepObj;

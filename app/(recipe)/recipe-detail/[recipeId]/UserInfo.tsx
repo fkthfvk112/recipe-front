@@ -15,7 +15,9 @@ export default function UserInfo({
       <div className="flex justify-center items-center">
         {
           !(recipeOwner?.userPhoto) ? 
-          <Avatar sx={{width:54, height:54, boxShadow: "0 2px 8px rgba(0,0,0,0.05)"}} src="/broken-image.jpg" />
+          <Avatar sx={{width:54, height:54, boxShadow: "0 2px 8px rgba(0,0,0,0.05)", bgcolor: "#10b981", color: "#fff", fontWeight: 700}}>
+            {recipeOwner?.userNickName?.[0] || "M"}
+          </Avatar>
           :
           <div className="relative w-[54px] h-[54px] min-w-[54px] min-h-[54px] rounded-full overflow-hidden border border-gray-100 shadow-sm">
             <Image className="object-cover" src={recipeOwner.userPhoto} alt="user photo" fill />

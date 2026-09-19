@@ -34,6 +34,7 @@ export default function RecipeInfo({
           slides={Array.from(Array(recipeInfoProp?.repriPhotos?.length).keys())}
           options={{ loop: true }}
           imgUrls={recipeInfoProp.repriPhotos}
+          recipeTitle={recipeInfoProp.recipeName}
         ></EmblaCarousel>
       </div>
       

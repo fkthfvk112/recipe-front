@@ -11,7 +11,7 @@ export default function Ingredients({
   const ingreItems = ingredients.map((data, inx) => {
     return (
       <li className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0" key={inx}>
-        <Link href={`/recipes/1/ingre/${data.name}`} className="font-bold text-gray-700 hover:text-mugin-primary transition-colors duration-200 text-sm sm:text-base">
+        <Link prefetch={false} href={`/recipes/1/ingre/${data.name}`} className="font-bold text-gray-700 hover:text-mugin-primary transition-colors duration-200 text-sm sm:text-base">
           {data.name}
         </Link>
         <div className="text-sm text-gray-500 font-medium">{data.qqt}</div>
