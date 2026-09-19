@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { RecipeOwnerInfo } from "./page";
+import { RecipeOwnerInfo } from "../../types/recipeType";
 import Link from "next/link";
 import { Avatar } from "@mui/material";
 import { extractDeletedUser, isDeletedUser } from "@/app/(utils)/userUtil";

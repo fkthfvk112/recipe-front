@@ -1,21 +1,23 @@
-import { CookingSteps_show, Ingredient } from "../../types/recipeType";
-import UserInfo from "./UserInfo";
-import Ingredients from "./Ingredients";
-import RecipeInfo, { RecipeInfoProp } from "./RecipeInfo";
-import RecipeStepInfo from "./RecipeStepInfo";
+import { CookingSteps_show, Ingredient } from "../../../types/recipeType";
+import UserInfo from "../UserInfo";
+import Ingredients from "../Ingredients";
+import RecipeInfo, { RecipeInfoProp } from "../RecipeInfo";
+import RecipeStepInfo from "../RecipeStepInfo";
 import EditDel from "@/app/(commom)/CRUD/EditDel";
 import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
-import ReviewContainer from "../(review)/ReviewContainer";
+import ReviewContainer from "../../(review)/ReviewContainer";
 import serverFetch from "@/app/(commom)/serverFetch";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
 import { Metadata, ResolvingMetadata } from "next";
 import Script from "next/script";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
+import { permanentRedirect } from "next/navigation";
+import { generateSlug } from "@/app/(utils)/slugUtil";
 
 type Props = {
-  params: Promise<{ recipeId: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+  params: Promise<{ recipeId: string; slug?: string[] }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
 
@@ -33,7 +35,7 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const recipeId = (await params).recipeId;
+  const { recipeId } = await params;
 
   const fetchData = await serverFetch({
     url: `recipe/detail?recipeId=${recipeId}`,
@@ -50,6 +52,8 @@ export async function generateMetadata(
   const photoUrl = getAbsoluteImageUrl(rawPhoto);
   const title = recipeDetail?.recipeName ? `${recipeDetail.recipeName} - 머그인 레시피` : "머그인 레시피";
   const description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
+  const expectedSlug = generateSlug(recipeDetail?.recipeName || "");
+  const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -68,7 +72,7 @@ export async function generateMetadata(
     openGraph: {
       title: title,
       description: description,
-      url: `${SITE_URL}/recipe-detail/${recipeId}`,
+      url: canonicalUrl,
       siteName: "머그인",
       images: [
         {
@@ -94,11 +98,10 @@ export async function generateMetadata(
       apple: "/common/favicon.png",
     },
     alternates: {
-      canonical: `${SITE_URL}/recipe-detail/${recipeId}`,
+      canonical: canonicalUrl,
     },
   };
 }
-
 
 interface RecipeDetail {
   recipeName: string;
@@ -109,13 +112,13 @@ interface RecipeDetail {
   description: string;
   ingredients: Ingredient[];
   steps: CookingSteps_show[];
-  reviewAvg:number;
-  createdAt?:string;
-  reviewCnt?:number;
+  reviewAvg: number;
+  createdAt?: string;
+  reviewCnt?: number;
 }
 
 export interface RecipeOwnerInfo {
-  userId:string;
+  userId: string;
   userNickName: string;
   userPhoto: string;
   userUrl: string;
@@ -125,18 +128,19 @@ export interface RecipeOwnerInfo {
 export default async function RecipeDetail({
   params,
 }: {
-  params: { recipeId: number };
+  params: { recipeId: string; slug?: string[] };
 }) {
+  const recipeId = params.recipeId;
 
   const fetchData = await serverFetch({
-    url:`recipe/detail?recipeId=${params.recipeId}`,
-    option:{
-        cache: "default",
-        next:{
-              tags: [`recipeDetail-${params.recipeId}`],
-          }
-      }
-  })
+    url: `recipe/detail?recipeId=${recipeId}`,
+    option: {
+      cache: "default",
+      next: {
+        tags: [`recipeDetail-${recipeId}`],
+      },
+    },
+  });
 
   let recipeDetail: RecipeDetail = fetchData?.recipeDTO;
   let recipeOwner: RecipeOwnerInfo = fetchData?.recipeOwnerInfo;
@@ -152,15 +156,24 @@ export default async function RecipeDetail({
       />
     );
   }
-  
+
+  const expectedSlug = generateSlug(recipeDetail.recipeName);
+  const currentRawSlug = params.slug?.[0] ? params.slug[0] : null;
+  const currentSlug = currentRawSlug ? decodeURIComponent(currentRawSlug) : null;
+
+  // 구버전 URL(/recipe-detail/:id)로 직접 인입 시 또는 슬러그 불일치 시 301 영구 리다이렉트
+  if (currentSlug !== expectedSlug) {
+    permanentRedirect(`/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`);
+  }
+
   const recipeInfo: RecipeInfoProp = {
-    recipeId: Number(params.recipeId),
+    recipeId: Number(recipeId),
     recipeName: recipeDetail?.recipeName,
     categorie: recipeDetail?.categorie,
     repriPhotos: recipeDetail?.repriPhotos,
     servings: recipeDetail?.servings,
     description: recipeDetail?.description,
-    reviewAvg:recipeDetail?.reviewAvg,
+    reviewAvg: recipeDetail?.reviewAvg,
     timeSum: recipeDetail?.steps.reduce((accumulator, step) => {
       return accumulator + step.time;
     }, 0),
@@ -168,41 +181,49 @@ export default async function RecipeDetail({
 
   // 구글 레시피 서칭용 데이터 구조
   const mainPhotoUrl = getAbsoluteImageUrl(recipeDetail?.repriPhotos?.[0]);
+  const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
+  const keywords = [recipeDetail.recipeName, ...(recipeDetail.ingredients?.map((i) => i.name) || [])]
+    .filter(Boolean)
+    .join(", ");
+
   const googleRecipeSchema: any = {
     "@context": "https://schema.org",
     "@type": "Recipe",
-    "name": recipeDetail.recipeName,
-    "image": [mainPhotoUrl],
-    "author": {
+    name: recipeDetail.recipeName,
+    url: canonicalUrl,
+    image: [mainPhotoUrl],
+    author: {
       "@type": "Person",
-      "name": recipeOwner.userNickName,
+      name: recipeOwner.userNickName,
     },
-    "datePublished": recipeDetail.createdAt ? new Date(recipeDetail.createdAt).toISOString() : undefined,
-    "description": recipeDetail.description,
-    "recipeYield": `${recipeDetail.servings}인분`,
-    "recipeCategory": recipeDetail.categorie,
-    "prepTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
-    "cookTime": `PT${Math.round(recipeInfo.timeSum / 2)}M`,
-    "totalTime": `PT${recipeInfo.timeSum}M`,
+    datePublished: recipeDetail.createdAt ? new Date(recipeDetail.createdAt).toISOString() : undefined,
+    description: recipeDetail.description,
+    keywords: keywords,
+    recipeCuisine: recipeDetail.categorie || "기타",
+    recipeYield: `${recipeDetail.servings}인분`,
+    recipeCategory: recipeDetail.categorie,
+    prepTime: `PT${Math.round(recipeInfo.timeSum / 2)}M`,
+    cookTime: `PT${Math.round(recipeInfo.timeSum / 2)}M`,
+    totalTime: `PT${recipeInfo.timeSum}M`,
     recipeIngredient: recipeDetail.ingredients.map((i) => `${i.name} ${i.qqt}`),
-    recipeInstructions: recipeDetail.steps.map((step) => {
+    recipeInstructions: recipeDetail.steps.map((step, index) => {
       const stepObj: any = {
         "@type": "HowToStep",
-        "text": step.description,
+        name: `Step ${index + 1}`,
+        text: step.description,
       };
       if (step.photo) stepObj.image = step.photo;
       return stepObj;
     }),
   };
-  
+
   if (reviewCnt > 0) {
     googleRecipeSchema.aggregateRating = {
       "@type": "AggregateRating",
-      "ratingValue": recipeDetail.reviewAvg,
-      "reviewCount": reviewCnt,
+      ratingValue: recipeDetail.reviewAvg,
+      reviewCount: reviewCnt,
     };
   }
-  
 
   return (
     <>
@@ -211,28 +232,32 @@ export default async function RecipeDetail({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(googleRecipeSchema) }}
       />
-    <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh sm:px-0">    
-      <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="p-6 sm:p-8 w-full">
-          <UserInfo recipeOwner={recipeOwner}></UserInfo>
-          <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
-          <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
-          <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
-        </div>
-        <div className="w-full px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+      <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh sm:px-0">
+        <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="p-6 sm:p-8 w-full">
+            <UserInfo recipeOwner={recipeOwner}></UserInfo>
+            <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
+            <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
+            <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+          </div>
+          <div className="w-full px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
             <CopyUrl></CopyUrl>
             <div className="flex items-center gap-2">
-              <EditDel ownerUserId={recipeOwner?.userId} editReturnURl={`edit-recipe/${params.recipeId}`} 
-                delPostUrl={`recipe/del?recipeId=${params.recipeId}`} delReturnUrl="/"
-                revalidateTagNames={[`recipeDetail-${params.recipeId}`]}/>
-              <ReportPost domainType={DomainType.Recipe} domainId={params.recipeId}/>
+              <EditDel
+                ownerUserId={recipeOwner?.userId}
+                editReturnURl={`edit-recipe/${recipeId}`}
+                delPostUrl={`recipe/del?recipeId=${recipeId}`}
+                delReturnUrl="/"
+                revalidateTagNames={[`recipeDetail-${recipeId}`]}
+              />
+              <ReportPost domainType={DomainType.Recipe} domainId={Number(recipeId)} />
             </div>
-        </div>
-        <div className="bg-white p-6 sm:p-8 w-full border-t border-gray-100">
-          <ReviewContainer domainId={params.recipeId} domainName={"recipe"}></ReviewContainer>
+          </div>
+          <div className="bg-white p-6 sm:p-8 w-full border-t border-gray-100">
+            <ReviewContainer domainId={Number(recipeId)} domainName={"recipe"}></ReviewContainer>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 }

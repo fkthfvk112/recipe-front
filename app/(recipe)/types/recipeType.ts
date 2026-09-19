@@ -60,3 +60,11 @@ export interface RecipeDraftInterface{
   recipeName: string;
   draftedAt: string
 }
+
+export interface RecipeOwnerInfo {
+  userId: string;
+  userNickName: string;
+  userPhoto: string;
+  userUrl: string;
+  userIntro: string;
+}
