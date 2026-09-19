@@ -3,11 +3,12 @@ import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Link from "next/link";
 import RecipeSquareItem from "../../../create/(Recipe)/RecipeSquareItem";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export default async function BoardRecipeHolder({recipes}:{recipes:Recipe[]}){
 
     const recipeItems = recipes.map((recipe, inx)=>
-        <Link className="w-[150px] h-[150px] m-1 shrink-0" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+        <Link className="w-[150px] h-[150px] m-1 shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
             <RecipeSquareItem recipe={recipe}/>
         </Link>
     );

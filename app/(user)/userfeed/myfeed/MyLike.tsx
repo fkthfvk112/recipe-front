@@ -5,6 +5,7 @@ import { Recipe } from "@/app/(recipe)/types/recipeType";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 interface myRecipe {
   recipeId: number;
@@ -28,7 +29,7 @@ export default function MyLike() {
   const feedPhotos = myRecipes?.map((recipe, inx) => (
     <Link
       key={inx}
-      href={`/recipe-detail/${recipe.recipeId}`}>
+      href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
         <RecipeSquareItem key={inx} recipe={recipe}/>
       </Link>
   ));

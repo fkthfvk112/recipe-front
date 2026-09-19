@@ -16,3 +16,17 @@ export function generateSlug(title: string): string {
 
   return slug || "recipe";
 }
+
+/**
+ * 레시피 상세 페이지 URL을 생성합니다.
+ * - recipeName이 있으면 한글 슬러그가 포함된 URL 반환 (/recipe-detail/123/슬러그)
+ * - recipeName이 없으면 기본 URL 반환 (/recipe-detail/123)
+ */
+export function getRecipeDetailUrl(
+  recipeId: number | string | undefined | null,
+  recipeName?: string | null
+): string {
+  if (!recipeId) return "/";
+  if (!recipeName || !recipeName.trim()) return `/recipe-detail/${recipeId}`;
+  return `/recipe-detail/${recipeId}/${encodeURIComponent(generateSlug(recipeName))}`;
+}

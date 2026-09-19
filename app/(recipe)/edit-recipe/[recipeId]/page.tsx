@@ -26,6 +26,7 @@ import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 import { Recipe } from "../../types/recipeType";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export default function EditRecipePage({
   params,
@@ -100,13 +101,13 @@ export default function EditRecipePage({
       .then((res) => {
         if (res.status === 200) {
           Swal.fire({
-            title: "수정이 완료되었습니다! 🎉",
+            title: "수정이 완료되었습니다!",
             text: "변경된 레시피 정보가 저장되었습니다.",
             icon: "success",
             confirmButtonColor: "#10b981",
           }).then(() => {
             revalidateByTagName(`recipeDetail-${params.recipeId}`);
-            router.replace(`/recipe-detail/${params.recipeId}`);
+            router.replace(getRecipeDetailUrl(params.recipeId, recipe.recipeName));
           });
         }
       })

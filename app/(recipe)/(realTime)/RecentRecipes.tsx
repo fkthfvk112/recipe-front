@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Recipe } from "../types/recipeType";
 import RecipeCard from "@/app/(commom)/RecipeCard";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export default async function RecentRecipes() {
   const fetchData: Recipe[] = await fetch(
@@ -17,7 +18,7 @@ export default async function RecentRecipes() {
   });
 
   const recentRecipes = fetchData?.map((recipe, inx) => (
-      <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+      <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
         <RecipeCard recipe={recipe}></RecipeCard>
       </Link>
   ));

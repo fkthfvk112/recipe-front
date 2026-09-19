@@ -6,6 +6,7 @@ import Link from "next/link";
 import RecipePagination from "../../../RecipePagination";
 import NoContent_Recipe from "../../../(common)/NoContent_Recipe";
 import { Metadata } from "next";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -64,7 +65,7 @@ export default async function SearchingByCondition({
   const recentRecipes = fetchData &&
     fetchData.map((recipe, inx) => (
       <div key={inx}>
-        <Link href={`/recipe-detail/${recipe.recipeId}`}>
+        <Link href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
           <RecipeCard recipe={recipe} />
         </Link>
       </div>

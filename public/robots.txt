@@ -1,8 +1,7 @@
-# *
 User-agent: *
 Allow: /
 
-# 크롤링 제외 경로 (개인 페이지, 인증, 내부 필터/검색)
+# 크롤링 제외 경로 (개인 페이지, 관리, 회원, 내부 필터/검색)
 Disallow: /fridge
 Disallow: /fridge/
 Disallow: /recipes/*/ingre/
@@ -10,9 +9,15 @@ Disallow: /signin
 Disallow: /signup
 Disallow: /accountSetting
 Disallow: /admin
+Disallow: /admin/
+Disallow: /create-recipe
+Disallow: /edit-recipe/
+Disallow: /mylike
+Disallow: /mylike/
+Disallow: /userfeed/myfeed
 
 # Host
-Host: https://mug-in.com
+Host: https://www.mug-in.com
 
 # Sitemaps
-Sitemap: https://mug-in.com/sitemap.xml
+Sitemap: https://www.mug-in.com/sitemap.xml

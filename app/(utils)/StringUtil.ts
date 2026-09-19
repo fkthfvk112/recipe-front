@@ -43,4 +43,4 @@ export const containChosingJungsungJongsung = (string:string):boolean=>{
 /**천자리 컴마 */
 export const formatNumber = (value: number | string) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-export { generateSlug } from "./slugUtil";
+export { generateSlug, getRecipeDetailUrl } from "./slugUtil";

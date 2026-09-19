@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useRecoilState } from "recoil";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export default function FeedRecipes({
   userId,
@@ -40,7 +41,7 @@ export default function FeedRecipes({
   const feedPhotos = recipeData.cachedData.data?.map((recipe, inx) => (
     <Link
       key={inx}
-      href={`/recipe-detail/${recipe.recipeId}`}
+      href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}
     >
       <RecipeSquareItem key={inx} recipe={recipe}/>
     </Link>

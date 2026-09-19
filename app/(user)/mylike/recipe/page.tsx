@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useRecoilState } from "recoil";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 import LikeRecipeHoriItem from "./LikeRecipeHoriItem";
 import { CircularProgress } from "@mui/material";
 import TitleDescription from "@/app/(commom)/Component/TitleDescription";
@@ -38,7 +39,7 @@ export default function MyLikeRecipe(){
   const likeRecipes = recipeData.cachedData.data?.map((recipe, inx) => (
     <Link
       key={inx}
-      href={`/recipe-detail/${recipe.recipeId}`}
+      href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}
     >
         <LikeRecipeHoriItem key={inx} recipe={recipe} /> 
     </Link>

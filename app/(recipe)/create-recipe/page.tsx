@@ -26,6 +26,7 @@ import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
 import RecipeDraft from "./RecipeDraft";
 import { useQueryClient } from "@tanstack/react-query";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
+import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 
 export type RecipeCreate = Omit<Recipe, 'createdAt' | 'views' | 'recipeId'>;
 
@@ -82,7 +83,7 @@ export default function CreateRecipePage() {
             confirmButtonColor: "#10b981",
           }).then(() => {
             revalidateByTagName("reviews-find");
-            router.replace(`/recipe-detail/${res.data}`);
+            router.replace(getRecipeDetailUrl(res.data, recipe.recipeName));
           });
         }
       });

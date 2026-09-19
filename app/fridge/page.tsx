@@ -8,7 +8,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { MyFridge } from "../(type)/fridge";
 import { axiosAuthInstacne } from "../(customAxios)/authAxios";
-import { truncateString } from "../(utils)/StringUtil";
+import { truncateString, getRecipeDetailUrl } from "../(utils)/StringUtil";
 import Link from "next/link";
 import RecipeVerticalItem from "../(board)/board/[boardMenuId]/create/(Recipe)/RecipeVerticalItem";
 import { Recipe } from "../(recipe)/types/recipeType";
@@ -64,7 +64,7 @@ export default function Fridge() {
   };
 
   const recommandRecipes = recommandRecipe?.map((recipe, inx) => (
-    <Link className="inline-block shrink-0" key={inx} href={`/recipe-detail/${recipe.recipeId}`}>
+    <Link className="inline-block shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
       <RecipeVerticalItem recipe={recipe} />
     </Link>
   ));

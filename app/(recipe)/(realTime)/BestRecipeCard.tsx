@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { roundToNPlaces } from '@/app/(utils)/NumberUtil';
 import Button from "@/app/(commom)/Component/Button";
 import { PrimaryButton } from '@/app/(commom)/Component/Buttons';
+import { getRecipeDetailUrl } from '@/app/(utils)/slugUtil';
 
 export type BestRecipe = {
   recipeId: number | string;
@@ -23,7 +24,7 @@ export function BestRecipeCard({ recipe }: { recipe: BestRecipe }) {
   const router = useRouter();
 
   const goRecipe = () => {
-    router.push(`/recipe-detail/${recipe.recipeId}`);
+    router.push(getRecipeDetailUrl(recipe.recipeId, recipe.recipeName));
   };
 
   const cover =

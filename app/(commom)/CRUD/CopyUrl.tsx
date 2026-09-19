@@ -1,13 +1,11 @@
 "use client"
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { usePathname } from 'next/navigation'
 import Swal from 'sweetalert2';
 
 export default function CopyUrl(){
-    const pathname = usePathname()
-    const fullUrl = `${window.location.origin}${pathname}`;
-
     const copyToClip = ()=> {
+        if (typeof window === "undefined") return;
+        const fullUrl = decodeURI(window.location.href);
         navigator.clipboard.writeText(fullUrl)
             .then(() => {
                 Swal.fire({

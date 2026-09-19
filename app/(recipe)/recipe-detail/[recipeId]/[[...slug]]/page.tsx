@@ -159,10 +159,17 @@ export default async function RecipeDetail({
 
   const expectedSlug = generateSlug(recipeDetail.recipeName);
   const currentRawSlug = params.slug?.[0] ? params.slug[0] : null;
-  const currentSlug = currentRawSlug ? decodeURIComponent(currentRawSlug) : null;
+  let currentSlug: string | null = null;
+  if (currentRawSlug) {
+    try {
+      currentSlug = decodeURIComponent(currentRawSlug);
+    } catch (e) {
+      currentSlug = currentRawSlug;
+    }
+  }
 
-  // 구버전 URL(/recipe-detail/:id)로 직접 인입 시 또는 슬러그 불일치 시 301 영구 리다이렉트
-  if (currentSlug !== expectedSlug) {
+  // 구버전 URL(/recipe-detail/:id)로 직접 인입 시, 슬러그 불일치 시, 또는 다중 세그먼트 슬러그 인입 시 301 영구 리다이렉트
+  if (!params.slug || params.slug.length !== 1 || currentSlug !== expectedSlug) {
     permanentRedirect(`/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`);
   }
 
@@ -175,7 +182,7 @@ export default async function RecipeDetail({
     description: recipeDetail?.description,
     reviewAvg: recipeDetail?.reviewAvg,
     timeSum: recipeDetail?.steps.reduce((accumulator, step) => {
-      return accumulator + step.time;
+      return accumulator + (Number(step.time) || 0);
     }, 0),
   };
 
@@ -185,6 +192,18 @@ export default async function RecipeDetail({
   const keywords = [recipeDetail.recipeName, ...(recipeDetail.ingredients?.map((i) => i.name) || [])]
     .filter(Boolean)
     .join(", ");
+
+  let datePublished: string | undefined = undefined;
+  if (recipeDetail.createdAt) {
+    try {
+      const parsedDate = new Date(recipeDetail.createdAt);
+      if (!isNaN(parsedDate.getTime())) {
+        datePublished = parsedDate.toISOString();
+      }
+    } catch (e) {
+      // ignore invalid date string
+    }
+  }
 
   const googleRecipeSchema: any = {
     "@context": "https://schema.org",
@@ -196,15 +215,12 @@ export default async function RecipeDetail({
       "@type": "Person",
       name: recipeOwner.userNickName,
     },
-    datePublished: recipeDetail.createdAt ? new Date(recipeDetail.createdAt).toISOString() : undefined,
+    datePublished: datePublished,
     description: recipeDetail.description,
     keywords: keywords,
     recipeCuisine: recipeDetail.categorie || "기타",
     recipeYield: `${recipeDetail.servings}인분`,
     recipeCategory: recipeDetail.categorie,
-    prepTime: `PT${Math.round(recipeInfo.timeSum / 2)}M`,
-    cookTime: `PT${Math.round(recipeInfo.timeSum / 2)}M`,
-    totalTime: `PT${recipeInfo.timeSum}M`,
     recipeIngredient: recipeDetail.ingredients.map((i) => `${i.name} ${i.qqt}`),
     recipeInstructions: recipeDetail.steps.map((step, index) => {
       const stepObj: any = {
@@ -212,10 +228,18 @@ export default async function RecipeDetail({
         name: `Step ${index + 1}`,
         text: step.description,
       };
-      if (step.photo) stepObj.image = step.photo;
+      if (step.photo) stepObj.image = getAbsoluteImageUrl(step.photo);
       return stepObj;
     }),
   };
+
+  // timeSum이 0 초과일 때만 유효한 ISO 8601 기간(PT...M) 추가 (PT0M 형식 오류 경고 방지)
+  if (recipeInfo.timeSum > 0) {
+    const halfTime = Math.round(recipeInfo.timeSum / 2);
+    googleRecipeSchema.prepTime = `PT${halfTime}M`;
+    googleRecipeSchema.cookTime = `PT${halfTime}M`;
+    googleRecipeSchema.totalTime = `PT${recipeInfo.timeSum}M`;
+  }
 
   if (reviewCnt > 0) {
     googleRecipeSchema.aggregateRating = {
@@ -225,12 +249,57 @@ export default async function RecipeDetail({
     };
   }
 
+  // 브레드크럼(탐색경로) 구조화 데이터
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "홈",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "레시피",
+        item: `${SITE_URL}/recipes/1/sortingCondition=POPULARITY`,
+      },
+      ...(recipeDetail.categorie
+        ? [
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: recipeDetail.categorie,
+              item: `${SITE_URL}/recipes/1/categorie=${encodeURIComponent(recipeDetail.categorie)}`,
+            },
+            {
+              "@type": "ListItem",
+              position: 4,
+              name: recipeDetail.recipeName,
+              item: canonicalUrl,
+            },
+          ]
+        : [
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: recipeDetail.recipeName,
+              item: canonicalUrl,
+            },
+          ]),
+    ],
+  };
+
   return (
     <>
       <Script
         id="recipe-ld-json"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(googleRecipeSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([googleRecipeSchema, breadcrumbSchema]),
+        }}
       />
       <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh sm:px-0">
         <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
