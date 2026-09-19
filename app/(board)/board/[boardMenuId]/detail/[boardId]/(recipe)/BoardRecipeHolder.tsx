@@ -8,7 +8,7 @@ import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
 export default async function BoardRecipeHolder({recipes}:{recipes:Recipe[]}){
 
     const recipeItems = recipes.map((recipe, inx)=>
-        <Link className="w-[150px] h-[150px] m-1 shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
+        <Link className="w-[150px] h-[150px] m-1 shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
             <RecipeSquareItem recipe={recipe}/>
         </Link>
     );

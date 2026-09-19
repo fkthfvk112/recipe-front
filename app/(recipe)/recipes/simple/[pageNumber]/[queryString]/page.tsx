@@ -31,41 +31,39 @@ export default async function SearchingByCondition({
 }) {
   const decodedUrl = decodeURIComponent(params.queryString);
 
-  const fetchData: Recipe[] = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/searchingTerm?${decodedUrl}&page=${params.pageNumber}`,
-    {
-      cache: "no-cache", //수정
-    }
-  ).then((res) => {
-    if (!res.ok) {
-      console.log("RecipeDetail fetch error!!", res.status);
-    } else {
-      return res.json();
-    }
-  });
-
-  //페이지 총 개수
-  const pageMaxCnt: number = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}recipe/searchingTerm/cnt?${decodedUrl}`,
-    {
-      cache: "no-cache", //수정
-    }
-  ).then((res) => {
-    if (!res.ok) {
-      console.log("RecipeDetail fetch error!!", res.status);
-    } else {
-      return res.json();
-    }
-  });
+  const [fetchData, pageMaxCnt] = await Promise.all([
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}recipe/searchingTerm?${decodedUrl}&page=${params.pageNumber}`,
+      {
+        next: { revalidate: 30 },
+      }
+    )
+      .then((res) => (res.ok ? res.json() : []))
+      .catch((err) => {
+        console.error("Simple recipe list fetch error:", err);
+        return [];
+      }),
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}recipe/searchingTerm/cnt?${decodedUrl}`,
+      {
+        next: { revalidate: 30 },
+      }
+    )
+      .then((res) => (res.ok ? res.json() : 0))
+      .catch((err) => {
+        console.error("Simple recipe count fetch error:", err);
+        return 0;
+      }),
+  ]);
 
   const pnMaxCnt = Math.floor(
     pageMaxCnt % 10 === 0 ? pageMaxCnt / 10 : pageMaxCnt / 10 + 1
   );
 
   const recentRecipes = fetchData &&
-    fetchData.map((recipe, inx) => (
+    fetchData.map((recipe: Recipe, inx: number) => (
       <div key={inx}>
-        <Link href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
+        <Link href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
           <RecipeCard recipe={recipe} />
         </Link>
       </div>

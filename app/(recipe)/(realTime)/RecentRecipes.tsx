@@ -7,18 +7,24 @@ export default async function RecentRecipes() {
   const fetchData: Recipe[] = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}recipe/recent-recipe`,
     {
-      cache: "no-cache",
+      next: { revalidate: 60 },
     }
-  ).then((res) => {
-    if (!res.ok) {
-      console.log("RecipeDetail fetch error!!", res.status);
-    } else {
-      return res.json();
-    }
-  });
+  )
+    .then((res) => {
+      if (!res.ok) {
+        console.log("RecipeDetail fetch error!!", res.status);
+        return [];
+      } else {
+        return res.json();
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
 
   const recentRecipes = fetchData?.map((recipe, inx) => (
-      <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
+      <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
         <RecipeCard recipe={recipe}></RecipeCard>
       </Link>
   ));

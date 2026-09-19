@@ -64,7 +64,7 @@ export default function Fridge() {
   };
 
   const recommandRecipes = recommandRecipe?.map((recipe, inx) => (
-    <Link className="inline-block shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
+    <Link className="inline-block shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
       <RecipeVerticalItem recipe={recipe} />
     </Link>
   ));

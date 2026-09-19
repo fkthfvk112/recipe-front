@@ -23,7 +23,7 @@ export default async function PopularRecipes() {
   })
 
   const popularRecipes = fetchData?.slice(1).map((recipe, inx) => (
-    <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}>
+    <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
       <RecipeCard recipe={recipe}></RecipeCard>
     </Link>
   ));

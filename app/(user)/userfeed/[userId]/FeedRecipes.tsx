@@ -42,6 +42,7 @@ export default function FeedRecipes({
     <Link
       key={inx}
       href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}
+      prefetch={false}
     >
       <RecipeSquareItem key={inx} recipe={recipe}/>
     </Link>

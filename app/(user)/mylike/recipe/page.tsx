@@ -40,6 +40,7 @@ export default function MyLikeRecipe(){
     <Link
       key={inx}
       href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}
+      prefetch={false}
     >
         <LikeRecipeHoriItem key={inx} recipe={recipe} /> 
     </Link>

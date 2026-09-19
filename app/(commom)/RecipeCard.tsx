@@ -22,7 +22,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         <Image
           src={imageUrl}
           fill
-          sizes="(max-width: 768px) 100vw, 300px"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
           loading="lazy"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           alt={recipe.recipeName || "레시피 이미지"}
