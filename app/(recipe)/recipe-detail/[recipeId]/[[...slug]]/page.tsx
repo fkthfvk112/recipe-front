@@ -40,8 +40,8 @@ const getRecipeDetail = cache(async (recipeId: string) => {
   return await serverFetch({
     url: `recipe/detail?recipeId=${recipeId}`,
     option: {
-      cache: "default",
       next: {
+        revalidate:30,
         tags: [`recipeDetail-${recipeId}`],
       },
     },
