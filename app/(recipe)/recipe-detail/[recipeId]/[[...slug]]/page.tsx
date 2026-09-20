@@ -16,6 +16,7 @@ import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import { permanentRedirect } from "next/navigation";
 import { generateSlug } from "@/app/(utils)/slugUtil";
 import { cache } from "react";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{ recipeId: string; slug?: string[] }>;
@@ -56,9 +57,23 @@ export async function generateMetadata(
   const fetchData = await getRecipeDetail(recipeId);
 
   const recipeDetail: RecipeDetail = fetchData?.recipeDTO;
+
+  if (!recipeDetail) {
+    return {
+      title: "레시피를 찾을 수 없습니다 - 머그인",
+      robots: { index: false, follow: true },
+    };
+  }
+
   const rawPhoto = recipeDetail?.repriPhotos?.[0];
   const photoUrl = getAbsoluteImageUrl(rawPhoto);
-  const title = recipeDetail?.recipeName ? `${recipeDetail.recipeName} - 머그인 레시피` : "머그인 레시피";
+
+  // SEO 최적화 타이틀 (검색 클릭률 CTR 향상)
+  const title = recipeDetail?.recipeName
+    ? `${recipeDetail.recipeName} 만드는 법 (${recipeDetail.servings || 1}인분 레시피) - 머그인`
+    : "머그인 레시피";
+
+  // 태그 및 영양성분 정보가 결합된 풍부한 디스크립션
   let description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
   if (recipeDetail?.nutrition?.calories) {
     const cal = recipeDetail.nutrition.calories;
@@ -68,18 +83,43 @@ export async function generateMetadata(
     const macros = [carb, prot, fat].filter(Boolean).join(", ");
     description = `[1인분 약 ${cal}${macros ? ` | ${macros}` : ""}] ${description}`;
   }
+
+  const tagText = recipeDetail?.tags && recipeDetail.tags.length > 0
+    ? recipeDetail.tags.map((t) => `#${t}`).join(" ")
+    : "";
+  if (tagText) {
+    description = `${description} (${tagText})`;
+  }
+
   const expectedSlug = generateSlug(recipeDetail?.recipeName || "");
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
+
+  // 메타 태그 키워드 배열
+  const keywords = [
+    recipeDetail.recipeName,
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 황금레시피` : "",
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 만들기` : "",
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 칼로리` : "",
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 영양성분` : "",
+    ...(recipeDetail.tags || []),
+    ...(recipeDetail.ingredients?.map((i) => i.name) || []),
+    "요리 레시피",
+    "영양성분",
+    "칼로리",
+  ].filter(Boolean);
+
+  const isDraft = Boolean(recipeDetail.isDraft);
 
   return {
     metadataBase: new URL(SITE_URL),
     title: title,
     description: description,
+    keywords: keywords,
     robots: {
-      index: true,
+      index: !isDraft, // 임시저장 레시피는 색인 제외, 검수 후 정식 발행 시 색인 허용
       follow: true,
       googleBot: {
-        index: true,
+        index: !isDraft,
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,
@@ -89,7 +129,8 @@ export async function generateMetadata(
       title: title,
       description: description,
       url: canonicalUrl,
-      siteName: "머그인",
+      siteName: "머그인 (Mug-In)",
+      type: "article",
       images: [
         {
           url: photoUrl,
@@ -135,6 +176,7 @@ interface RecipeDetail {
   aiComment?: string;
   isAiCreated?: boolean;
   isDraft?: boolean;
+  tags?: string[];
 }
 
 export interface RecipeOwnerInfo {
@@ -207,7 +249,8 @@ export default async function RecipeDetail({
     recipeDetail.recipeName,
     recipeDetail.recipeName ? `${recipeDetail.recipeName} 칼로리` : "",
     recipeDetail.recipeName ? `${recipeDetail.recipeName} 영양성분` : "",
-    ...(recipeDetail.ingredients?.map((i) => i.name) || []),
+    ...(recipeDetail.tags || []),
+    ...(recipeDetail.ingredients?.map((i: Ingredient) => i.name) || []),
     "영양성분",
     "칼로리",
     "식재료",
@@ -356,6 +399,27 @@ export default async function RecipeDetail({
               servings={recipeDetail?.servings}
               aiComment={recipeDetail?.aiComment}
             />
+
+            {/* 태그 뱃지 영역 */}
+            {recipeDetail?.tags && recipeDetail.tags.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-gray-100">
+                <div className="flex items-center gap-1.5 text-xs font-black text-gray-400 mb-3">
+                  <span>관련 태그</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {recipeDetail.tags.map((tag: string) => (
+                    <Link
+                      key={tag}
+                      href={`/recipes/1/tags=${encodeURIComponent(tag)}&sortingCondition=POPULARITY`}
+                    >
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200/70 shadow-2xs hover:bg-emerald-100 hover:border-emerald-300 transition-colors cursor-pointer">
+                        #{tag}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="w-full px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
             <CopyUrl></CopyUrl>

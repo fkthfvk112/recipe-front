@@ -101,6 +101,7 @@ export default function RecipeSearchBar() {
     const sMin = map.get("servingsMin")?.[0] ? Number(map.get("servingsMin")[0]) : 1;
     const sMax = map.get("servingsMax")?.[0] ? Number(map.get("servingsMax")[0]) : 20;
     const ingNames = map.get("ingredientNames") ? map.get("ingredientNames").map((val: string) => decodeURIComponent(val)) : null;
+    const tagNames = map.get("tags") ? map.get("tags").map((val: string) => decodeURIComponent(val)) : null;
     const sortCondition = (map.get("sortingCondition")?.[0] || "POPULARITY") as sortingCondition;
 
     setRecipeSearchingData({
@@ -108,6 +109,7 @@ export default function RecipeSearchBar() {
       createdDate: crDate as any, 
       cookMethod: cMethod,
       ingredientNames: ingNames,
+      tags: tagNames,
       ingredientAndCon: null,
       servingCon: { min: sMin, max: sMax },
       cookCategory: cCategory,
@@ -211,6 +213,7 @@ export default function RecipeSearchBar() {
       createdDate: null,
       cookMethod: "default",
       ingredientNames: null,
+      tags: null,
       ingredientAndCon: null,
       servingCon: { min: 1, max: 20 },
       cookCategory: "default",
@@ -232,6 +235,13 @@ export default function RecipeSearchBar() {
         ingredientNames: ingList.length > 0 ? ingList : null
       };
       setModalIngredients(ingList.length > 0 ? ingList : []);
+      applyQuery(updated);
+    } else if (key === "tags") {
+      const tagList = recipeSearchingData.tags?.filter(v => v !== value) || [];
+      const updated = {
+        ...recipeSearchingData,
+        tags: tagList.length > 0 ? tagList : null
+      };
       applyQuery(updated);
     } else if (key === "cookCategory") {
       applyQuery({ ...recipeSearchingData, cookCategory: "default" as RecipeSearchingCondition["cookCategory"] });
@@ -275,7 +285,7 @@ export default function RecipeSearchBar() {
     );
   }, [recipeSearchingData]);
 
-  // 선택된 조건 뱃지: 재료, 레시피명, 생성일, 요리양, 카테고리, 조리방법
+  // 선택된 조건 뱃지: 재료, 태그, 레시피명, 생성일, 요리양, 카테고리, 조리방법
   const activeConditionBadges = useMemo(() => {
     const badges: React.ReactNode[] = [];
     
@@ -306,6 +316,24 @@ export default function RecipeSearchBar() {
             <span className="opacity-80">재료:</span> <span>{safeDecode(val)}</span>
             <ClearIcon 
               onClick={() => removeAppliedFilter("ingredientNames", val)} 
+              sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
+            />
+          </span>
+        );
+      });
+    }
+
+    // 2-2. 태그 뱃지들
+    if (recipeSearchingData.tags) {
+      recipeSearchingData.tags.forEach((val) => {
+        badges.push(
+          <span 
+            key={`tag-${val}`} 
+            className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-bold transition-all"
+          >
+            <span className="opacity-80">태그:</span> <span>#{safeDecode(val)}</span>
+            <ClearIcon 
+              onClick={() => removeAppliedFilter("tags", val)} 
               sx={{ fontSize: 14, cursor: "pointer", marginLeft: "2px", opacity: 0.7, '&:hover': { color: '#ef4444', opacity: 1 } }} 
             />
           </span>

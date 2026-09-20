@@ -27,6 +27,7 @@ import { Recipe } from "../../types/recipeType";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
 import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
+import RecipeTagInput from "../../create-recipe/RecipeTagInput";
 
 export default function EditRecipePage({
   params,
@@ -178,7 +179,6 @@ export default function EditRecipePage({
       {/* Form Sections */}
       <RecipeName recipe={recipe} setRecipe={setRecipe as any} />
       <Description recipe={recipe} setRecipe={setRecipe as any} />
-
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
       <Categori recipe={recipe} setRecipe={setRecipe as any} />
@@ -198,6 +198,10 @@ export default function EditRecipePage({
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
       <CookStep recipe={recipe} setRecipe={setRecipe as any} />
+      <RecipeTagInput
+        tags={recipe.tags || []}
+        onChangeTags={(newTags) => setRecipe((prev) => ({ ...prev, tags: newTags }))}
+      />
 
       {/* Floating Scroll Top Button */}
       <div className="fixed bottom-24 right-6 z-40">

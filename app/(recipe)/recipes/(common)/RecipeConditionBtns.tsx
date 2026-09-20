@@ -10,6 +10,7 @@ const queryConvert: { [key: string]: string } = {
     createdDate: "작성일",
     cookMethod: "조리방법",
     ingredientNames: "재료명",
+    tags: "태그",
     servingsMin: "최소양",
     servingsMax: "최대양",
     cookCategory: "카테고리",

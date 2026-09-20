@@ -18,6 +18,7 @@ export interface RecipeSearchingCondition {
     | "건강식"
     |"default"
     | null;
+  tags?: string[] | null;
 }
 
 export type sortingCondition =

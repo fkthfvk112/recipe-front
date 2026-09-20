@@ -24,6 +24,7 @@ import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import { revalidateByTagName } from "@/app/(utils)/revalidateServerTag";
 import { createRecipeImgState } from "@/app/(recoil)/recipeAtom";
 import RecipeDraft from "./RecipeDraft";
+import RecipeTagInput from "./RecipeTagInput";
 import { useQueryClient } from "@tanstack/react-query";
 import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 import { getRecipeDetailUrl } from "@/app/(utils)/slugUtil";
@@ -44,6 +45,7 @@ export default function CreateRecipePage() {
     description: "",
     steps: [],
     viewCnt: 0,
+    tags: [],
   });
 
   const [isSignIn] = useRecoilState(siginInState);
@@ -117,7 +119,6 @@ export default function CreateRecipePage() {
       {/* Flat Form Sections */}
       <RecipeName recipe={recipe} setRecipe={setRecipe} />
       <Description recipe={recipe} setRecipe={setRecipe} />
-
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
       <Categori recipe={recipe} setRecipe={setRecipe} />
@@ -137,6 +138,10 @@ export default function CreateRecipePage() {
       <div className="w-full h-[1px] bg-gray-100 my-6" />
 
       <CookStep recipe={recipe} setRecipe={setRecipe} />
+      <RecipeTagInput
+        tags={recipe.tags || []}
+        onChangeTags={(newTags) => setRecipe((prev) => ({ ...prev, tags: newTags }))}
+      />
 
       {/* Floating Scroll Button */}
       <div className="fixed bottom-24 right-6 z-40">

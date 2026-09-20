@@ -88,6 +88,7 @@ export interface Recipe {
   reviewCnt?:   number;
   likeCnt?:     number;
   reviewAvg?:   number;
+  tags?:        string[];
 }
 
 export interface RecipeDraftInterface{

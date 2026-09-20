@@ -48,6 +48,13 @@ export const searchingConToQueryString = (
   if (cookCategory !== null) {
     queryStr += `&cookCategory=${encodeURIComponent(cookCategory)}`;
   }
+  if (searchingCon.tags) {
+    if (Array.isArray(searchingCon.tags)) {
+      searchingCon.tags.forEach((ele) => {
+        queryStr += `&tags=${encodeURIComponent(ele)}`;
+      });
+    }
+  }
   if (sortingCon !== null) {
     queryStr += `&sortingCondition=${encodeURIComponent(sortingCon)}`;
   }
