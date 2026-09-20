@@ -13,7 +13,7 @@ export default function AdminNav(){
         {eng:"evt", kor:"이벤트"},
         {eng:"fridge-preset", kor:"냉장고 프리셋 등록"},
         {eng:"post", kor:"포스팅"},
-
+        {eng:"ai-recipe", kor:"AI 레시피 생성"},
     ];
 
     const baseMenu = adminMenu.map((menu, inx)=>

@@ -15,6 +15,8 @@ export interface RecipeInfoProp {
   repriPhotos: string[];
   timeSum: number;
   reviewAvg:number;
+  isAiCreated?: boolean;
+  isDraft?: boolean;
 }
 
 export default function RecipeInfo({
@@ -27,18 +29,22 @@ export default function RecipeInfo({
       ? recipeInfoProp.timeSum + "분"
       : "시간 정보 없음";
 
+  const validPhotos = (recipeInfoProp?.repriPhotos || []).filter((p) => p && p.trim() !== "");
+
   return (
     <div className="w-full flex flex-col">
-      <div className="w-full overflow-hidden">
-        <EmblaCarousel
-          slides={Array.from(Array(recipeInfoProp?.repriPhotos?.length).keys())}
-          options={{ loop: true }}
-          imgUrls={recipeInfoProp.repriPhotos}
-          recipeTitle={recipeInfoProp.recipeName}
-        ></EmblaCarousel>
-      </div>
+      {validPhotos.length > 0 && (
+        <div className="w-full overflow-hidden">
+          <EmblaCarousel
+            slides={Array.from(Array(validPhotos.length).keys())}
+            options={{ loop: true }}
+            imgUrls={validPhotos}
+            recipeTitle={recipeInfoProp.recipeName}
+          ></EmblaCarousel>
+        </div>
+      )}
       
-      <div className="border-t border-gray-100 mt-6 pt-4">
+      <div className={`${validPhotos.length > 0 ? "border-t border-gray-100 mt-6 pt-4" : "mt-2"}`}>
         <div className="flex justify-between items-center w-full mb-4 px-2">
           <h1 className="text-2xl font-black text-gray-800 tracking-tight leading-snug">{recipeInfoProp.recipeName}</h1>
           <BookMark recipeId={recipeInfoProp.recipeId}></BookMark>
@@ -46,6 +52,16 @@ export default function RecipeInfo({
       </div>
 
       <div className="w-full flex flex-wrap gap-2.5 px-2 mb-2">
+        {recipeInfoProp.isAiCreated && (
+          <div className="inline-flex items-center bg-violet-50 border border-violet-100 rounded-full px-3 py-1.5 text-[12px] font-extrabold text-violet-700 shadow-2xs">
+            AI 분석 레시피
+          </div>
+        )}
+        {recipeInfoProp.isDraft && (
+          <div className="inline-flex items-center bg-amber-50 border border-amber-200 rounded-full px-3 py-1.5 text-[12px] font-extrabold text-amber-800 shadow-2xs">
+            📝 임시저장 (검수 대기중)
+          </div>
+        )}
         <div className="inline-flex items-center bg-gray-50 border border-gray-100 rounded-full px-3.5 py-1.5 text-[12px] font-bold text-gray-600 shadow-sm">
           <RestaurantIcon sx={{ fontSize: 16, marginRight: "4px", color: "#6B7280" }} />
           {recipeInfoProp.categorie}

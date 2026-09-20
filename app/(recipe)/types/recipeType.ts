@@ -59,6 +59,15 @@ export interface Ingredient100g {
   fiberPer100g?: number;
 }
 
+export interface RecipeAiSource {
+  sourcePlatform: string;
+  sourceVideoId: string;
+  sourceUrl: string;
+  channelName: string;
+  channelUrl?: string;
+  originalTitle: string;
+}
+
 export interface Recipe {
   createdAt:    string;
   viewCnt:      number;
@@ -73,6 +82,9 @@ export interface Recipe {
   steps:        CookingSteps_create[] | CookingSteps_show[];
   nutrition?:   RecipeNutrition;
   aiComment?:   string;
+  isAiCreated?: boolean;
+  isDraft?:     boolean;
+  aiSource?:    RecipeAiSource;
   reviewCnt?:   number;
   likeCnt?:     number;
   reviewAvg?:   number;

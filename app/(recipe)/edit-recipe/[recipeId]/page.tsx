@@ -71,7 +71,10 @@ export default function EditRecipePage({
     axiosAuthInstacne
       .get(`recipe/detail-upd?recipeId=${params.recipeId}`)
       .then((res) => {
-        setInitialRecipeData(res.data.recipeDTO);
+        const recipeData = res.data.recipeDTO;
+        const photos = [...(recipeData?.repriPhotos || [])];
+        while (photos.length < 3) photos.push("");
+        setInitialRecipeData({ ...recipeData, repriPhotos: photos });
         setLoading(false);
       });
   }, [isSignIn, router, isTokenValid, params.recipeId]);

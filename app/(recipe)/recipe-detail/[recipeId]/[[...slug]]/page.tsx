@@ -1,5 +1,6 @@
 import { CookingSteps_show, Ingredient, RecipeNutrition } from "../../../types/recipeType";
 import RecipeNutritionSection from "../RecipeNutritionSection";
+import RecipeYouTubeSource from "../RecipeYouTubeSource";
 import UserInfo from "../UserInfo";
 import Ingredients from "../Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "../RecipeInfo";
@@ -132,6 +133,8 @@ interface RecipeDetail {
   reviewCnt?: number;
   nutrition?: RecipeNutrition;
   aiComment?: string;
+  isAiCreated?: boolean;
+  isDraft?: boolean;
 }
 
 export interface RecipeOwnerInfo {
@@ -190,6 +193,8 @@ export default async function RecipeDetail({
     servings: recipeDetail?.servings,
     description: recipeDetail?.description,
     reviewAvg: recipeDetail?.reviewAvg,
+    isAiCreated: recipeDetail?.isAiCreated,
+    isDraft: recipeDetail?.isDraft,
     timeSum: recipeDetail?.steps.reduce((accumulator, step) => {
       return accumulator + (Number(step.time) || 0);
     }, 0),
@@ -341,6 +346,7 @@ export default async function RecipeDetail({
           <div className="p-6 sm:p-8 w-full">
             <UserInfo recipeOwner={recipeOwner}></UserInfo>
             <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
+            <RecipeYouTubeSource aiSource={fetchData?.aiSource} />
             <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
             <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
             <RecipeNutritionSection
