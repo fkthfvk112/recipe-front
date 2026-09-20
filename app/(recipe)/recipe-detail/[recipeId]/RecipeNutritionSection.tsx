@@ -28,64 +28,6 @@ function parseNumeric(val?: string | number): number {
   return match ? parseFloat(match[0]) : 0;
 }
 
-/** 재료 분량 텍스트에서 중량(g) 추출 헬퍼 (예: "200g" -> 200, "0.5kg" -> 500, "1근" -> 600, "3알" -> 150) */
-function parseGramsFromQqt(qqt?: string): number | null {
-  if (!qqt) return null;
-  const clean = qqt.trim().toLowerCase();
-
-  const kgMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:kg|킬로그램)/);
-  if (kgMatch) return parseFloat(kgMatch[1]) * 1000;
-
-  const gMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:g|gram|그램)/);
-  if (gMatch) return parseFloat(gMatch[1]);
-
-  const mlMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:ml|밀리리터)/);
-  if (mlMatch) return parseFloat(mlMatch[1]);
-
-  const lMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:l|리터)/);
-  if (lMatch) return parseFloat(lMatch[1]) * 1000;
-
-  // 근 (600g)
-  const geunMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:근)/);
-  if (geunMatch) return parseFloat(geunMatch[1]) * 600;
-
-  // 알 / 개 / 개수 (개당 평균 50g 추정)
-  const pieceMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:알|개|개수)/);
-  if (pieceMatch) return parseFloat(pieceMatch[1]) * 50;
-
-  // 큰술 / T / tbsp (15g)
-  const tbspMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:큰술|tbsp)/i);
-  if (tbspMatch) return parseFloat(tbspMatch[1]) * 15;
-
-  // 작은술 / t / tsp (5g)
-  const tspMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:작은술|tsp)/i);
-  if (tspMatch) return parseFloat(tspMatch[1]) * 5;
-
-  // 컵 / cup (200g)
-  const cupMatch = clean.match(/(\d+(?:\.\d+)?)\s*(?:컵|cup)/i);
-  if (cupMatch) return parseFloat(cupMatch[1]) * 200;
-
-  return null;
-}
-
-/** 유저 입력 수치 텍스트와 환산된 그램(g) 표기 생성 헬퍼 (예: "1근" + 600 -> "1근 (약 600g)") */
-function formatQuantityWithGrams(qqt?: string, parsedGrams?: number | null): string {
-  if (!qqt || !qqt.trim()) return "100g 기준";
-  const clean = qqt.trim();
-
-  // 이미 g, kg, ml, l 단위인 경우 중복 표기 생략
-  const isDirectUnit = /^\d+(?:\.\d+)?\s*(g|gram|그램|kg|킬로그램|ml|밀리리터|l|리터)$/i.test(clean);
-  if (isDirectUnit || parsedGrams == null || parsedGrams <= 0) {
-    return clean;
-  }
-
-  const formattedGramStr = parsedGrams >= 1000
-    ? `${(parsedGrams / 1000).toFixed(1)}kg`
-    : `${Math.round(parsedGrams)}g`;
-
-  return `${clean} (약 ${formattedGramStr})`;
-}
-
 /** JSON 형태의 aiComment 문자열에서 순수 문장 텍스트만 파싱 추출 헬퍼 */
 function cleanAiCommentText(comment?: string): string | null {
   if (!comment || !comment.trim()) return null;
@@ -113,44 +55,13 @@ export default function RecipeNutritionSection({
 
   const effectiveServings = servings > 0 ? servings : 1;
 
-  // 식재료 100g DB 기준 실질 총합 수치 연산 (화면에 표시되는 소수점 1자리 개별 수치를 선-반올림 후 합산하여 상단 요약 카드와 100% 산술 일치 보장)
-  const ingredientTotals = ingredients.reduce(
-    (acc, ing) => {
-      const ingName = ing.name?.trim() || "";
-      const noSpaceName = ingName.replace(/\s+/g, "");
-      const master = ingredientNutritions[ingName]
-        || ingredientNutritions[noSpaceName]
-        || Object.entries(ingredientNutritions).find(
-            ([k]) => k.replace(/\s+/g, "").toLowerCase() === noSpaceName.toLowerCase()
-          )?.[1];
-
-      const parsedGrams = parseGramsFromQqt(ing.qqt);
-      const isGramsKnown = parsedGrams !== null && parsedGrams > 0;
-      const ratio = isGramsKnown ? parsedGrams / 100.0 : 1.0;
-
-      if (master) {
-        acc.calories += round1((master.caloriesPer100g || 0) * ratio);
-        acc.carbs += round1((master.carbsPer100g || 0) * ratio);
-        acc.protein += round1((master.proteinPer100g || 0) * ratio);
-        acc.fat += round1((master.fatPer100g || 0) * ratio);
-        acc.sodium += round1((master.sodiumPer100g || 0) * ratio);
-        acc.sugar += round1((master.sugarPer100g || 0) * ratio);
-        acc.count += 1;
-      }
-      return acc;
-    },
-    { calories: 0, carbs: 0, protein: 0, fat: 0, sodium: 0, sugar: 0, count: 0 }
-  );
-
-  const useIngSum = ingredientTotals.count > 0;
-
-  // 1인분 영양 수치 추출 (하단 식재료 DB 합계가 있으면 100% 동기화)
-  const calories = useIngSum ? round1(ingredientTotals.calories / effectiveServings) : round1(parseNumeric(nutrition?.calories));
-  const carbs = useIngSum ? round1(ingredientTotals.carbs / effectiveServings) : round1(parseNumeric(nutrition?.carbs));
-  const protein = useIngSum ? round1(ingredientTotals.protein / effectiveServings) : round1(parseNumeric(nutrition?.protein));
-  const fat = useIngSum ? round1(ingredientTotals.fat / effectiveServings) : round1(parseNumeric(nutrition?.fat));
-  const sodium = useIngSum ? round1(ingredientTotals.sodium / effectiveServings) : round1(parseNumeric(nutrition?.sodium));
-  const sugar = useIngSum ? round1(ingredientTotals.sugar / effectiveServings) : round1(parseNumeric(nutrition?.sugar));
+  // 1인분 영양 수치 추출 (백엔드에서 전달받은 nutrition 객체값 그대로 표기)
+  const calories = round1(parseNumeric(nutrition?.calories));
+  const carbs = round1(parseNumeric(nutrition?.carbs));
+  const protein = round1(parseNumeric(nutrition?.protein));
+  const fat = round1(parseNumeric(nutrition?.fat));
+  const sodium = round1(parseNumeric(nutrition?.sodium));
+  const sugar = round1(parseNumeric(nutrition?.sugar));
 
   const hasNutrition = calories > 0 || carbs > 0 || protein > 0 || fat > 0;
 
@@ -163,9 +74,6 @@ export default function RecipeNutritionSection({
   const carbRatio = macroTotalKcal > 0 ? Math.round((carbKcal / macroTotalKcal) * 100) : 0;
   const proteinRatio = macroTotalKcal > 0 ? Math.round((proteinKcal / macroTotalKcal) * 100) : 0;
   const fatRatio = macroTotalKcal > 0 ? Math.max(0, 100 - carbRatio - proteinRatio) : 0;
-
-  // 전체 레시피 총 칼로리 (식재료별 기여도 % 계산용)
-  const totalRecipeCalories = calories * effectiveServings;
 
   const displayAiComment = cleanAiCommentText(aiComment);
 
@@ -216,8 +124,6 @@ export default function RecipeNutritionSection({
                 <span className="text-xs font-bold text-gray-400">kcal</span>
               </div>
             </div>
-
-            
 
             {/* 3대 영양소 (탄/단/지) 수치 박스 */}
             <div className="grid grid-cols-3 gap-2.5 my-4">
@@ -298,9 +204,10 @@ export default function RecipeNutritionSection({
                 )}
               </div>
             )}
+
             {/* AI 셰프 한줄평 말풍선 카드 */}
             {displayAiComment && (
-              <div className="mb-5 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100/80 flex items-start gap-3 shadow-2xs mt-3">
+              <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100/80 flex items-start gap-3 shadow-2xs mt-3">
                 <div className="flex-1 min-w-0">
                   <span className="text-[11px] font-extrabold text-emerald-800 tracking-tight block mb-0.5">
                     AI 셰프의 영양 한줄평
@@ -346,123 +253,80 @@ export default function RecipeNutritionSection({
             {isExpanded && (
               <div className="px-4 pb-4 pt-1 border-t border-gray-100 space-y-2">
                 <p className="text-[11px] text-gray-400 pb-1">
-                  {hasNutrition
-                    ? "각 재료의 분량을 표준 100g 영양 DB 기준으로 환산한 추정 기여도입니다."
-                    : "각 재료의 표준 100g 영양 DB 기준 정보입니다. (레시피 전체 영양은 저장 시 자동 산출)"}
+                  식재료 100g당 표준 영양성분 정보입니다.
                 </p>
 
-                  <div className="divide-y divide-gray-100">
-                    {(() => {
-                      // 전체 식재료 칼로리 총합 연산 (식재료별 기여도 % 합계가 정확히 100%가 되도록 처리)
-                      const sumOfAllIngredientCalories = ingredients.reduce((sum, ing) => {
-                        const ingName = ing.name?.trim() || "";
-                        const noSpaceName = ingName.replace(/\s+/g, "");
-                        const master = ingredientNutritions[ingName]
-                          || ingredientNutritions[noSpaceName]
-                          || Object.entries(ingredientNutritions).find(
-                              ([k]) => k.replace(/\s+/g, "").toLowerCase() === noSpaceName.toLowerCase()
-                            )?.[1];
+                <div className="divide-y divide-gray-100">
+                  {ingredients.map((ing, idx) => {
+                    const ingName = ing.name?.trim() || "";
+                    const noSpaceName = ingName.replace(/\s+/g, "");
 
-                        const parsedGrams = parseGramsFromQqt(ing.qqt);
-                        const isGramsKnown = parsedGrams !== null && parsedGrams > 0;
-                        const ratio = isGramsKnown ? parsedGrams / 100.0 : 1.0;
-                        const ingCal = master?.caloriesPer100g != null ? master.caloriesPer100g * ratio : 0;
-                        return sum + ingCal;
-                      }, 0);
+                    // 1. 원문 이름, 2. 공백 제거 이름, 3. 대소문자/공백 무시 유연 매칭
+                    const master = ingredientNutritions[ingName]
+                      || ingredientNutritions[noSpaceName]
+                      || Object.entries(ingredientNutritions).find(
+                          ([k]) => k.replace(/\s+/g, "").toLowerCase() === noSpaceName.toLowerCase()
+                        )?.[1];
 
-                      return ingredients.map((ing, idx) => {
-                        const ingName = ing.name?.trim() || "";
-                        const noSpaceName = ingName.replace(/\s+/g, "");
+                    const ingCal = master?.caloriesPer100g != null ? round1(master.caloriesPer100g) : null;
+                    const ingProtein = master?.proteinPer100g != null ? round1(master.proteinPer100g) : null;
+                    const ingCarbs = master?.carbsPer100g != null ? round1(master.carbsPer100g) : null;
+                    const ingFat = master?.fatPer100g != null ? round1(master.fatPer100g) : null;
+                    const ingSodium = master?.sodiumPer100g != null ? round1(master.sodiumPer100g) : null;
+                    const ingSugar = master?.sugarPer100g != null ? round1(master.sugarPer100g) : null;
 
-                        // 1. 원문 이름, 2. 공백 제거 이름, 3. 대소문자/공백 무시 유연 매칭
-                        const master = ingredientNutritions[ingName]
-                          || ingredientNutritions[noSpaceName]
-                          || Object.entries(ingredientNutritions).find(
-                              ([k]) => k.replace(/\s+/g, "").toLowerCase() === noSpaceName.toLowerCase()
-                            )?.[1];
-
-                        const parsedGrams = parseGramsFromQqt(ing.qqt);
-                        const isGramsKnown = parsedGrams !== null && parsedGrams > 0;
-                        const ratio = isGramsKnown ? parsedGrams / 100.0 : 1.0;
-
-                        const ingCal = master?.caloriesPer100g != null
-                          ? round1(master.caloriesPer100g * ratio)
-                          : null;
-                        const ingProtein = master?.proteinPer100g != null
-                          ? round1(master.proteinPer100g * ratio)
-                          : null;
-                        const ingCarbs = master?.carbsPer100g != null
-                          ? round1(master.carbsPer100g * ratio)
-                          : null;
-                        const ingFat = master?.fatPer100g != null
-                          ? round1(master.fatPer100g * ratio)
-                          : null;
-                        const ingSodium = master?.sodiumPer100g != null
-                          ? round1(master.sodiumPer100g * ratio)
-                          : null;
-                        const ingSugar = master?.sugarPer100g != null
-                          ? round1(master.sugarPer100g * ratio)
-                          : null;
-
-                        // 전체 식재료 총 칼로리 대비 비중 (합계 100% 연산)
-                        const calShare = (ingCal && sumOfAllIngredientCalories > 0)
-                          ? Math.min(100, Math.round((ingCal / sumOfAllIngredientCalories) * 100))
-                          : null;
-
-                        const quantityDisplay = formatQuantityWithGrams(ing.qqt, parsedGrams);
-
-                        return (
-                          <div
-                            key={`${ingName}-${idx}`}
-                            className="py-2.5 flex items-center justify-between gap-3 text-xs"
-                          >
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-1.5">
-                                <span className="font-bold text-gray-800 truncate">
-                                  {ingName}
-                                </span>
-                                <span className="text-[11px] text-gray-500 font-medium px-1.5 py-0.5 bg-gray-100 rounded-md shrink-0">
-                                  {quantityDisplay}
-                                </span>
-                              </div>
-
-                              {/* 탄단지 및 부가 영양소 서브 정보 */}
-                              {(ingProtein !== null || ingCarbs !== null || ingFat !== null || ingSodium !== null || ingSugar !== null) && (
-                                <p className="text-[11px] text-gray-400 mt-0.5">
-                                  {ingCarbs !== null && `탄 ${ingCarbs.toFixed(1)}g`}
-                                  {ingProtein !== null && ` · 단 ${ingProtein.toFixed(1)}g`}
-                                  {ingFat !== null && ` · 지 ${ingFat.toFixed(1)}g`}
-                                  {ingSodium !== null && ingSodium > 0 && ` · 나트륨 ${ingSodium.toFixed(0)}mg`}
-                                  {ingSugar !== null && ingSugar > 0 && ` · 당 ${ingSugar.toFixed(1)}g`}
-                                </p>
-                              )}
-                            </div>
-
-                            {/* 칼로리 및 비중 */}
-                            <div className="text-right shrink-0">
-                              {ingCal !== null ? (
-                                <>
-                                  <span className="font-extrabold text-gray-900">
-                                    {Math.round(ingCal)} kcal
-                                  </span>
-                                  {calShare !== null && calShare > 0 && (
-                                    <span className="block text-[10px] font-semibold text-emerald-600">
-                                      전체의 {calShare}%
-                                    </span>
-                                  )}
-                                </>
-                              ) : (
-                                <span className="text-[11px] text-gray-300">-</span>
-                              )}
-                            </div>
+                    return (
+                      <div
+                        key={`${ingName}-${idx}`}
+                        className="py-2.5 flex items-center justify-between gap-3 text-xs"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-gray-800 truncate">
+                              {ingName}
+                            </span>
+                            {ing.qqt && ing.qqt.trim() && (
+                              <span className="text-[11px] text-gray-500 font-medium px-1.5 py-0.5 bg-gray-100 rounded-md shrink-0">
+                                {ing.qqt}
+                              </span>
+                            )}
                           </div>
-                        );
-                      });
-                    })()}
-                  </div>
+
+                          {/* 100g당 탄단지 및 부가 영양소 서브 정보 */}
+                          {(ingProtein !== null || ingCarbs !== null || ingFat !== null || ingSodium !== null || ingSugar !== null) && (
+                            <p className="text-[11px] text-gray-400 mt-0.5">
+                              {ingCarbs !== null && `탄 ${ingCarbs.toFixed(1)}g`}
+                              {ingProtein !== null && ` · 단 ${ingProtein.toFixed(1)}g`}
+                              {ingFat !== null && ` · 지 ${ingFat.toFixed(1)}g`}
+                              {ingSodium !== null && ingSodium > 0 && ` · 나트륨 ${ingSodium.toFixed(0)}mg`}
+                              {ingSugar !== null && ingSugar > 0 && ` · 당 ${ingSugar.toFixed(1)}g`}
+                              <span className="ml-1 text-emerald-600 font-medium">(100g당)</span>
+                            </p>
+                          )}
+                        </div>
+
+                        {/* 100g당 칼로리 */}
+                        <div className="text-right shrink-0">
+                          {ingCal !== null ? (
+                            <>
+                              <span className="font-extrabold text-gray-900">
+                                {Math.round(ingCal)} kcal
+                              </span>
+                              <span className="block text-[10px] font-semibold text-gray-400">
+                                100g당
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-[11px] text-gray-300">-</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </section>
