@@ -23,7 +23,7 @@ export default function AdminLayout({
             router.push("/");
           }
       })
-    }, [])
+    }, [router])
 
     return (
       <div className={`bg-red-400 defaultOuterContainer flex pb-20`}>

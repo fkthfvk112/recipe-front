@@ -25,10 +25,22 @@ interface SortedData {
   extraData: Data[];
 }
 
-interface LogSearch{
-  dateFrom?:string;
-  dateTo?:string;
+interface LogSearch {
+  dateFrom?: string;
+  dateTo?: string;
+  dateType?: string;
 }
+
+const COLORS = [
+  "#FFB3BA", // 연한 빨강
+  "#FFDFBA", // 살구
+  "#FFFFBA", // 연노랑
+  "#BAFFC9", // 연두
+  "#BAE1FF", // 연하늘
+  "#E6CCFF", // 연보라
+  "#D9F8C4", // 민트
+  "#FFF0F5", // 라벤더 블러쉬
+];
 
 export default function UserListAdmin() {
   const today = new Date();
@@ -57,6 +69,7 @@ export default function UserListAdmin() {
     }).then((res) => {
       setLogData(res.data);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -68,33 +81,23 @@ export default function UserListAdmin() {
     });
   }
 
-  const COLORS = [
-    "#FFB3BA", // 연한 빨강
-    "#FFDFBA", // 살구
-    "#FFFFBA", // 연노랑
-    "#BAFFC9", // 연두
-    "#BAE1FF", // 연하늘
-    "#E6CCFF", // 연보라
-    "#D9F8C4", // 민트
-    "#FFF0F5", // 라벤더 블러쉬
-  ];
-useEffect(() => {
-  const countMap: Record<string, number> = {};
+  useEffect(() => {
+    const countMap: Record<string, number> = {};
 
-  logData.forEach((log) => {
-    const source = log.accessSource || "Unknown";
-    countMap[source] = (countMap[source] || 0) + 1;
-  });
+    logData.forEach((log) => {
+      const source = log.accessSource || "Unknown";
+      countMap[source] = (countMap[source] || 0) + 1;
+    });
 
-  const pieData = Object.entries(countMap).map(([source, count], idx) => ({
-    id: source,
-    label: source,
-    value: count,
-    color: COLORS[idx % COLORS.length],
-  }));
+    const pieData = Object.entries(countMap).map(([source, count], idx) => ({
+      id: source,
+      label: source,
+      value: count,
+      color: COLORS[idx % COLORS.length],
+    }));
 
-  setPieSourceData(pieData);
-}, [logData]);
+    setPieSourceData(pieData);
+  }, [logData]);
 
   useEffect(() => {
     if (!logData.length) return;
@@ -132,7 +135,7 @@ useEffect(() => {
   const setSearchDate = (evt:React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>)=>{
     const name  = evt.target.name;
     const value = evt.target.value;
-    setSearchData((prevSearch) => ({
+    setSearchData((prevSearch: LogSearch) => ({
         ...prevSearch,
         [name]: value,
     }));

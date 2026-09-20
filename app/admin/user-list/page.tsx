@@ -161,6 +161,7 @@ export default function UserListAdmin(){
                 setGenderPieData(res.data);
                 setAgeRangePieDate(res.data);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const searchUser = ()=>{

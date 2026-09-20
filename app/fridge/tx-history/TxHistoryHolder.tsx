@@ -49,6 +49,7 @@ export default function TxHistoryHolder() {
 
   useEffect(() => {
     fetchList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, appliedCond]);
 
   const handleSearch = () => {

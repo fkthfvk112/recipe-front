@@ -26,7 +26,7 @@ export default function ImgMgmt(){
                 .then((res)=>{
                     setImgs(res.data);
                 })
-    }, [toggle])
+    }, [toggle, imgSort])
 
     const imgList = imgs.map((img, inx)=>
         (<tr key={inx}>
