@@ -1,4 +1,5 @@
-import { CookingSteps_show, Ingredient } from "../../../types/recipeType";
+import { CookingSteps_show, Ingredient, RecipeNutrition } from "../../../types/recipeType";
+import RecipeNutritionSection from "../RecipeNutritionSection";
 import UserInfo from "../UserInfo";
 import Ingredients from "../Ingredients";
 import RecipeInfo, { RecipeInfoProp } from "../RecipeInfo";
@@ -57,7 +58,15 @@ export async function generateMetadata(
   const rawPhoto = recipeDetail?.repriPhotos?.[0];
   const photoUrl = getAbsoluteImageUrl(rawPhoto);
   const title = recipeDetail?.recipeName ? `${recipeDetail.recipeName} - 머그인 레시피` : "머그인 레시피";
-  const description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
+  let description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
+  if (recipeDetail?.nutrition?.calories) {
+    const cal = recipeDetail.nutrition.calories;
+    const carb = recipeDetail.nutrition.carbs ? `탄수화물 ${recipeDetail.nutrition.carbs}` : "";
+    const prot = recipeDetail.nutrition.protein ? `단백질 ${recipeDetail.nutrition.protein}` : "";
+    const fat = recipeDetail.nutrition.fat ? `지방 ${recipeDetail.nutrition.fat}` : "";
+    const macros = [carb, prot, fat].filter(Boolean).join(", ");
+    description = `[1인분 약 ${cal}${macros ? ` | ${macros}` : ""}] ${description}`;
+  }
   const expectedSlug = generateSlug(recipeDetail?.recipeName || "");
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
 
@@ -121,6 +130,8 @@ interface RecipeDetail {
   reviewAvg: number;
   createdAt?: string;
   reviewCnt?: number;
+  nutrition?: RecipeNutrition;
+  aiComment?: string;
 }
 
 export interface RecipeOwnerInfo {
@@ -187,7 +198,15 @@ export default async function RecipeDetail({
   // 구글 레시피 서칭용 데이터 구조
   const mainPhotoUrl = getAbsoluteImageUrl(recipeDetail?.repriPhotos?.[0]);
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
-  const keywords = [recipeDetail.recipeName, ...(recipeDetail.ingredients?.map((i) => i.name) || [])]
+  const keywords = [
+    recipeDetail.recipeName,
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 칼로리` : "",
+    recipeDetail.recipeName ? `${recipeDetail.recipeName} 영양성분` : "",
+    ...(recipeDetail.ingredients?.map((i) => i.name) || []),
+    "영양성분",
+    "칼로리",
+    "식재료",
+  ]
     .filter(Boolean)
     .join(", ");
 
@@ -231,6 +250,23 @@ export default async function RecipeDetail({
       return stepObj;
     }),
   };
+
+  // 구글 검색(Google Search) 및 리치 결과(Rich Snippets)용 영양성분 구조화 데이터
+  if (recipeDetail.nutrition?.calories) {
+    const numCal = parseFloat(recipeDetail.nutrition.calories.replace(/[^0-9.]/g, ""));
+    if (numCal > 0) {
+      googleRecipeSchema.nutrition = {
+        "@type": "NutritionInformation",
+        calories: recipeDetail.nutrition.calories,
+        ...(recipeDetail.nutrition.carbs ? { carbohydrateContent: recipeDetail.nutrition.carbs } : {}),
+        ...(recipeDetail.nutrition.protein ? { proteinContent: recipeDetail.nutrition.protein } : {}),
+        ...(recipeDetail.nutrition.fat ? { fatContent: recipeDetail.nutrition.fat } : {}),
+        ...(recipeDetail.nutrition.sodium ? { sodiumContent: recipeDetail.nutrition.sodium } : {}),
+        ...(recipeDetail.nutrition.sugar ? { sugarContent: recipeDetail.nutrition.sugar } : {}),
+        servingSize: recipeDetail.nutrition.servingSize || `${recipeDetail.servings || 1}인분 기준 1인분`,
+      };
+    }
+  }
 
   // timeSum이 0 초과일 때만 유효한 ISO 8601 기간(PT...M) 추가 (PT0M 형식 오류 경고 방지)
   if (recipeInfo.timeSum > 0) {
@@ -307,6 +343,13 @@ export default async function RecipeDetail({
             <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
             <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
             <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
+            <RecipeNutritionSection
+              nutrition={recipeDetail?.nutrition}
+              ingredients={recipeDetail?.ingredients}
+              ingredientNutritions={fetchData?.ingredientNutritions}
+              servings={recipeDetail?.servings}
+              aiComment={recipeDetail?.aiComment}
+            />
           </div>
           <div className="w-full px-6 sm:px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
             <CopyUrl></CopyUrl>

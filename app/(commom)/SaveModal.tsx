@@ -106,10 +106,10 @@ function SaveModal<T>({
           </p>
 
           <div className="flex gap-2">
-            <CancelButton fullWidth onClick={() => setOpen(false)}>
+            <CancelButton fullWidth className="flex-1" onClick={() => setOpen(false)}>
               취소
             </CancelButton>
-            <PrimaryButton fullWidth onClick={handleSave}>
+            <PrimaryButton fullWidth className="flex-1" onClick={handleSave}>
               저장하기
             </PrimaryButton>
           </div>

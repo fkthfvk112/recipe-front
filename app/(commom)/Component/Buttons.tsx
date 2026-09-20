@@ -34,8 +34,8 @@ export function PrimaryButton({
     <button
       type={type}
       disabled={disabled || loading}
-      className={`font-black text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 ${
-        fullWidth ? "w-full" : "w-auto"
+      className={`font-black text-white bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] shadow-md border-none transition-all cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5 whitespace-nowrap ${
+        fullWidth ? "w-full" : "shrink-0 w-auto"
       } ${sizeClasses[size]} ${className}`}
       {...props}
     >

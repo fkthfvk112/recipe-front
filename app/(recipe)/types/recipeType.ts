@@ -38,6 +38,27 @@ export interface Ingredient {
   order:       number;
 }
 
+export interface RecipeNutrition {
+  servingSize?: string;
+  calories?: string;
+  carbs?: string;
+  protein?: string;
+  fat?: string;
+  sodium?: string;
+  sugar?: string;
+}
+
+export interface Ingredient100g {
+  name: string;
+  caloriesPer100g?: number;
+  carbsPer100g?: number;
+  proteinPer100g?: number;
+  fatPer100g?: number;
+  sodiumPer100g?: number;
+  sugarPer100g?: number;
+  fiberPer100g?: number;
+}
+
 export interface Recipe {
   createdAt:    string;
   viewCnt:      number;
@@ -50,9 +71,11 @@ export interface Recipe {
   ingredients:  Ingredient[];
   description:  string;
   steps:        CookingSteps_create[] | CookingSteps_show[];
+  nutrition?:   RecipeNutrition;
+  aiComment?:   string;
   reviewCnt?:   number;
   likeCnt?:     number;
-  reviewAvg?:     number;
+  reviewAvg?:   number;
 }
 
 export interface RecipeDraftInterface{

@@ -230,6 +230,7 @@ export default function EditRecipePage({
           <div className="flex gap-2 mt-6">
             <CancelButton
               fullWidth
+              className="flex-1"
               onClick={() => setIsModalOpen(false)}
               disabled={isSubmitting}
             >
@@ -238,6 +239,7 @@ export default function EditRecipePage({
             {errorCnt === 0 && (
               <PrimaryButton
                 fullWidth
+                className="flex-1"
                 onClick={saveRecipeToDb}
                 loading={isSubmitting}
               >
