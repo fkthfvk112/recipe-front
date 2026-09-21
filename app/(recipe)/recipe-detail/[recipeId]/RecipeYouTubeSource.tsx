@@ -23,9 +23,6 @@ export default function RecipeYouTubeSource({ aiSource }: RecipeYouTubeSourcePro
           <div>
             <h3 className="text-sm font-extrabold text-gray-900 tracking-tight flex items-center gap-1.5">
               영상으로 조리법 함께 보기
-              <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-md">
-                YouTube
-              </span>
             </h3>
             <p className="text-xs text-gray-400 font-medium">
               출처: {aiSource.channelName || "유튜브 요리 채널"}

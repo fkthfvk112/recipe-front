@@ -387,7 +387,7 @@ export default async function RecipeDetail({
       <div className="w-full bg-gray-50 flex flex-col justify-start items-center py-10 min-h-dvh sm:px-0">
         <div className="max-w-3xl w-full bg-white flex flex-col justify-center items-center rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="p-6 sm:p-8 w-full">
-            <UserInfo recipeOwner={recipeOwner}></UserInfo>
+            {!recipeDetail.isAiCreated && <UserInfo recipeOwner={recipeOwner}></UserInfo>}
             <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
             <RecipeYouTubeSource aiSource={fetchData?.aiSource} />
             <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
