@@ -9,7 +9,7 @@ interface ServingProp {
 }
 
 export default function Serving({ recipe, setRecipe }: ServingProp) {
-  const servingOptions = [1, 2, 3, 4, 5, 6];
+  const servingOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   const handleServingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     setRecipe({
