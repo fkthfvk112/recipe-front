@@ -14,7 +14,6 @@ import Link from "next/link";
 
 interface GenerationResult {
   url: string;
-  recipeId?: number;
   success: boolean;
   error?: string;
 }
@@ -63,6 +62,69 @@ export default function AiRecipeAdminPage() {
     });
   };
 
+const startGeneration = async () => {
+    // 1. 실행 확인 팝업
+    const confirmResult = await Swal.fire({
+      title: "AI 레시피 일괄 생성",
+      text: "PENDING 상태인 유튜브 소스들을 바탕으로 AI 레시피 생성을 시작하시겠습니까?\n(작업은 백그라운드에서 비동기로 진행됩니다.)",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "시작하기",
+      cancelButtonText: "취소",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      allowEnterKey: false,
+    });
+
+    if (!confirmResult.isConfirmed) {
+      return; // 취소 버튼을 눌렀을 경우 중단
+    }
+
+    // 2. 로딩 팝업 표시 (API 응답 대기 중)
+    Swal.fire({
+      title: "요청 전송 중...",
+      text: "서버에 일괄 생성 작업을 요청하고 있습니다.",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+        Swal.showLoading(); // SweetAlert2 공식 로딩 애니메이션 실행
+      },
+    });
+
+    try {
+      // 3. API 요청 전송 (비동기 백그라운드 작업 시작)
+      const response = await axiosAuthInstacne.post(
+        "admin/recipe/ai/batch/from-youtube"
+      );
+
+      // 4. 성공 팝업
+      await Swal.fire({
+        title: "작업 요청 성공!",
+        text: "레시피 AI 일괄 생성 작업이 백그라운드에서 시작되었습니다. 완료되면 이메일로 결과가 발송됩니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#3085d6",
+        allowEnterKey: false,
+      });
+
+    } catch (error:any) {
+      console.error("Failed to trigger recipe batch generation:", error);
+
+      // 5. 에러 발생 팝업
+      const errorMsg = error.response?.data?.message || "서버 통신 중 오류가 발생했습니다.";
+      await Swal.fire({
+        title: "요청 실패",
+        text: errorMsg,
+        icon: "error",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#d33",
+        allowEnterKey: false,
+      });
+    }
+  };
+
+
   // 다중 AI 레시피 생성 실행
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +168,7 @@ export default function AiRecipeAdminPage() {
 
       try {
         const response = await axiosAuthInstacne.post(
-          "admin/recipe/ai/from-youtube",
+          "admin/recipe/ai/script/from-youtube",
           {
             videoUrl: targetUrl,
           },
@@ -115,10 +177,9 @@ export default function AiRecipeAdminPage() {
           }
         );
 
-        if (response.data && response.data.recipeId) {
+        if (response.data) {
           const item: GenerationResult = {
             url: targetUrl,
-            recipeId: response.data.recipeId,
             success: true,
           };
           results.push(item);
@@ -208,13 +269,16 @@ export default function AiRecipeAdminPage() {
           </p>
           <ul className="list-disc list-inside space-y-1 text-violet-800/90 pl-1 leading-relaxed">
             <li>
-              <strong>+ 버튼</strong>을 눌러 여러 개의 유튜브 URL을 한 번에 입력하고 일괄 생성할 수 있습니다.
+              <strong>+ 버튼</strong>을 눌러 여러 개의 유튜브 URL을 한 번에 입력하고 일괄 데이터를 DB에 삽입합니다.
             </li>
             <li>
-              유튜브 영상의 <strong>자막/더보기란</strong>을 파싱하여 정량화된 재료와 순서로 변환합니다.
+              그리고 recipe_ai_source의 데이터를 수기로 모두 라이브에 동기화합니다. (INSERT)
             </li>
             <li>
-              <strong>DALL-E 3 / GPT Image</strong>를 호출하여 고화질 푸드 사진을 대표 이미지로 자동 생성합니다.
+              다음으로 "소스로 레시피 생성"을 실행하는 경우 해당 recipe_ai_source의 스크립트를 기준으로 레시피 데이터가 세팅됩니다.
+            </li>
+            <li>
+              이는 유튜브가 AWS 서버(데이터 센터)의 IP를 차단하기 때문으로 데이터 센터가 아닌 로컬(홈 PC)에서 전처리를 하기 위함입니다.
             </li>
             <li>
               표준 100g 식재료 DB와 연동되어 <strong>1인분 칼로리/영양성분</strong>이 자동 산출됩니다.
@@ -328,7 +392,7 @@ export default function AiRecipeAdminPage() {
             ) : (
               <>
                 <AutoAwesomeIcon sx={{ fontSize: 18 }} />
-                AI 레시피 생성 시작하기 (총 {validUrlCount}개)
+                스크립트 DB Insert 생성 시작하기 (총 {validUrlCount}개)
               </>
             )}
           </button>
@@ -379,7 +443,7 @@ export default function AiRecipeAdminPage() {
                         }`}
                       >
                         {item.success
-                          ? `레시피 생성 성공 (ID: ${item.recipeId})`
+                          ? `레시피 생성 성공`
                           : "레시피 생성 실패"}
                       </span>
                     </div>
@@ -388,7 +452,7 @@ export default function AiRecipeAdminPage() {
                       {item.url}
                     </span>
                   </div>
-
+{/* 
                   {item.success && item.recipeId ? (
                     <div className="flex flex-col sm:flex-row gap-2 mt-2">
                       <Link
@@ -410,12 +474,20 @@ export default function AiRecipeAdminPage() {
                     <p className="text-xs text-red-700 mt-1 pl-6">
                       {item.error || "영상 자막을 불러올 수 없거나 처리 중 오류가 발생했습니다."}
                     </p>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>
           </div>
         )}
+          {/* 제출 버튼 */}
+          <button
+            onClick={()=>startGeneration()}
+            type="submit"
+            className="mt-3 w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-green hover:from-green-700 hover:to-green-700 transition-all shadow-md shadow-violet-200 flex items-center justify-center gap-2 cursor-pointer border-none"
+          >
+            AI 레시피 생성 시작하기
+          </button>
       </div>
     </div>
   );
