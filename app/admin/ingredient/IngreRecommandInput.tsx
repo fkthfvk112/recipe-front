@@ -3,6 +3,7 @@
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import { containChosingJungsungJongsung } from "@/app/(utils)/StringUtil";
 import { useEffect, useState, useRef } from "react";
+import { searchLocalPopularIngredients } from "./popularIngredients";
 
 interface Props {
   inputStyleStr?: string;
@@ -13,6 +14,9 @@ interface Props {
   defaultVal?: string;
   onEnterSubmit?: () => void;
   onConfirm?: (data: string) => void;
+  dropdownPosition?: "top" | "bottom";
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export default function IngreRecommandInput({
@@ -24,6 +28,9 @@ export default function IngreRecommandInput({
   defaultVal,
   onEnterSubmit,
   onConfirm,
+  dropdownPosition = "bottom",
+  onFocus: onFocusProp,
+  onBlur: onBlurProp,
 }: Props) {
   const [ingre, setIngre] = useState<string>(defaultVal || "");
   const [recommendTermList, setRecommendTermList] = useState<string[]>([]);
@@ -44,31 +51,46 @@ export default function IngreRecommandInput({
     if (titleVideCnt) {
       setIngre("");
       setSelectedIndex(-1);
+      setLastSearchedTerm("");
+      setRecommendTermList([]);
+      setIsFocused(true);
     }
   }, [titleVideCnt]);
 
-  // Fetch Redis auto-recommend terms ONLY
+  // 식재료 자동 추천 (로컬 메모리 캐시 우선 ➔ 캐시 미스 시 서버 Redis 조회)
   useEffect(() => {
-    if (ingre.length === 0) {
+    // 공백이나 숫자 단위가 섞인 경우(예: "양파 2개", "삼겹살 500g") 앞단 식재료명만 추출하여 검색
+    const termToSearch = ingre.trim().split(/\s|\d/)[0] || "";
+
+    if (termToSearch.length === 0) {
       setRecommendTermList([]);
       setLastSearchedTerm("");
       setSelectedIndex(-1);
       return;
     }
 
+    // 1. 프론트엔드 TS 로컬 캐시에서 일치하는 인기 식재료 우선 검색 (0ms 지연)
+    const localHits = searchLocalPopularIngredients(termToSearch);
+    if (localHits.length > 0) {
+      setRecommendTermList(localHits);
+      setLastSearchedTerm(termToSearch);
+      setSelectedIndex(-1);
+      return; // 캐시 히트 시 서버 요청 생략
+    }
+
+    // 2. 로컬 캐시 미스 시 서버(Redis) 자동완성 조회
     if (
-      ingre.length > 0 &&
-      !containChosingJungsungJongsung(ingre) &&
-      ingre !== lastSearchedTerm
+      !containChosingJungsungJongsung(termToSearch) &&
+      termToSearch !== lastSearchedTerm
     ) {
       defaultAxios
         .get("ingre-list/recommend/redis", {
           params: {
-            searchingTerm: ingre,
+            searchingTerm: termToSearch,
           },
         })
         .then((res) => {
-          setLastSearchedTerm(ingre);
+          setLastSearchedTerm(termToSearch);
           if (res.data?.length > 0) {
             setRecommendTermList(res.data);
             setSelectedIndex(-1);
@@ -84,11 +106,13 @@ export default function IngreRecommandInput({
     }
   }, [ingre, lastSearchedTerm]);
 
-  const filteredList = recommendTermList.filter((ele) => ele !== ingre);
+  // Redis 추천 결과 목록 노출 (단일 결과인 경우에도 목록이 유지되도록 처리)
+  const filteredList = recommendTermList;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setIngre(val);
+    setIsFocused(true);
     setSelectedIndex(-1);
     if (dataSettingCallback) {
       dataSettingCallback(val);
@@ -97,6 +121,7 @@ export default function IngreRecommandInput({
 
   const handleSelectTerm = (term: string) => {
     setIngre(term);
+    setLastSearchedTerm(term);
     setSelectedIndex(-1);
     setIsFocused(false);
     if (dataSettingCallback) {
@@ -108,14 +133,16 @@ export default function IngreRecommandInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 한글 등 조합 문자(IME) 입력 중 엔터 중복 실행 방지
+    if (e.nativeEvent.isComposing) return;
+
     if (!isFocused || filteredList.length === 0) {
       if (e.key === "Enter") {
-        if (onConfirm) {
-          onConfirm(ingre);
-        }
+        e.preventDefault();
         if (onEnterSubmit) {
-          e.preventDefault();
           onEnterSubmit();
+        } else if (onConfirm) {
+          onConfirm(ingre);
         }
       }
       return;
@@ -128,16 +155,14 @@ export default function IngreRecommandInput({
       e.preventDefault();
       setSelectedIndex((prev) => (prev > 0 ? prev - 1 : filteredList.length - 1));
     } else if (e.key === "Enter") {
+      e.preventDefault();
       if (selectedIndex >= 0 && selectedIndex < filteredList.length) {
-        e.preventDefault();
         handleSelectTerm(filteredList[selectedIndex]);
       } else {
-        if (onConfirm) {
-          onConfirm(ingre);
-        }
         if (onEnterSubmit) {
-          e.preventDefault();
           onEnterSubmit();
+        } else if (onConfirm) {
+          onConfirm(ingre);
         }
       }
     } else if (e.key === "Escape") {
@@ -197,9 +222,13 @@ export default function IngreRecommandInput({
         placeholder={`${placeholderStr || ""}`}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onFocus={() => setIsFocused(true)}
+        onFocus={() => {
+          setIsFocused(true);
+          if (onFocusProp) onFocusProp();
+        }}
         onBlur={() => {
           setIsFocused(false);
+          if (onBlurProp) onBlurProp();
           if (onConfirm) {
             onConfirm(ingre);
           }
@@ -208,7 +237,11 @@ export default function IngreRecommandInput({
       {isFocused && filteredList.length > 0 && (
         <div
           ref={listRef}
-          className="absolute top-full left-0 right-0 z-30 mt-1 bg-white border border-gray-200/90 rounded-2xl shadow-xl overflow-hidden max-h-48 overflow-y-auto"
+          className={`absolute left-0 right-0 z-50 bg-white border border-gray-200/90 rounded-2xl shadow-xl overflow-hidden max-h-48 overflow-y-auto ${
+            dropdownPosition === "top"
+              ? "bottom-full mb-2"
+              : "top-full mt-1"
+          }`}
         >
           {recommendComps}
         </div>

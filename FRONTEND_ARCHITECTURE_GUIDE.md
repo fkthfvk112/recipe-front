@@ -186,6 +186,22 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
 
 ---
 
+### 4.7. 장보기 체크리스트 도메인 (`(recipe)/checklist`)
+- **주요 기능**: 로컬 스토리지(`localStorage`) 기반 오프라인 친화형 장보기 Todo 체크리스트
+- **주요 특징**:
+  - `IngreRecommandInput`을 연동한 실시간 Redis 식재료 자동완성
+  - `checklistParser.ts`를 활용한 식재료명 및 단위/수량 자연어 분리 (예: `"삼겹살 500g"` ➔ 이름: `"삼겹살"`, 단위: `"500g"`, 단위 미입력 시 이름만 안전 처리)
+  - **2행 고정 모바일/데스크톱 표준 레이아웃**: 상단 1행은 `w-full`로 꽉 찬 3분할(`전체`/`살 것`/`완료`) 세그먼트 필터 탭, 2행은 우측 정렬된 편의 기능(`목록 복사`/`완료 삭제`)으로 2개 행을 명확히 분리하여 300px 초소형 모바일에서도 100% 균일하고 깨짐 없는 UI 제공
+  - **카드 내장형 입력 바 & 가변 최소 공간 레이아웃**: 모바일 가상 키보드 충돌 및 흔들림을 방지하기 위해 뷰포트 하단 고정(`position: fixed`) 대신 체크리스트 카드 내부에 입력창을 직접 배치. 카드는 `min-h-[380px] sm:min-h-[440px]`의 최소 공간을 유지하며, 데이터가 적거나 비어있을 때는 카드의 최소 높이 맨 하단에 위치하고, 데이터가 많아져 카드가 길어지면 목록 바로 아래에 자연스럽게 배치됨. 항목 간 식재료명과 단위 사이 간격을 최소화(`gap-1`, `gap-0.5`)하여 가독성 극대화.
+  - **하이브리드 식재료 자동완성 캐싱**: 대표 인기 식재료 150여 종을 프론트엔드 정적 캐시(`popularIngredients.ts`)로 관리하여, 캐시 히트 시 네트워크 요청 없이 0ms 즉각 추천을 제공하고 캐시 미스 시에만 서버(Redis)를 조회하는 고성능 하이브리드 구조 적용
+- **주요 관련 파일 & 컴포넌트**:
+  - `app/(recipe)/checklist/page.tsx`: 장보기 체크리스트 화면 (URL: `/checklist`)
+  - `app/(recipe)/checklist/checklistParser.ts`: 식재료명 및 단위 분리 유틸리티
+  - `app/admin/ingredient/IngreRecommandInput.tsx`: 식재료 자동완성 컴포넌트 (하이브리드 캐싱 탑재)
+  - `app/admin/ingredient/popularIngredients.ts`: 150종 인기 대표 식재료 로컬 캐시 및 검색 유틸리티
+
+---
+
 ## 📊 5. 이벤트 로깅 및 분석 (GA4 Tracking)
 
 그로스 마케팅 및 퍼널 분석을 위해 모든 주요 사용자 액션은 `ga4Events.ts`를 통해 로깅해야 합니다.

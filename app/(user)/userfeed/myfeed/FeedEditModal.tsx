@@ -14,6 +14,7 @@ import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
 import { Validation, validateNickName, validationNickNameSentence } from "@/app/(user)/check";
 import { generateRandomNickName } from "@/app/(commom)/Function/randomNickName";
+import useResponsiveDesignCss from "@/app/(commom)/Hook/useResponsiveDesignCss";
 
 interface UpdatedUser {
   userPhoto: string;
