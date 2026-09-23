@@ -4,13 +4,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserLoginDTO } from "@/app/(type)/user";
+import { GrantType, UserLoginDTO } from "@/app/(type)/user";
 import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilState } from "recoil";
 import Swal from "sweetalert2";
 import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import NaverLogin from "./naver/NaverLogin";
+import KakaoLogin from "./kakao/KakaoLogin";
 import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
@@ -46,7 +47,7 @@ export default function LoginForm() {
       userId: userId,
       userPassword: userPw,
       role: "USER",
-      grantType: "normal",
+      grantType: GrantType.NORMAL,
     };
 
     defaultAxios
@@ -174,8 +175,9 @@ export default function LoginForm() {
           <span className="text-[11px] font-bold text-gray-400">
             SNS 계정으로 간편 로그인
           </span>
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center gap-4">
             <NaverLogin />
+            <KakaoLogin />
           </div>
         </div>
 

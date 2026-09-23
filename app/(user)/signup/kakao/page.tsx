@@ -1,6 +1,6 @@
 "use client";
 
-import { GrantType, NaverSignUpDTO } from "@/app/(type)/user";
+import { GrantType, KakaoSignUpDTO } from "@/app/(type)/user";
 import { useEffect, useRef, useState } from "react";
 import { Validation, validationNickNameSentence } from "../../check";
 import TermOfUsage from "@/app/(recipe)/recipes/(common)/document/TermOfUsage";
@@ -15,7 +15,7 @@ import { useRecoilState } from "recoil";
 import { authEvents } from "@/app/(commom)/ga4/ga4Events";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
 
-export default function NaverSignUp() {
+export default function KakaoSignUp() {
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
   const [userEmail, setUserEmail] = useState<string>("");
   const [userNickName, setUserNickName] = useState<string>("");
@@ -42,9 +42,12 @@ export default function NaverSignUp() {
   }, [userNickName]);
 
   useEffect(() => {
-    axiosAuthInstacne.post("sns-sign-in/naver/userinfo").then((res) => {
+    axiosAuthInstacne.post("sns-sign-in/kakao/userinfo").then((res) => {
       if (res.data?.email) {
         setUserEmail(res.data.email);
+      }
+      if (res.data?.nickname) {
+        setUserNickName(res.data.nickname);
       }
     });
   }, []);
@@ -53,11 +56,11 @@ export default function NaverSignUp() {
     return nickNameValid.isValid;
   };
 
-  const naverSignIn = () => {
+  const kakaoSignIn = () => {
     axiosAuthInstacne
-      .post("sns-sign-in/naver")
+      .post("sns-sign-in/kakao")
       .then((res) => {
-        authEvents.signInSuccess("naver");
+        authEvents.signInSuccess("kakao");
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
 
@@ -97,9 +100,9 @@ export default function NaverSignUp() {
       return;
     }
 
-    const userData: NaverSignUpDTO = {
+    const userData: KakaoSignUpDTO = {
       nickName: userNickName,
-      grantType: GrantType.NAVER,
+      grantType: GrantType.KAKAO,
     };
 
     withReactContent(Swal).fire({
@@ -107,23 +110,23 @@ export default function NaverSignUp() {
       showConfirmButton: false,
       html: (
         <div className="overflow-y-hidden py-4 flex justify-center">
-          <CircularProgress color="success" />
+          <CircularProgress color="warning" />
         </div>
       ),
     });
 
     axiosAuthInstacne
-      .post("sns-sign-up/naver", userData)
+      .post("sns-sign-up/kakao", userData)
       .then((res) => {
-        authEvents.signUpSuccess("naver");
+        authEvents.signUpSuccess("kakao");
         Swal.fire({
-          title: "환영합니다! 🌿",
-          text: "네이버 계정으로 머그인 회원가입이 성공적으로 완료되었습니다.",
+          title: "환영합니다!",
+          text: "카카오 계정으로 머그인 회원가입이 성공적으로 완료되었습니다.",
           icon: "success",
         }).then(() => {
           const storage = globalThis?.sessionStorage;
           storage.setItem("firstSignUp", "true");
-          naverSignIn();
+          kakaoSignIn();
         });
       })
       .catch((err) => {
@@ -142,8 +145,8 @@ export default function NaverSignUp() {
     <main className="min-h-screen bg-gray-50/60 py-10 px-4 flex flex-col items-center justify-center">
       <div className="max-w-xl w-full bg-white rounded-3xl border border-gray-100 p-6 sm:p-10 shadow-xs flex flex-col gap-6">
         <div className="flex flex-col items-center gap-2 text-center pb-4 border-b border-gray-100">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200/60">
-            <span>네이버 간편 회원가입</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-full border border-amber-200/60">
+            <span>카카오 간편 회원가입</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             머그인 계정 만들기
@@ -158,7 +161,7 @@ export default function NaverSignUp() {
               type="email"
               value={userEmail}
               readOnly={true}
-              placeholder="네이버 계정 이메일"
+              placeholder="카카오 계정 이메일"
               className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium bg-gray-100 text-gray-500 outline-none cursor-not-allowed"
             />
           </div>
@@ -171,7 +174,7 @@ export default function NaverSignUp() {
               placeholder="2~10자 닉네임 입력"
               value={userNickName}
               onChange={(e) => setUserNickName(e.target.value)}
-              className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
+              className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 bg-gray-50/50 transition-all"
             />
             {nickNameValid.message && (
               <span
@@ -191,7 +194,7 @@ export default function NaverSignUp() {
               disabled={!allValid()}
               className={`w-full py-3.5 rounded-2xl text-xs sm:text-sm font-bold shadow-xs border-none outline-none transition-all ${
                 allValid()
-                  ? "bg-[#03C75A] hover:bg-[#02b350] text-white active:scale-[0.99] cursor-pointer"
+                  ? "bg-[#FEE500] hover:bg-[#FDD800] text-gray-900 active:scale-[0.99] cursor-pointer"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
             >

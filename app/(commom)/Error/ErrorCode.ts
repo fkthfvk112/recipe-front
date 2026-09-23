@@ -26,6 +26,7 @@ export const errorCode = [
     "M012",
     "M013",
     "M014",
+    "M015",
     "M016",
     "M017",
     "M018",
@@ -34,12 +35,10 @@ export const errorCode = [
     "B002",
     "B003",
 
-    "S001",
-    "S002",
-
     "R001",
     "R002",
     "R003",
+    "R004",
 
     "S001",
     "S002",
@@ -56,6 +55,8 @@ export const errorCode = [
 
     "NA001",
     "NA002",
+    "KA001",
+    "KA002",
 
     "AES001",
     "AES002",
@@ -63,4 +64,16 @@ export const errorCode = [
     "IM001",
 
     "EM001",
+
+    "SEO001",
+    "SEO002",
+
+    "P001",
+    "P002",
+    "P003",
+
+    "A001",
+    "A002",
+    "A003",
+    "A004",
 ];

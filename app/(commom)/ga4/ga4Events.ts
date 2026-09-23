@@ -257,7 +257,7 @@ export const authEvents = {
   },
 
   // 로그인 실패
-  signInFailure: (reason: string, method: 'normal' | 'naver' = 'normal') => {
+  signInFailure: (reason: string, method: 'normal' | 'naver' | 'kakao' = 'normal') => {
     sendGA4Event('signin_failure', {
       event_category: 'auth_funnel',
       event_label: `로그인 실패 (${reason})`,
@@ -288,7 +288,7 @@ export const authEvents = {
   },
 
   // 회원가입 완료
-  signUpSuccess: (method: 'normal' | 'naver' = 'normal') => {
+  signUpSuccess: (method: 'normal' | 'naver' |'kakao' = 'normal') => {
     sendGA4Event('signup_success', {
       event_category: 'auth_conversion',
       event_label: `회원가입 완료 (${method})`,

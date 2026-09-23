@@ -7,6 +7,9 @@ import rehypeRaw from "rehype-raw";
 import Link from "next/link";
 import { Components } from "react-markdown";
 import Badge from "@/app/(commom)/Component/Badge";
+import PostCTAButtons from "./PostCTAButtons";
+import PostTagBadges from "./PostTagBadges";
+import PostRelatedCards from "./PostRelatedCards";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import { cache } from "react";
@@ -368,57 +371,20 @@ export default async function PostLanding({ params }: Props) {
               내 냉장고에 추가하고, 관련 레시피를 둘러보세요
             </h2>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href={fridgeLink}
-                className="flex items-center justify-center gap-2 flex-1 px-5 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs sm:text-sm rounded-2xl transition-all shadow-md"
-              >
-                내 냉장고에 추가
-              </Link>
-              <Link
-                href={recipeSearchLink}
-                className="flex items-center justify-center gap-2 flex-1 px-5 py-3.5 bg-gray-50 hover:bg-gray-100 text-gray-800 font-extrabold text-xs sm:text-sm rounded-2xl border border-gray-200/80 transition-all"
-              >
-                관련 레시피 구경하기
-              </Link>
+              <PostCTAButtons
+                fridgeLink={fridgeLink}
+                recipeSearchLink={recipeSearchLink}
+                postTitle={post.title ?? ""}
+                mainIngredient={mainIngredientTag}
+              />
             </div>
           </div>
 
-          {/* ─── DB 관련 태그 뱃지 영역 (함께 보면 좋은 이야기 바로 위) ────────────────── */}
-          {tags.length > 0 && (
-            <section className="mt-10 pt-6 border-t border-gray-200/80">
-              <div className="flex items-center gap-1.5 text-xs font-black text-gray-400 mb-3">
-                <TagOutlinedIcon style={{ fontSize: 15 }} />
-                <span>관련 태그:</span>
-              </div>
-              <div className="flex items-center gap-2 flex-wrap mb-10">
-                {tags.map((tag) => (
-                  <Link key={tag} href={`/post/topic/${encodeURIComponent(tag)}`}>
-                    <Badge
-                      variant="gray"
-                      size="md"
-                      className="hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors cursor-pointer"
-                    >
-                      #{tag}
-                    </Badge>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
+          {/* ─── DB 관련 태그 뱃지 영역 ────────────────── */}
+          <PostTagBadges tags={tags} postTitle={post.title ?? ""} />
 
           {/* ─── 함께 보면 좋은 이야기 ────────────────────────────────────────── */}
-          {relatedPosts.length > 0 && (
-            <section className="pt-8 border-t border-gray-200/80">
-              <h2 className="text-base sm:text-lg font-black text-gray-900 mb-4 tracking-tight">
-                함께 보면 좋은 이야기
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {relatedPosts.map((p, idx) => (
-                  <RelatedPostCard key={p.postId ?? idx} post={p} />
-                ))}
-              </div>
-            </section>
-          )}
+          <PostRelatedCards posts={relatedPosts} currentPostTitle={post.title ?? ""} />
         </main>
       </div>
     </>

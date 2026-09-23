@@ -9,7 +9,7 @@ export default function UserSetting() {
         {/* 상단 타이틀 Header */}
         <div className="w-full text-left flex flex-col gap-1">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200/60 w-fit">
-            ⚙️ 계정 설정
+            계정 설정
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
             내 계정 관리

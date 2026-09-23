@@ -12,7 +12,7 @@ import {
   validationPwSentence,
 } from "../check";
 import axios from "axios";
-import { SexEnum, UserSignUpDTO } from "@/app/(type)/user";
+import { GrantType, SexEnum, UserSignUpDTO } from "@/app/(type)/user";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { CircularProgress, Checkbox } from "@mui/material";
@@ -158,7 +158,7 @@ export default function SignUp() {
       userPassword: userPw,
       email: userEmail,
       nickName: userNickName,
-      grantType: "NORMAL",
+      grantType: GrantType.NORMAL,
       encodedEmail: encodedEmail,
       sex: userSex as SexEnum,
       birthDate: userBirthDate,
