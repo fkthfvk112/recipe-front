@@ -10,6 +10,7 @@ import KitchenOutlinedIcon from "@mui/icons-material/KitchenOutlined";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import BookmarkAddedOutlinedIcon from "@mui/icons-material/BookmarkAddedOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -68,6 +69,10 @@ export default function MyAccountMenuList() {
 
   const goToMyFridgeItemTx = () => {
     router.push(`/fridge/tx-history`);
+  };
+
+  const goToChecklist = () => {
+    router.push(`/checklist`);
   };
 
   const menuGroups = [

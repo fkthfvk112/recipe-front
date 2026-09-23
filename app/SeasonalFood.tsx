@@ -14,7 +14,7 @@ export default function SeasonalFood() {
   );
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-5 py-8">
+    <div className="w-full max-w-5xl mx-auto px-5 py-3 mt-6">
       <h1 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight">이달의 제철 식재료</h1>
       {/* 스크롤 가능한 식재료 목록 */}
       <div className="mt-4 flex overflow-x-auto space-x-4 p-3 no-scrollbar scroll-smooth">

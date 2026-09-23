@@ -2,11 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import KitchenIcon from "@mui/icons-material/Kitchen";
+import { fridgeEvents } from "@/app/(commom)/ga4/ga4Events";
 
 export default function GoFridgeBtn() {
   const router = useRouter();
 
   const goFridgePage = () => {
+    // GA4 이벤트 추적: 내 냉장고 재료로 만들기/확인하기 클릭
+    fridgeEvents.clickGoFridgeBtn("recipe_detail");
     router.push("/fridge");
   };
 

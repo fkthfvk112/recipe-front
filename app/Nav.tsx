@@ -12,6 +12,7 @@ import RestaurantMenuOutlinedIcon from '@mui/icons-material/RestaurantMenuOutlin
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import useResponsiveDesignCss from "./(commom)/Hook/useResponsiveDesignCss";
 import GoBoardBtn from "./GoBoardBtn";
 import useSyncLogin from "./(commom)/Hook/useSyncLogin";
@@ -105,6 +106,13 @@ const Navbar = () => {
                   </span>
                 </Link>
               </li>
+              <li>
+                <Link href="/checklist">
+                  <span className={`text-[15px] transition-colors cursor-pointer hover:text-gray-900 ${containInRoute("checklist") ? "text-gray-900 font-extrabold" : "text-gray-600 font-bold"}`}>
+                    장보기 카트
+                  </span>
+                </Link>
+              </li>
             </ul>
 
             {/* Right: Login Button / Account */}
@@ -191,23 +199,25 @@ const Navbar = () => {
               </div>
             </Link>
 
-            {/* 식재료 백과 Tab */}
-            <Link href="/post" className="flex-1">
+
+
+            {/* 장보기 카트 Tab */}
+            <Link href="/checklist" className="flex-1">
               <div className="flex flex-col justify-center items-center cursor-pointer transition-colors group">
-                <MenuBookOutlinedIcon 
+                <ShoppingCartOutlinedIcon 
                   sx={{ 
                     width: '26px', 
                     height: '26px', 
-                    color: containInRoute("post") ? activeColor : inactiveColor 
+                    color: containInRoute("checklist") ? activeColor : inactiveColor 
                   }}
                   className="transition-colors group-hover:text-[#1c7c54]"
                 />
                 <p className={`text-[11px] mt-1 transition-colors ${
-                  containInRoute("post") 
+                  containInRoute("checklist") 
                     ? "text-[#1c7c54] font-extrabold" 
                     : "text-gray-400 font-medium group-hover:text-gray-600"
                 }`}>
-                  식재료
+                  장보기
                 </p>
               </div>
             </Link>

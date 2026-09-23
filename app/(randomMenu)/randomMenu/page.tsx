@@ -51,10 +51,10 @@ export default function RandomMenu() {
   }, [firstSelected]);
 
   const getRandomMenu = () => {
-    // 클릭 카운터 1 증가
+    // 클릭 카운터 1 증가 (5번째 클릭 시 단 1번만 웰컴 토스트 노출)
     setClickCount((prev) => {
       const nextCount = prev + 1;
-      if (nextCount > 0 && nextCount % 5 === 0) {
+      if (nextCount === 5) {
         setShowWelcomeToast(true);
       }
       return nextCount;
@@ -246,7 +246,7 @@ export default function RandomMenu() {
         </div>
       </section>
 
-      {/* 우측 구석 방해 없는 미니 팝업 토스트 (5번 클릭 시마다 팝업) */}
+      {/* 우측 구석 방해 없는 미니 팝업 토스트 (페이지 방문 시 1회) */}
       {showWelcomeToast && (
         <div className="fixed bottom-6 right-6 z-50 bg-white/95 backdrop-blur-md border border-emerald-200/80 shadow-[0_12px_32px_rgba(0,0,0,0.12)] rounded-2xl p-4 max-w-[280px] w-full text-left transition-all animate-fade-in-up flex flex-col gap-2.5">
           <div className="flex items-center justify-between">

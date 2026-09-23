@@ -195,6 +195,16 @@ export const fridgeEvents = {
       timestamp: new Date().toISOString(),
     });
   },
+
+  // 내 냉장고 재료로 만들기/확인하기 버튼 클릭
+  clickGoFridgeBtn: (source: string = 'recipe_detail') => {
+    sendGA4Event('click_go_fridge_btn', {
+      event_category: 'fridge_conversion',
+      event_label: '내 냉장고 재료 확인 버튼 클릭',
+      source: source,
+      timestamp: new Date().toISOString(),
+    });
+  },
 };
 
 /**
@@ -334,3 +344,67 @@ export const coupangEvents = {
     });
   },
 };
+
+/**
+ * 장보기 체크리스트 관련 이벤트
+ */
+export const checklistEvents = {
+  // 쿠팡 최저가 검색 버튼 클릭 (어필리에이트 마케팅 이벤트)
+  clickCoupangSearch: (ingredientName: string) => {
+    sendGA4Event('click_coupang_checklist', {
+      event_category: 'affiliate_marketing',
+      event_label: `쿠팡 검색 - ${ingredientName}`,
+      ingredient_name: ingredientName,
+      source: 'checklist_page',
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 추천 장보기 프리셋 담기 클릭 (프리셋 활용 이벤트)
+  clickApplyPreset: (presetId: string, presetTitle: string, itemCount: number) => {
+    sendGA4Event('click_apply_preset', {
+      event_category: 'checklist_engagement',
+      event_label: `프리셋 담기 - ${presetTitle}`,
+      preset_id: presetId,
+      preset_title: presetTitle,
+      item_count: itemCount,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 장보기 목록 공유 클릭
+  clickShareChecklist: (itemCount: number) => {
+    sendGA4Event('share_checklist', {
+      event_category: 'checklist_engagement',
+      event_label: '체크리스트 목록 공유',
+      item_count: itemCount,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  // 레시피 재료 장보기 카트에 추가 클릭
+  clickAddRecipeToCart: (ingredientCount: number) => {
+    sendGA4Event('click_add_recipe_to_cart', {
+      event_category: 'checklist_conversion',
+      event_label: '레시피 재료 장보기 카트 추가',
+      ingredient_count: ingredientCount,
+      timestamp: new Date().toISOString(),
+    });
+  },
+};
+
+/**
+ * 식재료 백과 / 정보 관련 이벤트
+ */
+export const postEvents = {
+  // 식재료 백과 읽어보기 클릭
+  clickIngredientEncyclopedia: (source: string = 'home_page') => {
+    sendGA4Event('click_ingredient_encyclopedia', {
+      event_category: 'content_engagement',
+      event_label: '식재료 백과 읽어보기 클릭',
+      source: source,
+      timestamp: new Date().toISOString(),
+    });
+  },
+};
+

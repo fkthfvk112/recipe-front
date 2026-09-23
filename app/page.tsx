@@ -1,5 +1,4 @@
 import RecentRecipes from "./(recipe)/(realTime)/RecentRecipes";
-import SeasonalFood from "./SeasonalFood";
 import SearchBar from "./SearchBar";
 import RealTimeLikeBoard from "./(board)/(realTime)/RealTimeLikeBoard";
 import SiteDescription from "./SiteDescription";
@@ -10,6 +9,7 @@ import FridgeDescription from "./FridgeDescription";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
 import BottomBanner from "./(commom)/Component/BottmomBanner";
 import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
+import IngredientSection from "./IngredientSection";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
 
@@ -51,7 +51,7 @@ export default function Home() {
     <div className="bg-white w-full flex flex-col justify-center items-center">
       <SiteDescription></SiteDescription>
       <FridgeDescription></FridgeDescription>
-      <SeasonalFood></SeasonalFood>
+      <IngredientSection />
       <PopularRecipes/>
       {/* <RealTimeLikeBoard/> */}
       <BottomBanner/>

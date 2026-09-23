@@ -22,6 +22,10 @@ const nextConfig = {
         source: "/sitemap.xml",
         destination: `${apiBaseUrl}seo/sitemap`,
       },
+      {
+        source: "/sitemap",
+        destination: `${apiBaseUrl}seo/sitemap`,
+      },
     ];
   },
 };

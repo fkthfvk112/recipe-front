@@ -26,6 +26,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -67,6 +68,10 @@ export default function AccountMenu() {
 
   const goToMyRefridge = () => {
     router.push(`/fridge`);
+  };
+
+  const goToChecklist = () => {
+    router.push(`/checklist`);
   };
 
   const goToMyFridgeItemTx = () => {
