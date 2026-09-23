@@ -57,6 +57,8 @@ export const errorCode = [
     "NA002",
     "KA001",
     "KA002",
+    "GO001",
+    "GO002",
 
     "AES001",
     "AES002",

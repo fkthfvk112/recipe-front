@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularProgress } from "@mui/material";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { UserFeedInfo } from "./UserInfo";
 import Image from "next/image";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -12,6 +12,8 @@ import withReactContent from "sweetalert2-react-content";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
+import { Validation, validateNickName, validationNickNameSentence } from "@/app/(user)/check";
+import { generateRandomNickName } from "@/app/(commom)/Function/randomNickName";
 
 interface UpdatedUser {
   userPhoto: string;
@@ -39,23 +41,53 @@ export default function FeedEditModal({
     userPhoto: userInfo.userPhoto ? userInfo.userPhoto : "",
     userIntro: userInfo.userIntro ? userInfo.userIntro : "",
   });
+  const [nickNameValid, setNickNameValid] = useState<Validation>(
+    validationNickNameSentence(userInfo.nickName || "")
+  );
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpenModal) {
+      const initialNickName = userInfo.nickName || "";
+      setUpdatedUser({
+        nickName: initialNickName,
+        userUrl: userInfo.userUrl || "",
+        userPhoto: userInfo.userPhoto || "",
+        userIntro: userInfo.userIntro || "",
+      });
+      setNickNameValid(validationNickNameSentence(initialNickName));
+    }
+  }, [isOpenModal, userInfo]);
 
   const handleClose = () => setIsOpenModal(false);
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setUpdatedUser({
-      ...updatedUser,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setUpdatedUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name === "nickName") {
+      setNickNameValid(validationNickNameSentence(value));
+    }
+  };
+
+  const handleGenerateRandomNickName = () => {
+    const randomName = generateRandomNickName();
+    setUpdatedUser((prev) => ({
+      ...prev,
+      nickName: randomName,
+    }));
+    setNickNameValid(validationNickNameSentence(randomName));
   };
 
   const checkValid = (): boolean => {
-    if (updatedUser.nickName.length < 2 || updatedUser.nickName.length > 10) {
+    if (!validateNickName(updatedUser.nickName)) {
       Swal.fire({
         title: "입력 오류",
         icon: "warning",
-        text: "닉네임은 2자 이상 10자 이하만 가능합니다.",
+        text: "닉네임은 2~10자의 한글, 영문, 숫자, 언더바(_)만 가능합니다.",
       });
       return false;
     }
@@ -65,16 +97,6 @@ export default function FeedEditModal({
         title: "입력 오류",
         icon: "warning",
         text: "자기소개는 100자 이하만 가능합니다.",
-      });
-      return false;
-    }
-
-    const nickNameRegex = /^[a-zA-Z0-9가-힣]+$/;
-    if (!nickNameRegex.test(updatedUser.nickName)) {
-      Swal.fire({
-        title: "입력 오류",
-        icon: "warning",
-        text: "닉네임은 한글, 영문, 숫자만 사용 가능합니다.",
       });
       return false;
     }
@@ -200,15 +222,37 @@ export default function FeedEditModal({
 
         {/* 닉네임 입력 */}
         <div className="flex flex-col gap-1 text-xs font-bold text-gray-600">
-          <span>닉네임</span>
-          <input
-            placeholder="2자 이상 10자 이하 (한글, 영문, 숫자)"
-            name="nickName"
-            onChange={changeHandler}
-            value={updatedUser.nickName}
-            type="text"
-            className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
-          />
+          <div className="flex items-center justify-between">
+            <span>닉네임</span>
+          </div>
+          <div className="relative flex items-center">
+            <input
+              placeholder="2~10자의 한글, 영문, 숫자, 언더바(_)"
+              name="nickName"
+              onChange={changeHandler}
+              value={updatedUser.nickName}
+              maxLength={10}
+              type="text"
+              className="w-full border border-gray-200 rounded-2xl pl-4 pr-11 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
+            />
+            <button
+              type="button"
+              onClick={handleGenerateRandomNickName}
+              title="랜덤 닉네임 추천"
+              className="w-10 absolute right-2.5 p-1 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-200/50 transition-colors border-none outline-none bg-transparent cursor-pointer flex items-center justify-center text-base active:scale-90"
+            >
+              🎲
+            </button>
+          </div>
+          {updatedUser.nickName && (
+            <span
+              className={`text-[11px] font-bold mt-0.5 ${
+                nickNameValid.isValid ? "text-emerald-600" : "text-rose-500"
+              }`}
+            >
+              {nickNameValid.message}
+            </span>
+          )}
         </div>
 
         {/* 대표 링크 */}

@@ -12,6 +12,7 @@ import { defaultAxios } from "@/app/(customAxios)/authAxios";
 import useChkLoginToken from "@/app/(commom)/Hook/useChkLoginToken";
 import NaverLogin from "./naver/NaverLogin";
 import KakaoLogin from "./kakao/KakaoLogin";
+import GoogleLogin from "./google/GoogleLogin";
 import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
@@ -178,6 +179,7 @@ export default function LoginForm() {
           <div className="flex justify-center items-center gap-4">
             <NaverLogin />
             <KakaoLogin />
+            <GoogleLogin />
           </div>
         </div>
 

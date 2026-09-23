@@ -14,6 +14,7 @@ import { siginInState } from "@/app/(recoil)/recoilAtom";
 import { useRecoilState } from "recoil";
 import { authEvents } from "@/app/(commom)/ga4/ga4Events";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
+import { generateRandomNickName } from "@/app/(commom)/Function/randomNickName";
 
 export default function NaverSignUp() {
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
@@ -42,6 +43,7 @@ export default function NaverSignUp() {
   }, [userNickName]);
 
   useEffect(() => {
+    setUserNickName(generateRandomNickName());
     axiosAuthInstacne.post("sns-sign-in/naver/userinfo").then((res) => {
       if (res.data?.email) {
         setUserEmail(res.data.email);
@@ -58,6 +60,7 @@ export default function NaverSignUp() {
       .post("sns-sign-in/naver")
       .then((res) => {
         authEvents.signInSuccess("naver");
+        Swal.close();
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
 
@@ -164,15 +167,27 @@ export default function NaverSignUp() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-gray-700">닉네임</label>
-            <input
-              ref={nickNameRef}
-              name="userNickName"
-              placeholder="2~10자 닉네임 입력"
-              value={userNickName}
-              onChange={(e) => setUserNickName(e.target.value)}
-              className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
-            />
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-gray-700">닉네임</label>
+            </div>
+            <div className="relative flex items-center">
+              <input
+                ref={nickNameRef}
+                name="userNickName"
+                placeholder="2~10자 닉네임 입력"
+                value={userNickName}
+                onChange={(e) => setUserNickName(e.target.value)}
+                className="w-full border border-gray-200 rounded-2xl pl-4 pr-11 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 bg-gray-50/50 transition-all"
+              />
+              <button
+                type="button"
+                onClick={() => setUserNickName(generateRandomNickName())}
+                title="랜덤 닉네임 새로고침"
+                className="w-10 absolute right-2.5 p-1 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-200/50 transition-colors border-none outline-none bg-transparent cursor-pointer flex items-center justify-center text-base active:scale-90"
+              >
+                🎲
+              </button>
+            </div>
             {nickNameValid.message && (
               <span
                 className={`text-[11px] font-bold mt-0.5 ${

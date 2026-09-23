@@ -102,20 +102,20 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
 ## 🧩 4. 도메인별 플로우 및 사용 컴포넌트 명세
 
 ### 4.1. 인증 & 회원 도메인 (`(user)`)
-- **주요 기능**: 이메일/소셜(네이버, 카카오) 회원가입, 로그인, 아이디/비밀번호 찾기, 프로필 및 계정 설정
+- **주요 기능**: 이메일/소셜(네이버, 카카오, 구글) 회원가입, 로그인, 아이디/비밀번호 찾기, 프로필 및 계정 설정
 - **핵심 유저 플로우**:
-  1. 로그인 페이지 진입 (`/signin`) ➔ 소셜 로그인 또는 일반 로그인 시도 ➔ 성공 시 JWT/쿠키 저장 후 리다이렉트
+  1. 로그인 페이지 진입 (`/signin`) ➔ 소셜(네이버, 카카오, 구글) 로그인 또는 일반 로그인 시도 ➔ 성공 시 JWT/쿠키 저장 후 리다이렉트
   2. 회원가입 페이지 진입 (`/signup`) ➔ 이메일 인증 번호 발송 및 확인 ➔ 필수 약관 동의 ➔ 가입 완료 (`signUpSuccess`)
 - **주요 관련 파일 & 컴포넌트**:
   - `app/(user)/signin/page.tsx` & `loginForm.tsx`: 일반/소셜 로그인 폼 UI
-  - `app/(user)/signin/naver/NaverLogin.tsx` & `app/(user)/signin/kakao/KakaoLogin.tsx`: 소셜 로그인 버튼 컴포넌트
-  - `app/(user)/signin/naver/callback/page.tsx` & `app/(user)/signin/kakao/callback/page.tsx`: 네이버 및 카카오 OAuth 콜백 처리
-  - `app/(user)/signup/naver/page.tsx` & `app/(user)/signup/kakao/page.tsx`: 네이버 및 카카오 소셜 간편 회원가입 (`CommonModal` 기반 간소화 약관 팝업 적용)
+  - `app/(user)/signin/naver/NaverLogin.tsx`, `kakao/KakaoLogin.tsx`, `google/GoogleLogin.tsx`: 소셜 로그인 버튼 컴포넌트
+  - `app/(user)/signin/naver/callback/page.tsx`, `kakao/callback/page.tsx`, `google/callback/page.tsx`: 소셜 OAuth 콜백 처리 (`useRef` 중복 방지 가드 포함)
+  - `app/(user)/signup/naver/page.tsx`, `kakao/page.tsx`, `google/page.tsx`: 소셜 간편 회원가입 (`CommonModal` 기반 간소화 약관 팝업 및 `border-none outline-none` 버튼 스타일 적용)
   - `app/(user)/signup/page.tsx`: 회원가입 메인 폼 (이메일 인증, 약관 동의)
   - `app/(user)/signup/BirthdateSelection.tsx`: 생년월일 컴포넌트
   - `app/(user)/accountSetting/UserInfoSetting.tsx`: 사용자 정보 변경
   - `app/(user)/check.ts`: 아이디/비밀번호/이메일 유효성 검사 유틸
-  - `app/(type)/user.ts`: 사용자 DTO/타입 정의 및 가입 수단 Enum (`GrantType`: `NORMAL`, `NAVER`, `KAKAO`)
+  - `app/(type)/user.ts`: 사용자 DTO/타입 정의 및 가입 수단 Enum (`GrantType`: `NORMAL`, `NAVER`, `KAKAO`, `GOOGLE`)
 
 ---
 

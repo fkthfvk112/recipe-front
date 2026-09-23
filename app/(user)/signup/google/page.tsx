@@ -1,6 +1,6 @@
 "use client";
 
-import { GrantType, KakaoSignUpDTO } from "@/app/(type)/user";
+import { GrantType, GoogleSignUpDTO } from "@/app/(type)/user";
 import { useEffect, useRef, useState } from "react";
 import { Validation, validationNickNameSentence } from "../../check";
 import TermOfUsage from "@/app/(recipe)/recipes/(common)/document/TermOfUsage";
@@ -16,7 +16,7 @@ import { authEvents } from "@/app/(commom)/ga4/ga4Events";
 import CommonModal from "@/app/(commom)/Component/CommonModal";
 import { generateRandomNickName } from "@/app/(commom)/Function/randomNickName";
 
-export default function KakaoSignUp() {
+export default function GoogleSignUp() {
   const [isSignIn, setIsSignIn] = useRecoilState<boolean>(siginInState);
   const [userEmail, setUserEmail] = useState<string>("");
   const [userNickName, setUserNickName] = useState<string>("");
@@ -44,7 +44,7 @@ export default function KakaoSignUp() {
 
   useEffect(() => {
     setUserNickName(generateRandomNickName());
-    axiosAuthInstacne.post("sns-sign-in/kakao/userinfo").then((res) => {
+    axiosAuthInstacne.post("sns-sign-in/google/userinfo").then((res) => {
       if (res.data?.email) {
         setUserEmail(res.data.email);
       }
@@ -55,11 +55,11 @@ export default function KakaoSignUp() {
     return nickNameValid.isValid;
   };
 
-  const kakaoSignIn = () => {
+  const googleSignIn = () => {
     axiosAuthInstacne
-      .post("sns-sign-in/kakao")
+      .post("sns-sign-in/google")
       .then((res) => {
-        authEvents.signInSuccess("kakao");
+        authEvents.signInSuccess("google");
         Swal.close();
         const storage = globalThis?.sessionStorage;
         let pathToGo = "/";
@@ -90,53 +90,58 @@ export default function KakaoSignUp() {
       });
   };
 
-  const sendSignUpRequest = () => {
-    if (!nickNameValid.isValid) {
-      nickNameRef?.current?.focus();
-      nickNameRef?.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+  const submit = () => {
+    if (!allValid()) {
+      if (!nickNameValid.isValid) {
+        nickNameRef.current?.focus();
+      }
       return;
     }
 
-    const userData: KakaoSignUpDTO = {
-      nickName: userNickName,
-      grantType: GrantType.KAKAO,
-    };
-
-    withReactContent(Swal).fire({
-      title: "회원가입 처리 중...",
-      showConfirmButton: false,
-      html: (
-        <div className="overflow-y-hidden py-4 flex justify-center">
-          <CircularProgress color="warning" />
+    const MySwal = withReactContent(Swal);
+    MySwal.fire({
+      title: (
+        <div className="w-full flex flex-col items-center justify-center gap-2">
+          <CircularProgress color="primary" />
+          <p className="text-base text-gray-700">회원가입 처리 중입니다...</p>
         </div>
       ),
+      showConfirmButton: false,
+      allowOutsideClick: false,
     });
 
+    const googleSignUpDTO: GoogleSignUpDTO = {
+      nickName: userNickName,
+      email: userEmail,
+      grantType: GrantType.GOOGLE,
+    };
+
     axiosAuthInstacne
-      .post("sns-sign-up/kakao", userData)
+      .post("sns-sign-up/google", googleSignUpDTO)
       .then((res) => {
-        authEvents.signUpSuccess("kakao");
+        authEvents.signUpSuccess("google");
         Swal.fire({
           title: "환영합니다!",
-          text: "카카오 계정으로 머그인 회원가입이 성공적으로 완료되었습니다.",
+          text: "구글 계정으로 머그인 회원가입이 성공적으로 완료되었습니다.",
           icon: "success",
         }).then(() => {
           const storage = globalThis?.sessionStorage;
           storage.setItem("firstSignUp", "true");
-          kakaoSignIn();
+          googleSignIn();
         });
       })
       .catch((err) => {
         Swal.fire({
-          title: "회원가입 실패",
-          text: err.response?.data?.message || "회원가입 정보를 확인해주세요.",
+          title: "에러가 발생하였습니다.",
+          text: err.response?.data?.message || "회원가입 실패",
           icon: "warning",
           confirmButtonText: "확인",
           confirmButtonColor: "#d33",
           allowEnterKey: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.replace("/signin");
+          }
         });
       });
   };
@@ -145,8 +150,8 @@ export default function KakaoSignUp() {
     <main className="min-h-screen bg-gray-50/60 py-10 px-4 flex flex-col items-center justify-center">
       <div className="max-w-xl w-full bg-white rounded-3xl border border-gray-100 p-6 sm:p-10 shadow-xs flex flex-col gap-6">
         <div className="flex flex-col items-center gap-2 text-center pb-4 border-b border-gray-100">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-full border border-amber-200/60">
-            <span>카카오 간편 회원가입</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-200/60">
+            <span>구글 간편 회원가입</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
             머그인 계정 만들기
@@ -154,6 +159,7 @@ export default function KakaoSignUp() {
         </div>
 
         <div className="flex flex-col gap-5">
+          {/* 이메일 */}
           <div className="flex flex-col gap-1">
             <label className="text-xs font-bold text-gray-700">이메일</label>
             <input
@@ -161,11 +167,12 @@ export default function KakaoSignUp() {
               type="email"
               value={userEmail}
               readOnly={true}
-              placeholder="카카오 계정 이메일"
+              placeholder="구글 계정 이메일"
               className="w-full border border-gray-200 rounded-2xl px-4 py-2.5 text-xs sm:text-sm font-medium bg-gray-100 text-gray-500 outline-none cursor-not-allowed"
             />
           </div>
 
+          {/* 닉네임 */}
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-gray-700">닉네임</label>
@@ -177,7 +184,7 @@ export default function KakaoSignUp() {
                 placeholder="2~10자 닉네임 입력"
                 value={userNickName}
                 onChange={(e) => setUserNickName(e.target.value)}
-                className="w-full border border-gray-200 rounded-2xl pl-4 pr-11 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 bg-gray-50/50 transition-all"
+                className="w-full border border-gray-200 rounded-2xl pl-4 pr-11 py-2.5 text-xs sm:text-sm font-medium outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-gray-50/50 transition-all"
               />
               <button
                 type="button"
@@ -199,14 +206,15 @@ export default function KakaoSignUp() {
             )}
           </div>
 
+          {/* 가입 완료 버튼 & 약관 안내 */}
           <div className="pt-2 flex flex-col items-center w-full">
             <button
               type="button"
-              onClick={sendSignUpRequest}
+              onClick={submit}
               disabled={!allValid()}
               className={`w-full py-3.5 rounded-2xl text-xs sm:text-sm font-bold shadow-xs border-none outline-none transition-all ${
                 allValid()
-                  ? "bg-[#FEE500] hover:bg-[#FDD800] text-gray-900 active:scale-[0.99] cursor-pointer"
+                  ? "bg-blue-600 hover:bg-blue-700 text-white active:scale-[0.99] cursor-pointer"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
             >
@@ -238,6 +246,7 @@ export default function KakaoSignUp() {
         </div>
       </div>
 
+      {/* 약관 팝업 모달 */}
       <CommonModal
         open={termsModalType !== null}
         onClose={() => setTermsModalType(null)}

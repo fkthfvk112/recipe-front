@@ -2,6 +2,7 @@ export enum GrantType {
   NORMAL = "NORMAL",
   NAVER = "NAVER",
   KAKAO = "KAKAO",
+  GOOGLE = "GOOGLE",
 }
 
 export interface User {
@@ -31,6 +32,12 @@ export interface NaverSignUpDTO {
 }
 
 export interface KakaoSignUpDTO {
+  nickName: string;
+  email?: string;
+  grantType: GrantType | string;
+}
+
+export interface GoogleSignUpDTO {
   nickName: string;
   email?: string;
   grantType: GrantType | string;

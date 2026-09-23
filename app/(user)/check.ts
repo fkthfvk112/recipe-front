@@ -87,9 +87,9 @@ export function validationEmailSentence(email: string): Validation {
 }
 
 export function validateNickName(nickName: string) {
-  const nickNameRegex = /^[a-zA-Z0-9가-힣]+$/;
+  const nickNameRegex = /^[a-zA-Z0-9가-힣_]+$/;
 
-  if(!nickNameRegex.test(nickName)){
+  if (!nickNameRegex.test(nickName)) {
     return false;
   }
   if (nickName.length >= 2 && nickName.length <= 10) return true;
@@ -105,6 +105,6 @@ export function validationNickNameSentence(nickName: string): Validation {
   }
   return {
     isValid: false,
-    message: "2글자에서 10글자 사이 닉네임 입력.",
+    message: "2~10자의 한글, 영문, 숫자, 언더바(_)만 가능합니다.",
   };
 }

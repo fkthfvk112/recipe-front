@@ -45,11 +45,106 @@ function UserInfoSetting_cantChg() {
 
   useEffect(() => {
     axiosAuthInstacne
-      .get(`${process.env.NEXT_PUBLIC_API_URL}feed/myfeed`)
+      .get("feed/myfeed")
       .then((res) => {
         setUserData(res.data);
       });
   }, []);
+
+  const renderSnsBadge = (grantType?: string) => {
+    switch (grantType) {
+      case "KAKAO":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FEE500] text-[#3C1E1E] text-xs font-extrabold rounded-full shadow-2xs">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 3C6.47715 3 2 6.47715 2 10.7723C2 13.5601 3.82476 15.9866 6.5746 17.3241L5.59012 20.9575C5.46654 21.4124 5.97541 21.7663 6.36862 21.5057L10.7259 18.6183C11.1448 18.6811 11.569 18.7146 12 18.7146C17.5228 18.7146 22 15.2374 22 10.9423C22 6.64715 17.5228 3 12 3Z"
+                fill="#3C1E1E"
+              />
+            </svg>
+            카카오 연동
+          </span>
+        );
+      case "NAVER":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#03C75A] text-white text-xs font-extrabold rounded-full shadow-2xs">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845Z"
+                fill="#FFFFFF"
+              />
+            </svg>
+            네이버 연동
+          </span>
+        );
+      case "GOOGLE":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white text-gray-800 text-xs font-extrabold rounded-full border border-gray-200 shadow-2xs">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4" />
+              <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z" fill="#34A853" />
+              <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05" />
+              <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335" />
+            </svg>
+            구글 연동
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded-full border border-gray-200">
+            일반 계정
+          </span>
+        );
+    }
+  };
+
+  const getSnsIconBox = (grantType?: string) => {
+    switch (grantType) {
+      case "KAKAO":
+        return (
+          <div className="w-9 h-9 rounded-xl bg-[#FEE500] flex items-center justify-center shadow-2xs">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12 3C6.47715 3 2 6.47715 2 10.7723C2 13.5601 3.82476 15.9866 6.5746 17.3241L5.59012 20.9575C5.46654 21.4124 5.97541 21.7663 6.36862 21.5057L10.7259 18.6183C11.1448 18.6811 11.569 18.7146 12 18.7146C17.5228 18.7146 22 15.2374 22 10.9423C22 6.64715 17.5228 3 12 3Z"
+                fill="#3C1E1E"
+              />
+            </svg>
+          </div>
+        );
+      case "NAVER":
+        return (
+          <div className="w-9 h-9 rounded-xl bg-[#03C75A] flex items-center justify-center shadow-2xs">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845Z"
+                fill="#FFFFFF"
+              />
+            </svg>
+          </div>
+        );
+      case "GOOGLE":
+        return (
+          <div className="w-9 h-9 rounded-xl bg-white border border-gray-200/80 flex items-center justify-center shadow-2xs">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4" />
+              <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z" fill="#34A853" />
+              <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05" />
+              <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335" />
+            </svg>
+          </div>
+        );
+      default:
+        return (
+          <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-gray-500 border border-gray-100 shadow-2xs">
+            <ShieldOutlinedIcon sx={{ fontSize: 18 }} />
+          </div>
+        );
+    }
+  };
 
   useEffect(() => {
     if (presentPw === "") {
@@ -156,6 +251,26 @@ function UserInfoSetting_cantChg() {
 
       {/* 카드 정보 리스트 */}
       <div className="flex flex-col gap-4">
+        {/* 로그인 방식 (SNS 파비콘 및 연동 뱃지) */}
+        <div className="flex items-center justify-between p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
+          <div className="flex items-center gap-3">
+            {getSnsIconBox(userData?.grantType)}
+            <div className="flex flex-col">
+              <span className="text-[11px] font-bold text-gray-400">로그인 방식</span>
+              <span className="text-xs sm:text-sm font-bold text-gray-800">
+                {userData?.grantType === "KAKAO"
+                  ? "카카오 간편 로그인"
+                  : userData?.grantType === "NAVER"
+                  ? "네이버 간편 로그인"
+                  : userData?.grantType === "GOOGLE"
+                  ? "구글 간편 로그인"
+                  : "일반 계정 (이메일/비밀번호)"}
+              </span>
+            </div>
+          </div>
+          {renderSnsBadge(userData?.grantType)}
+        </div>
+
         {/* 이메일 */}
         <div className="flex items-center justify-between p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
           <div className="flex items-center gap-3">
