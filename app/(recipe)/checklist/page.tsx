@@ -12,6 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import { CHECKLIST_PRESETS, ChecklistPreset } from "./checklistPresets";
 import { checklistEvents } from "@/app/(commom)/ga4/ga4Events";
+import { marketApi } from "@/app/(commom)/api/marketApi";
 
 export interface ChecklistItem {
   id: string;
@@ -299,6 +300,49 @@ export default function ChecklistPage() {
         }, 150);
       }
     });
+  };
+
+  // 10. 쿠팡 랜딩 URL 비동기 요청 후 새 탭으로 이동 핸들러
+  const handleCoupangClick = async (itemName: string) => {
+    // GA4 이벤트 추적
+    checklistEvents.clickCoupangSearch(itemName);
+
+    // 브라우저 팝업 블록 방지를 위한 빈 탭 미리 열기
+    const newTab = typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
+
+    try {
+      const res = await marketApi.getLandingUrl(itemName);
+
+      const landingUrl = res.data;
+
+      if (landingUrl && typeof landingUrl === "string" && landingUrl.trim().length > 0) {
+        if (newTab) {
+          newTab.location.href = landingUrl.trim();
+        } else {
+          window.open(landingUrl.trim(), "_blank");
+        }
+      } else {
+        if (newTab) newTab.close();
+        Swal.fire({
+          title: "링크 연결 실패",
+          text: "해당 상품의 쿠팡 파트너스 링크를 찾을 수 없습니다.",
+          icon: "warning",
+          confirmButtonColor: "#10b981",
+        });
+      }
+    } catch (err: any) {
+      if (newTab) newTab.close();
+      const errMsg =
+        err?.response?.data || "쿠팡 파트너스 링크를 불러오는 도중 에러가 발생했습니다.";
+      if (typeof errMsg === "string" && !Swal.isVisible()) {
+        Swal.fire({
+          title: "링크 연결 실패",
+          text: errMsg,
+          icon: "warning",
+          confirmButtonColor: "#10b981",
+        });
+      }
+    }
   };
 
   // 통계 계산
@@ -628,19 +672,17 @@ export default function ChecklistPage() {
                       {/* 2행: 쿠팡 검색 버튼 (일반 모드일 때 1행 밑 제일 왼쪽에 위치) */}
                       {!isEditing && (
                         <div className="w-full flex items-center pl-8 sm:pl-8.5">
-                          <a
-                            href={`https://www.coupang.com/np/search?q=${encodeURIComponent(item.name)}&lptag=AF5568840`}
-                            target="_blank"
-                            rel="sponsored nofollow noopener noreferrer"
+                          <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              checklistEvents.clickCoupangSearch(item.name);
+                              handleCoupangClick(item.name);
                             }}
-                            className="inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-medium text-gray-500 active:text-orange-600 bg-gray-100/80 active:bg-orange-50 border border-gray-200/60 rounded-md transition-all no-underline cursor-pointer"
+                            className="w-14 inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-medium text-gray-500 active:text-orange-600 bg-gray-100/80 active:bg-orange-50 border border-gray-200/60 rounded-md transition-all no-underline cursor-pointer"
                             title="쿠팡에서 최저가 검색"
                           >
                             쿠팡 🛒
-                          </a>
+                          </button>
                         </div>
                       )}
                     </li>
