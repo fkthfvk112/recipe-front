@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import IntervalConfig from "./(interval)/intervalConfig";
 import "./globals.css";
 import MainContainer from "./MainContainer";
@@ -16,7 +16,6 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "머그인 - 레시피 & 스마트 냉장고",
     description: "재료를 공유하고 관리하고 소비해요. 낭비없는 삶 머그인",
     manifest: "/manifest.json",
-    themeColor: "#10b981",
     icons: {
       icon: [
         { url: "/favicon.ico", sizes: "any" },
@@ -51,7 +50,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
- 
+
+export const viewport: Viewport = {
+  themeColor: "#10b981",
+};
+
 export default function RootLayout({
   children,
 }: {
