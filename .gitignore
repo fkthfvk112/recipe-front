@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/toss-checklist/node_modules
+/toss-checklist/dist
+/toss-checklist/*.ait
 /.pnp
 .pnp.js
 .yarn/install-state.gz

@@ -144,13 +144,16 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
 - **핵심 유저 플로우**:
   1. `/fridge/[fridgeId]` 진입 ➔ 카테고리별/소비기한 임착순 식재료 그리드 뷰 ➔ 클릭 시 상세 모달
   2. 식재료 추가 (`/fridge/ingre-edit/[fridgeId]`) ➔ 이미지 선택 + 수량/단위/소비기한 입력 ➔ 저장
-  3. 입출고 거래 내역 (`/fridge/tx-history`) ➔ 식재료 소비/폐기/추가 로그 조회
+  3. 사진/영수증 AI 등록: `FridgeAiScanButton`이 모달을 연다. 미리보기에서 이름·수량·단위·금액을 고친 뒤 `fridge/my/fridge-items/bulk`로 저장. 냉장고 목록 패널, 상세, 식재료 추가 화면에서 같은 컴포넌트를 쓴다.
+  4. 입출고 거래 내역 (`/fridge/tx-history`) ➔ 식재료 소비/폐기/추가 로그 조회
 - **주요 관련 파일 & 컴포넌트**:
   - `app/fridge/[fridgeId]/page.tsx`: 냉장고 메인 화면
   - `app/fridge/[fridgeId]/(common)/ExpBar.tsx`: 유통기한/소비기한 시각적 잔여일 바
   - `app/fridge/[fridgeId]/(common)/FridgeItemDetailModal.tsx`: 식재료 상세 클릭 모달
   - `app/fridge/[fridgeId]/(common)/FridgeItemTxModal.tsx`: 식재료 수량 입출고 변경 모달
   - `app/fridge/ingre-edit/[fridgeId]/SetFridgeItem.tsx`: 식재료 신규 등록 및 수정 폼
+  - `app/fridge/FridgeAiScanButton.tsx`: 사진/영수증 AI 등록 진입 버튼. `fridgeId`만 넘기면 어느 화면에서든 모달을 연다.
+  - `app/fridge/FridgeAiScanModal.tsx`: 업로드, 미리보기 수정, 일괄 저장
   - `app/fridge/tx-history/TxHistoryTable.tsx`: 히스토리 테이블
 
 ---
@@ -202,7 +205,7 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
   - `app/(recipe)/checklist/checklistParser.ts`: 식재료명 및 단위 분리 유틸리티
   - `app/admin/ingredient/IngreRecommandInput.tsx`: 식재료 자동완성 컴포넌트 (하이브리드 캐싱 탑재)
   - `app/admin/ingredient/popularIngredients.ts`: 150종 인기 대표 식재료 로컬 캐시 및 검색 유틸리티
-
+  
 ---
 
 ## 📊 5. 이벤트 로깅 및 분석 (GA4 Tracking)

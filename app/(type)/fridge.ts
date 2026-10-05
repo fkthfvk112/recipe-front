@@ -101,3 +101,27 @@ export interface FridgeItemTxHistoryResponse {
   size: number;
   totalCnt?: number; // 있으면 받고, 없으면 무시
 }
+
+export interface FridgeAiScanItem {
+  rawName: string;
+  name: string;
+  ingreListId?: number | null;
+  qqt: number;
+  unit: string;
+  amt: number;
+  defaultExpiryDays: number;
+  expiredAt: string;
+  matched: boolean;
+}
+
+export interface FridgeAiScanResponse {
+  items: FridgeAiScanItem[];
+  totalCount: number;
+  totalAmount: number;
+  aiInvoked: boolean;
+}
+
+export interface FridgeSaveDTOList_IN {
+  fridgeId: number;
+  fridgeItemList: FridgeItem_IN[];
+}

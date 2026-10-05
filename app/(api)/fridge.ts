@@ -1,5 +1,10 @@
 import { axiosAuthInstacne, defaultAxios } from "@/app/(customAxios)/authAxios";
-import type { FridgeItem, FridgeSortingEnum } from "@/app/(type)/fridge";
+import type {
+  FridgeItem,
+  FridgeSortingEnum,
+  FridgeAiScanResponse,
+  FridgeSaveDTOList_IN,
+} from "@/app/(type)/fridge";
 import { PresetCreateRequest } from "../admin/fridge-preset/PresetCreatePage";
 import { PresetUpdateRequest } from "../admin/fridge-preset/edit/[presetId]/PresetUpdatePage";
 
@@ -31,5 +36,19 @@ export async function fetchFridgeItemDetail(fridgeItemId: number) {
     `fridge/my/fridge-item/detail?fridgeItemId=${fridgeItemId}`
   );
 
+  return res.data;
+}
+
+export async function scanReceiptOrImage(formData: FormData): Promise<FridgeAiScanResponse> {
+  const res = await axiosAuthInstacne.post<FridgeAiScanResponse>("fridge/ai/scan", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+}
+
+export async function saveFridgeItemsBulk(payload: FridgeSaveDTOList_IN) {
+  const res = await axiosAuthInstacne.post("fridge/my/fridge-items/bulk", payload);
   return res.data;
 }

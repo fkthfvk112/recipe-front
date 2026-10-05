@@ -18,7 +18,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import SortIcon from "@mui/icons-material/Sort";
 import { CircularProgress } from "@mui/material";
 import { FridgeSortingEnum } from "@/app/(type)/fridge";
-import { PrimaryButton, CancelButton } from "@/app/(commom)/Component/Buttons";
+import FridgeAiScanButton from "./FridgeAiScanButton";
 import { usePwaBackHandler } from "@/app/(commom)/Hook/usePwaBackHandler";
 
 interface Props {
@@ -26,9 +26,10 @@ interface Props {
   fridgeName: string;
   fridgeList: FridgeIdNameDesc[];
   onClose: () => void;
+  onItemsChanged?: () => void;
 }
 
-export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onClose }: Props) {
+export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onClose, onItemsChanged }: Props) {
   const [fridgeSort, setFridgeSort] = useRecoilState(fridgeSortingAtom);
   const [modalItem, setModalItem] = useState<FridgeItem>();
   const [, setOpen] = useRecoilState<boolean>(fridgeModalOpenState);
@@ -91,12 +92,21 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 shrink-0">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <KitchenIcon sx={{ fontSize: 18 }} />
             </div>
-            <div>
-              <h2 className="text-sm font-black text-gray-900 tracking-tight leading-tight">{fridgeName}</h2>
+            <div className="min-w-0">
+              <div className="flex items-center gap-1 min-w-0">
+                <h2 className="text-sm font-black text-gray-900 tracking-tight leading-tight truncate">{fridgeName}</h2>
+                <Link
+                  href={`/fridge/${fridgeId}/edit`}
+                  aria-label="냉장고 수정"
+                  className="w-7 h-7 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 flex items-center justify-center shrink-0"
+                >
+                  <EditOutlinedIcon sx={{ fontSize: 15 }} />
+                </Link>
+              </div>
               {fridgeData?.description && (
                 <p className="text-[11px] text-gray-400 font-medium leading-tight mt-0.5 line-clamp-1">
                   {fridgeData.description}
@@ -212,18 +222,19 @@ export default function FridgeSlidePanel({ fridgeId, fridgeName, fridgeList, onC
         </div>
 
         {/* Footer Action Buttons */}
-        <div className="px-4 py-4 border-t border-gray-100 flex gap-2 shrink-0">
-          <Link href={`/fridge/ingre-edit/${fridgeId}`} className="flex-[1.5]">
-            <PrimaryButton fullWidth size="md">
-              <AddIcon sx={{ fontSize: 16 }} />
-              <span>식재료 추가</span>
-            </PrimaryButton>
-          </Link>
-          <Link href={`/fridge/${fridgeId}/edit`} className="flex-1">
-            <CancelButton fullWidth size="md">
-              <EditOutlinedIcon sx={{ fontSize: 16 }} />
-              <span>수정</span>
-            </CancelButton>
+        <div className="px-4 py-4 border-t border-gray-100 flex flex-col gap-2 shrink-0">
+          <FridgeAiScanButton
+            fridgeId={fridgeId}
+            label="사진으로 식재료 넣기"
+            className="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2.5 bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] text-white rounded-2xl text-xs font-black shadow-md transition-all border-none cursor-pointer outline-none"
+            onSuccess={onItemsChanged}
+          />
+          <Link
+            href={`/fridge/ingre-edit/${fridgeId}`}
+            className="inline-flex w-full items-center justify-center gap-1.5 px-3 py-2.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-800 rounded-2xl text-xs font-bold transition-all outline-none"
+          >
+            <AddIcon sx={{ fontSize: 16 }} />
+            <span>식재료 직접 추가</span>
           </Link>
         </div>
       </div>

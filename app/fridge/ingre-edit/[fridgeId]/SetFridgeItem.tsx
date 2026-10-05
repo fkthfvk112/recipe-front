@@ -17,6 +17,7 @@ import NumbersIcon from "@mui/icons-material/Numbers";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import { PrimaryButton } from "@/app/(commom)/Component/Buttons";
 import { fetchFridgeImages } from "@/app/(api)/fridge";
+import FridgeAiScanButton from "../../FridgeAiScanButton";
 
 function SetFridgeItem({
   fridgeId,
@@ -157,12 +158,23 @@ function SetFridgeItem({
   return (
     <div className="w-full bg-white border border-gray-200/90 rounded-3xl p-5 shadow-xs flex flex-col gap-4">
 
-      {/* ── Title Banner ───────────────────────────────────────────── */}
-      <div>
-        <h2 className="text-sm font-black text-gray-900 tracking-tight">새 식재료 빠르게 추가</h2>
-        <p className="text-xs text-gray-400 font-medium mt-0.5">
-          이름만 입력하고 엔터를 누르면 1초 만에 등록돼요!
-        </p>
+      {/* ── Title Banner & AI Scan Button ───────────────────────── */}
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div>
+          <h2 className="text-sm font-black text-gray-900 tracking-tight">새 식재료 빠르게 추가</h2>
+          <p className="text-xs text-gray-400 font-medium mt-0.5">
+            이름만 입력하고 엔터를 누르면 1초 만에 등록돼요!
+          </p>
+        </div>
+        <FridgeAiScanButton
+          fridgeId={fridgeId}
+          label="영수증/사진 AI 일괄 등록"
+          onSuccess={() => {
+            qc.invalidateQueries({
+              queryKey: ["fridgeDetail", fridgeId],
+            });
+          }}
+        />
       </div>
 
       {/* ── 1-Step Ultra-Fast Add Bar ──────────────────────────────── */}

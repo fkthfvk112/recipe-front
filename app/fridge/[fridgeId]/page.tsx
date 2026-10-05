@@ -16,6 +16,7 @@ import { extractDate } from "@/app/(utils)/DateUtil";
 import { truncateString } from "@/app/(utils)/StringUtil";
 import { useQuery } from "@tanstack/react-query";
 import { fetchFridgeDetail } from "@/app/(api)/fridge";
+import FridgeAiScanButton from "../FridgeAiScanButton";
 import { CircularProgress } from "@mui/material";
 
 export default function FridgeDetail({
@@ -170,6 +171,11 @@ export default function FridgeDetail({
             {fridgeItemProp}
 
             {/* Add New Item Dashed Button */}
+            <FridgeAiScanButton
+              fridgeId={Number(params.fridgeId)}
+              label="사진으로 식재료 넣기"
+              className="inline-flex w-full items-center justify-center gap-1.5 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 active:scale-95 text-white rounded-2xl text-xs font-black shadow-xs transition-all border-none cursor-pointer outline-none"
+            />
             <Link
               href={`/fridge/ingre-edit/${params.fridgeId}`}
               className="w-full py-4 border-2 border-dashed border-gray-200 hover:border-emerald-500 bg-gray-50/50 hover:bg-emerald-50/20 text-emerald-600 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"

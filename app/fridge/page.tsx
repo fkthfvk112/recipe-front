@@ -261,6 +261,7 @@ export default function Fridge() {
           fridgeName={selectedFridge.name}
           fridgeList={fridgeDate}
           onClose={() => setSelectedFridge(null)}
+          onItemsChanged={() => setRefetcher((prev) => prev + 1)}
         />
       )}
     </>
