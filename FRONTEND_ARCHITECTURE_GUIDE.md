@@ -137,6 +137,8 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
     - `revalidate = 3600` + detail fetch Data Cache 1시간 (`searchParams` 미사용으로 dynamic 강제 방지)
     - `/recipe-detail/:id`(슬러그 없음)는 `middleware.ts`에서 HTTP 308. 잘못된 슬러그는 `generateMetadata`/`page`의 `permanentRedirect`
     - 슬러그 생성은 `slugUtil.generateSlug` (NFC 정규화)
+    - 메타 타이틀은 `buildRecipeSeoTitle`로 이름 중복 접미사 제거
+    - `RelatedRecipes`: `GET recipe/related` (태그×3+식재료×2+카테고리+비AI 점수순) → 상세 카드 내부 하단
   - `app/(recipe)/recipe-detail/[recipeId]/RecipeNutritionSection.tsx`: 영양성분 분석 표
   - `app/(recipe)/recipe-detail/(review)/ReviewContainer.tsx` & `WriteReview.tsx`: 리뷰 및 별점 작성 컴포넌트
   - `app/(recipe)/create-recipe/page.tsx`: 레시피 폼 메인

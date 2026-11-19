@@ -13,12 +13,17 @@ import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/Report
 import { Metadata } from "next";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import { permanentRedirect } from "next/navigation";
-import { generateSlug } from "@/app/(utils)/slugUtil";
+import {
+  buildRecipeSeoKeywords,
+  buildRecipeSeoTitle,
+  generateSlug,
+} from "@/app/(utils)/slugUtil";
 import {
   getCategoryHubAbsoluteUrl,
   getCategoryHubPath,
   isRecipeCategoryHub,
 } from "@/app/(utils)/recipeCategoryHub";
+import RelatedRecipes from "../RelatedRecipes";
 import { cache } from "react";
 import Link from "next/link";
 
@@ -97,10 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const rawPhoto = recipeDetail?.repriPhotos?.[0];
   const photoUrl = getAbsoluteImageUrl(rawPhoto);
 
-  // SEO 최적화 타이틀 (검색 클릭률 CTR 향상)
-  const title = recipeDetail?.recipeName
-    ? `${recipeDetail.recipeName} 만드는 법 (${recipeDetail.servings || 1}인분 레시피) - 머그인`
-    : "머그인 레시피";
+  const title = buildRecipeSeoTitle(recipeDetail?.recipeName, recipeDetail?.servings);
 
   // 태그 및 영양성분 정보가 결합된 풍부한 디스크립션
   let description = recipeDetail?.description || "맛있는 식재료 관리 & 레시피 - 머그인";
@@ -122,19 +124,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
 
-  // 메타 태그 키워드 배열
-  const keywords = [
-    recipeDetail.recipeName,
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 황금레시피` : "",
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 만들기` : "",
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 칼로리` : "",
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 영양성분` : "",
-    ...(recipeDetail.tags || []),
-    ...(recipeDetail.ingredients?.map((i) => i.name) || []),
-    "요리 레시피",
-    "영양성분",
-    "칼로리",
-  ].filter(Boolean);
+  const keywords = buildRecipeSeoKeywords(
+    recipeDetail.recipeName || "",
+    recipeDetail.tags || [],
+    recipeDetail.ingredients?.map((i) => i.name) || []
+  );
 
   const isDraft = Boolean(recipeDetail.isDraft);
 
@@ -263,18 +257,11 @@ export default async function RecipeDetail({
   // 구글 레시피 서칭용 데이터 구조
   const mainPhotoUrl = getAbsoluteImageUrl(recipeDetail?.repriPhotos?.[0]);
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
-  const keywords = [
-    recipeDetail.recipeName,
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 칼로리` : "",
-    recipeDetail.recipeName ? `${recipeDetail.recipeName} 영양성분` : "",
-    ...(recipeDetail.tags || []),
-    ...(recipeDetail.ingredients?.map((i: Ingredient) => i.name) || []),
-    "영양성분",
-    "칼로리",
-    "식재료",
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const keywords = buildRecipeSeoKeywords(
+    recipeDetail.recipeName || "",
+    recipeDetail.tags || [],
+    recipeDetail.ingredients?.map((i: Ingredient) => i.name) || []
+  ).join(", ");
 
   let datePublished: string | undefined = undefined;
   if (recipeDetail.createdAt) {
@@ -468,6 +455,9 @@ export default async function RecipeDetail({
           </div>
           <div className="bg-white p-6 sm:p-8 w-full border-t border-gray-100">
             <ReviewContainer domainId={Number(recipeId)} domainName={"recipe"}></ReviewContainer>
+          </div>
+          <div className="bg-white p-6 sm:p-8 w-full border-t border-gray-100">
+            <RelatedRecipes recipeId={recipeId} />
           </div>
         </div>
       </div>

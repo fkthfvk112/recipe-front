@@ -31,3 +31,46 @@ export function getRecipeDetailUrl(
   if (!recipeName || !recipeName.trim()) return `/recipe-detail/${recipeId}`;
   return `/recipe-detail/${recipeId}/${encodeURIComponent(generateSlug(recipeName))}`;
 }
+
+/**
+ * 검색/OG용 타이틀. 이름에 이미 '만드는 법' 등이 있으면 중복 접미사를 붙이지 않는다.
+ */
+export function buildRecipeSeoTitle(
+  recipeName?: string | null,
+  servings?: number | null
+): string {
+  const name = (recipeName || "").trim();
+  if (!name) return "머그인 레시피";
+
+  const servingsLabel = `${servings && servings > 0 ? servings : 1}인분`;
+  const hasHowtoOrRecipeWord =
+    /만드는\s*법|만들기|황금레시피|레시피/.test(name);
+
+  if (hasHowtoOrRecipeWord) {
+    return `${name} (${servingsLabel}) - 머그인`;
+  }
+  return `${name} 만드는 법 (${servingsLabel} 레시피) - 머그인`;
+}
+
+/** 메타 keywords에서 이름과 겹치는 접미사 키워드를 걸러낸다. */
+export function buildRecipeSeoKeywords(
+  recipeName: string,
+  tags: string[] = [],
+  ingredientNames: string[] = []
+): string[] {
+  const name = recipeName.trim();
+  const hasHowto = /만드는\s*법|만들기|황금레시피|레시피/.test(name);
+
+  return [
+    name,
+    !hasHowto && name ? `${name} 황금레시피` : "",
+    !hasHowto && name ? `${name} 만들기` : "",
+    name ? `${name} 칼로리` : "",
+    name ? `${name} 영양성분` : "",
+    ...tags,
+    ...ingredientNames,
+    "요리 레시피",
+    "영양성분",
+    "칼로리",
+  ].filter(Boolean);
+}
