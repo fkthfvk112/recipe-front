@@ -10,8 +10,7 @@ import CopyUrl from "@/app/(commom)/CRUD/CopyUrl";
 import ReviewContainer from "../../(review)/ReviewContainer";
 import serverFetch from "@/app/(commom)/serverFetch";
 import ReportPost, { DomainType } from "@/app/(commom)/Component/(report)/ReportPost";
-import { Metadata, ResolvingMetadata } from "next";
-import Script from "next/script";
+import { Metadata } from "next";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import { permanentRedirect } from "next/navigation";
 import { generateSlug } from "@/app/(utils)/slugUtil";
@@ -20,10 +19,34 @@ import Link from "next/link";
 
 type Props = {
   params: Promise<{ recipeId: string; slug?: string[] }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+/** fetch Data Cache / 정적 후보 갱신 주기 (초). searchParams 미사용 유지 → dynamic 강제 방지 */
+export const revalidate = 3600;
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
+const RECIPE_DETAIL_REVALIDATE = 3600;
+
+function resolveIncomingSlug(slug?: string[]): string | null {
+  const currentRawSlug = slug?.[0] ? slug[0] : null;
+  if (!currentRawSlug) return null;
+  try {
+    return decodeURIComponent(currentRawSlug);
+  } catch {
+    return currentRawSlug;
+  }
+}
+
+function ensureCanonicalRecipeSlug(
+  recipeId: string,
+  expectedSlug: string,
+  slug?: string[]
+) {
+  const currentSlug = resolveIncomingSlug(slug);
+  if (!slug || slug.length !== 1 || currentSlug !== expectedSlug) {
+    permanentRedirect(`/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`);
+  }
+}
 
 function getAbsoluteImageUrl(src?: string): string {
   if (!src) return `${SITE_URL}/common/favicon.png`;
@@ -41,18 +64,15 @@ const getRecipeDetail = cache(async (recipeId: string) => {
     url: `recipe/detail?recipeId=${recipeId}`,
     option: {
       next: {
-        revalidate:30,
+        revalidate: RECIPE_DETAIL_REVALIDATE,
         tags: [`recipeDetail-${recipeId}`],
       },
     },
   });
 });
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { recipeId } = await params;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { recipeId, slug } = await params;
 
   const fetchData = await getRecipeDetail(recipeId);
 
@@ -64,6 +84,10 @@ export async function generateMetadata(
       robots: { index: false, follow: true },
     };
   }
+
+  const expectedSlug = generateSlug(recipeDetail?.recipeName || "");
+  // 메타 생성 전에 슬러그를 고정해 soft 200 redirect를 피한다 (middleware 308과 이중 방어)
+  ensureCanonicalRecipeSlug(recipeId, expectedSlug, slug);
 
   const rawPhoto = recipeDetail?.repriPhotos?.[0];
   const photoUrl = getAbsoluteImageUrl(rawPhoto);
@@ -91,7 +115,6 @@ export async function generateMetadata(
     description = `${description} (${tagText})`;
   }
 
-  const expectedSlug = generateSlug(recipeDetail?.recipeName || "");
   const canonicalUrl = `${SITE_URL}/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`;
 
   // 메타 태그 키워드 배열
@@ -190,9 +213,11 @@ export interface RecipeOwnerInfo {
 export default async function RecipeDetail({
   params,
 }: {
-  params: { recipeId: string; slug?: string[] };
+  params: Promise<{ recipeId: string; slug?: string[] }> | { recipeId: string; slug?: string[] };
 }) {
-  const recipeId = params.recipeId;
+  const resolvedParams = await Promise.resolve(params);
+  const recipeId = resolvedParams.recipeId;
+  const slug = resolvedParams.slug;
 
   const fetchData = await getRecipeDetail(recipeId);
 
@@ -212,20 +237,8 @@ export default async function RecipeDetail({
   }
 
   const expectedSlug = generateSlug(recipeDetail.recipeName);
-  const currentRawSlug = params.slug?.[0] ? params.slug[0] : null;
-  let currentSlug: string | null = null;
-  if (currentRawSlug) {
-    try {
-      currentSlug = decodeURIComponent(currentRawSlug);
-    } catch (e) {
-      currentSlug = currentRawSlug;
-    }
-  }
-
-  // 구버전 URL(/recipe-detail/:id)로 직접 인입 시, 슬러그 불일치 시, 또는 다중 세그먼트 슬러그 인입 시 301 영구 리다이렉트
-  if (!params.slug || params.slug.length !== 1 || currentSlug !== expectedSlug) {
-    permanentRedirect(`/recipe-detail/${recipeId}/${encodeURIComponent(expectedSlug)}`);
-  }
+  // middleware 308 + generateMetadata redirect 백업
+  ensureCanonicalRecipeSlug(recipeId, expectedSlug, slug);
 
   const recipeInfo: RecipeInfoProp = {
     recipeId: Number(recipeId),
@@ -377,8 +390,8 @@ export default async function RecipeDetail({
 
   return (
     <>
-      <Script
-        id="recipe-ld-json"
+      {/* next/script가 아닌 인라인 태그로 첫 HTML에 Recipe JSON-LD를 노출 */}
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([googleRecipeSchema, breadcrumbSchema]),

@@ -103,8 +103,8 @@ export default function SiteDescription() {
         <PrimaryButton
           type="button"
           onClick={()=>{
-            goToSiginInPage()
             authEvents.goToSignIn("home");
+            goToSiginInPage()
           }}
           size="lg"
           className="w-full sm:w-auto px-9 py-4 flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"

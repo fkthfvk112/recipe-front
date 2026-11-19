@@ -54,8 +54,8 @@ export default function Welcom(){
                     imgUrl="/welcom/eat.png"
                     ctaText="3초 만에 시작하기"
                     onCtaClick={()=>{
-                        goToLogin()
                         authEvents.goToSignIn("welcome/bottom_3sec_btn");
+                        goToLogin()
                     }}
                 />
                 <FeatureSection
@@ -89,8 +89,8 @@ export default function Welcom(){
                     message="지금 함께해요"
                     ctaText="같이 건강해지기"
                     onCtaClick={()=>{
-                        goToLogin()
                         authEvents.goToSignIn("welcome/btn_below");
+                        goToLogin()
                     }}
                 />
                 {/* <WelcomFooter/> */}

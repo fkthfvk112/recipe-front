@@ -130,6 +130,10 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
   - `app/(recipe)/recipes/RecipePagination.tsx`: 레시피 목록 페이징 컴포넌트
   - `app/(recipe)/recipes/(common)/RecipeSearchBar.tsx`: 검색바 및 필터 모달
   - `app/(recipe)/recipe-detail/[recipeId]/[[...slug]]/page.tsx`: 레시피 상세 페이지 (SEO Schema.org 적용)
+    - Recipe/Breadcrumb JSON-LD는 `next/script`가 아니라 인라인 `<script type="application/ld+json">`로 첫 HTML에 노출
+    - `revalidate = 3600` + detail fetch Data Cache 1시간 (`searchParams` 미사용으로 dynamic 강제 방지)
+    - `/recipe-detail/:id`(슬러그 없음)는 `middleware.ts`에서 HTTP 308. 잘못된 슬러그는 `generateMetadata`/`page`의 `permanentRedirect`
+    - 슬러그 생성은 `slugUtil.generateSlug` (NFC 정규화)
   - `app/(recipe)/recipe-detail/[recipeId]/RecipeNutritionSection.tsx`: 영양성분 분석 표
   - `app/(recipe)/recipe-detail/(review)/ReviewContainer.tsx` & `WriteReview.tsx`: 리뷰 및 별점 작성 컴포넌트
   - `app/(recipe)/create-recipe/page.tsx`: 레시피 폼 메인

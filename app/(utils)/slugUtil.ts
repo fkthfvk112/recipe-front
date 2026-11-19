@@ -8,6 +8,7 @@ export function generateSlug(title: string): string {
   if (!title) return "recipe";
 
   const slug = title
+    .normalize("NFC")
     .trim()
     .replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣-]/g, "")
     .replace(/\s+/g, "-")
