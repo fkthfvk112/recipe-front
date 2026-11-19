@@ -10,28 +10,41 @@ export default async function PopularRecipes() {
     {
       next: { revalidate: 300 },
     }
-  ).then((res) => {
-    if (!res.ok) {
-      console.log("RecipeDetail fetch error!!", res.status);
-    } else {
+  )
+    .then((res) => {
+      if (!res.ok) {
+        console.log("RecipeDetail fetch error!!", res.status);
+        return [];
+      }
       return res.json();
-    }
-  })
-  .catch(err=>{
-    console.log(err);
-    return [];
-  })
+    })
+    .catch((err) => {
+      console.log(err);
+      return [];
+    });
 
-  const popularRecipes = fetchData?.slice(1).map((recipe, inx) => (
-    <Link className="inline-block w-[180px] sm:w-[220px] shrink-0" key={inx} href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)} prefetch={false}>
+  const recipes = Array.isArray(fetchData) ? fetchData : [];
+  if (recipes.length === 0) {
+    return null;
+  }
+
+  const popularRecipes = recipes.slice(1).map((recipe, inx) => (
+    <Link
+      className="inline-block w-[180px] sm:w-[220px] shrink-0"
+      key={inx}
+      href={getRecipeDetailUrl(recipe.recipeId, recipe.recipeName)}
+      prefetch={false}
+    >
       <RecipeCard recipe={recipe}></RecipeCard>
     </Link>
   ));
 
   return (
     <div className="w-full max-w-5xl p-5 mt-10 mb-5">
-      {fetchData[0] && <BestRecipeCard recipe={fetchData[0] as BestRecipe}/>}
-      <h2 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight mb-4">인기 레시피</h2>
+      {recipes[0] && <BestRecipeCard recipe={recipes[0] as BestRecipe} />}
+      <h2 className="text-xl sm:text-2xl font-black text-gray-800 tracking-tight mb-4">
+        인기 레시피
+      </h2>
       <ul className="flex gap-4 overflow-x-auto no-scrollbar pb-4 scroll-smooth">
         {popularRecipes}
       </ul>

@@ -123,10 +123,13 @@ axiosAuthInstacne.post("fridge/my/fridge-item", payload)
 - **주요 기능**: 레시피 목록 검색/정렬, 상세 보기, AI 레시피 생성/작성, 수정, 삭제, 리뷰 작성
 - **핵심 유저 플로우**:
   1. **레시피 목록/검색**: `/recipes/1/sortingCondition=POPULARITY` ➔ 상세 필터 조건 검색 ➔ 페이징 처리 (`RecipePagination`)
-  2. **레시피 상세**: `/recipe-detail/[recipeId]/[slug]` ➔ 대표 이미지, 조리순서, 영양성분, AI 코멘트, 쿠팡 구매 연동 ➔ 리뷰 작성
-  3. **레시피 작성**: `/create-recipe` ➔ 재료/조리순서 Drag & Drop 추가 ➔ 대표 이미지 업로드 ➔ 임시저장 또는 발행
+  2. **카테고리 허브(SEO)**: `/recipes/1/cookCategory=한식` 등 순수 카테고리 1페이지만 `index,follow` + CollectionPage JSON-LD. 그 외 검색/필터 URL은 `noindex,follow`
+  3. **레시피 상세**: `/recipe-detail/[recipeId]/[slug]` ➔ 대표 이미지, 조리순서, 영양성분, AI 코멘트, 쿠팡 구매 연동 ➔ 리뷰 작성
+  4. **레시피 작성**: `/create-recipe` ➔ 재료/조리순서 Drag & Drop 추가 ➔ 대표 이미지 업로드 ➔ 임시저장 또는 발행
 - **주요 관련 파일 & 컴포넌트**:
-  - `app/(recipe)/recipes/[pageNumber]/[queryString]/page.tsx`: 레시피 조건별 검색 목록 (Server Component)
+  - `app/(utils)/recipeCategoryHub.ts`: 색인 가능 카테고리 허브 URL/메타 헬퍼
+  - `app/(recipe)/(realTime)/CategoryHubSection.tsx`: 홈 카테고리 허브 바로가기
+  - `app/(recipe)/recipes/[pageNumber]/[queryString]/page.tsx`: 레시피 조건별 검색 목록 (Server Component, 허브 메타 분기)
   - `app/(recipe)/recipes/RecipePagination.tsx`: 레시피 목록 페이징 컴포넌트
   - `app/(recipe)/recipes/(common)/RecipeSearchBar.tsx`: 검색바 및 필터 모달
   - `app/(recipe)/recipe-detail/[recipeId]/[[...slug]]/page.tsx`: 레시피 상세 페이지 (SEO Schema.org 적용)

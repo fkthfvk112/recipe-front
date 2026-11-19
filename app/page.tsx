@@ -1,14 +1,10 @@
 import RecentRecipes from "./(recipe)/(realTime)/RecentRecipes";
-import SearchBar from "./SearchBar";
-import RealTimeLikeBoard from "./(board)/(realTime)/RealTimeLikeBoard";
 import SiteDescription from "./SiteDescription";
-import { Metadata, ResolvingMetadata } from "next";
-import InViewContainer from "./(commom)/Component/InViewContainer";
-import ImgModal from "./(commom)/Component/ImgModal";
+import { Metadata } from "next";
 import FridgeDescription from "./FridgeDescription";
 import PopularRecipes from "./(recipe)/(realTime)/PopularRecipes";
+import CategoryHubSection from "./(recipe)/(realTime)/CategoryHubSection";
 import BottomBanner from "./(commom)/Component/BottmomBanner";
-import RNDefaultEmptyComp from "./(RN)/RNDefaultEmptyComp";
 import IngredientSection from "./IngredientSection";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.mug-in.com";
@@ -45,16 +41,17 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
- 
+
 export default function Home() {
   return (
     <div className="bg-white w-full flex flex-col justify-center items-center">
       <SiteDescription></SiteDescription>
       <FridgeDescription></FridgeDescription>
       <IngredientSection />
-      <PopularRecipes/>
-      {/* <RealTimeLikeBoard/> */}
-      <BottomBanner/>
+      <CategoryHubSection />
+      <PopularRecipes />
+      <RecentRecipes />
+      <BottomBanner />
     </div>
   );
 }

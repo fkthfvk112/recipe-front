@@ -14,6 +14,11 @@ import { Metadata } from "next";
 import FallbackPage from "@/app/(commom)/Component/FallbackPage";
 import { permanentRedirect } from "next/navigation";
 import { generateSlug } from "@/app/(utils)/slugUtil";
+import {
+  getCategoryHubAbsoluteUrl,
+  getCategoryHubPath,
+  isRecipeCategoryHub,
+} from "@/app/(utils)/recipeCategoryHub";
 import { cache } from "react";
 import Link from "next/link";
 
@@ -362,13 +367,13 @@ export default async function RecipeDetail({
         name: "레시피",
         item: `${SITE_URL}/recipes/1/sortingCondition=POPULARITY`,
       },
-      ...(recipeDetail.categorie
+      ...(isRecipeCategoryHub(recipeDetail.categorie)
         ? [
             {
               "@type": "ListItem",
               position: 3,
               name: recipeDetail.categorie,
-              item: `${SITE_URL}/recipes/1/categorie=${encodeURIComponent(recipeDetail.categorie)}`,
+              item: getCategoryHubAbsoluteUrl(recipeDetail.categorie),
             },
             {
               "@type": "ListItem",
@@ -388,6 +393,10 @@ export default async function RecipeDetail({
     ],
   };
 
+  const categoryHubPath = isRecipeCategoryHub(recipeDetail.categorie)
+    ? getCategoryHubPath(recipeDetail.categorie)
+    : null;
+
   return (
     <>
       {/* next/script가 아닌 인라인 태그로 첫 HTML에 Recipe JSON-LD를 노출 */}
@@ -402,6 +411,16 @@ export default async function RecipeDetail({
           <div className="p-6 sm:p-8 w-full">
             {!recipeDetail.isAiCreated && <UserInfo recipeOwner={recipeOwner}></UserInfo>}
             <RecipeInfo recipeInfoProp={recipeInfo}></RecipeInfo>
+            {categoryHubPath && (
+              <div className="mt-3 mb-1">
+                <Link
+                  href={categoryHubPath}
+                  className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200/70 no-underline hover:bg-emerald-100"
+                >
+                  {recipeDetail.categorie} 레시피 더보기
+                </Link>
+              </div>
+            )}
             <RecipeYouTubeSource aiSource={fetchData?.aiSource} />
             <Ingredients ingredients={recipeDetail.ingredients}></Ingredients>
             <RecipeStepInfo steps={recipeDetail.steps}></RecipeStepInfo>
